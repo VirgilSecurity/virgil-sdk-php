@@ -2,40 +2,58 @@
 
 namespace Virgil\SDK\PrivateKeys;
 
-require_once './../../../vendor/autoload.php';
-
-use Virgil\SDK\PrivateKeys\Clients\PrivateKeysAccountsClient;
-use Virgil\SDK\PrivateKeys\Clients\PrivateKeysClient;
-use Virgil\SDK\PrivateKeys\Exception\KeyringWebException;
-use Virgil\SDK\PrivateKeys\Http\Connection;
-use Virgil\SDK\Common\Utils\Config;
+use Virgil\SDK\PrivateKeys\Clients\PrivateKeysAccountsClient,
+    Virgil\SDK\PrivateKeys\Clients\PrivateKeysClient,
+    Virgil\SDK\PrivateKeys\Http\Connection,
+    Virgil\SDK\Common\Utils\Config;
 
 class KeyringClient {
 
-    protected $_config                    = null;
     protected $_privateKeysClient         = null;
     protected $_privateKeysAccountsClient = null;
 
-    public function __construct($username = null, $password = null) {
-        $this->_config = $this->_initConfig();
+    protected $_connection = null;
 
-        $connection = new Connection($this->_config->base_url, $this->_config->api_version, array(
-            'username' => $username, 'password' => $password
-        ));
+    public function __construct($username = null, $password = null, $config = array()) {
 
-        $this->_privateKeysClient         = new PrivateKeysClient($connection);
-        $this->_privateKeysAccountsClient = new PrivateKeysAccountsClient($connection);
+        $config = $this->_initConfig(
+            $config
+        );
+
+        $this->_connection = new Connection(
+            $config->keyring->base_url,
+            $config->keyring->version,
+            array(
+                'username' => $username,
+                'password' => $password
+            )
+        );
     }
 
     public function setCredentials($username, $password) {
-        $this->getPrivateKeysClient()->getConnection()->setCredentials($username, $password);
-        $this->getPrivateKeysAccountsClient()->getConnection()->setCredentials($username, $password);
+
+        $this->getPrivateKeysClient()->getConnection()->setCredentials(
+            $username,
+            $password
+        );
+
+        $this->getPrivateKeysAccountsClient()->getConnection()->setCredentials(
+            $username,
+            $password
+        );
     }
 
     /**
      * @return PrivateKeysAccountsClient
      */
     public function getPrivateKeysAccountsClient() {
+
+        if(is_null($this->_privateKeysAccountsClient)) {
+            $this->_privateKeysAccountsClient = new PrivateKeysAccountsClient(
+                $this->_connection
+            );
+        }
+
         return $this->_privateKeysAccountsClient;
     }
 
@@ -43,22 +61,29 @@ class KeyringClient {
      * @return PrivateKeysClient
      */
     public function getPrivateKeysClient() {
+
+        if(is_null($this->_privateKeysClient)) {
+            $this->_privateKeysClient = new PrivateKeysClient(
+                $this->_connection
+            );
+        }
+
         return $this->_privateKeysClient;
     }
 
     /**
+     * @param $config
      * @return \Virgil\SDK\Common\Utils\Config
      */
-    private function _initConfig() {
-        return new Config(parse_ini_file(__DIR__ . DIRECTORY_SEPARATOR . 'config.ini'));
+    private function _initConfig($config) {
+
+        return new Config(
+            array_merge(
+                $config,
+                parse_ini_file(
+                    __DIR__ . DIRECTORY_SEPARATOR . 'config.ini'
+                )
+            )
+        );
     }
-
-}
-
-try {
-    $client = (new KeyringClient('v1t40@example.com', 'password'))->getPrivateKeysClient();
-    var_dump($client->getPrivateKey('f961a541-0af9-dd2e-a56d-d449006f79b5'));
-} catch(KeyringWebException $e) {
-    echo $e->getErrorCode();
-    echo $e->getMessage();
 }

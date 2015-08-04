@@ -11,6 +11,7 @@ class VirgilPrivateKey extends Model {
     public $private_key;
 
     public function __construct(array $data = array()) {
+
         if(!empty($data)) {
             foreach($data as $field => $value) {
                 if(property_exists($this, $field)) {

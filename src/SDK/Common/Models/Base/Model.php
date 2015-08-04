@@ -12,10 +12,14 @@ abstract class Model implements \JsonSerializable {
      * which is a value of any type other than a resource.
      */
     public function jsonSerialize() {
+
         $result  = array();
         $reflect = new \ReflectionClass($this);
 
-        $properties = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $properties = $reflect->getProperties(
+            \ReflectionProperty::IS_PUBLIC
+        );
+
         foreach($properties as $property) {
             $result[$property->getName()] = $property->getValue($this);
         }
@@ -24,6 +28,7 @@ abstract class Model implements \JsonSerializable {
     }
     
     public function toJson() {
+
         return json_encode($this);
     }
 }

@@ -11,6 +11,7 @@ class VirgilUserDataType {
     );
 
     public static function isValidType($type) {
+
         return in_array($type, self::$_userIdTypes);
     }
 

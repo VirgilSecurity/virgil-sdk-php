@@ -11,6 +11,7 @@ class Response implements ResponseInterface {
     protected $_headers    = array();
 
     public function __construct(HttpResponseInterface $response) {
+
         $this->_statusCode = $response->getStatusCode();
         $this->_headers    = $response->getHeaders();
 
@@ -18,14 +19,17 @@ class Response implements ResponseInterface {
     }
 
     public function getBody() {
+
         return $this->_body;
     }
 
     public function getHeaders() {
+
         return $this->_headers;
     }
 
     public function getHttpStatusCode() {
+
         return $this->_statusCode;
     }
 

@@ -10,6 +10,7 @@ class Request implements RequestInterface {
     protected $_headers  = array();
 
     public function __construct($method, $endpoint, $data = array(), $headers = array()) {
+
         $this->_method   = $method;
         $this->_endpoint = $endpoint;
         $this->_data     = $data;
@@ -18,22 +19,42 @@ class Request implements RequestInterface {
 
     // to do call static
     public static function get($endpoint) {
-        return new self('GET', $endpoint);
+
+        return new self(
+            'GET',
+            $endpoint
+        );
     }
 
     public static function post($endpoint, $data) {
-        return new self('POST', $endpoint, $data);
+
+        return new self(
+            'POST',
+            $endpoint,
+            $data
+        );
     }
 
     public static function delete($endpoint, $data = array()) {
-        return new self('DELETE', $endpoint, $data);
+
+        return new self(
+            'DELETE',
+            $endpoint,
+            $data
+        );
     }
 
     public static function put($endpoint, $data) {
-        return new self('PUT', $endpoint, $data);
+
+        return new self(
+            'PUT',
+            $endpoint,
+            $data
+        );
     }
 
     public function addHeader($header, $value) {
+
         $this->_headers[$header] = $value;
     }
 
@@ -41,6 +62,7 @@ class Request implements RequestInterface {
      * @return string
      */
     public function getEndpoint() {
+
         return $this->_endpoint;
     }
 
@@ -48,6 +70,7 @@ class Request implements RequestInterface {
      * @return string
      */
     public function getRequestMethod() {
+
         return $this->_method;
     }
 
@@ -55,6 +78,7 @@ class Request implements RequestInterface {
      * @return array
      */
     public function getHeaders() {
+
         return $this->_headers;
     }
 
@@ -62,10 +86,12 @@ class Request implements RequestInterface {
      * @return array
      */
     public function getBody() {
+
         return $this->_data;
     }
 
     public function isBodyEmpty() {
+
         return empty($this->_data);
     }
 }

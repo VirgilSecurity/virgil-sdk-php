@@ -2,13 +2,13 @@
 
 namespace Virgil\SDK\PrivateKeys\Http;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface as HttpResponseInterface;
-use Virgil\SDK\Common\Http\RequestInterface;
-use Virgil\SDK\Common\Http\Response;
-use Virgil\SDK\Common\Http\ResponseInterface;
-use Virgil\SDK\PrivateKeys\Exception\KeyringWebException;
-use Virgil\SDK\PrivateKeys\Http\Error;
+use GuzzleHttp\Client,
+    GuzzleHttp\Message\ResponseInterface as HttpResponseInterface,
+    Virgil\SDK\Common\Http\RequestInterface,
+    Virgil\SDK\Common\Http\Response,
+    Virgil\SDK\Common\Http\ResponseInterface,
+    Virgil\SDK\PrivateKeys\Exception\KeyringWebException,
+    Virgil\SDK\PrivateKeys\Http\Error;
 
 class Connection implements ConnectionInterface {
 
@@ -21,6 +21,7 @@ class Connection implements ConnectionInterface {
     );
 
     public function __construct($baseUrl, $apiVersion = null, $credentials = array()) {
+
         $this->_baseUrl = $baseUrl;
 
         if($apiVersion !== null) {
@@ -33,6 +34,7 @@ class Connection implements ConnectionInterface {
     }
 
     public function setCredentials($username, $password) {
+
         $this->_credentials = array(
             'username' => $username,
             'password' => $password
@@ -43,14 +45,17 @@ class Connection implements ConnectionInterface {
      * @return string
      */
     public function getBaseUrl() {
+
         return $this->_baseUrl . '/{version}/';
     }
 
     public function getAuthToken() {
+
         return $this->_authToken;
     }
 
     public function getApiVersion() {
+
         return $this->_apiVersion;
     }
 
@@ -59,6 +64,7 @@ class Connection implements ConnectionInterface {
      * @return ResponseInterface
      */
     public function send(RequestInterface $request) {
+
         if($this->_isAuthenticated() == false && $this->_areCredentialsSet() == true) {
             $this->_authToken = $this->_authenticate();
         }
@@ -81,18 +87,29 @@ class Connection implements ConnectionInterface {
             $options['json'] = $request->getBody();
         }
 
-        $httpRequest = $httpClient->createRequest($request->getRequestMethod(), $request->getEndpoint(), $options);
+        $httpRequest = $httpClient->createRequest(
+            $request->getRequestMethod(),
+            $request->getEndpoint(),
+            $options
+        );
 
-        $httpResponse = $httpClient->send($httpRequest);
+        $httpResponse = $httpClient->send(
+            $httpRequest
+        );
 
         if($this->isSuccessHttpStatus($httpResponse) !== true) {
-            $this->exceptionHandler($httpResponse);
+            $this->exceptionHandler(
+                $httpResponse
+            );
         }
 
-        return new Response($httpResponse);
+        return new Response(
+            $httpResponse
+        );
     }
 
     private function _getHeaders() {
+
         $headers = $this->_defaultHeaders;
 
         if($this->getAuthToken() !== null) {
@@ -103,22 +120,27 @@ class Connection implements ConnectionInterface {
     }
 
     private function _getUserName() {
+
         return isset($this->_credentials['username']) ? $this->_credentials['username'] : null;
     }
 
     private function _getPassword() {
+
         return isset($this->_credentials['password']) ? $this->_credentials['password'] : null;
     }
 
     private function _isAuthenticated() {
+
         return $this->_authToken !== null;
     }
 
     private function _areCredentialsSet() {
+
         return !empty($this->_credentials);
     }
 
     private function _authenticate() {
+
         $httpClient = new Client(array(
             'base_url' => array(
                 $this->getBaseUrl(),
@@ -128,33 +150,45 @@ class Connection implements ConnectionInterface {
             )
         ));
 
-        $httpRequest = $httpClient->createRequest('POST', 'authentication/get-token', array(
-            'exceptions'   => false,
-            'headers'      => $this->_getHeaders(),
-            'json'         => array(
-                'password' => $this->_getPassword(),
-                'user_data'   => array(
-                    'class'   => 'user_id',
-                    'type'    => 'email',
-                    'value'   => $this->_getUserName()
+        $httpRequest = $httpClient->createRequest(
+            'POST',
+            'authentication/get-token',
+            array(
+                'exceptions'   => false,
+                'headers'      => $this->_getHeaders(),
+                'json'         => array(
+                    'password' => $this->_getPassword(),
+                    'user_data'   => array(
+                        'class'   => 'user_id',
+                        'type'    => 'email',
+                        'value'   => $this->_getUserName()
+                    )
                 )
             )
-        ));
+        );
 
         $httpResponse = $httpClient->send($httpRequest);
 
         if($this->isSuccessHttpStatus($httpResponse) !== true) {
-            $this->exceptionHandler($httpResponse);
+            $this->exceptionHandler(
+                $httpResponse
+            );
         }
 
-        return $httpResponse->json(array('object' => true))->auth_token;
+        return $httpResponse->json(
+            array(
+                'object' => true
+            )
+        )->auth_token;
     }
 
     private function isSuccessHttpStatus(HttpResponseInterface $httpResponse) {
+
         return $httpResponse->getStatusCode() == ResponseInterface::HTTP_CODE_OK;
     }
 
     private function exceptionHandler(HttpResponseInterface $httpResponse) {
+
         $data      = $httpResponse->json();
         $errorCode = 0;
 
@@ -162,8 +196,16 @@ class Connection implements ConnectionInterface {
             $errorCode = $data['error']['code'];
         }
 
-        $errorMessage = Error\Error::getHttpErrorMessage($httpResponse->getStatusCode(), $errorCode, 'Undefined exception: ' . $errorCode . '; Http status: ' . $httpResponse->getStatusCode());
+        $errorMessage = Error\Error::getHttpErrorMessage(
+            $httpResponse->getStatusCode(),
+            $errorCode,
+            'Undefined exception: ' . $errorCode . '; Http status: ' . $httpResponse->getStatusCode()
+        );
 
-        throw new KeyringWebException($errorCode, $errorMessage, $httpResponse->getStatusCode());
+        throw new KeyringWebException(
+            $errorCode,
+            $errorMessage,
+            $httpResponse->getStatusCode()
+        );
     }
 }

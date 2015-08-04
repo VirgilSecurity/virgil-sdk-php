@@ -14,6 +14,7 @@ class VirgilUserData extends Model {
     public $signs = array();
 
     public function __construct(array $data = array()) {
+
         if(!empty($data)) {
             if(isset($data['id']['user_data_id'])) {
                 $this->user_data_id = $data['id']['user_data_id'];

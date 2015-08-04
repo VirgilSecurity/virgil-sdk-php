@@ -2,33 +2,44 @@
 
 namespace Virgil\SDK\Keys;
 
-use Virgil\SDK\Common\Utils\Config;
-use Virgil\SDK\Keys\Clients\AccountsClient;
-use Virgil\SDK\Keys\Clients\PublicKeysClient;
-use Virgil\SDK\Keys\Clients\UserDataClient;
-use Virgil\SDK\Keys\Http\Connection;
+use Virgil\SDK\Common\Utils\Config,
+    Virgil\SDK\Keys\Clients\AccountsClient,
+    Virgil\SDK\Keys\Clients\PublicKeysClient,
+    Virgil\SDK\Keys\Clients\UserDataClient,
+    Virgil\SDK\Keys\Http\Connection;
 
 class PkiClient {
 
-    protected $_config           = null;
     protected $_accountsClient   = null;
     protected $_publicKeysClient = null;
     protected $_userDataClient   = null;
 
-    public function __construct($appToken) {
-        $this->_config = $this->_initConfig();
+    protected $_connection       = null;
 
-        $connection = new Connection($appToken, $this->_config->base_url, $this->_config->api_version);
+    public function __construct($appToken, $config = array()) {
 
-        $this->_accountsClient   = new AccountsClient($connection);
-        $this->_publicKeysClient = new PublicKeysClient($connection);
-        $this->_userDataClient   = new UserDataClient($connection);
+        $config = $this->_initConfig(
+            $config
+        );
+
+        $this->_connection  = new Connection(
+            $appToken,
+            $config->keys->base_url,
+            $config->keys->version
+        );
     }
 
     /**
      * @return AccountsClient
      */
     public function getAccountsClient() {
+
+        if(is_null($this->_accountsClient)) {
+            $this->_accountsClient   = new AccountsClient(
+                $this->_connection
+            );
+        }
+
         return $this->_accountsClient;
     }
 
@@ -36,6 +47,13 @@ class PkiClient {
      * @return PublicKeysClient
      */
     public function getPublicKeysClient() {
+
+        if(is_null($this->_publicKeysClient)) {
+            $this->_publicKeysClient = new PublicKeysClient(
+                $this->_connection
+            );
+        }
+
         return $this->_publicKeysClient;
     }
 
@@ -43,14 +61,30 @@ class PkiClient {
      * @return UserDataClient
      */
     public function getUserDataClient() {
+
+        if(is_null($this->_userDataClient)) {
+            $this->_userDataClient = new UserDataClient(
+                $this->_connection
+            );
+        }
+
         return $this->_userDataClient;
     }
 
     /**
+     * @param $config
      * @return \Virgil\SDK\Common\Utils\Config
      */
-    private function _initConfig() {
-        return new Config(parse_ini_file(__DIR__ . DIRECTORY_SEPARATOR . 'config.ini'));
+    private function _initConfig($config) {
+
+        return new Config(
+            array_merge(
+                $config,
+                parse_ini_file(
+                    __DIR__ . DIRECTORY_SEPARATOR . 'config.ini'
+                )
+            )
+        );
     }
 
 }

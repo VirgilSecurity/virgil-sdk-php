@@ -11,6 +11,7 @@ class VirgilPrivateKeyAccount extends Model {
     public $private_keys;
 
     public function __construct(array $data = array()) {
+
         $this->private_keys = new VirgilPrivateKeysCollection();
 
         if(!empty($data)) {
@@ -24,7 +25,11 @@ class VirgilPrivateKeyAccount extends Model {
 
             if(isset($data['data']) && is_array($data['data'])) {
                 foreach($data['private_keys'] as $key) {
-                    $this->private_keys->add(new VirgilPrivateKey($key));
+                    $this->private_keys->add(
+                        new VirgilPrivateKey(
+                            $key
+                        )
+                    );
                 }
             }
         }

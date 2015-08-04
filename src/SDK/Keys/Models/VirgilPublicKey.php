@@ -11,6 +11,7 @@ class VirgilPublicKey extends Model {
    public $user_data;
 
     public function __construct(array $data = array()) {
+
         $this->user_data  = new VirgilUserDataCollection();
 
         if(!empty($data)) {
@@ -24,7 +25,11 @@ class VirgilPublicKey extends Model {
 
             if(isset($data['user_data']) && is_array($data['user_data'])) {
                 foreach($data['user_data'] as $item) {
-                    $this->user_data->add(new VirgilUserData($item));
+                    $this->user_data->add(
+                        new VirgilUserData(
+                            $item
+                        )
+                    );
                 }
             }
         }

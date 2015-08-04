@@ -10,6 +10,7 @@ class VirgilAccount extends Model {
     public $public_keys;
 
     public function __construct(array $data = array()) {
+
         $this->public_keys = new VirgilPublicKeysCollection();
 
         if(!empty($data)) {
@@ -20,10 +21,13 @@ class VirgilAccount extends Model {
 
             if(!empty($data['public_keys'])) {
                 foreach($data['public_keys'] as $key) {
-                    $this->public_keys->add(new VirgilPublicKey($key));
+                    $this->public_keys->add(
+                        new VirgilPublicKey(
+                            $key
+                        )
+                    );
                 }
             }
         }
     }
-
 }

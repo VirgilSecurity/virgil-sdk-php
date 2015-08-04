@@ -2,13 +2,13 @@
 
 namespace Virgil\SDK\Keys\Http;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface as HttpResponseInterface;
-use Virgil\SDK\Common\Http\RequestInterface;
-use Virgil\SDK\Common\Http\Response;
-use Virgil\SDK\Common\Http\ResponseInterface;
-use Virgil\SDK\Keys\Exceptions\PkiWebException;
-use Virgil\SDK\Keys\Http\Error;
+use GuzzleHttp\Client,
+    GuzzleHttp\Message\ResponseInterface as HttpResponseInterface,
+    Virgil\SDK\Common\Http\RequestInterface,
+    Virgil\SDK\Common\Http\Response,
+    Virgil\SDK\Common\Http\ResponseInterface,
+    Virgil\SDK\Keys\Exceptions\PkiWebException,
+    Virgil\SDK\Keys\Http\Error;
 
 class Connection implements ConnectionInterface {
 
@@ -20,6 +20,7 @@ class Connection implements ConnectionInterface {
     );
 
     public function __construct($appToken, $baseUrl, $apiVersion = null) {
+
         $this->_appToken = $appToken;
         $this->_baseUrl  = $baseUrl;
 
@@ -32,6 +33,7 @@ class Connection implements ConnectionInterface {
      * @return string
      */
     public function getBaseUrl() {
+
         return $this->_baseUrl . '/{version}/';
     }
 
@@ -39,10 +41,12 @@ class Connection implements ConnectionInterface {
      * @return string
      */
     public function getAppToken() {
+
         return $this->_appToken;
     }
 
     public function getApiVersion() {
+
         return $this->_apiVersion;
     }
 
@@ -51,6 +55,7 @@ class Connection implements ConnectionInterface {
      * @return Response
      */
     public function send(RequestInterface $request) {
+
         $httpClient = new Client(array(
             'base_url' => array(
                 $this->getBaseUrl(),
@@ -69,18 +74,29 @@ class Connection implements ConnectionInterface {
             $options['json'] = $request->getBody();
         }
 
-        $httpRequest = $httpClient->createRequest($request->getRequestMethod(), $request->getEndpoint(), $options);
+        $httpRequest = $httpClient->createRequest(
+            $request->getRequestMethod(),
+            $request->getEndpoint(),
+            $options
+        );
 
-        $httpResponse = $httpClient->send($httpRequest);
+        $httpResponse = $httpClient->send(
+            $httpRequest
+        );
 
         if($this->isSuccessHttpStatus($httpResponse) !== true) {
-            $this->exceptionHandler($httpResponse);
+            $this->exceptionHandler(
+                $httpResponse
+            );
         }
 
-        return new Response($httpResponse);
+        return new Response(
+            $httpResponse
+        );
     }
 
     private function _getHeaders() {
+
         $headers = $this->_defaultHeaders;
 
         if($this->getAppToken() !== null) {
@@ -91,6 +107,7 @@ class Connection implements ConnectionInterface {
     }
 
     private function isSuccessHttpStatus(HttpResponseInterface $httpResponse) {
+
         return $httpResponse->getStatusCode() == ResponseInterface::HTTP_CODE_OK;
     }
 
@@ -102,8 +119,16 @@ class Connection implements ConnectionInterface {
             $errorCode = $data['error']['code'];
         }
 
-        $errorMessage = Error\Error::getHttpErrorMessage($httpResponse->getStatusCode(), $errorCode, 'Undefined exception: ' . $errorCode . '; Http status: ' . $httpResponse->getStatusCode());
+        $errorMessage = Error\Error::getHttpErrorMessage(
+            $httpResponse->getStatusCode(),
+            $errorCode,
+            'Undefined exception: ' . $errorCode . '; Http status: ' . $httpResponse->getStatusCode()
+        );
 
-        throw new PkiWebException($errorCode, $errorMessage, $httpResponse->getStatusCode());
+        throw new PkiWebException(
+            $errorCode,
+            $errorMessage,
+            $httpResponse->getStatusCode()
+        );
     }
 }

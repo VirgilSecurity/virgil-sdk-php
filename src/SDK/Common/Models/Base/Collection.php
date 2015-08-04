@@ -9,16 +9,19 @@ abstract class Collection implements \IteratorAggregate, \JsonSerializable {
     protected $_collection = array();
 
     public function __construct($data = array()) {
+
         foreach($data as $object) {
             $this->add($object);
         }
     }
 
     public function add($object) {
+
         $this->_collection[] = $object;
     }
     
     public function get($index) {
+
         if(isset($this->_collection[$index])) {
             return $this->_collection[$index];
         }
@@ -27,6 +30,7 @@ abstract class Collection implements \IteratorAggregate, \JsonSerializable {
     }
 
     public function remove($index) {
+
         unset($this->_collection[$index]);
     }
 
@@ -38,7 +42,10 @@ abstract class Collection implements \IteratorAggregate, \JsonSerializable {
      * <b>Traversable</b>
      */
     public function getIterator() {
-        return new \ArrayIterator($this->_collection);
+
+        return new \ArrayIterator(
+            $this->_collection
+        );
     }
 
     /**
@@ -49,6 +56,7 @@ abstract class Collection implements \IteratorAggregate, \JsonSerializable {
      * which is a value of any type other than a resource.
      */
     public function jsonSerialize() {
+
         return $this->_collection;
     }
 }
