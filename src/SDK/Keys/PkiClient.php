@@ -24,8 +24,8 @@ class PkiClient {
 
         $this->_connection  = new Connection(
             $appToken,
-            $config->keys->base_url,
-            $config->keys->version
+            $config->base_url,
+            $config->version
         );
     }
 
@@ -79,10 +79,10 @@ class PkiClient {
 
         return new Config(
             array_merge(
-                $config,
                 parse_ini_file(
                     __DIR__ . DIRECTORY_SEPARATOR . 'config.ini'
-                )
+                ),
+                $config
             )
         );
     }

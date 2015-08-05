@@ -21,8 +21,8 @@ class KeyringClient {
         );
 
         $this->_connection = new Connection(
-            $config->keyring->base_url,
-            $config->keyring->version,
+            $config->base_url,
+            $config->version,
             array(
                 'username' => $username,
                 'password' => $password
@@ -79,10 +79,10 @@ class KeyringClient {
 
         return new Config(
             array_merge(
-                $config,
                 parse_ini_file(
                     __DIR__ . DIRECTORY_SEPARATOR . 'config.ini'
-                )
+                ),
+                $config
             )
         );
     }

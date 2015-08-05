@@ -111,12 +111,28 @@ class Connection implements ConnectionInterface {
         return $httpResponse->getStatusCode() == ResponseInterface::HTTP_CODE_OK;
     }
 
+    private function isNotJsonError(HttpResponseInterface $httpResponse) {
+
+        if($httpResponse->getStatusCode() == ResponseInterface::HTTP_CODE_NOT_FOUND ||
+           $httpResponse->getStatusCode() == ResponseInterface::HTTP_CODE_INTERNAL_SERVER_ERROR ||
+           $httpResponse->getStatusCode() == ResponseInterface::HTTP_CODE_METHOD_NOT_ALLOWED
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     private function exceptionHandler(HttpResponseInterface $httpResponse) {
-        $data      = $httpResponse->json();
+
         $errorCode = 0;
 
-        if(!empty($data['error'])) {
-            $errorCode = $data['error']['code'];
+        if(!$this->isNotJsonError($httpResponse)) {
+
+            $data      = $httpResponse->json();
+            if(!empty($data['error'])) {
+                $errorCode = $data['error']['code'];
+            }
         }
 
         $errorMessage = Error\Error::getHttpErrorMessage(
