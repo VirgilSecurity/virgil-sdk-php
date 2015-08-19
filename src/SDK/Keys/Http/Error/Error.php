@@ -7,6 +7,7 @@ use Virgil\SDK\Common\Http\Error\Error as CommonError;
 class Error extends CommonError {
 
     protected static $_errorMap = array(
+
         10000 => 'The error code returned to the user in the case of some internal error that must not be specified to client',
         10100 => 'JSON specified as a request is invalid',
 

@@ -13,15 +13,14 @@ use GuzzleHttp\Client,
 class Connection implements ConnectionInterface {
 
     protected $_baseUrl        = null;
-    protected $_appToken       = null;
+    protected $_headers        = array();
     protected $_apiVersion     = 'v2';
     protected $_defaultHeaders = array(
         'Content-Type' => 'application/json'
     );
 
-    public function __construct($appToken, $baseUrl, $apiVersion = null) {
+    public function __construct($baseUrl, $apiVersion = null) {
 
-        $this->_appToken = $appToken;
         $this->_baseUrl  = $baseUrl;
 
         if($apiVersion !== null) {
@@ -30,19 +29,27 @@ class Connection implements ConnectionInterface {
     }
 
     /**
-     * @return string
+     * Setup Connection headers
+     *
+     * @param $headers
+     * @return $this
      */
-    public function getBaseUrl() {
+    public function setupHeaders($headers) {
 
-        return $this->_baseUrl . '/{version}/';
+        $this->_headers = array_merge(
+            $this->_headers,
+            $headers
+        );
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getAppToken() {
+    public function getBaseUrl() {
 
-        return $this->_appToken;
+        return $this->_baseUrl . '/{version}/';
     }
 
     public function getApiVersion() {
@@ -97,13 +104,10 @@ class Connection implements ConnectionInterface {
 
     private function _getHeaders() {
 
-        $headers = $this->_defaultHeaders;
-
-        if($this->getAppToken() !== null) {
-            $headers['X-VIRGIL-APP-TOKEN'] = $this->getAppToken();
-        }
-
-        return $headers;
+        return array_merge(
+            $this->_defaultHeaders,
+            $this->_headers
+        );
     }
 
     private function isSuccessHttpStatus(HttpResponseInterface $httpResponse) {

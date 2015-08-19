@@ -6,26 +6,30 @@ use Virgil\SDK\Common\Models\Base\Model;
 
 class VirgilPublicKey extends Model {
 
-   public $public_key_id;
-   public $public_key;
-   public $user_data;
+   public $accountId;
+   public $publicKeyId;
+   public $publicKey;
+   public $userData;
 
     public function __construct(array $data = array()) {
 
-        $this->user_data  = new VirgilUserDataCollection();
-
         if(!empty($data)) {
+
             if(isset($data['id'])) {
-                $this->public_key_id = $data['id']['public_key_id'];
+                $this->accountId   = $data['id']['account_id'];
+                $this->publicKeyId = $data['id']['public_key_id'];
             }
 
             if(isset($data['public_key'])) {
-                $this->public_key = base64_decode($data['public_key']);
+                $this->publicKey = base64_decode(
+                    $data['public_key']
+                );
             }
 
             if(isset($data['user_data']) && is_array($data['user_data'])) {
+                $this->userData  = new VirgilUserDataCollection();
                 foreach($data['user_data'] as $item) {
-                    $this->user_data->add(
+                    $this->userData->add(
                         new VirgilUserData(
                             $item
                         )

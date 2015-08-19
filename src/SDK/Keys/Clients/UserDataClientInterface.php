@@ -8,9 +8,9 @@ interface UserDataClientInterface {
 
     public function getUserData($userDataId);
 
-    public function insertUserData($certificateId, VirgilUserData $virgilUserData);
+    public function createUserData($certificateId, VirgilUserData $virgilUserData);
 
-    public function confirm($userDataId, $confirmationCode);
+    public function persistUserData($uuid, $confirmationCode);
 
     public function deleteUserData($userDataId);
 

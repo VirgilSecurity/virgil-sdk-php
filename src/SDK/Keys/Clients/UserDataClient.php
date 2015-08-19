@@ -18,7 +18,7 @@ class UserDataClient extends ApiClient implements UserDataClientInterface {
         );
     }
 
-    public function insertUserData($publicKeyId, VirgilUserData $virgilUserData) {
+    public function createUserData($publicKeyId, VirgilUserData $virgilUserData) {
 
         $response = $this->post(
             'user-data',
@@ -35,26 +35,16 @@ class UserDataClient extends ApiClient implements UserDataClientInterface {
         );
     }
 
-    public function confirm($userDataId, $confirmationCode) {
+    public function persistUserData($uuid, $confirmationCode) {
 
-        $response = $this->post(
-            'user-data/' . $userDataId . '/actions/confirm',
+        $this->post(
+            'user-data/' . $uuid . '/persist',
             array(
-                'code' => $confirmationCode
+                'confirmation_code' => $confirmationCode
             )
         );
 
-        return true;
-    }
-
-    public function resendConfirmation($userDataId) {
-
-        $response = $this->post(
-            'user-data/' . $userDataId . '/actions/resend-confirmation',
-            array()
-        );
-
-        return true;
+        return $this;
     }
 
     public function deleteUserData($userDataId) {}

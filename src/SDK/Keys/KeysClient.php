@@ -8,7 +8,7 @@ use Virgil\SDK\Common\Utils\Config,
     Virgil\SDK\Keys\Clients\UserDataClient,
     Virgil\SDK\Keys\Http\Connection;
 
-class PkiClient {
+class KeysClient {
 
     protected $_accountsClient   = null;
     protected $_publicKeysClient = null;
@@ -16,16 +16,31 @@ class PkiClient {
 
     protected $_connection       = null;
 
-    public function __construct($appToken, $config = array()) {
+    public function __construct($applicationToken, $config = array()) {
 
         $config = $this->_initConfig(
             $config
         );
 
         $this->_connection  = new Connection(
-            $appToken,
             $config->base_url,
             $config->version
+        );
+
+        $this->setupHeaders(array(
+            'X-VIRGIL-APPLICATION-TOKEN' => $applicationToken
+        ));
+    }
+
+    /**
+     * Setup connection headers
+     *
+     * @param $headers
+     */
+    public function setupHeaders($headers) {
+
+        $this->_connection->setupHeaders(
+            $headers
         );
     }
 
@@ -35,7 +50,7 @@ class PkiClient {
     public function getAccountsClient() {
 
         if(is_null($this->_accountsClient)) {
-            $this->_accountsClient   = new AccountsClient(
+            $this->_accountsClient = new AccountsClient(
                 $this->_connection
             );
         }

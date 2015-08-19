@@ -11,7 +11,7 @@ class AccountsClient extends ApiClient implements AccountsClientInterface {
     public function register($userDataType, $userId, $publicKey) {
 
         $response = $this->post(
-            'account',
+            'user-data',
             array(
                 'public_key'      => base64_encode($publicKey),
                 'user_data_type'  => $userDataType,

@@ -7,7 +7,7 @@ use Virgil\SDK\PrivateKeys\Clients\PrivateKeysAccountsClient,
     Virgil\SDK\PrivateKeys\Http\Connection,
     Virgil\SDK\Common\Utils\Config;
 
-class KeyringClient {
+class PrivateKeysClient {
 
     protected $_privateKeysClient         = null;
     protected $_privateKeysAccountsClient = null;

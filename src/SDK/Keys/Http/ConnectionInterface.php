@@ -6,9 +6,5 @@ use Virgil\SDK\Common\Http\ConnectionInterface as CommonConnectionInterface;
 
 interface ConnectionInterface extends CommonConnectionInterface {
 
-    /**
-     * @return string
-     */
-    public function getAppToken();
 
 }

@@ -2,7 +2,9 @@
 
 namespace Virgil\SDK\Common\Clients;
 
-use Virgil\SDK\Common\Http\ConnectionInterface,
+use Virgil\Crypto\VirgilSigner,
+
+    Virgil\SDK\Common\Http\ConnectionInterface,
     Virgil\SDK\Common\Http\Request;
 
 class ApiClient {
@@ -60,4 +62,5 @@ class ApiClient {
             )
         );
     }
+
 }

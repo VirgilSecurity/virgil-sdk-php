@@ -8,6 +8,8 @@ class VirgilUserDataCollection extends Collection {
 
     public function add(VirgilUserData $object) {
 
-        parent::add($object);
+        parent::add(
+            $object
+        );
     }
 }

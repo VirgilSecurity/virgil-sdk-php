@@ -20,4 +20,10 @@ interface ConnectionInterface {
      */
     public function getApiVersion();
 
+    /**
+     * @param $headers
+     * @return mixed
+     */
+    public function setupHeaders($headers);
+
 }

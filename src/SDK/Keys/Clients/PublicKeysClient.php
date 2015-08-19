@@ -6,7 +6,9 @@ use Virgil\SDK\Common\Clients\ApiClient,
     Virgil\SDK\Keys\Models\VirgilPublicKey,
     Virgil\SDK\Keys\Models\VirgilPublicKeysCollection,
     Virgil\SDK\Keys\Models\VirgilUserDataCollection,
-    Virgil\SDK\Keys\Models\VirgilUserDataType;
+    Virgil\SDK\Common\Utils\GUID,
+    Virgil\SDK\Common\Utils\Sign;
+
 
 class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
 
@@ -21,46 +23,114 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
         );
     }
 
-    public function searchKey($userId, $userDataType) {
+    public function grabKey($userId, $privateKey = null, $privateKeyPassword = null) {
 
-        if(VirgilUserDataType::isValidType($userDataType) == false) {
-            throw new \Exception('Invalid data type');
+        $request = array(
+            'value' => $userId,
+            'request_sign_uuid' => GUID::generate()
+        );
+
+        if(!is_null($privateKey)) {
+            Sign::createRequestSign(
+                $this->getConnection(),
+                $request,
+                $privateKey,
+                $privateKeyPassword
+            );
         }
 
         $response = $this->post(
-            'user-data/actions/search',
-            array(
-                $userDataType => $userId
-            )
+            'public-key/actions/grab',
+            $request
         );
 
         $collection = new VirgilPublicKeysCollection();
+        $collection->add(
+            new VirgilPublicKey(
+                $response->getBody()
+            )
+        );
 
-        $data = $response->getBody();
-        foreach($data as $item) {
-            $collection->add(
-                $this->getKey(
-                    $item->id->public_key_id
-                )
-            );
-        }
 
         return $collection;
     }
 
-    public function addKey($accountId, $publicKey, VirgilUserDataCollection $userData) {
+    public function createKey($publicKey, VirgilUserDataCollection $userData, $privateKey, $privateKeyPassword = null) {
 
-        $response = $this->post(
-            'public-key',
-            array(
-                'account_id' => $accountId,
-                'public_key' => $publicKey,
-                'user_data'  => $userData
-            )
+        $request = array(
+            'public_key' => base64_encode(
+                $publicKey
+            ),
+            'user_data' => $userData,
+            'request_sign_uuid' => GUID::generate(),
+        );
+
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
         );
 
         return new VirgilPublicKey(
-            $response->getBody()
+            $this->post(
+                'public-key',
+                $request
+            )->getBody()
         );
+    }
+
+    public function updateKey($publicKeyId, $publicKey, $privateKey, $privateKeyPassword = null) {
+
+        $requestSignUUID = GUID::generate();
+        $request = array(
+            'request_sign_uuid' => $requestSignUUID,
+            'public_key' => base64_encode(
+                $publicKey
+            ),
+            'uuid_sign' =>
+                base64_encode(
+                    Sign::createSign(
+                        $requestSignUUID,
+                        $privateKey,
+                        $privateKeyPassword
+                    )
+                )
+        );
+
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
+        );
+
+        return new VirgilPublicKey(
+            $this->put(
+                'public-key/' . $publicKeyId,
+                $request
+            )->getBody()
+        );
+
+    }
+
+    public function deleteKey($publicKey, $privateKey, $privateKeyPassword = null) {
+
+        $request = array(
+            'request_sign_uuid' => GUID::generate()
+        );
+
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
+        );
+
+        $this->delete(
+            'public-key/' . $publicKey,
+            $request
+        );
+
     }
 }
