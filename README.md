@@ -1,2 +1,2 @@
-* [Keys SDK](https://github.com/ddain/VirgilKeyRing/blob/staging/docs/README_v1.md)
-* [PrivateKeys SDK](https://github.com/ddain/VirgilKeyRing/blob/staging/docs/README_v2.md)
+* [Keys SDK](https://github.com/VirgilSecurity/virgil-php-keys/blob/master/docs/keys.md)
+* [PrivateKeys SDK](https://github.com/VirgilSecurity/virgil-php-keys/blob/master/docs/private-keys.md)
