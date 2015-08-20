@@ -3,14 +3,16 @@
 namespace Virgil\SDK\Keys\Clients;
 
 use Virgil\SDK\Common\Clients\ApiClient,
-    Virgil\SDK\Keys\Models\VirgilUserData;
+    Virgil\SDK\Keys\Models\VirgilUserData,
+    Virgil\SDK\Common\Utils\GUID,
+    Virgil\SDK\Common\Utils\Sign;
 
 class UserDataClient extends ApiClient implements UserDataClientInterface {
 
-    public function getUserData($userDataId) {
+    public function getUserData($uuid) {
 
         $response = $this->get(
-            'user-data/'. $userDataId
+            'user-data/'. $uuid
         );
 
         return new VirgilUserData(
@@ -18,20 +20,27 @@ class UserDataClient extends ApiClient implements UserDataClientInterface {
         );
     }
 
-    public function createUserData($publicKeyId, VirgilUserData $virgilUserData) {
+    public function createUserData(VirgilUserData $virgilUserData, $privateKey, $privateKeyPassword = null) {
 
-        $response = $this->post(
-            'user-data',
-            array(
-                'public_key_id' => $publicKeyId,
-                'class'         => $virgilUserData->class,
-                'type'          => $virgilUserData->type,
-                'value'         => $virgilUserData->value
-            )
+        $request = array(
+            'class'             => $virgilUserData->class,
+            'type'              => $virgilUserData->type,
+            'value'             => $virgilUserData->value,
+            'request_sign_uuid' => GUID::generate()
+        );
+
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
         );
 
         return new VirgilUserData(
-            $response->getBody()
+            $this->post(
+                'user-data',
+                $request
+            )->getBody()
         );
     }
 
@@ -47,5 +56,45 @@ class UserDataClient extends ApiClient implements UserDataClientInterface {
         return $this;
     }
 
-    public function deleteUserData($userDataId) {}
+    public function deleteUserData($uuid, $privateKey, $privateKeyPassword = null) {
+
+        $request = array(
+            'request_sign_uuid' => GUID::generate()
+        );
+
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
+        );
+
+        $this->delete(
+            'user-data/' . $uuid,
+            $request
+        );
+
+        return $this;
+    }
+
+    public function resendConfirmation($uuid, $privateKey, $privateKeyPassword = null) {
+
+        $request = array(
+            'request_sign_uuid' => GUID::generate()
+        );
+
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
+        );
+
+        $this->post(
+            'user-data/' . $uuid . '/actions/resend-confirmation',
+            $request
+        );
+
+        return $this;
+    }
 }

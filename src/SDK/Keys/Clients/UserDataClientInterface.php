@@ -6,12 +6,14 @@ use Virgil\SDK\Keys\Models\VirgilUserData;
 
 interface UserDataClientInterface {
 
-    public function getUserData($userDataId);
+    public function getUserData($uuid);
 
-    public function createUserData($certificateId, VirgilUserData $virgilUserData);
+    public function createUserData(VirgilUserData $virgilUserData, $privateKey, $privateKeyPassword = null);
 
     public function persistUserData($uuid, $confirmationCode);
 
-    public function deleteUserData($userDataId);
+    public function deleteUserData($uuid, $privateKey, $privateKeyPassword = null);
+
+    public function resendConfirmation($uuid, $privateKey, $privateKeyPassword = null);
 
 }
