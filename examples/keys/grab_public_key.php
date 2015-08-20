@@ -38,7 +38,6 @@
 
 use Virgil\SDK\Keys\Models\VirgilUserData,
     Virgil\SDK\Keys\Models\VirgilUserDataCollection,
-    Virgil\SDK\Common\Utils\GUID,
     Virgil\SDK\Keys\KeysClient;
 
 require_once '../vendor/autoload.php';
