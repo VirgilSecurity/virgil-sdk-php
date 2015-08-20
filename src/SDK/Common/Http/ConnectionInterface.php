@@ -24,6 +24,6 @@ interface ConnectionInterface {
      * @param $headers
      * @return mixed
      */
-    public function setupHeaders($headers);
+    public function setHeaders($headers);
 
 }

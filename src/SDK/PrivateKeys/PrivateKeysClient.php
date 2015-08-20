@@ -2,19 +2,18 @@
 
 namespace Virgil\SDK\PrivateKeys;
 
-use Virgil\SDK\PrivateKeys\Clients\PrivateKeysAccountsClient,
-    Virgil\SDK\PrivateKeys\Clients\PrivateKeysClient,
+use Virgil\SDK\PrivateKeys\Clients\ContainerClient,
     Virgil\SDK\PrivateKeys\Http\Connection,
     Virgil\SDK\Common\Utils\Config;
 
 class PrivateKeysClient {
 
-    protected $_privateKeysClient         = null;
-    protected $_privateKeysAccountsClient = null;
+    protected $_privateKeysClient = null;
+    protected $_containerClient   = null;
 
     protected $_connection = null;
 
-    public function __construct($username = null, $password = null, $config = array()) {
+    public function __construct($appToken, $config = array()) {
 
         $config = $this->_initConfig(
             $config
@@ -22,39 +21,46 @@ class PrivateKeysClient {
 
         $this->_connection = new Connection(
             $config->base_url,
-            $config->version,
-            array(
-                'username' => $username,
-                'password' => $password
-            )
+            $config->version
+        );
+
+        $this->setHeaders(array(
+            'X-VIRGIL-APPLICATION-TOKEN' => $appToken
+        ));
+    }
+
+    public function setAuthCredentials($userName, $userPassword) {
+
+        $this->_connection->setAuthCredentials(
+            $userName,
+            $userPassword
         );
     }
 
-    public function setCredentials($username, $password) {
+    /**
+     * Setup connection headers
+     *
+     * @param $headers
+     */
+    public function setHeaders($headers) {
 
-        $this->getPrivateKeysClient()->getConnection()->setCredentials(
-            $username,
-            $password
-        );
-
-        $this->getPrivateKeysAccountsClient()->getConnection()->setCredentials(
-            $username,
-            $password
+        $this->_connection->setHeaders(
+            $headers
         );
     }
 
     /**
      * @return PrivateKeysAccountsClient
      */
-    public function getPrivateKeysAccountsClient() {
+    public function getContainerClient() {
 
-        if(is_null($this->_privateKeysAccountsClient)) {
-            $this->_privateKeysAccountsClient = new PrivateKeysAccountsClient(
+        if(is_null($this->_containerClient)) {
+            $this->_containerClient = new ContainerClient(
                 $this->_connection
             );
         }
 
-        return $this->_privateKeysAccountsClient;
+        return $this->_containerClient;
     }
 
     /**

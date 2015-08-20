@@ -36,34 +36,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\Keys\KeysClient;
+use Virgil\SDK\PrivateKeys\PrivateKeysClient;
 
 require_once '../vendor/autoload.php';
 
-const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_NAME          = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_USER_PASSWORD      = 'password';
+const VIRGIL_PUBLIC_KEY_ID      = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+
+const VIRGIL_CONTAINER_TYPE     = 'normal';
+const VIRGIL_CONTAINER_PASSWORD = 'password';
+
 const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
 try {
 
     // Create Keys Service HTTP Client
-    $keysClient = new KeysClient(
+    $privateKeysClient = new PrivateKeysClient(
         VIRGIL_APPLICATION_TOKEN,
         array(
-            'base_url' => 'https://keys-stg.virgilsecurity.com'
+            'base_url' => 'https://keyring-stg.virgilsecurity.com'
         )
     );
 
-    $keysClient->setHeaders(array(
+    $privateKeysClient->setHeaders(array(
         'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
-
-    echo 'Reading Public Key.' . PHP_EOL;
-    $publicKey = file_get_contents(
-        '../data/new_public.key'
-    );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
-
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
@@ -72,15 +71,14 @@ try {
     echo 'Private Key data successfully readed.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to create Public Key instance.' . PHP_EOL;
-    $publicKey = $keysClient->getPublicKeysClient()->updateKey(
-        VIRGIL_PUBLIC_KEY_ID,
-        $publicKey,
+    echo 'Call Private Key service to create Container instance.' . PHP_EOL;
+    $privateKeysClient->getContainerClient()->createContainer(
+        VIRGIL_CONTAINER_TYPE,
+        VIRGIL_CONTAINER_PASSWORD,
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-
-    echo 'Public Key instance successfully created in Public Keys service' . PHP_EOL;
+    echo 'Container instance successfully created in Private Keys service' . PHP_EOL;
 
 } catch (Exception $e) {
 

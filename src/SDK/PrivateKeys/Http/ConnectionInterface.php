@@ -6,11 +6,6 @@ use Virgil\SDK\Common\Http\ConnectionInterface as CommonConnectionInterface;
 
 interface ConnectionInterface extends CommonConnectionInterface {
 
-    /**
-     * @return string
-     */
-    public function getAuthToken();
-
-    public function setCredentials($username, $password);
+    public function setAuthCredentials($userName, $userPassword);
 
 }

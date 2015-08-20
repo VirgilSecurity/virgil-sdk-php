@@ -34,7 +34,7 @@ class Connection implements ConnectionInterface {
      * @param $headers
      * @return $this
      */
-    public function setupHeaders($headers) {
+    public function setHeaders($headers) {
 
         $this->_headers = array_merge(
             $this->_headers,

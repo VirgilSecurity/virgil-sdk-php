@@ -57,7 +57,7 @@ try {
         )
     );
 
-    $keysClient->setupHeaders(array(
+    $keysClient->setHeaders(array(
         'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 

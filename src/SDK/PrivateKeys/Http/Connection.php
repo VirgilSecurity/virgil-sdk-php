@@ -13,32 +13,47 @@ use GuzzleHttp\Client,
 class Connection implements ConnectionInterface {
 
     protected $_baseUrl        = null;
-    protected $_credentials    = array();
     protected $_apiVersion     = 'v2';
+
     protected $_authToken      = null;
+
+    protected $_headers        = array();
     protected $_defaultHeaders = array(
         'Content-Type' => 'application/json'
     );
 
-    public function __construct($baseUrl, $apiVersion = null, $credentials = array()) {
+    protected $_userName       = null;
+    protected $_userPassword   = null;
+
+    public function __construct($baseUrl, $apiVersion = null) {
 
         $this->_baseUrl = $baseUrl;
 
         if($apiVersion !== null) {
             $this->_apiVersion = $apiVersion;
         }
-
-        if(isset($credentials['username']) && isset($credentials['password'])) {
-            $this->_credentials = $credentials;
-        }
     }
 
-    public function setCredentials($username, $password) {
+    public function setAuthCredentials($userName, $userPassword) {
 
-        $this->_credentials = array(
-            'username' => $username,
-            'password' => $password
+        $this->_userName = $userName;
+        $this->_userPassword = $userPassword;
+    }
+
+    /**
+     * Setup Connection headers
+     *
+     * @param $headers
+     * @return $this
+     */
+    public function setHeaders($headers) {
+
+        $this->_headers = array_merge(
+            $this->_headers,
+            $headers
         );
+
+        return $this;
     }
 
     /**
@@ -49,14 +64,14 @@ class Connection implements ConnectionInterface {
         return $this->_baseUrl . '/{version}/';
     }
 
-    public function getAuthToken() {
-
-        return $this->_authToken;
-    }
-
     public function getApiVersion() {
 
         return $this->_apiVersion;
+    }
+
+    public function getAuthToken() {
+
+        return $this->_authToken;
     }
 
     /**
@@ -65,7 +80,7 @@ class Connection implements ConnectionInterface {
      */
     public function send(RequestInterface $request) {
 
-        if($this->_isAuthenticated() == false && $this->_areCredentialsSet() == true) {
+        if($this->_isCredentionalsProvided() && !$this->_isAuthenticated()) {
             $this->_authToken = $this->_authenticate();
         }
 
@@ -110,10 +125,13 @@ class Connection implements ConnectionInterface {
 
     private function _getHeaders() {
 
-        $headers = $this->_defaultHeaders;
+        $headers = array_merge(
+            $this->_defaultHeaders,
+            $this->_headers
+        );
 
-        if($this->getAuthToken() !== null) {
-            $headers['X-AUTH-TOKEN'] = $this->getAuthToken();
+        if($this->_isCredentionalsProvided() && $this->_isAuthenticated()) {
+            $headers['X-VIRGIL-AUTHENTICATION'] = $this->getAuthToken();
         }
 
         return $headers;
@@ -121,22 +139,22 @@ class Connection implements ConnectionInterface {
 
     private function _getUserName() {
 
-        return isset($this->_credentials['username']) ? $this->_credentials['username'] : null;
+        return $this->_userName;
     }
 
     private function _getPassword() {
 
-        return isset($this->_credentials['password']) ? $this->_credentials['password'] : null;
+        return $this->_userPassword;
+    }
+
+    private function _isCredentionalsProvided() {
+
+        return !is_null($this->_userName) && !is_null($this->_userPassword);
     }
 
     private function _isAuthenticated() {
 
         return $this->_authToken !== null;
-    }
-
-    private function _areCredentialsSet() {
-
-        return !empty($this->_credentials);
     }
 
     private function _authenticate() {
@@ -167,7 +185,9 @@ class Connection implements ConnectionInterface {
             )
         );
 
-        $httpResponse = $httpClient->send($httpRequest);
+        $httpResponse = $httpClient->send(
+            $httpRequest
+        );
 
         if($this->isSuccessHttpStatus($httpResponse) !== true) {
             $this->exceptionHandler(
@@ -175,11 +195,7 @@ class Connection implements ConnectionInterface {
             );
         }
 
-        return $httpResponse->json(
-            array(
-                'object' => true
-            )
-        )->auth_token;
+        return $httpResponse->json()['auth_token'];
     }
 
     private function isSuccessHttpStatus(HttpResponseInterface $httpResponse) {

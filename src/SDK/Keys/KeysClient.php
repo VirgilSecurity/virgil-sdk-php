@@ -27,7 +27,7 @@ class KeysClient {
             $config->version
         );
 
-        $this->setupHeaders(array(
+        $this->setHeaders(array(
             'X-VIRGIL-APPLICATION-TOKEN' => $applicationToken
         ));
     }
@@ -37,9 +37,9 @@ class KeysClient {
      *
      * @param $headers
      */
-    public function setupHeaders($headers) {
+    public function setHeaders($headers) {
 
-        $this->_connection->setupHeaders(
+        $this->_connection->setHeaders(
             $headers
         );
     }
