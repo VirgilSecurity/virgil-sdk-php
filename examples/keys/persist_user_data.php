@@ -45,8 +45,8 @@ require_once '../vendor/autoload.php';
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 
-const VIRGIL_UUID = '3d30bd8c-b32a-1e03-f1c7-e148e2fcd175';
-const VIRGIL_CONFIRMATION__CODE = 'J0Z9S6';
+const VIRGIL_UUID = 'aa2141ee-8a50-a7c4-3e4c-513b67918053';
+const VIRGIL_CONFIRMATION__CODE = 'J9Y0D5';
 
 
 try {
@@ -61,7 +61,7 @@ try {
 
     // Do service call
     echo 'Call Keys service to persist User Data.' . PHP_EOL;
-    $publicKey = $keysClient->getUserDataClient()->persistUserData(
+    $keysClient->getUserDataClient()->persistUserData(
         VIRGIL_UUID,
         VIRGIL_CONFIRMATION__CODE
     );
