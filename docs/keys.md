@@ -231,9 +231,9 @@ try {
 
 > **Note:**
 
-> If signed version of the /grab endpoint is used, the public key will be returned with all user_data items for this Public Key.
+> If signed version of the action is used, the public key will be returned with all user_data items for this Public Key.
 
-> If signed version of the endpoint is used request value parameter is ignored.
+> If signed version of the action is used request value parameter is ignored.
 
 ```php
 <?php
@@ -287,7 +287,7 @@ try {
 
 > **Note:**
 
-> User still controls the Public/Private Keys pair and provides request sign for authentication purposes. That’s why user authorisation is required via X-VIRGIL-REQUEST-SIGN HTTP header. Public Key modification takes place immediately after endpoint invocation.
+> User still controls the Public/Private Keys pair and provides request sign for authentication purposes. That’s why user authorisation is required via X-VIRGIL-REQUEST-SIGN HTTP header. Public Key modification takes place immediately after action invocation.
 
 ```php
 <?php
@@ -345,9 +345,9 @@ try {
 
 > **Note:**
 
-> If signed version of the endpoint is used, the public key will be removed immediately without any confirmation.
+> If signed version of the action is used, the public key will be removed immediately without any confirmation.
 
-> If unsigned version of the endpoint is used the confirmation is required. The endpoint will return action_token response object property and will send confirmation tokens on all public key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit public key remove call persistKey() action with action_token value and the list of confirmation codes.
+> If unsigned version of the action is used the confirmation is required. The action will return action_token response object property and will send confirmation tokens on all public key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit public key remove call persistKey() action with action_token value and the list of confirmation codes.
 
 ```php
 <?php
@@ -404,7 +404,7 @@ try {
 
 > **Note:**
 
-> After endpoint invocation the user will receive the confirmation tokens on all his confirmed UDIDs. The Public Key data won’t be updated until call persistKey() action is invoked with token value from this step and confirmation codes sent to UDIDs. The list of UDIDs used as confirmation tokens recipients will be listed asuser_ids response parameters.
+> After action invocation the user will receive the confirmation tokens on all his confirmed UDIDs. The Public Key data won’t be updated until call persistKey() action is invoked with token value from this step and confirmation codes sent to UDIDs. The list of UDIDs used as confirmation tokens recipients will be listed asuser_ids response parameters.
 
 ```php
 <?php
@@ -461,7 +461,7 @@ try {
 
 > Confirm public key’s data if X-VIRGILREQUEST-SIGN HTTP header was omitted on deleteKey() action or resetKey action was invoked.
 
-> In this case user must collect all confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well ac action_token parameter received on previous endpoint.
+> In this case user must collect all confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well ac action_token parameter received on previous action.
 
 ```php
 <?php
