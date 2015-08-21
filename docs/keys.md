@@ -6,12 +6,14 @@
 - [Examples](#examples)
     - [General statements](#general-statements)
     - [Example 1: Generate keys](#example-1)
-    - [Example 2: Register user on the PKI service](#example-2)
-    - [Example 3: Get user's public key from the PKI service](#example-3)
-    - [Example 4: Encrypt data](#example-4)
-    - [Example 5: Decrypt data](#example-5)
-    - [Example 6: Sign data](#example-6)
-    - [Example 7: Verify data](#example-7)
+    - [Example 2: Register new user on the Keys service](#example-2)
+    - [Example 3: Get user's public key from the Keys service](#example-3)
+    - [Example 4: Grab Public Key data from the Keys service.](#example-4)
+    - [Example 5: Grab Public Key signed data from the Keys service.](#example-5)
+    - [Example 6: Update Public Key data.](#example-6)
+    - [Example 7: Delete Public Key data](#example-7)
+    - [Example 8: Reset Public Key](#example-8)
+    - [Example 9: Persist Public Key](#example-9)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -268,46 +270,54 @@ try {
 }
 ```
 
-### <a name="example-6"></a> Example 6: Grab Public Key signed data from the Keys service.
+### <a name="example-6"></a> Example 6: Update Public Key data.
 
 ```php
 <?php
 require_once '../vendor/autoload.php';
 
-use Virgil\SDK\Common\Utils\GUID,
-    Virgil\SDK\Keys\Client as KeysClient;
+use Virgil\SDK\Keys\Client as KeysClient;
 
 
-const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_DATA_VALUE    = 'example.mail@gmail.com';
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
 try {
 
     // Create Keys Service HTTP Client
     $keysClient = new KeysClient(
-        VIRGIL_APPLICATION_TOKEN
+        VIRGIL_APPLICATION_TOKEN,
+        array(
+            'base_url' => 'https://keys-stg.virgilsecurity.com'
+        )
     );
 
     $keysClient->setHeaders(array(
-        'X-VIRGIL-REQUEST-SIGN-PK-ID' => '5d3a8909-5fe5-2abb-232c-3cf9c277b111'
+        'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 
-    echo 'Read Private Key.' . PHP_EOL;
-    $privateKey = file_get_contents(
-        '../data' . DIRECTORY_SEPARATOR . 'new_private.key'
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
     );
-    echo 'Private Key is:' . PHP_EOL;
-    echo $privateKey . PHP_EOL;
-    $privateKeyPassword = 'password';
+    echo 'Public Key data successfully readed.' . PHP_EOL;
+
+   echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
-    $result = $keysClient->getPublicKeysClient()->grabKey(
-        VIRGIL_USER_DATA_VALUE,
+    echo 'Call Keys service to update Public Key instance.' . PHP_EOL;
+    $publicKey = $keysClient->getPublicKeysClient()->updateKey(
+        VIRGIL_PUBLIC_KEY_ID,
+        $publicKey,
         $privateKey,
-        $privateKeyPassword
+        VIRGIL_PRIVATE_KEY_PASSWORD
     );
-    echo 'Public Key instance successfully grabbed from Keys service.' . PHP_EOL;
+    echo 'Public Key instance successfully updated in Public Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 
@@ -315,156 +325,150 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Decrypt data
-
-*Input*: Encrypted data, Virgil Public Key, Private Key, Private Key password
-
-*Output*: Decrypted data
+### <a name="example-7"></a> Example 7: Delete Public Key data.
 
 ```php
 <?php
+require_once '../vendor/autoload.php';
 
-require_once './vendor/autoload.php';
+use Virgil\SDK\Keys\Client as KeysClient;
+
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
 try {
-    echo 'Read encrypted data' . PHP_EOL;
 
-    $source = file_get_contents('data' . DIRECTORY_SEPARATOR . 'test.txt.enc');
-    if($source === false) {
-        throw new Exception('Unable to get source data');
-    }
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN,
+        array(
+            'base_url' => 'https://keys-stg.virgilsecurity.com'
+        )
+    );
 
-    echo 'Initialize cipher' . PHP_EOL;
+    $keysClient->setHeaders(array(
+        'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
+    ));
 
-    $cipher     = new VirgilCipher();
-    $privateKey = file_get_contents('data' . DIRECTORY_SEPARATOR . 'new_private.key');
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
+    );
+    echo 'Public Key data successfully readed.' . PHP_EOL;
 
-    if($privateKey === false) {
-        throw new Exception('Unable to read private key file');
-    }
 
-    $virgilCertificate = new VirgilCertificate();
-    $virgilCertificate->fromJson(file_get_contents('data' . DIRECTORY_SEPARATOR . 'virgil_public.key'));
+    echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
 
-    echo 'Decrypt data' . PHP_EOL;
-
-    $decryptedData = $cipher->decryptWithKey($source, $virgilCertificate->id()->certificateId(), $privateKey, 'password');
-
-    echo 'Save decrypted data to file' . PHP_EOL;
-
-    file_put_contents('data' . DIRECTORY_SEPARATOR . 'decrypted.test.txt', $decryptedData);
+    // Do service call
+    echo 'Call Keys service to delete Public Key instance.' . PHP_EOL;
+    $result = $keysClient->getPublicKeysClient()->deleteKey(
+        $publicKey,
+        $privateKey,
+        VIRGIL_PRIVATE_KEY_PASSWORD
+    );
+    echo 'Public Key instance successfully deleted from Public Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+
+    echo 'Error:' . $e->getMessage();
 }
 ```
 
-### <a name="example-6"></a> Example 6: Sign data
-
-*Input*: Data, Virgil Public Key, Private Key
-
-*Output*: Virgil Sign
+### <a name="example-8"></a> Example 8: Reset Public Key.
 
 ```php
 <?php
+require_once '../vendor/autoload.php';
 
-require_once './vendor/autoload.php';
+use Virgil\SDK\Keys\Client as KeysClient;
+
+
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
 try {
-    echo 'Read source file' . PHP_EOL;
 
-    $source = file_get_contents('data' . DIRECTORY_SEPARATOR . 'test.txt');
-    if($source === false) {
-        throw new Exception('Unable to get source data');
-    }
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN,
+        array(
+            'base_url' => 'https://keys-stg.virgilsecurity.com'
+        )
+    );
 
-    echo 'Read public key from json' . PHP_EOL;
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
+    );
+    echo 'Public Key data successfully readed.' . PHP_EOL;
 
-    $publicKeyJson = file_get_contents('data' . DIRECTORY_SEPARATOR . 'virgil_public.key');
-    if($publicKeyJson === false) {
-        throw new Exception('Failed to open public key file');
-    }
 
-    $virgilCertificate = new VirgilCertificate();
-    $virgilCertificate->fromJson($publicKeyJson);
+    echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
 
-    echo 'Read private key' . PHP_EOL;
-
-    $privateKey = file_get_contents('data' . DIRECTORY_SEPARATOR . 'new_private.key');
-    if($privateKey === false) {
-        throw new Exception('Failed to open private key file');
-    }
-
-    echo 'Initialize signer' . PHP_EOL;
-
-    $signer = new VirgilSigner();
-
-    echo 'Sign data' . PHP_EOL;
-
-    $sign = $signer->sign($source, $virgilCertificate->id()->certificateId(), $privateKey, 'password');
-
-    echo 'Save signed data to file' . PHP_EOL;
-
-    file_put_contents('data' . DIRECTORY_SEPARATOR . 'test.txt.sign', $sign->toJson());
+    // Do service call
+    echo 'Call Keys service to reset Public Key instance.' . PHP_EOL;
+    $result = $keysClient->getPublicKeysClient()->resetKey(
+        VIRGIL_PUBLIC_KEY_ID,
+        $publicKey,
+        $privateKey,
+        VIRGIL_PRIVATE_KEY_PASSWORD
+    );
+    echo 'Public Key instance successfully resetted.' . PHP_EOL;
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+
+    echo 'Error:' . $e->getMessage();
 }
 ```
 
-### <a name="example-7"></a> Example 7: Verify data
-
-*Input*: Data, Sign, Virgil Public Key
-
-*Output*: Verification result
+### <a name="example-9"></a> Example 9: Persist Public Key.
 
 ```php
 <?php
+require_once '../vendor/autoload.php';
 
-require_once './vendor/autoload.php';
+use Virgil\SDK\Keys\Client as KeysClient;
+
+
+const VIRGIL_APPLICATION_TOKEN = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_PUBLIC_KEY_ID     = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_ACTION_TOKEN      = '31b4be12-9021-76bc-246d-5ecbd7a22350';
+
 
 try {
-    echo 'Read source file' . PHP_EOL;
 
-    $source = file_get_contents('data' . DIRECTORY_SEPARATOR . 'test.txt');
-    if($source === false) {
-        throw new Exception('Unable to get source data');
-    }
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN,
+        array(
+            'base_url' => 'https://keys-stg.virgilsecurity.com'
+        )
+    );
 
-    echo 'Read sign from json' . PHP_EOL;
-
-    $signJson = file_get_contents('data' . DIRECTORY_SEPARATOR . 'test.txt.sign');
-    if($signJson === false) {
-        throw new Exception('Filed to open sign file');
-    }
-
-    $sign = new VirgilSign();
-    $sign->fromJson($signJson);
-
-    echo 'Read public key from json' . PHP_EOL;
-
-    $publicKeyJson = file_get_contents('data' . DIRECTORY_SEPARATOR . 'virgil_public.key');
-    if($publicKeyJson === false) {
-        throw new Exception('Failed to open public key file');
-    }
-
-    $virgilCertificate = new VirgilCertificate();
-    $virgilCertificate->fromJson($publicKeyJson);
-
-    echo 'Initialize signer' . PHP_EOL;
-
-    $signer = new VirgilSigner();
-
-    echo 'Verify sign' . PHP_EOL;
-
-    if($signer->verify($source, $sign, $virgilCertificate->publicKey()) == true) {
-        echo 'Data is verified';
-    } else {
-        echo 'Data is not verified';
-    }
+    // Do service call
+    echo 'Call Keys service to persist Public Key instance.' . PHP_EOL;
+    $publicKey = $keysClient->getPublicKeysClient()->persistKey(
+        VIRGIL_PUBLIC_KEY_ID,
+        VIRGIL_ACTION_TOKEN,
+        array(
+            'Y4A6D9'
+        )
+    );
+    echo 'Public Key instance successfully persisted.' . PHP_EOL;
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+
+    echo 'Error:' . $e->getMessage();
 }
 ```
 
