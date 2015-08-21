@@ -36,9 +36,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\Keys\Models\VirgilUserData,
-    Virgil\SDK\Keys\Models\VirgilUserDataCollection,
-    Virgil\SDK\Keys\KeysClient;
+use Virgil\SDK\Keys\Client as KeysClient;
 
 require_once '../vendor/autoload.php';
 

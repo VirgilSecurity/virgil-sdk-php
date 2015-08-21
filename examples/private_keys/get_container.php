@@ -36,7 +36,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\PrivateKeys\PrivateKeysClient;
+use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 require_once '../vendor/autoload.php';
 
@@ -65,7 +65,7 @@ try {
     $container = $privateKeysClient->getContainerClient()->getContainer(
         VIRGIL_PUBLIC_KEY_ID
     );
-    echo 'Container instance successfully fetched from Private Keys service' . PHP_EOL;
+    echo 'Container instance successfully fetched from Private Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 

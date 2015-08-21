@@ -7,7 +7,6 @@ use Virgil\SDK\Common\Models\Base\Model;
 class VirgilPrivateKey extends Model {
 
     public $public_key_id;
-    public $account_id;
     public $private_key;
 
     public function __construct(array $data = array()) {

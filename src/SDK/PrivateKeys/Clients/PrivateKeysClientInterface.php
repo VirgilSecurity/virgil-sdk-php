@@ -6,10 +6,8 @@ interface PrivateKeysClientInterface {
 
     public function getPrivateKey($publicKeyId);
 
-    public function getAll($accountId);
+    public function createPrivateKey($publicKeyId, $privateKey, $privateKeyPassword = null);
 
-    public function add($accountId, $publicKeyId, $sign, $privateKey);
-
-    public function remove($publicKeyId, $sign);
+    public function deletePrivateKey($privateKey, $privateKeyPassword = null);
 
 }

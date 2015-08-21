@@ -31,7 +31,7 @@ class ApiClient {
         );
     }
 
-    public function post($endpoint, $data = array()) {
+    public function post($endpoint, $data) {
 
         return $this->_connection->send(
             Request::post(
@@ -41,7 +41,7 @@ class ApiClient {
         );
     }
 
-    public function put($endpoint, $data = array()) {
+    public function put($endpoint, $data) {
 
         return $this->_connection->send(
             Request::put(
@@ -51,7 +51,7 @@ class ApiClient {
         );
     }
 
-    public function delete($endpoint, $data = array()) {
+    public function delete($endpoint, $data) {
 
         return $this->_connection->send(
             Request::delete(

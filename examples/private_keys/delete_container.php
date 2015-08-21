@@ -36,7 +36,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\PrivateKeys\PrivateKeysClient;
+use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 require_once '../vendor/autoload.php';
 

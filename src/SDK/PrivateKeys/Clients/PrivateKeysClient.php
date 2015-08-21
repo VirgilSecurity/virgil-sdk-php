@@ -5,83 +5,61 @@ namespace Virgil\SDK\PrivateKeys\Clients;
 use Virgil\SDK\Common\Clients\ApiClient,
     Virgil\SDK\PrivateKeys\Http\ConnectionInterface,
     Virgil\SDK\PrivateKeys\Models\VirgilPrivateKey,
-    Virgil\SDK\PrivateKeys\Models\VirgilPrivateKeysCollection;
+    Virgil\SDK\Common\Utils\Sign,
+    Virgil\SDK\Common\Utils\GUID;
 
 class PrivateKeysClient extends ApiClient implements PrivateKeysClientInterface {
 
-    public function __construct(ConnectionInterface $connection) {
-
-        parent::__construct($connection);
-    }
-
-    /**
-     * @return \Virgil\SDK\PrivateKeys\Http\ConnectionInterface
-     */
-    public function getConnection() {
-
-        return parent::getConnection();
-    }
-
     public function getPrivateKey($publicKeyId) {
 
-        $response = $this->get(
-            'private-key/public-key/' . $publicKeyId
-        );
-
         return new VirgilPrivateKey(
-            $response->getBody()
+            $this->get(
+                'private-key/public-key-id/' . $publicKeyId
+            )->getBody()
         );
     }
 
-    public function getAll($accountId) {
+    public function createPrivateKey($publicKeyId, $privateKey, $privateKeyPassword = null) {
 
-        $response = $this->get(
-            'private-key/account/' . $accountId
+        $request = array(
+            'private_key' => base64_encode(
+                $privateKey
+            ),
         );
 
-        $collection = new VirgilPrivateKeysCollection();
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
+        );
 
-        $data = $response->getBody();
-        if(!empty($data['data'])) {
-            foreach($data['data'] as $item) {
-                $item['account_id'] = $data['account_id'];
-
-                $collection->add(
-                    new VirgilPrivateKey(
-                        $item
-                    )
-                );
-            }
-        }
-
-        return $collection;
-    }
-
-    public function add($accountId, $publicKeyId, $sign, $privateKey) {
-
-        $response = $this->post(
+        $this->post(
             'private-key',
-            array(
-                'account_id'    => $accountId,
-                'public_key_id' => $publicKeyId,
-                'sign'          => base64_encode($sign),
-                'private_key'   => base64_encode($privateKey)
-            )
+            $request
         );
 
-        return new VirgilPrivateKey(
-            $response->getBody()
-        );
+        return $this;
     }
 
-    public function remove($publicKeyId, $sign) {
+    public function deletePrivateKey($privateKey, $privateKeyPassword = null) {
+
+        $request = array(
+            'request_sign_uuid' => GUID::generate()
+        );
+
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
+        );
 
         $this->delete(
             'private-key',
-            array(
-                'public_key_id' => $publicKeyId,
-                'sign'          => $sign
-            )
+            $request
         );
+
+        return $this;
     }
 }
