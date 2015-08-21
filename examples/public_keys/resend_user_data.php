@@ -81,7 +81,6 @@ try {
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-
     echo 'Confirmation successfully sent.' . PHP_EOL;
 
 } catch (Exception $e) {

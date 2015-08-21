@@ -36,15 +36,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\Keys\Models\VirgilUserData,
-    Virgil\SDK\Keys\KeysClient;
+use Virgil\SDK\Keys\KeysClient;
 
 require_once '../vendor/autoload.php';
 
-const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_UUID                 =  'aa2141ee-8a50-a7c4-3e4c-513b67918053';
-const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
-const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
 try {
 
@@ -74,14 +72,14 @@ try {
     echo 'Private Key data successfully readed.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to delete User Data instance.' . PHP_EOL;
-    $keysClient->getUserDataClient()->deleteUserData(
-        VIRGIL_UUID,
+    echo 'Call Keys service to create Public Key instance.' . PHP_EOL;
+    $publicKey = $keysClient->getPublicKeysClient()->updateKey(
+        VIRGIL_PUBLIC_KEY_ID,
+        $publicKey,
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-
-    echo 'User Data instance successfully delete from Public Keys service' . PHP_EOL;
+    echo 'Public Key instance successfully created in Public Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 

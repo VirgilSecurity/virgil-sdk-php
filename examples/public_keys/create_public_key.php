@@ -38,13 +38,15 @@
 
 use Virgil\SDK\Keys\Models\VirgilUserData,
     Virgil\SDK\Keys\Models\VirgilUserDataCollection,
-    Virgil\SDK\Common\Utils\GUID,
     Virgil\SDK\Keys\KeysClient;
 
 require_once '../vendor/autoload.php';
 
-const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_DATA_VALUE    = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_DATA_CLASS        = 'user_id';
+const VIRGIL_USER_DATA_TYPE         = 'email';
+const VIRGIL_USER_DATA_VALUE        = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
 try {
 
@@ -56,27 +58,38 @@ try {
         )
     );
 
-    $keysClient->setHeaders(array(
-        'X-VIRGIL-REQUEST-SIGN-PK-ID' => '5d3a8909-5fe5-2abb-232c-3cf9c277b111'
-    ));
+    $userData = new VirgilUserData();
+    $userData->class = VIRGIL_USER_DATA_CLASS;
+    $userData->type  = VIRGIL_USER_DATA_TYPE;
+    $userData->value = VIRGIL_USER_DATA_VALUE;
 
-    echo 'Read Private Key.' . PHP_EOL;
-    $privateKey = file_get_contents(
-        '../data' . DIRECTORY_SEPARATOR . 'new_private.key'
+    $userDataCollection = new VirgilUserDataCollection();
+    $userDataCollection->add(
+        $userData
     );
-    echo 'Private Key is:' . PHP_EOL;
-    echo $privateKey . PHP_EOL;
-    $privateKeyPassword = 'password';
+
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
+    );
+    echo 'Public Key data successfully readed.' . PHP_EOL;
+
+
+    echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
-    $result = $keysClient->getPublicKeysClient()->grabKey(
-        VIRGIL_USER_DATA_VALUE,
+    echo 'Call Keys service to create Public Key instance.' . PHP_EOL;
+    $publicKey = $keysClient->getPublicKeysClient()->createKey(
+        $publicKey,
+        $userDataCollection,
         $privateKey,
-        $privateKeyPassword
+        VIRGIL_PRIVATE_KEY_PASSWORD
     );
-
-    echo 'Public Key instance successfully grabbed from Keys service' . PHP_EOL;
+    echo 'Public Key instance successfully created in Public Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 
