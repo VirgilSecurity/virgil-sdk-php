@@ -16,7 +16,7 @@ class KeysClient {
 
     protected $_connection       = null;
 
-    public function __construct($applicationToken, $config = array()) {
+    public function __construct($appToken, $config = array()) {
 
         $config = $this->_initConfig(
             $config
@@ -28,7 +28,7 @@ class KeysClient {
         );
 
         $this->setHeaders(array(
-            'X-VIRGIL-APPLICATION-TOKEN' => $applicationToken
+            'X-VIRGIL-APPLICATION-TOKEN' => $appToken
         ));
     }
 

@@ -13,8 +13,9 @@ use GuzzleHttp\Client,
 class Connection implements ConnectionInterface {
 
     protected $_baseUrl        = null;
-    protected $_headers        = array();
     protected $_apiVersion     = 'v2';
+
+    protected $_headers        = array();
     protected $_defaultHeaders = array(
         'Content-Type' => 'application/json'
     );

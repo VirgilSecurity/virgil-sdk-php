@@ -16,4 +16,8 @@ interface PublicKeysClientInterface {
 
     public function deleteKey($publicKey, $privateKey, $privateKeyPassword = null);
 
+    public function resetKey($publicKeyId, $publicKey, $privateKey, $privateKeyPassword = null);
+
+    public function persistKey($publicKeyId, $actionToken, $confirmationCodes);
+
 }

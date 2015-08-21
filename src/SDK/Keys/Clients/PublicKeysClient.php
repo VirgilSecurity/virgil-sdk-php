@@ -127,10 +127,44 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
             $privateKeyPassword
         );
 
-        $this->delete(
+        return $this->delete(
             'public-key/' . $publicKey,
             $request
+        )->getBody();
+    }
+
+    public function resetKey($publicKeyId, $publicKey, $privateKey, $privateKeyPassword = null) {
+
+        $request = array(
+            'public_key' => base64_encode(
+                $publicKey
+            ),
+            'request_sign_uuid' => GUID::generate()
         );
 
+        Sign::createRequestSign(
+            $this->getConnection(),
+            $request,
+            $privateKey,
+            $privateKeyPassword
+        );
+
+        return $this->post(
+            'public-key/' . $publicKeyId . '/actions/reset',
+            $request
+        )->getBody();
+    }
+
+    public function persistKey($publicKeyId, $actionToken, $confirmationCodes) {
+
+        return new VirgilPublicKey(
+            $this->post(
+                'public-key/' . $publicKeyId . '/persist',
+                array(
+                    'action_token' => $actionToken,
+                    'confirmation_codes' => $confirmationCodes
+                )
+            )->getBody()
+        );
     }
 }

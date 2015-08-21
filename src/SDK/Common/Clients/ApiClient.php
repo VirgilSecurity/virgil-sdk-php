@@ -2,9 +2,7 @@
 
 namespace Virgil\SDK\Common\Clients;
 
-use Virgil\Crypto\VirgilSigner,
-
-    Virgil\SDK\Common\Http\ConnectionInterface,
+use Virgil\SDK\Common\Http\ConnectionInterface,
     Virgil\SDK\Common\Http\Request;
 
 class ApiClient {
@@ -33,7 +31,7 @@ class ApiClient {
         );
     }
 
-    public function post($endpoint, $data) {
+    public function post($endpoint, $data = array()) {
 
         return $this->_connection->send(
             Request::post(
@@ -43,7 +41,7 @@ class ApiClient {
         );
     }
 
-    public function put($endpoint, $data) {
+    public function put($endpoint, $data = array()) {
 
         return $this->_connection->send(
             Request::put(
