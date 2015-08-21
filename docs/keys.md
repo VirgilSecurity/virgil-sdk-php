@@ -95,136 +95,207 @@ file_put_contents(
 echo 'Private and Public keys were successfully generated.' . PHP_EOL;
 ```
 
-### <a name="example-2"></a> Example 2: Register user on the PKI service
-
-*Input*: User ID
-
-*Output*: Virgil Public Key
+### <a name="example-2"></a> Example 2: Register new user on the Keys service
 
 ```php
 <?php
 
-use Virgil\PKI\Models\VirgilUserData;
-use Virgil\PKI\Models\VirgilUserDataCollection;
+use Virgil\SDK\Keys\Models\VirgilUserData,
+    Virgil\SDK\Keys\Models\VirgilUserDataCollection,
+    Virgil\SDK\Keys\Client as KeysClient;
 
-require_once './vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
-const VIRGIL_PKI_URL_BASE = 'https://pki-stg.virgilsecurity.com/v1/';
-const USER_ID_TYPE = 'email';
-const USER_ID = 'test.php.virgilsecurity-032@mailinator.com';
-const USER_DATA_CLASS = 'user_id';
-const VIRGIL_APP_TOKEN = '1234567890';
-
-
-echo 'Read public key file' . PHP_EOL;
-
-$publicKey = file_get_contents('data' . DIRECTORY_SEPARATOR . 'new_public.key');
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_DATA_CLASS        = 'user_id';
+const VIRGIL_USER_DATA_TYPE         = 'email';
+const VIRGIL_USER_DATA_VALUE        = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
 try {
-    $pkiClient = new Virgil\PKI\PkiClient(VIRGIL_APP_TOKEN);
+
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
 
     $userData = new VirgilUserData();
-    $userData->class = USER_DATA_CLASS;
-    $userData->type  = USER_ID_TYPE;
-    $userData->user_data_id = USER_ID;
+    $userData->class = VIRGIL_USER_DATA_CLASS;
+    $userData->type  = VIRGIL_USER_DATA_TYPE;
+    $userData->value = VIRGIL_USER_DATA_VALUE;
 
-    $userDataCollection = new VirgilUserDataCollection(array($userData));
+    $userDataCollection = new VirgilUserDataCollection();
+    $userDataCollection->add(
+        $userData
+    );
 
-    $virgilAccount = $pkiClient->getAccountsClient()->register($userDataCollection, $publicKey);
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
+    );
+    echo 'Public Key data successfully readed.' . PHP_EOL;
 
-    echo 'Store virgil public key to the output file...';
 
-    file_put_contents('data' . DIRECTORY_SEPARATOR . 'virgil_public.key', $virgilAccount->public_keys->get(0)->public_key);
+    echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
+
+    // Do service call
+    echo 'Call Keys service to create Public Key instance.' . PHP_EOL;
+    $publicKey = $keysClient->getPublicKeysClient()->createKey(
+        $publicKey,
+        $userDataCollection,
+        $privateKey,
+        VIRGIL_PRIVATE_KEY_PASSWORD
+    );
+    echo 'Public Key instance successfully created in Public Keys service.' . PHP_EOL;
+
 } catch (Exception $e) {
-    echo $e->getMessage();
+
+    echo 'Error:' . $e->getMessage();
 }
 ```
 
-### <a name="example-3"></a> Example 3: Get user's public key from the PKI service
-
-*Input*: User ID
-
-*Output*: Virgil Public Key
+### <a name="example-3"></a> Example 3: Get user's public key from the Keys service
 
 ```php
 <?php
 
-require_once './vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
-const VIRGIL_PKI_URL_BASE = 'https://pki.virgilsecurity.com/v1/';
-const USER_ID_TYPE = 'email';
-const USER_ID = 'test.php.virgilsecurity-02@mailinator.com';
-const VIRGIL_APP_TOKEN = '1234567890';
+use Virgil\SDK\Keys\Client as KeysClient;
 
+const VIRGIL_APPLICATION_TOKEN = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_PUBLIC_KEY_ID     = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
 try {
-    $pkiClient = new Virgil\PKI\PkiClient(VIRGIL_APP_TOKEN);
 
-    echo 'Search by user data type and user data ID' . PHP_EOL;
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
 
-    $virgilCertificateCollection = $pkiClient->getPublicKeysClient()->searchKey(USER_ID, USER_ID_TYPE);
-    $virgilCertificate = $virgilCertificateCollection->get(0);
-
-    echo 'Get public key by id' . PHP_EOL;
-
-    $virgilCertificate = $pkiClient->getPublicKeysClient()->getKey($virgilCertificate->public_key_id);
-
-    file_put_contents('data' . DIRECTORY_SEPARATOR . 'virgil_public.key', $virgilCertificate->toJson());
+    // Do service call
+    echo 'Call Keys service to get Public Key instance.' . PHP_EOL;
+    $publicKey = $keysClient->getPublicKeysClient()->getKey(
+        VIRGIL_PUBLIC_KEY_ID
+    );
+    echo 'Public Key instance successfully returned Public Keys instance.' . PHP_EOL;
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+
+    echo 'Error:' . $e->getMessage();
 }
 ```
 
-### <a name="example-4"></a> Example 4: Encrypt data
-
-*Input*: User ID, Data
-
-*Output*: Encrypted data
+### <a name="example-4"></a> Example 4: Grab Public Key data from the Keys service.
 
 ```php
 <?php
+require_once '../vendor/autoload.php';
 
-require_once './vendor/autoload.php';
+use Virgil\SDK\Keys\Client as KeysClient;
 
-const VIRGIL_PKI_URL_BASE = 'https://pki-stg.virgilsecurity.com/v1/';
-const USER_ID_TYPE = 'email';
-const USER_ID = 'test.php.virgilsecurity-02@mailinator.com';
-const VIRGIL_APP_TOKEN = '1234567890';
+const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_DATA_VALUE    = 'suhinin.dmitriy@gmail.com';
 
 try {
-    $pkiClient = new Virgil\PKI\PkiClient(VIRGIL_APP_TOKEN);
 
-    echo 'Read source file' . PHP_EOL;
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
 
-    $source = file_get_contents('data' . DIRECTORY_SEPARATOR . 'test.txt');
-    if($source === false) {
-        throw new Exception('Unable to get source data');
-    }
-
-    echo 'Initialize cipher' . PHP_EOL;
-
-    $cipher = new VirgilCipher();
-
-    echo 'Get recipient ' . USER_ID . ' information from the Virgil PKI service...' . PHP_EOL;
-
-    $virgilCertificateCollection = $pkiClient->getPublicKeysClient()->searchKey(USER_ID, USER_ID_TYPE);
-    $virgilCertificate = $virgilCertificateCollection->get(0);
-
-    echo 'Add recipient' . PHP_EOL;
-
-    $cipher->addKeyRecipient($virgilCertificate->public_key_id, $virgilCertificate->public_key);
-
-    echo 'Encrypt and store results' . PHP_EOL;
-
-    $encryptedData = $cipher->encrypt($source, true);
-
-    if(file_put_contents('data' . DIRECTORY_SEPARATOR . 'test.txt.enc', $encryptedData)) {
-        echo 'Data successfully encrypted and stored into test.txt.enc' . PHP_EOL;
-    }
+    // Do service call
+    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
+    $result = $keysClient->getPublicKeysClient()->grabKey(
+        VIRGIL_USER_DATA_VALUE
+    );
+    echo 'Public Key instance successfully grabbed from Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+
+    echo 'Error:' . $e->getMessage();
+}
+```
+
+### <a name="example-5"></a> Example 5: Grab Public Key data from the Keys service.
+
+```php
+<?php
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Client as KeysClient;
+
+const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_DATA_VALUE    = 'suhinin.dmitriy@gmail.com';
+
+try {
+
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
+
+    // Do service call
+    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
+    $result = $keysClient->getPublicKeysClient()->grabKey(
+        VIRGIL_USER_DATA_VALUE
+    );
+    echo 'Public Key instance successfully grabbed from Keys service.' . PHP_EOL;
+
+} catch (Exception $e) {
+
+    echo 'Error:' . $e->getMessage();
+}
+```
+
+### <a name="example-6"></a> Example 6: Grab Public Key signed data from the Keys service.
+
+```php
+<?php
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Common\Utils\GUID,
+    Virgil\SDK\Keys\Client as KeysClient;
+
+
+const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_DATA_VALUE    = 'suhinin.dmitriy@gmail.com';
+
+try {
+
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
+
+    $keysClient->setHeaders(array(
+        'X-VIRGIL-REQUEST-SIGN-PK-ID' => '5d3a8909-5fe5-2abb-232c-3cf9c277b111'
+    ));
+
+    echo 'Read Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data' . DIRECTORY_SEPARATOR . 'new_private.key'
+    );
+    echo 'Private Key is:' . PHP_EOL;
+    echo $privateKey . PHP_EOL;
+    $privateKeyPassword = 'password';
+
+    // Do service call
+    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
+    $result = $keysClient->getPublicKeysClient()->grabKey(
+        VIRGIL_USER_DATA_VALUE,
+        $privateKey,
+        $privateKeyPassword
+    );
+    echo 'Public Key instance successfully grabbed from Keys service.' . PHP_EOL;
+
+} catch (Exception $e) {
+
+    echo 'Error:' . $e->getMessage();
 }
 ```
 
