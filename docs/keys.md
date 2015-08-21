@@ -64,14 +64,8 @@ This section describes common case library usage scenarios, like
 ### General statements
 
 1. Examples MUST be run from their directory.
-1. Before run examples you have to install dependencies (run command ```composer install```)
-1. All results are stored in the "data" directory.
-2. 1. To produce file `virgil_public.key` run:
-    - `get_public_key.php` script - if user is registered;
-    - `register_user.php` script - if user is not registered.
-1. To produce `test.txt.sign` run `sign.php` script.
-1. To produce `text.txt.enc` run `encrypt.php` script.
-1. To produce `decrypted_text.txt` run `decrypt.php` script.
+2. Before run examples you have to install dependencies (run command ```composer install```)
+3. All results are stored in the "data" directory.
 
 ### <a name="example-1"></a> Example 1: Generate keys
 
@@ -84,11 +78,21 @@ This section describes common case library usage scenarios, like
 
 require_once './vendor/autoload.php';
 
-echo 'Generate keys with with password: "password"';
+use Virgil\Crypto\VirgilKeyPair;
 
 $key = new VirgilKeyPair('password');
-file_put_contents('data' . DIRECTORY_SEPARATOR . 'new_public.key', $key->publicKey());
-file_put_contents('data' . DIRECTORY_SEPARATOR . 'new_private.key', $key->privateKey());
+
+echo 'Generate keys with with password: "password".' . PHP_EOL;
+file_put_contents(
+    'data' . DIRECTORY_SEPARATOR . 'new_public.key',
+    $key->publicKey()
+);
+
+file_put_contents(
+    'data' . DIRECTORY_SEPARATOR . 'new_private.key',
+    $key->privateKey()
+);
+echo 'Private and Public keys were successfully generated.' . PHP_EOL;
 ```
 
 ### <a name="example-2"></a> Example 2: Register user on the PKI service
