@@ -8,9 +8,9 @@
     - [Example 1: Generate keys](#example-1)
     - [Example 2: Register new user on the Keys service](#example-2)
     - [Example 3: Get user's public key from the Keys service](#example-3)
-    - [Example 4: Grab Public Key data from the Keys service.](#example-4)
-    - [Example 5: Grab Public Key signed data from the Keys service.](#example-5)
-    - [Example 6: Update Public Key data.](#example-6)
+    - [Example 4: Search Public Key data from the Keys service](#example-4)
+    - [Example 5: Search Public Key signed data from the Keys service](#example-5)
+    - [Example 6: Update Public Key data](#example-6)
     - [Example 7: Delete Public Key data](#example-7)
     - [Example 8: Reset Public Key](#example-8)
     - [Example 9: Persist Public Key](#example-9)
@@ -58,10 +58,10 @@ Common library description can be found [here](https://github.com/VirgilSecurity
 
 This section describes common case library usage scenarios, like
 
-  * encrypt data for user identified by email, phone, etc;
-  * sign data with own private key;
-  * verify data received via email, file sharing service, etc;
-  * decrypt data if verification successful.
+  * CRUD operations for the Public Key's;
+  * CRUD operations for Public Key User Data;
+  * Public Key's search functionality;
+  * Public Key's Reset, Persist functionality.
 
 ### General statements
 
@@ -70,10 +70,6 @@ This section describes common case library usage scenarios, like
 3. All results are stored in the "data" directory.
 
 ### <a name="example-1"></a> Example 1: Generate keys
-
-*Input*:
-
-*Output*: Public Key and Private Key
 
 ```php
 <?php
@@ -98,6 +94,8 @@ echo 'Private and Public keys were successfully generated.' . PHP_EOL;
 ```
 
 ### <a name="example-2"></a> Example 2: Register new user on the Keys service
+
+> The Virgil Account will be created implicitly when the first Public Key uploaded. The application can get the information about Public Keys created only for current application. When application uploads new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached to the existing Account instance.
 
 ```php
 <?php
@@ -160,7 +158,9 @@ try {
 }
 ```
 
-### <a name="example-3"></a> Example 3: Get user's public key from the Keys service
+### <a name="example-3"></a> Example 3: Get user's Public Key from the Keys service
+
+> Action purpose is to get Public Key’s data.
 
 ```php
 <?php
@@ -192,7 +192,9 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Grab Public Key data from the Keys service.
+### <a name="example-4"></a> Example 4: Search Public Key data from the Keys service
+
+> Action purpose is to search public keys by UDID values.
 
 ```php
 <?php
@@ -223,7 +225,15 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Grab Public Key signed data from the Keys service.
+### <a name="example-5"></a> Example 5: Search Public Key signed data from the Keys service
+
+> Action purpose is to search public keys by UDID values.
+
+> **Note:**
+
+> If signed version of the /grab endpoint is used, the public key will be returned with all user_data items for this Public Key.
+
+> If signed version of the endpoint is used request value parameter is ignored.
 
 ```php
 <?php
@@ -235,6 +245,7 @@ use Virgil\SDK\Common\Utils\GUID,
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_DATA_VALUE    = 'example.mail@gmail.com';
+const VIRGIL_PUBLIC_KEY_ID      = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
 try {
 
@@ -244,7 +255,7 @@ try {
     );
 
     $keysClient->setHeaders(array(
-        'X-VIRGIL-REQUEST-SIGN-PK-ID' => '5d3a8909-5fe5-2abb-232c-3cf9c277b111'
+        'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 
     echo 'Read Private Key.' . PHP_EOL;
@@ -270,7 +281,13 @@ try {
 }
 ```
 
-### <a name="example-6"></a> Example 6: Update Public Key data.
+### <a name="example-6"></a> Example 6: Update Public Key data
+
+> Action purpose is to update public key’s data.
+
+> **Note:**
+
+> User still controls the Public/Private Keys pair and provides request sign for authentication purposes. That’s why user authorisation is required via X-VIRGIL-REQUEST-SIGN HTTP header. Public Key modification takes place immediately after endpoint invocation.
 
 ```php
 <?php
@@ -287,10 +304,7 @@ try {
 
     // Create Keys Service HTTP Client
     $keysClient = new KeysClient(
-        VIRGIL_APPLICATION_TOKEN,
-        array(
-            'base_url' => 'https://keys-stg.virgilsecurity.com'
-        )
+        VIRGIL_APPLICATION_TOKEN
     );
 
     $keysClient->setHeaders(array(
@@ -325,7 +339,15 @@ try {
 }
 ```
 
-### <a name="example-7"></a> Example 7: Delete Public Key data.
+### <a name="example-7"></a> Example 7: Delete Public Key data
+
+> Action purpose is to remove public key’s data.
+
+> **Note:**
+
+> If signed version of the endpoint is used, the public key will be removed immediately without any confirmation.
+
+> If unsigned version of the endpoint is used the confirmation is required. The endpoint will return action_token response object property and will send confirmation tokens on all public key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit public key remove call persistKey() action with action_token value and the list of confirmation codes.
 
 ```php
 <?php
@@ -341,10 +363,7 @@ try {
 
     // Create Keys Service HTTP Client
     $keysClient = new KeysClient(
-        VIRGIL_APPLICATION_TOKEN,
-        array(
-            'base_url' => 'https://keys-stg.virgilsecurity.com'
-        )
+        VIRGIL_APPLICATION_TOKEN
     );
 
     $keysClient->setHeaders(array(
@@ -379,7 +398,13 @@ try {
 }
 ```
 
-### <a name="example-8"></a> Example 8: Reset Public Key.
+### <a name="example-8"></a> Example 8: Reset Public Key
+
+> Action purpose is to reset user’s public key’s data if user lost his Private Key.
+
+> **Note:**
+
+> After endpoint invocation the user will receive the confirmation tokens on all his confirmed UDIDs. The Public Key data won’t be updated until call persistKey() action is invoked with token value from this step and confirmation codes sent to UDIDs. The list of UDIDs used as confirmation tokens recipients will be listed asuser_ids response parameters.
 
 ```php
 <?php
@@ -396,10 +421,7 @@ try {
 
     // Create Keys Service HTTP Client
     $keysClient = new KeysClient(
-        VIRGIL_APPLICATION_TOKEN,
-        array(
-            'base_url' => 'https://keys-stg.virgilsecurity.com'
-        )
+        VIRGIL_APPLICATION_TOKEN
     );
 
     echo 'Reading Public Key.' . PHP_EOL;
@@ -431,7 +453,15 @@ try {
 }
 ```
 
-### <a name="example-9"></a> Example 9: Persist Public Key.
+### <a name="example-9"></a> Example 9: Persist Public Key
+
+> The action purpose is to confirm public key’s data.
+
+> **Note:**
+
+> Confirm public key’s data if X-VIRGILREQUEST-SIGN HTTP header was omitted on deleteKey() action or resetKey action was invoked.
+
+> In this case user must collect all confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well ac action_token parameter received on previous endpoint.
 
 ```php
 <?php
@@ -449,10 +479,7 @@ try {
 
     // Create Keys Service HTTP Client
     $keysClient = new KeysClient(
-        VIRGIL_APPLICATION_TOKEN,
-        array(
-            'base_url' => 'https://keys-stg.virgilsecurity.com'
-        )
+        VIRGIL_APPLICATION_TOKEN
     );
 
     // Do service call
