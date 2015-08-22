@@ -15,10 +15,10 @@
     - [Example 7: Delete Public Key data](#example-7)
     - [Example 8: Reset Public Key](#example-8)
     - [Example 9: Confirm Public Key](#example-9)
-    - [Example 10]: Create Public Key User Data](#example-10)
-    - [Example 11]: Remove User Data from Public Key](#example-11)
-    - [Example 12]: Confirm User Data](#example-12)
-    - [Example 13]: Resend confirmation for User Data item](#example-13)
+    - [Example 10: Create Public Key User Data](#example-10)
+    - [Example 11: Remove User Data from Public Key](#example-11)
+    - [Example 12: Confirm User Data](#example-12)
+    - [Example 13: Resend confirmation for User Data item](#example-13)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -79,6 +79,8 @@ This section describes common case library usage scenarios, like
 1. Examples MUST be run from their directory.
 2. Before run examples you have to install dependencies (run command ```composer install```)
 3. All results are stored in the "data" directory.
+4. Please before using this examples, go to the [Virgil Security, Inc](https://virgilsecurity.com) and create your first application with Application Token. Please replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
+5. Please reaplce example value of `VIRGIL_USER_DATA_VALUE` to your real email. It needs to confirm some data and invocation of some exnpoints inside Public Key service.
 
 ### <a name="example-1"></a> Example 1: Generate keys
 
@@ -224,11 +226,11 @@ try {
     );
 
     // Do service call
-    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
+    echo 'Call Keys service to search Public Key instance.' . PHP_EOL;
     $result = $keysClient->getPublicKeysClient()->grabKey(
         VIRGIL_USER_DATA_VALUE
     );
-    echo 'Public Key instance successfully grabbed from Keys service.' . PHP_EOL;
+    echo 'Public Key instance successfully searched in Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 
@@ -278,13 +280,13 @@ try {
     $privateKeyPassword = 'password';
 
     // Do service call
-    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
+    echo 'Call Keys service to search Public Key instance.' . PHP_EOL;
     $result = $keysClient->getPublicKeysClient()->grabKey(
         VIRGIL_USER_DATA_VALUE,
         $privateKey,
         $privateKeyPassword
     );
-    echo 'Public Key instance successfully grabbed from Keys service.' . PHP_EOL;
+    echo 'Public Key instance successfully searched in Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 
