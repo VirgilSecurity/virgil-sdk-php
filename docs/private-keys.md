@@ -82,6 +82,7 @@ This section describes common case library usage scenarios, like
 4. Replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
 5. Replace example value of `VIRGIL_USER_NAME` to your real email. It needs to confirm some data and invocation of some endpoints inside Private Key service.
 6. Replace exmaple value of `VIRGIL_PUBLIC_KEY_ID` to the real Public Key ID value. You can take this value from the Public Keys examples.
+7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while your generate Private Key, then just remove it from the method invocations.
 
 ### <a name="example-1"></a> Example 1: Create new Container object
 
@@ -96,7 +97,6 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME          = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
 const VIRGIL_PUBLIC_KEY_ID      = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
 const VIRGIL_CONTAINER_TYPE     = 'normal';
@@ -151,7 +151,7 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME          = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
+const VIRGIL_CONTAINER_PASSWORD = 'password';
 const VIRGIL_PUBLIC_KEY_ID      = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
 try {
@@ -163,7 +163,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     // Do service call
@@ -192,7 +192,7 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME            = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD        = 'password';
+const VIRGIL_CONTAINER_PASSWORD   = 'password';
 const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
 
@@ -205,7 +205,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     $privateKeysClient->setHeaders(array(
@@ -247,15 +247,15 @@ require_once '../vendor/autoload.php';
 
 use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
-const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_NAME            = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD        = 'password';
-const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_NAME              = 'example.mail@gmail.com';
+const VIRGIL_CONTAINER_PASSWORD     = 'password';
+const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
-const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 
-const VIRGIL_CONTAINER_TYPE       = 'normal';
-const VIRGIL_CONTAINER_PASSWORD   = 'password';
+const VIRGIL_CONTAINER_TYPE         = 'normal';
+const VIRGIL_NEW_CONTAINER_PASSWORD = 'password';
 
 try {
 
@@ -266,7 +266,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     $privateKeysClient->setHeaders(array(
@@ -283,7 +283,7 @@ try {
     echo 'Call Private Key service to update Container instance.' . PHP_EOL;
     $privateKeysClient->getContainerClient()->updateContainer(
         VIRGIL_CONTAINER_TYPE,
-        VIRGIL_CONTAINER_PASSWORD,
+        VIRGIL_NEW_CONTAINER_PASSWORD,
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
@@ -313,15 +313,15 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient,
     Virgil\SDK\PrivateKeys\Models\VirgilUserData;
 
 
-const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_NAME          = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_NAME              = 'example.mail@gmail.com';
+const VIRGIL_CONTAINER_PASSWORD     = 'password';
 
-const VIRGIL_USER_DATA_CLASS    = 'user_id';
-const VIRGIL_USER_DATA_TYPE     = 'email';
-const VIRGIL_USER_DATA_VALUE    = 'example.mail@gmail.com';
+const VIRGIL_USER_DATA_CLASS        = 'user_id';
+const VIRGIL_USER_DATA_TYPE         = 'email';
+const VIRGIL_USER_DATA_VALUE        = 'example.mail@gmail.com';
 
-const VIRGIL_CONTAINER_PASSWORD = 'password';
+const VIRGIL_NEW_CONTAINER_PASSWORD = 'password';
 
 try {
 
@@ -332,7 +332,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     $userData = new VirgilUserData();
@@ -344,7 +344,7 @@ try {
     echo 'Call Private Key service to reset Container password.' . PHP_EOL;
     $privateKeysClient->getContainerClient()->resetPassword(
         $userData,
-        VIRGIL_CONTAINER_PASSWORD
+        VIRGIL_NEW_CONTAINER_PASSWORD
     );
     echo 'Container password successfully resetted.' . PHP_EOL;
 
@@ -370,7 +370,7 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME          = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
+const VIRGIL_CONTAINER_PASSWORD = 'password';
 
 const VIRGIL_CONFIRMATION_TOKEN = 'I9Y6Y0';
 
@@ -383,7 +383,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     // Do service call
@@ -411,7 +411,7 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME            = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD        = 'password';
+const VIRGIL_CONTAINER_PASSWORD   = 'password';
 const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
 
@@ -424,7 +424,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     $privateKeysClient->setHeaders(array(
@@ -465,7 +465,7 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME          = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
+const VIRGIL_CONTAINER_PASSWORD = 'password';
 const VIRGIL_PUBLIC_KEY_ID      = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
 try {
@@ -477,7 +477,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     // Do service call
@@ -507,7 +507,7 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME            = 'example.mail@gmail.com';
-const VIRGIL_USER_PASSWORD        = 'password';
+const VIRGIL_CONTAINER_PASSWORD   = 'password';
 const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
 
@@ -520,7 +520,7 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     $privateKeysClient->setHeaders(array(
