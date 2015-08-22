@@ -6,16 +6,15 @@
 - [Installation](#installation)
 - [Examples](#examples)
     - [General statements](#general-statements)
-    - [Example 1: Generate keys](#example-1)
-    - [Example 2: Create new Container object](#example-2)
-    - [Example 3: Get Container object](#example-3)
-    - [Example 4: Delete Container object](#example-4)
-    - [Example 5: Update Container object](#example-5)
-    - [Example 6: Reset Container password](#example-6)
-    - [Example 7: Persist Container object](#example-7)
-    - [Example 8: Create Private Key inside Container object](#example-8)
-    - [Example 9: Get Private Key object](#example-9)
-    - [Example 10: Delete Private Key object](#example-10)
+    - [Example 1: Create new Container object](#example-1)
+    - [Example 2: Get Container object](#example-2)
+    - [Example 3: Delete Container object](#example-3)
+    - [Example 4: Update Container object](#example-4)
+    - [Example 5: Reset Container password](#example-5)
+    - [Example 6: Persist Container object](#example-6)
+    - [Example 7: Create Private Key inside Container object](#example-7)
+    - [Example 8: Get Private Key object](#example-8)
+    - [Example 9: Delete Private Key object](#example-9)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -72,37 +71,19 @@ This section describes common case library usage scenarios, like
 
 ### General statements
 
-1. Examples MUST be run from their directory.
-2. Before run examples you have to install dependencies (run command ```composer install```)
-3. All results are stored in the "data" directory.
-4. Please before using this examples, go to the [Virgil Security, Inc](https://virgilsecurity.com) and create your first application with Application Token. Please replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
-5. Please reaplce example value of `VIRGIL_USER_NAME` to your real email. It needs to confirm some data and invocation of some endpoints inside Private Key service.
+1. This section means that you have already:
+  1. Created Application under [Virgil Security, Inc](https://virgilsecurity.com).
+  2. Created Private and Public Keys on your local machine.
+  3. Created and confirmed Account under Public Keys service.
+  4. Loaded Public Key to the Public Key service.
+  5. The same email that used for Public Key service.
+2. Examples MUST be run from their directory.
+3. Before run examples you have to install dependencies (run command ```composer install```)
+4. Replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
+5. Replace example value of `VIRGIL_USER_NAME` to your real email. It needs to confirm some data and invocation of some endpoints inside Private Key service.
+6. Replace exmaple value of `VIRGIL_PUBLIC_KEY_ID` to the real Public Key ID value. You can take this value from the Public Keys examples.
 
-### <a name="example-1"></a> Example 1: Generate keys
-
-```php
-<?php
-
-require_once './vendor/autoload.php';
-
-use Virgil\Crypto\VirgilKeyPair;
-
-$key = new VirgilKeyPair('password');
-
-echo 'Generate keys with with password: "password".' . PHP_EOL;
-file_put_contents(
-    'data' . DIRECTORY_SEPARATOR . 'new_public.key',
-    $key->publicKey()
-);
-
-file_put_contents(
-    'data' . DIRECTORY_SEPARATOR . 'new_private.key',
-    $key->privateKey()
-);
-echo 'Private and Public keys were successfully generated.' . PHP_EOL;
-```
-
-### <a name="example-2"></a> Example 2: Create new Container object
+### <a name="example-1"></a> Example 1: Create new Container object
 
 > The Container object will be created to store future Private Key's instances.
 
@@ -156,7 +137,7 @@ try {
 }
 ```
 
-### <a name="example-3"></a> Example 3: Get existing Container object
+### <a name="example-2"></a> Example 2: Get Container object
 
 > Action purpose is to get Container object data.
 
@@ -198,7 +179,7 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Delete existing Container object
+### <a name="example-3"></a> Example 3: Delete Container object
 
 > Action purpose is to delete existing Container object from the Private Key service.
 
@@ -251,7 +232,7 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Update existing Container object
+### <a name="example-4"></a> Example 4: Update Container object
 
 > Action purpose is to update existing Container object.
 
@@ -314,7 +295,7 @@ try {
 }
 ```
 
-### <a name="example-6"></a> Reset Container password
+### <a name="example-5"></a> Example 5: Reset Container password
 
 > Action purpose is to reset Private Key password to the new one in case, when user forgot it.
 
@@ -373,7 +354,7 @@ try {
 }
 ```
 
-### <a name="example-7"></a> Example 7: Persist Container object
+### <a name="example-6"></a> Example 6: Persist Container object
 
 > Action purpose is to confirm Password Reset action.
 
@@ -417,7 +398,7 @@ try {
 }
 ```
 
-### <a name="example-8"></a> Example 8: Create Private Key inside Container object
+### <a name="example-7"></a> Example 7: Create Private Key inside Container object
 
 > Action purpose is to load existing Private Key into the Private Keys service and associate it with the existing Container object.
 
@@ -471,7 +452,7 @@ try {
 }
 ```
 
-### <a name="example-9"></a> Example 9: Get Private Key object
+### <a name="example-8"></a> Example 8: Get Private Key object
 
 > The action purpose is to get Private Key object.
 
@@ -512,7 +493,7 @@ try {
 }
 ```
 
-### <a name="example-10"></a> Example 10: Delete Private Key object
+### <a name="example-9"></a> Example 9: Delete Private Key object
 
 > The acction purpose is to delete Private key object. Private Key object will be discunnected from the Container Object and then deleted from the Private Key service.
 
