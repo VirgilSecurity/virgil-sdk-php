@@ -84,6 +84,11 @@ This section describes common case library usage scenarios, like
 
 ### <a name="example-1"></a> Example 1: Generate keys
 
+> **Note:**
+
+> Run the script in the first place to generate Private and Public key's. Optionaly you can specify password for Private Key. 
+If you did this then you have to use it everywhere for `VIRGIL_PRIVATE_KEY_PASSWORD` variable and replace this with your password. If you didn't this then please skip using of `VIRGIL_PRIVATE_KEY_PASSWORD` variable in each eaxmple and remove it from the each action invocation.
+
 ```php
 <?php
 
