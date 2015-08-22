@@ -3,7 +3,6 @@
 namespace Virgil\SDK\Keys;
 
 use Virgil\SDK\Common\Utils\Config,
-    Virgil\SDK\Keys\Clients\AccountsClient,
     Virgil\SDK\Keys\Clients\PublicKeysClient,
     Virgil\SDK\Keys\Clients\UserDataClient,
     Virgil\SDK\Keys\Http\Connection;
@@ -32,11 +31,6 @@ class Client {
         ));
     }
 
-    /**
-     * Setup connection headers
-     *
-     * @param $headers
-     */
     public function setHeaders($headers) {
 
         $this->_connection->setHeaders(
@@ -44,23 +38,6 @@ class Client {
         );
     }
 
-    /**
-     * @return AccountsClient
-     */
-    public function getAccountsClient() {
-
-        if(is_null($this->_accountsClient)) {
-            $this->_accountsClient = new AccountsClient(
-                $this->_connection
-            );
-        }
-
-        return $this->_accountsClient;
-    }
-
-    /**
-     * @return PublicKeysClient
-     */
     public function getPublicKeysClient() {
 
         if(is_null($this->_publicKeysClient)) {
@@ -72,9 +49,6 @@ class Client {
         return $this->_publicKeysClient;
     }
 
-    /**
-     * @return UserDataClient
-     */
     public function getUserDataClient() {
 
         if(is_null($this->_userDataClient)) {
@@ -86,10 +60,6 @@ class Client {
         return $this->_userDataClient;
     }
 
-    /**
-     * @param $config
-     * @return \Virgil\SDK\Common\Utils\Config
-     */
     private function _initConfig($config) {
 
         return new Config(

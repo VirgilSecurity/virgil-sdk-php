@@ -38,11 +38,6 @@ class Client {
         );
     }
 
-    /**
-     * Setup connection headers
-     *
-     * @param $headers
-     */
     public function setHeaders($headers) {
 
         $this->_connection->setHeaders(
@@ -50,9 +45,6 @@ class Client {
         );
     }
 
-    /**
-     * @return PrivateKeysAccountsClient
-     */
     public function getContainerClient() {
 
         if(is_null($this->_containerClient)) {
@@ -64,9 +56,6 @@ class Client {
         return $this->_containerClient;
     }
 
-    /**
-     * @return PrivateKeysClient
-     */
     public function getPrivateKeysClient() {
 
         if(is_null($this->_privateKeysClient)) {
@@ -78,10 +67,6 @@ class Client {
         return $this->_privateKeysClient;
     }
 
-    /**
-     * @param $config
-     * @return \Virgil\SDK\Common\Utils\Config
-     */
     private function _initConfig($config) {
 
         return new Config(

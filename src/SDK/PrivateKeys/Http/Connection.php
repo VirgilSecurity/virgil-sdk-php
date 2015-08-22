@@ -40,12 +40,6 @@ class Connection implements ConnectionInterface {
         $this->_userPassword = $userPassword;
     }
 
-    /**
-     * Setup Connection headers
-     *
-     * @param $headers
-     * @return $this
-     */
     public function setHeaders($headers) {
 
         $this->_headers = array_merge(
@@ -56,9 +50,6 @@ class Connection implements ConnectionInterface {
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseUrl() {
 
         return $this->_baseUrl . '/{version}/';
@@ -74,10 +65,6 @@ class Connection implements ConnectionInterface {
         return $this->_authToken;
     }
 
-    /**
-     * @param RequestInterface $request
-     * @return ResponseInterface
-     */
     public function send(RequestInterface $request) {
 
         if($this->_isCredentionalsProvided() && !$this->_isAuthenticated()) {

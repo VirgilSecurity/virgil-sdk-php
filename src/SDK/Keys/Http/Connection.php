@@ -29,12 +29,6 @@ class Connection implements ConnectionInterface {
         }
     }
 
-    /**
-     * Setup Connection headers
-     *
-     * @param $headers
-     * @return $this
-     */
     public function setHeaders($headers) {
 
         $this->_headers = array_merge(
@@ -45,9 +39,6 @@ class Connection implements ConnectionInterface {
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseUrl() {
 
         return $this->_baseUrl . '/{version}/';
@@ -58,10 +49,6 @@ class Connection implements ConnectionInterface {
         return $this->_apiVersion;
     }
 
-    /**
-     * @param RequestInterface $request
-     * @return Response
-     */
     public function send(RequestInterface $request) {
 
         $httpClient = new Client(array(
