@@ -1,8 +1,9 @@
-# Virgil Security PHP library
+# Virgil Security Keys SDK
 
 - [Introduction](#introduction)
 - [Build prerequisite](#build-prerequisite)
 - [Build](#build)
+- [Installation](#installation)
 - [Examples](#examples)
     - [General statements](#general-statements)
     - [Example 1: Generate keys](#example-1)
@@ -13,7 +14,11 @@
     - [Example 6: Update Public Key data](#example-6)
     - [Example 7: Delete Public Key data](#example-7)
     - [Example 8: Reset Public Key](#example-8)
-    - [Example 9: Persist Public Key](#example-9)
+    - [Example 9: Confirm Public Key](#example-9)
+    - [Example 10]: Create Public Key User Data](#example-10)
+    - [Example 11]: Remove User Data from Public Key](#example-11)
+    - [Example 12]: Confirm User Data](#example-12)
+    - [Example 13]: Resend confirmation for User Data item](#example-13)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -53,6 +58,12 @@ Common library description can be found [here](https://github.com/VirgilSecurity
 10. Build library. ``` make ```
 11. Install library. ``` make install ```
 12. Add to your php.ini ```extension=path/to/your/virgil_php.so```, replace ``"path/to/your/virgil_php.so"`` to your path where virgil_php.so extension is located
+
+## Installation
+
+```
+php composer.phar install
+```
 
 ## Examples
 
@@ -453,7 +464,7 @@ try {
 }
 ```
 
-### <a name="example-9"></a> Example 9: Persist Public Key
+### <a name="example-9"></a> Example 9: Confirm Public Key
 
 > The action purpose is to confirm public key’s data.
 
@@ -492,6 +503,223 @@ try {
         )
     );
     echo 'Public Key instance successfully persisted.' . PHP_EOL;
+
+} catch (Exception $e) {
+
+    echo 'Error:' . $e->getMessage();
+}
+```
+
+### <a name="example-10"></a> Example 10: Create Public Key User Data
+
+> The acction's purpose is to append UDIDs and UDINFOs to the Public Keys for the current application.
+
+> **Note:**
+
+> The user data instance will be created for the Public Key instance specified in X-VIRGIL-REQUEST-SIGN-PK-ID HTTP header.
+
+```php
+<?php
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Models\VirgilUserData,
+    Virgil\SDK\Keys\Client as KeysClient;
+
+
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_DATA_CLASS        = 'user_id';
+const VIRGIL_USER_DATA_TYPE         = 'email';
+const VIRGIL_USER_DATA_VALUE        = 'example.email2@gmail.com';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
+const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+
+try {
+
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
+
+    $keysClient->setHeaders(array(
+        'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
+    ));
+
+    $userData = new VirgilUserData();
+    $userData->class = VIRGIL_USER_DATA_CLASS;
+    $userData->type  = VIRGIL_USER_DATA_TYPE;
+    $userData->value = VIRGIL_USER_DATA_VALUE;
+
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
+    );
+    echo 'Public Key data successfully readed.' . PHP_EOL;
+
+
+    echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
+
+    // Do service call
+    echo 'Call Keys service to create User Data instance.' . PHP_EOL;
+    $userData = $keysClient->getUserDataClient()->createUserData(
+        $userData,
+        $privateKey,
+        VIRGIL_PRIVATE_KEY_PASSWORD
+    );
+    echo 'User Data instance successfully created in Public Keys service.' . PHP_EOL;
+
+} catch (Exception $e) {
+
+    echo 'Error:' . $e->getMessage();
+}
+```
+
+### <a name="example-11"></a> Example 11: Delete User Data from Public Key
+
+> The action purpose is to remove user data item from the public key.
+
+```php
+<?php
+
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Client as KeysClient;
+
+const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_UUID                 =  'aa2141ee-8a50-a7c4-3e4c-513b67918053';
+const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
+const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+
+try {
+
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
+
+    $keysClient->setHeaders(array(
+        'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
+    ));
+
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
+    );
+    echo 'Public Key data successfully readed.' . PHP_EOL;
+
+
+    echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
+
+    // Do service call
+    echo 'Call Keys service to delete User Data instance.' . PHP_EOL;
+    $keysClient->getUserDataClient()->deleteUserData(
+        VIRGIL_UUID,
+        $privateKey,
+        VIRGIL_PRIVATE_KEY_PASSWORD
+    );
+    echo 'User Data instance successfully deleted from Public Keys service.' . PHP_EOL;
+
+} catch (Exception $e) {
+
+    echo 'Error:' . $e->getMessage();
+}
+```
+
+### <a name="example-12"></a> Example 12: Confirm User Data
+
+> The action purpose is to confirm user data item.
+
+```php
+<?php
+
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Common\Utils\GUID,
+    Virgil\SDK\Keys\Client as KeysClient;
+
+
+const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
+
+const VIRGIL_UUID = 'aa2141ee-8a50-a7c4-3e4c-513b67918053';
+const VIRGIL_CONFIRMATION_CODE = 'J9Y0D5';
+
+
+try {
+
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
+
+    // Do service call
+    echo 'Call Keys service to confirm User Data.' . PHP_EOL;
+    $keysClient->getUserDataClient()->persistUserData(
+        VIRGIL_UUID,
+        VIRGIL_CONFIRMATION_CODE
+    );
+    echo 'User Data successfully confirmed.' . PHP_EOL;
+
+} catch (Exception $e) {
+
+    echo 'Error:' . $e->getMessage();
+}
+```
+
+### <a name="example-13"></a> Example 13: Confirm User Data
+
+> The action purpose is to resend user confirmation code.
+
+```php
+<?php
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Client as KeysClient;
+
+
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
+CONST VIRGIL_UUID                   = 'cac16f55-74cf-de0d-1581-d4499f5aa392';
+const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+
+try {
+
+    // Create Keys Service HTTP Client
+    $keysClient = new KeysClient(
+        VIRGIL_APPLICATION_TOKEN
+    );
+
+    $keysClient->setHeaders(array(
+        'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
+    ));
+
+    echo 'Reading Public Key.' . PHP_EOL;
+    $publicKey = file_get_contents(
+        '../data/new_public.key'
+    );
+    echo 'Public Key data successfully readed.' . PHP_EOL;
+
+
+    echo 'Reading Private Key.' . PHP_EOL;
+    $privateKey = file_get_contents(
+        '../data/new_private.key'
+    );
+    echo 'Private Key data successfully readed.' . PHP_EOL;
+
+    // Do service call
+    echo 'Call Keys service to resend confirmation.' . PHP_EOL;
+    $keysClient->getUserDataClient()->resendConfirmation(
+        VIRGIL_UUID,
+        $privateKey,
+        VIRGIL_PRIVATE_KEY_PASSWORD
+    );
+    echo 'Confirmation successfully sent.' . PHP_EOL;
 
 } catch (Exception $e) {
 
