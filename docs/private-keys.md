@@ -104,7 +104,7 @@ echo 'Private and Public keys were successfully generated.' . PHP_EOL;
 
 ### <a name="example-2"></a> Example 2: Create new Container object
 
-> The Virgil Account will be created implicitly when the first Public Key uploaded. The application can get the information about Public Keys created only for current application. When application uploads new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached to the existing Account instance.
+> The Container object will be created to store future Private Key's instances.
 
 ```php
 <?php
@@ -158,7 +158,7 @@ try {
 
 ### <a name="example-3"></a> Example 3: Get existing Container object
 
-> Action purpose is to get Public Key’s data.
+> Action purpose is to get Container object data.
 
 ```php
 <?php
@@ -200,7 +200,7 @@ try {
 
 ### <a name="example-4"></a> Example 4: Delete existing Container object
 
-> Action purpose is to search public keys by UDID values.
+> Action purpose is to delete existing Container object from the Private Key service.
 
 ```php
 <?php
@@ -253,13 +253,11 @@ try {
 
 ### <a name="example-5"></a> Example 5: Update existing Container object
 
-> Action purpose is to search public keys by UDID values.
+> Action purpose is to update existing Container object.
 
 > **Note:**
 
-> If signed version of the action is used, the public key will be returned with all user_data items for this Public Key.
-
-> If signed version of the action is used request value parameter is ignored.
+> By invocation of this mmethod you can change Container Type or|and Container Password
 
 ```php
 <?php
@@ -318,11 +316,12 @@ try {
 
 ### <a name="example-6"></a> Reset Container password
 
-> Action purpose is to update public key’s data.
+> Action purpose is to reset Private Key password to the new one in case, when user forgot it.
 
 > **Note:**
 
-> User still controls the Public/Private Keys pair and provides request sign for authentication purposes. That’s why user authorisation is required via X-VIRGIL-REQUEST-SIGN HTTP header. Public Key modification takes place immediately after action invocation.
+> User can reset Private Key object pasword in case of Container Type equal 'easy'. In case of Container Type equal 'normal',
+Private Key object stored in its original form.
 
 ```php
 <?php
@@ -376,13 +375,11 @@ try {
 
 ### <a name="example-7"></a> Example 7: Persist Container object
 
-> Action purpose is to remove public key’s data.
+> Action purpose is to confirm Password Reset action.
 
 > **Note:**
 
-> If signed version of the action is used, the public key will be removed immediately without any confirmation.
-
-> If unsigned version of the action is used the confirmation is required. The action will return action_token response object property and will send confirmation tokens on all public key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit public key remove call persistKey() action with action_token value and the list of confirmation codes.
+> Token that was reseived while Container Reset invocation lives 60 minutes.
 
 ```php
 <?php
@@ -422,11 +419,7 @@ try {
 
 ### <a name="example-8"></a> Example 8: Create Private Key inside Container object
 
-> Action purpose is to reset user’s public key’s data if user lost his Private Key.
-
-> **Note:**
-
-> After action invocation the user will receive the confirmation tokens on all his confirmed UDIDs. The Public Key data won’t be updated until call persistKey() action is invoked with token value from this step and confirmation codes sent to UDIDs. The list of UDIDs used as confirmation tokens recipients will be listed asuser_ids response parameters.
+> Action purpose is to load existing Private Key into the Private Keys service and associate it with the existing Container object.
 
 ```php
 <?php
@@ -480,13 +473,7 @@ try {
 
 ### <a name="example-9"></a> Example 9: Get Private Key object
 
-> The action purpose is to confirm public key’s data.
-
-> **Note:**
-
-> Confirm public key’s data if X-VIRGILREQUEST-SIGN HTTP header was omitted on deleteKey() action or resetKey action was invoked.
-
-> In this case user must collect all confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well ac action_token parameter received on previous action.
+> The action purpose is to get Private Key object.
 
 ```php
 <?php
@@ -527,11 +514,8 @@ try {
 
 ### <a name="example-10"></a> Example 10: Delete Private Key object
 
-> The acction's purpose is to append UDIDs and UDINFOs to the Public Keys for the current application.
+> The acction purpose is to delete Private key object. Private Key object will be discunnected from the Container Object and then deleted from the Private Key service.
 
-> **Note:**
-
-> The user data instance will be created for the Public Key instance specified in X-VIRGIL-REQUEST-SIGN-PK-ID HTTP header.
 
 ```php
 <?php
