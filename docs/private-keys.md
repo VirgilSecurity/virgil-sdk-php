@@ -80,7 +80,7 @@ This section describes common case library usage scenarios, like
 2. Examples MUST be run from their directory.
 3. Before run examples you have to install dependencies (run command ```composer install```)
 4. Replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
-5. Replace example value of `VIRGIL_USER_NAME` to your real email. It needs to confirm some data and invocation of some endpoints inside Private Key service.
+5. Replace example value of `VIRGIL_USER_NAME` to your real email. It needs to confirm some data and invocation of some endpoints inside Private Key service. This email has to be registered and confirmed under Public Key service.
 6. Replace exmaple value of `VIRGIL_PUBLIC_KEY_ID` to the real Public Key ID value. You can take this value from the Public Keys examples.
 7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while your generate Private Key, then just remove it from the method invocations.
 
