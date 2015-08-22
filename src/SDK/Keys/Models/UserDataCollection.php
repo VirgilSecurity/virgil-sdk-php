@@ -4,9 +4,9 @@ namespace Virgil\SDK\Keys\Models;
 
 use Virgil\SDK\Common\Models\Base\Collection;
 
-class VirgilUserDataCollection extends Collection {
+class UserDataCollection extends Collection {
 
-    public function add(VirgilUserData $object) {
+    public function add(UserData $object) {
 
         parent::add(
             $object

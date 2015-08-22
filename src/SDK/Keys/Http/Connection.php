@@ -7,7 +7,7 @@ use GuzzleHttp\Client,
     Virgil\SDK\Common\Http\RequestInterface,
     Virgil\SDK\Common\Http\Response,
     Virgil\SDK\Common\Http\ResponseInterface,
-    Virgil\SDK\Keys\Exceptions\PkiWebException,
+    Virgil\SDK\Keys\Exceptions\WebException,
     Virgil\SDK\Keys\Http\Error;
 
 class Connection implements ConnectionInterface {
@@ -146,7 +146,7 @@ class Connection implements ConnectionInterface {
             'Undefined exception: ' . $errorCode . '; Http status: ' . $httpResponse->getStatusCode()
         );
 
-        throw new PkiWebException(
+        throw new WebException(
             $errorCode,
             $errorMessage,
             $httpResponse->getStatusCode()

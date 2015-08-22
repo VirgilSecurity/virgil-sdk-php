@@ -36,15 +36,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+require_once '../vendor/autoload.php';
+
 use Virgil\SDK\Common\Utils\GUID,
     Virgil\SDK\Keys\Client as KeysClient;
 
-require_once '../vendor/autoload.php';
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 
 const VIRGIL_UUID = 'aa2141ee-8a50-a7c4-3e4c-513b67918053';
-const VIRGIL_CONFIRMATION__CODE = 'J9Y0D5';
+const VIRGIL_CONFIRMATION_CODE = 'J9Y0D5';
 
 
 try {
@@ -58,12 +59,12 @@ try {
     );
 
     // Do service call
-    echo 'Call Keys service to persist User Data.' . PHP_EOL;
+    echo 'Call Keys service to confirm User Data.' . PHP_EOL;
     $keysClient->getUserDataClient()->persistUserData(
         VIRGIL_UUID,
-        VIRGIL_CONFIRMATION__CODE
+        VIRGIL_CONFIRMATION_CODE
     );
-    echo 'User Data successfully persisted.' . PHP_EOL;
+    echo 'User Data successfully confirmed.' . PHP_EOL;
 
 } catch (Exception $e) {
 

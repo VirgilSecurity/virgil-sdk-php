@@ -36,11 +36,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\Keys\Models\VirgilUserData,
-    Virgil\SDK\Keys\Models\VirgilUserDataCollection,
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Models\UserData,
+    Virgil\SDK\Keys\Models\UserDataCollection,
     Virgil\SDK\Keys\Client as KeysClient;
 
-require_once '../vendor/autoload.php';
 
 const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_DATA_CLASS        = 'user_id';
@@ -58,12 +59,12 @@ try {
         )
     );
 
-    $userData = new VirgilUserData();
+    $userData = new UserData();
     $userData->class = VIRGIL_USER_DATA_CLASS;
     $userData->type  = VIRGIL_USER_DATA_TYPE;
     $userData->value = VIRGIL_USER_DATA_VALUE;
 
-    $userDataCollection = new VirgilUserDataCollection();
+    $userDataCollection = new UserDataCollection();
     $userDataCollection->add(
         $userData
     );

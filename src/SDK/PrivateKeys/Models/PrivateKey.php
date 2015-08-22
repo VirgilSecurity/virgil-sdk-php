@@ -4,7 +4,7 @@ namespace Virgil\SDK\PrivateKeys\Models;
 
 use Virgil\SDK\Common\Models\Base\Model;
 
-class VirgilPrivateKey extends Model {
+class PrivateKey extends Model {
 
     public $public_key_id;
     public $private_key;

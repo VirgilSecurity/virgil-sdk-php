@@ -4,8 +4,8 @@ namespace Virgil\SDK\PrivateKeys\Clients;
 
 use Virgil\SDK\Common\Clients\ApiClient,
     Virgil\SDK\PrivateKeys\Models\Container,
-    Virgil\SDK\PrivateKeys\Models\VirgilContainerType,
-    Virgil\SDK\PrivateKeys\Models\VirgilUserData,
+    Virgil\SDK\PrivateKeys\Models\ContainerType,
+    Virgil\SDK\PrivateKeys\Models\UserData,
     Virgil\SDK\Common\Utils\Sign,
     Virgil\SDK\Common\Utils\GUID;
 
@@ -25,7 +25,7 @@ class ContainerClient extends ApiClient implements ContainerClientInterface {
 
     public function createContainer($containerType, $containerPassword, $privateKey, $privateKeyPassword = null) {
 
-        if(!VirgilContainerType::isValidType($containerType)) {
+        if(!ContainerType::isValidType($containerType)) {
             throw new \Exception('Invalid account type');
         }
 
@@ -99,7 +99,7 @@ class ContainerClient extends ApiClient implements ContainerClientInterface {
         return $this;
     }
 
-    public function resetPassword(VirgilUserData $userData, $password) {
+    public function resetPassword(UserData $userData, $password) {
 
         $this->put(
             'container/actions/reset-password',

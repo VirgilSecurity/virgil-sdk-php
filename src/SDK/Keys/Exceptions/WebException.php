@@ -2,7 +2,7 @@
 
 namespace Virgil\SDK\Keys\Exceptions;
 
-class PkiWebException extends \Exception {
+class WebException extends \Exception {
 
     protected $_errorCode;
     protected $_httpStatusCode;

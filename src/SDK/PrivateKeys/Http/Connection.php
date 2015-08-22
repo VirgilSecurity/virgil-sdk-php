@@ -7,7 +7,7 @@ use GuzzleHttp\Client,
     Virgil\SDK\Common\Http\RequestInterface,
     Virgil\SDK\Common\Http\Response,
     Virgil\SDK\Common\Http\ResponseInterface,
-    Virgil\SDK\PrivateKeys\Exception\KeyringWebException,
+    Virgil\SDK\PrivateKeys\Exception\WebException,
     Virgil\SDK\PrivateKeys\Http\Error;
 
 class Connection implements ConnectionInterface {
@@ -218,7 +218,7 @@ class Connection implements ConnectionInterface {
             'Undefined exception: ' . $errorCode . '; Http status: ' . $httpResponse->getStatusCode()
         );
 
-        throw new KeyringWebException(
+        throw new WebException(
             $errorCode,
             $errorMessage,
             $httpResponse->getStatusCode()

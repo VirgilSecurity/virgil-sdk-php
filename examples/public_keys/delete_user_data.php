@@ -36,9 +36,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\Keys\Client as KeysClient;
-
 require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Client as KeysClient;
 
 const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_UUID                 =  'aa2141ee-8a50-a7c4-3e4c-513b67918053';
@@ -79,7 +79,7 @@ try {
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-    echo 'User Data instance successfully delete from Public Keys service.' . PHP_EOL;
+    echo 'User Data instance successfully deleted from Public Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 

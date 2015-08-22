@@ -36,9 +36,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\Keys\Client as KeysClient;
-
 require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Client as KeysClient;
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_DATA_VALUE    = 'suhinin.dmitriy@gmail.com';
@@ -54,11 +54,11 @@ try {
     );
 
     // Do service call
-    echo 'Call Keys service to grab Public Key instance.' . PHP_EOL;
+    echo 'Call Keys service to search Public Key instance.' . PHP_EOL;
     $result = $keysClient->getPublicKeysClient()->grabKey(
         VIRGIL_USER_DATA_VALUE
     );
-    echo 'Public Key instance successfully grabbed from Keys service.' . PHP_EOL;
+    echo 'Public Key instance successfully searched in Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 

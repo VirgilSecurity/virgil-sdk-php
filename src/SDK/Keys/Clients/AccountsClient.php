@@ -3,7 +3,7 @@
 namespace Virgil\SDK\Keys\Clients;
 
 use Virgil\SDK\Common\Clients\ApiClient,
-    Virgil\SDK\Keys\Models\VirgilAccount,
+    Virgil\SDK\Keys\Models\Account,
     Virgil\SDK\Common\Utils\GUID;
 
 class AccountsClient extends ApiClient implements AccountsClientInterface {
@@ -20,7 +20,7 @@ class AccountsClient extends ApiClient implements AccountsClientInterface {
             )
         );
 
-        return new VirgilAccount(
+        return new Account(
             $response->getBody()
         );
     }

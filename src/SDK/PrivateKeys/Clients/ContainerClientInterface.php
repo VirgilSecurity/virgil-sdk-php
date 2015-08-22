@@ -2,7 +2,7 @@
 
 namespace Virgil\SDK\PrivateKeys\Clients;
 
-use Virgil\SDK\PrivateKeys\Models\VirgilUserData;
+use Virgil\SDK\PrivateKeys\Models\UserData;
 
 interface ContainerClientInterface {
 
@@ -14,7 +14,7 @@ interface ContainerClientInterface {
 
     public function deleteContainer($privateKey, $privateKeyPassword = null);
 
-    public function resetPassword(VirgilUserData $userData, $password);
+    public function resetPassword(UserData $userData, $password);
 
     public function persistContainer($token);
 }

@@ -37,9 +37,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+require_once '../vendor/autoload.php';
+
 use Virgil\SDK\Keys\Client as KeysClient;
 
-require_once '../vendor/autoload.php';
 
 const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';

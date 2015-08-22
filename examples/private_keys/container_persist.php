@@ -36,13 +36,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
-
 require_once '../vendor/autoload.php';
+
+use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_NAME          = 'suhinin.dmitriy@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
+const VIRGIL_CONTAINER_PASSWORD = 'password';
 
 const VIRGIL_CONFIRMATION_TOKEN = 'I9Y6Y0';
 
@@ -58,15 +58,14 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
     // Do service call
     echo 'Call Private Key service to persist Container.' . PHP_EOL;
     $privateKeysClient->getContainerClient()->persistContainer(
         VIRGIL_CONFIRMATION_TOKEN
-    );
-    echo 'Container successfully persisted.' . PHP_EOL;
+    );    echo 'Container successfully persisted.' . PHP_EOL;
 
 } catch (Exception $e) {
 

@@ -36,10 +36,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\Keys\Models\VirgilUserData,
+require_once '../vendor/autoload.php';
+
+use Virgil\SDK\Keys\Models\UserData,
     Virgil\SDK\Keys\Client as KeysClient;
 
-require_once '../vendor/autoload.php';
 
 const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_DATA_CLASS        = 'user_id';
@@ -62,7 +63,7 @@ try {
         'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 
-    $userData = new VirgilUserData();
+    $userData = new UserData();
     $userData->class = VIRGIL_USER_DATA_CLASS;
     $userData->type  = VIRGIL_USER_DATA_TYPE;
     $userData->value = VIRGIL_USER_DATA_VALUE;
@@ -87,7 +88,6 @@ try {
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-
     echo 'User Data instance successfully created in Public Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {

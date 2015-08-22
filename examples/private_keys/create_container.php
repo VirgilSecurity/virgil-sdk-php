@@ -36,19 +36,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
-
 require_once '../vendor/autoload.php';
 
-const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_NAME          = 'suhinin.dmitriy@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
-const VIRGIL_PUBLIC_KEY_ID      = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
-const VIRGIL_CONTAINER_TYPE     = 'normal';
-const VIRGIL_CONTAINER_PASSWORD = 'password';
 
-const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
+const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_NAME            = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
+
+const VIRGIL_CONTAINER_TYPE       = 'normal';
+const VIRGIL_CONTAINER_PASSWORD   = 'password';
+
+const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
 
 try {
 

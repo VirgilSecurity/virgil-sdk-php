@@ -3,8 +3,7 @@
 namespace Virgil\SDK\PrivateKeys\Clients;
 
 use Virgil\SDK\Common\Clients\ApiClient,
-    Virgil\SDK\PrivateKeys\Http\ConnectionInterface,
-    Virgil\SDK\PrivateKeys\Models\VirgilPrivateKey,
+    Virgil\SDK\PrivateKeys\Models\PrivateKey,
     Virgil\SDK\Common\Utils\Sign,
     Virgil\SDK\Common\Utils\GUID;
 
@@ -12,7 +11,7 @@ class PrivateKeysClient extends ApiClient implements PrivateKeysClientInterface 
 
     public function getPrivateKey($publicKeyId) {
 
-        return new VirgilPrivateKey(
+        return new PrivateKey(
             $this->get(
                 'private-key/public-key-id/' . $publicKeyId
             )->getBody()

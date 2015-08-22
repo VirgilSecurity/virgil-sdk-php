@@ -2,7 +2,7 @@
 
 namespace Virgil\SDK\Keys\Models;
 
-class VirgilUserDataType {
+class UserDataType {
 
     private static $_userIdTypes = array(
         'email',

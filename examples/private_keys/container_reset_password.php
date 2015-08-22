@@ -36,20 +36,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient,
-    Virgil\SDK\PrivateKeys\Models\VirgilUserData;
-
 require_once '../vendor/autoload.php';
 
-const VIRGIL_APPLICATION_TOKEN  = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_NAME          = 'suhinin.dmitriy@gmail.com';
-const VIRGIL_USER_PASSWORD      = 'password';
+use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient,
+    Virgil\SDK\PrivateKeys\Models\UserData;
 
-const VIRGIL_USER_DATA_CLASS    = 'user_id';
-const VIRGIL_USER_DATA_TYPE     = 'email';
-const VIRGIL_USER_DATA_VALUE    = 'suhinin.dmitriy@gmail.com';
 
-const VIRGIL_CONTAINER_PASSWORD = 'password';
+const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_USER_NAME              = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_CONTAINER_PASSWORD     = 'password';
+
+const VIRGIL_USER_DATA_CLASS        = 'user_id';
+const VIRGIL_USER_DATA_TYPE         = 'email';
+const VIRGIL_USER_DATA_VALUE        = 'suhinin.dmitriy@gmail.com';
+
+const VIRGIL_NEW_CONTAINER_PASSWORD = 'password';
 
 try {
 
@@ -63,10 +64,10 @@ try {
 
     $privateKeysClient->setAuthCredentials(
         VIRGIL_USER_NAME,
-        VIRGIL_USER_PASSWORD
+        VIRGIL_CONTAINER_PASSWORD
     );
 
-    $userData = new VirgilUserData();
+    $userData = new UserData();
     $userData->class = VIRGIL_USER_DATA_CLASS;
     $userData->type  = VIRGIL_USER_DATA_TYPE;
     $userData->value = VIRGIL_USER_DATA_VALUE;
@@ -75,7 +76,7 @@ try {
     echo 'Call Private Key service to reset Container password.' . PHP_EOL;
     $privateKeysClient->getContainerClient()->resetPassword(
         $userData,
-        VIRGIL_CONTAINER_PASSWORD
+        VIRGIL_NEW_CONTAINER_PASSWORD
     );
     echo 'Container password successfully resetted.' . PHP_EOL;
 

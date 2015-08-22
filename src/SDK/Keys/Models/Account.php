@@ -4,14 +4,14 @@ namespace Virgil\SDK\Keys\Models;
 
 use Virgil\SDK\Common\Models\Base\Model;
 
-class VirgilAccount extends Model {
+class Account extends Model {
 
     public $account_id;
     public $public_keys;
 
     public function __construct(array $data = array()) {
 
-        $this->public_keys = new VirgilPublicKeysCollection();
+        $this->public_keys = new PublicKeysCollection();
 
         if(!empty($data)) {
 
@@ -22,7 +22,7 @@ class VirgilAccount extends Model {
             if(!empty($data['public_keys'])) {
                 foreach($data['public_keys'] as $key) {
                     $this->public_keys->add(
-                        new VirgilPublicKey(
+                        new PublicKey(
                             $key
                         )
                     );

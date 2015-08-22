@@ -2,7 +2,7 @@
 
 namespace Virgil\SDK\Keys\Clients;
 
-use Virgil\SDK\Keys\Models\VirgilUserDataCollection;
+use Virgil\SDK\Keys\Models\UserDataCollection;
 
 interface PublicKeysClientInterface {
 
@@ -10,7 +10,7 @@ interface PublicKeysClientInterface {
 
     public function grabKey($userId, $privateKey = null, $privateKeyPassword = null);
 
-    public function createKey($publicKey, VirgilUserDataCollection $userData, $privateKey , $privateKeyPassword = null);
+    public function createKey($publicKey, UserDataCollection $userData, $privateKey , $privateKeyPassword = null);
 
     public function updateKey($publicKeyId, $publicKey, $privateKey, $privateKeyPassword = null);
 

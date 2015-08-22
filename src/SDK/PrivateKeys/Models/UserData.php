@@ -1,10 +1,10 @@
 <?php
 
-namespace Virgil\SDK\Keys\Models;
+namespace Virgil\SDK\PrivateKeys\Models;
 
 use Virgil\SDK\Common\Models\Base\Model;
 
-class VirgilUserData extends Model {
+class UserData extends Model {
 
     public $id;
     public $class;

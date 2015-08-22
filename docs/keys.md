@@ -118,8 +118,8 @@ echo 'Private and Public keys were successfully generated.' . PHP_EOL;
 ```php
 <?php
 
-use Virgil\SDK\Keys\Models\VirgilUserData,
-    Virgil\SDK\Keys\Models\VirgilUserDataCollection,
+use Virgil\SDK\Keys\Models\UserData,
+    Virgil\SDK\Keys\Models\UserDataCollection,
     Virgil\SDK\Keys\Client as KeysClient;
 
 require_once '../vendor/autoload.php';
@@ -529,7 +529,7 @@ try {
 <?php
 require_once '../vendor/autoload.php';
 
-use Virgil\SDK\Keys\Models\VirgilUserData,
+use Virgil\SDK\Keys\Models\UserData,
     Virgil\SDK\Keys\Client as KeysClient;
 
 

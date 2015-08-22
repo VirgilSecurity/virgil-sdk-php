@@ -3,7 +3,7 @@
 namespace Virgil\SDK\Keys\Clients;
 
 use Virgil\SDK\Common\Clients\ApiClient,
-    Virgil\SDK\Keys\Models\VirgilUserData,
+    Virgil\SDK\Keys\Models\UserData,
     Virgil\SDK\Common\Utils\GUID,
     Virgil\SDK\Common\Utils\Sign;
 
@@ -15,12 +15,12 @@ class UserDataClient extends ApiClient implements UserDataClientInterface {
             'user-data/'. $uuid
         );
 
-        return new VirgilUserData(
+        return new UserData(
             $response->getBody()
         );
     }
 
-    public function createUserData(VirgilUserData $virgilUserData, $privateKey, $privateKeyPassword = null) {
+    public function createUserData(UserData $virgilUserData, $privateKey, $privateKeyPassword = null) {
 
         $request = array(
             'class'             => $virgilUserData->class,
@@ -36,7 +36,7 @@ class UserDataClient extends ApiClient implements UserDataClientInterface {
             $privateKeyPassword
         );
 
-        return new VirgilUserData(
+        return new UserData(
             $this->post(
                 'user-data',
                 $request

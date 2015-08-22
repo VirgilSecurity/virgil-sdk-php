@@ -310,7 +310,7 @@ Private Key object stored in its original form.
 require_once '../vendor/autoload.php';
 
 use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient,
-    Virgil\SDK\PrivateKeys\Models\VirgilUserData;
+    Virgil\SDK\PrivateKeys\Models\UserData;
 
 
 const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';

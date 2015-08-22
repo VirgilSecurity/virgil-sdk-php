@@ -2,7 +2,7 @@
 
 namespace Virgil\SDK\PrivateKeys\Models;
 
-class VirgilContainerType {
+class ContainerType {
 
     private static $_containerTypes = array(
         'easy',

@@ -2,7 +2,7 @@
 
 namespace Virgil\SDK\PrivateKeys\Exception;
 
-class KeyringWebException extends \Exception {
+class WebException extends \Exception {
 
     protected $_errorCode;
     protected $_httpStatusCode;

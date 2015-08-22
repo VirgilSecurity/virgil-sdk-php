@@ -3,9 +3,9 @@
 namespace Virgil\SDK\Keys\Clients;
 
 use Virgil\SDK\Common\Clients\ApiClient,
-    Virgil\SDK\Keys\Models\VirgilPublicKey,
-    Virgil\SDK\Keys\Models\VirgilPublicKeysCollection,
-    Virgil\SDK\Keys\Models\VirgilUserDataCollection,
+    Virgil\SDK\Keys\Models\PublicKey,
+    Virgil\SDK\Keys\Models\PublicKeysCollection,
+    Virgil\SDK\Keys\Models\UserDataCollection,
     Virgil\SDK\Common\Utils\GUID,
     Virgil\SDK\Common\Utils\Sign;
 
@@ -18,7 +18,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
             'public-key/' . $publicKeyId
         );
 
-        return new VirgilPublicKey(
+        return new PublicKey(
             $response->getBody()
         );
     }
@@ -44,7 +44,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
             $request
         );
 
-        $collection = new VirgilPublicKeysCollection();
+        $collection = new PublicKeysCollection();
         $collection->add(
             new VirgilPublicKey(
                 $response->getBody()
@@ -55,7 +55,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
         return $collection;
     }
 
-    public function createKey($publicKey, VirgilUserDataCollection $userData, $privateKey, $privateKeyPassword = null) {
+    public function createKey($publicKey, UserDataCollection $userData, $privateKey, $privateKeyPassword = null) {
 
         $request = array(
             'public_key' => base64_encode(
@@ -72,7 +72,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
             $privateKeyPassword
         );
 
-        return new VirgilPublicKey(
+        return new PublicKey(
             $this->post(
                 'public-key',
                 $request
@@ -105,7 +105,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
             $privateKeyPassword
         );
 
-        return new VirgilPublicKey(
+        return new PublicKey(
             $this->put(
                 'public-key/' . $publicKeyId,
                 $request
@@ -157,7 +157,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
 
     public function persistKey($publicKeyId, $actionToken, $confirmationCodes) {
 
-        return new VirgilPublicKey(
+        return new PublicKey(
             $this->post(
                 'public-key/' . $publicKeyId . '/persist',
                 array(

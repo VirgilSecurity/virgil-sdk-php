@@ -41,10 +41,10 @@ require_once './vendor/autoload.php';
 
 use Virgil\Crypto\VirgilKeyPair;
 
-echo 'Generate keys with with password: "password".' . PHP_EOL;
 
 $key = new VirgilKeyPair('password');
 
+echo 'Generate keys with with password: "password".' . PHP_EOL;
 file_put_contents(
     'data' . DIRECTORY_SEPARATOR . 'new_public.key',
     $key->publicKey()
@@ -54,5 +54,4 @@ file_put_contents(
     'data' . DIRECTORY_SEPARATOR . 'new_private.key',
     $key->privateKey()
 );
-
 echo 'Private and Public keys were successfully generated.' . PHP_EOL;
