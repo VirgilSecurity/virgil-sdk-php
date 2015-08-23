@@ -79,8 +79,10 @@ This section describes common case library usage scenarios, like
 1. Examples MUST be run from their directory.
 2. Before run examples you have to install dependencies (run command ```composer install```)
 3. All results are stored in the "data" directory.
-4. Please before using this examples, go to the [Virgil Security, Inc](https://virgilsecurity.com) and create your first application with Application Token. Please replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
-5. Please reaplce example value of `VIRGIL_USER_DATA_VALUE` to your real email. It needs to confirm some data and invocation of some endpoints inside Public Key service.
+4. Before using this examples, generate Public and Private key's using first Generate keys example.
+5. Go to the [Virgil Security, Inc](https://virgilsecurity.com) and create your first application with Application Token. Please replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
+6. Reaplce example value of `VIRGIL_USER_DATA_VALUE` to your real email. It needs to confirm some data and invocation of some endpoints inside Public Key service.
+7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while you generate Private Key, then just remove it from the method invocations.
 
 ### <a name="example-1"></a> Example 1: Generate keys
 
