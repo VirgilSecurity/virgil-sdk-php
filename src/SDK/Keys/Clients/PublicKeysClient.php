@@ -46,7 +46,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
 
         $collection = new PublicKeysCollection();
         $collection->add(
-            new VirgilPublicKey(
+            new PublicKey(
                 $response->getBody()
             )
         );
