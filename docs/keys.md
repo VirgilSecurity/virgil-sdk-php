@@ -24,13 +24,13 @@
 
 ## Introduction
 
-This branch focuses on the PHP library implementation and covers the following topics:
+This branch focuses on Virgil's PHP library implementation and covers the following topics:
 
   * build prerequisite;
   * build;
-  * usage exmaples.
+  * usage examples.
 
-Common library description can be found [here](https://github.com/VirgilSecurity/virgil).
+Virgil Security's Crypto Stack Library can be found [here](https://github.com/VirgilSecurity/virgil).
 
 ## Build prerequisite
 
@@ -47,16 +47,16 @@ Common library description can be found [here](https://github.com/VirgilSecurity
 
 ## Build
 
-1. Open terminal.
-2. Clone project. ``` git clone https://github.com/VirgilSecurity/virgil.git ```
+1. Open your terminal.
+2. Clone the Virgil Security project. ``` git clone https://github.com/VirgilSecurity/virgil.git ```
 4. Navigate to the project's folder.
 5. ``` cd virgil_lib ```
-6. Create folder for the build purposes. ``` mkdir build ```
+6. Create a folder for the build. ``` mkdir build ```
 7. Navigate to the "build" folder. ``` cd build ```
-8. Configure cmake. Note, replace "../install" path, if you want install library in different location.
+8. Configure cmake. Note, replace "../install" path, if you want to install the library in a different location.
  ``` cmake -DPLATFORM_NAME=PHP -DCMAKE_INSTALL_PREFIX=../install .. ```
-10. Build library. ``` make ```
-11. Install library. ``` make install ```
+10. Build the library. ``` make ```
+11. Install the library. ``` make install ```
 12. Add to your php.ini ```extension=path/to/your/virgil_php.so```, replace ``"path/to/your/virgil_php.so"`` to your path where virgil_php.so extension is located
 
 ## Installation
@@ -69,19 +69,19 @@ php composer.phar install
 
 This section describes common case library usage scenarios, like
 
-  * CRUD operations for the Public Key's;
-  * CRUD operations for Public Key User Data;
-  * Public Key's search functionality;
-  * Public Key's Reset, Persist functionality.
+  * CRUD operations for Virgil's Public Keys;
+  * CRUD operations for Virgil's Public Key User Data;
+  * Virgil's Public Keys search functionality;
+  * Virgil's Public Keys Reset and Persist functionality.
 
 ### General statements
 
 1. Examples MUST be run from their directory.
-2. Before run examples you have to install dependencies (run command ```composer install```)
+2. Before running examples you have to install dependencies (run command ```composer install```)
 3. All results are stored in the "data" directory.
-4. Before using this examples, generate Public and Private key's using first Generate keys example.
-5. Go to the [Virgil Security, Inc](https://virgilsecurity.com) and create your first application with Application Token. Please replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
-6. Reaplce example value of `VIRGIL_USER_DATA_VALUE` to your real email. It needs to confirm some data and invocation of some endpoints inside Public Key service.
+4. Before using these examples, generate Public and Private Keys using the first Generate Keys example.
+5. Go to [Virgil Security, Inc](https://virgilsecurity.com) and create your first application with Application Token. Please replace the example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
+6. Replace the example value of `VIRGIL_USER_DATA_VALUE` to your real email. It needs to confirm some data and invocation of some endpoints inside Public Key service.
 7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while you generate Private Key, then just remove it from the method invocations.
 
 ### <a name="example-1"></a> Example 1: Generate keys
