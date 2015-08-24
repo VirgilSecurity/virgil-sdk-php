@@ -24,7 +24,7 @@
 
 ## Introduction
 
-This branch focuses on the PHP library implementation and covers next topics:
+This branch focuses on the PHP library implementation and covers the following topics:
 
   * build prerequisite;
   * build;
