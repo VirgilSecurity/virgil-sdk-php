@@ -88,8 +88,8 @@ This section describes common case library usage scenarios, like
 
 > **Note:**
 
-> Run the script in the first place to generate Private and Public key's. Optionaly you can specify password for Private Key. 
-If you did this then you have to use it everywhere for `VIRGIL_PRIVATE_KEY_PASSWORD` variable and replace this with your password. If you didn't this then please skip using of `VIRGIL_PRIVATE_KEY_PASSWORD` variable in each eaxmple and remove it from the each action invocation.
+> Run the script to generate Virgil Private and Public Keys. If you prefer, you can specify a password for the Private Key. 
+If you chose to specify a password for the Private Key then you have to use it everywhere for the `VIRGIL_PRIVATE_KEY_PASSWORD` variable and replace this with your password. If you didn't specify the Private Key, then please skip using the `VIRGIL_PRIVATE_KEY_PASSWORD` variable in each eaxmple and remove it from the each action invocation.
 
 ```php
 <?php
@@ -113,9 +113,9 @@ file_put_contents(
 echo 'Private and Public keys were successfully generated.' . PHP_EOL;
 ```
 
-### <a name="example-2"></a> Example 2: Register new user on the Keys service
+### <a name="example-2"></a> Example 2: Register a new user on Virgil's Keys Service
 
-> The Virgil Account will be created implicitly when the first Public Key uploaded. The application can get the information about Public Keys created only for current application. When application uploads new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached to the existing Account instance.
+> A Virgil Account will be created implicitly when the first Public Key uploaded. The application can get the information about Public Keys created only for current application. When application uploads new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached to the existing Account instance.
 
 ```php
 <?php
