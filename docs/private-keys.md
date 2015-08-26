@@ -6,27 +6,27 @@
 - [Installation](#installation)
 - [Examples](#examples)
 - [General statements](#general-statements)
-    - [Example 1: Create new Container object](#example-1)
-    - [Example 2: Get Container object](#example-2)
-    - [Example 3: Delete Container object](#example-3)
-    - [Example 4: Update Container object](#example-4)
-    - [Example 5: Reset Container password](#example-5)
-    - [Example 6: Persist Container object](#example-6)
-    - [Example 7: Create Private Key inside Container object](#example-7)
-    - [Example 8: Get Private Key object](#example-8)
+    - [Example 1: Create New Container Object](#example-1)
+    - [Example 2: Get Container Object](#example-2)
+    - [Example 3: Delete Container Object](#example-3)
+    - [Example 4: Update Container Object](#example-4)
+    - [Example 5: Reset Container Password](#example-5)
+    - [Example 6: Persist Container Object](#example-6)
+    - [Example 7: Create Private Key Inside Container Object](#example-7)
+    - [Example 8: Get Private Key Object](#example-8)
     - [Example 9: Delete Private Key object](#example-9)
 - [License](#license)
 - [Contacts](#contacts)
 
 ## Introduction
 
-This branch focuses on the PHP library implementation and covers next topics:
+This branch focuses on the PHP library implementation and covers the following topics:
 
   * build prerequisite;
   * build;
   * usage exmaples.
 
-Common library description can be found [here](https://github.com/VirgilSecurity/virgil).
+Virgil Security's Common library description can be found [here](https://github.com/VirgilSecurity/virgil).
 
 ## Build prerequisite
 
