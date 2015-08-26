@@ -5,7 +5,7 @@
 - [Build](#build)
 - [Installation](#installation)
 - [Examples](#examples)
-    - [General statements](#general-statements)
+- [General statements](#general-statements)
     - [Example 1: Generate keys](#example-1)
     - [Example 2: Register a new user on Virgil Keys Service](#example-2)
     - [Example 3: Get a user's Public Key from Virgil's Keys Service](#example-3)
