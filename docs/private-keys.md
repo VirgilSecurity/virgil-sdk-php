@@ -5,7 +5,7 @@
 - [Build](#build)
 - [Installation](#installation)
 - [Examples](#examples)
-    - [General statements](#general-statements)
+- [General statements](#general-statements)
     - [Example 1: Create new Container object](#example-1)
     - [Example 2: Get Container object](#example-2)
     - [Example 3: Delete Container object](#example-3)
