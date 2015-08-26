@@ -26,7 +26,7 @@ This branch focuses on the PHP library implementation and covers the following t
   * build;
   * usage exmaples.
 
-Virgil Security's Common Library description can be found [here](https://github.com/VirgilSecurity/virgil).
+Virgil Security's Crypto Library description can be found [here](https://github.com/VirgilSecurity/virgil).
 
 ## Build prerequisite
 
