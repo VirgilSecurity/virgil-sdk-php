@@ -7,18 +7,18 @@
 - [Examples](#examples)
 - [General statements](#general-statements)
     - [Example 1: Generate keys](#example-1)
-    - [Example 2: Register a new user on Virgil Keys Service](#example-2)
-    - [Example 3: Get a user's Public Key from Virgil's Keys Service](#example-3)
-    - [Example 4: Search Public Key data in Virgil's Keys Service](#example-4)
-    - [Example 5: Search Public Key signed data in Virgil's Keys Service](#example-5)
-    - [Example 6: Update Public Key data](#example-6)
-    - [Example 7: Delete Public Key data](#example-7)
+    - [Example 2: Register a New User on Virgil Keys Service](#example-2)
+    - [Example 3: Get a User's Public Key from Virgil Keys Service](#example-3)
+    - [Example 4: Search Public Key Data in Virgil Keys Service](#example-4)
+    - [Example 5: Search Public Key Signed Data in Virgil Keys Service](#example-5)
+    - [Example 6: Update Public Key Data](#example-6)
+    - [Example 7: Delete Public Key Data](#example-7)
     - [Example 8: Reset Public Key](#example-8)
     - [Example 9: Confirm Public Key](#example-9)
     - [Example 10: Create Public Key User Data](#example-10)
     - [Example 11: Remove User Data from a Public Key](#example-11)
     - [Example 12: Confirm User Data](#example-12)
-    - [Example 13: Resend confirmation for User Data](#example-13)
+    - [Example 13: Resend Confirmation for User Data](#example-13)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -100,7 +100,7 @@ use Virgil\Crypto\VirgilKeyPair;
 
 $key = new VirgilKeyPair('password');
 
-echo 'Generate keys with password: "password".' . PHP_EOL;
+echo 'Generate Keys with the password: "password".' . PHP_EOL;
 file_put_contents(
     'data' . DIRECTORY_SEPARATOR . 'new_public.key',
     $key->publicKey()
