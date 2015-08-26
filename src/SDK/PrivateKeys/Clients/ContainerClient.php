@@ -30,8 +30,10 @@ class ContainerClient extends ApiClient implements ContainerClientInterface {
         }
 
         $request = array(
-            'container_type' => $containerType,
-            'password'       => $containerPassword
+            'container_type'    => $containerType,
+            'password'          => $containerPassword,
+            'request_sign_uuid' => GUID::generate()
+
         );
 
         Sign::createRequestSign(
@@ -51,7 +53,10 @@ class ContainerClient extends ApiClient implements ContainerClientInterface {
 
     public function updateContainer($containerType = null, $containerPassword = null, $privateKey, $privateKeyPassword = null) {
 
-        $request = array();
+        $request = array(
+            'request_sign_uuid' => GUID::generate()
+        );
+
         if(!is_null($containerType)) {
             $request['container_type'] = $containerType;
         }

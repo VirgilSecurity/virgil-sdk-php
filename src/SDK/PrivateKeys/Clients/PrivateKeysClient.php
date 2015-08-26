@@ -24,6 +24,7 @@ class PrivateKeysClient extends ApiClient implements PrivateKeysClientInterface 
             'private_key' => base64_encode(
                 $privateKey
             ),
+            'request_sign_uuid' => GUID::generate()
         );
 
         Sign::createRequestSign(
