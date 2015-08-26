@@ -71,22 +71,22 @@ This section describes common case library usage scenarios;
 
 ### General statements
 
-1. This section means that you have already:
-  1. Created Application under [Virgil Security, Inc](https://virgilsecurity.com).
+1. You are ready to work with the PHP Library if you have already:
+  1. Created an Application under [Virgil Security, Inc](https://virgilsecurity.com/dashboard).
   2. Created Private and Public Keys on your local machine.
-  3. Created and confirmed Account under Public Keys service.
-  4. Loaded Public Key to the Public Key service.
-  5. The same email that used for Public Key service.
+  3. Created and confirmed your Account in the Public Keys service.
+  4. Loaded a Public Key to the Public Key service.
+  5. Use same email that you used for the Public Key service.
 2. Examples MUST be run from their directory.
-3. Before run examples you have to install dependencies (run command ```composer install``` or ```php composer.phar install``)
-4. Replace example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
-5. Replace example value of `VIRGIL_USER_NAME` to your real email. It needs to confirm some data and invocation of some endpoints inside Private Key service. This email has to be registered and confirmed under Public Key service.
-6. Replace exmaple value of `VIRGIL_PUBLIC_KEY_ID` to the real Public Key ID value. You can take this value from the Public Keys service when register new Public Key.
-7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while you generate Private Key, then just remove it from the method invocations.
+3. Before running examples you have to install dependencies (run command ```composer install``` or ```php composer.phar install``)
+4. Replace the example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
+5. Replace the example value of `VIRGIL_USER_NAME` with your real email. It needs to confirm some data and invocation of some endpoints inside Private Key service. This email has to be registered and confirmed under Public Key service.
+6. Replace the example value of `VIRGIL_PUBLIC_KEY_ID` with the real Public Key ID value. You can take this value from the Public Keys service when registering a new Public Key.
+7. Replace the example value of `VIRGIL_PRIVATE_KEY_PASSWORD` with the value that you used when you generated the Private Key. If you didn't specify it when you generated the Private Key, then just remove it from the method invocations.
 
-### <a name="example-1"></a> Example 1: Create new Container object
+### <a name="example-1"></a> Example 1: Create a new Container object
 
-> The Container object will be created to store future Private Key's instances.
+> Create a new Container object to store future Private Key's instances.
 
 ```php
 <?php
