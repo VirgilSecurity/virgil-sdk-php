@@ -9,16 +9,16 @@
     - [Example 1: Generate keys](#example-1)
     - [Example 2: Register a new user on Virgil Keys Service](#example-2)
     - [Example 3: Get a user's Public Key from Virgil's Keys Service](#example-3)
-    - [Example 4: Search Public Key data from the Keys service](#example-4)
-    - [Example 5: Search Public Key signed data from the Keys service](#example-5)
+    - [Example 4: Search Public Key data in Virgil's Keys Service](#example-4)
+    - [Example 5: Search Public Key signed data in Virgil's Keys Service](#example-5)
     - [Example 6: Update Public Key data](#example-6)
     - [Example 7: Delete Public Key data](#example-7)
     - [Example 8: Reset Public Key](#example-8)
     - [Example 9: Confirm Public Key](#example-9)
     - [Example 10: Create Public Key User Data](#example-10)
-    - [Example 11: Remove User Data from Public Key](#example-11)
+    - [Example 11: Remove User Data from a Public Key](#example-11)
     - [Example 12: Confirm User Data](#example-12)
-    - [Example 13: Resend confirmation for User Data item](#example-13)
+    - [Example 13: Resend confirmation for User Data](#example-13)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -57,7 +57,7 @@ Virgil Security's Crypto Stack Library can be found [here](https://github.com/Vi
  ``` cmake -DPLATFORM_NAME=PHP -DCMAKE_INSTALL_PREFIX=../install .. ```
 10. Build the library. ``` make ```
 11. Install the library. ``` make install ```
-12. Add to your php.ini ```extension=path/to/your/virgil_php.so```, replace ``"path/to/your/virgil_php.so"`` to your path where virgil_php.so extension is located
+12. Add to your php.ini ```extension=path/to/your/virgil_php.so```, replace ``"path/to/your/virgil_php.so"`` with the path where your virgil_php.so extension is located.
 
 ## Installation
 
@@ -67,7 +67,7 @@ php composer.phar install
 
 ## Examples
 
-This section describes common case library usage scenarios, like
+This section describes common case library usage scenarios.
 
   * CRUD operations for Virgil's Public Keys;
   * CRUD operations for Virgil's Public Key User Data;
@@ -80,8 +80,8 @@ This section describes common case library usage scenarios, like
 2. Before running examples you have to install dependencies (run command ```composer install```)
 3. All results are stored in the "data" directory.
 4. Before using these examples, you must generate Public and Private Keys using the first Generate Keys example below.
-5. Go to [Virgil Security, Inc](https://virgilsecurity.com) sign in and generate a new Application Token. Please replace the example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
-6. Replace the example value of `VIRGIL_USER_DATA_VALUE` with your real email address. It needs to confirm some data and invocation of some endpoints inside Public Key service.
+5. Go to [Virgil Security, Inc](https://virgilsecurity.com) sign in and generate a new Application Token. Please replace the example value of the `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
+6. Replace the example value of `VIRGIL_USER_DATA_VALUE` with your real email address. It needs to confirm some data and invocation of some endpoints inside the Public Key service.
 7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while you generate Private Key, then just remove it from the method invocations.
 
 ### <a name="example-1"></a> Example 1: Generate keys
@@ -100,7 +100,7 @@ use Virgil\Crypto\VirgilKeyPair;
 
 $key = new VirgilKeyPair('password');
 
-echo 'Generate keys with with password: "password".' . PHP_EOL;
+echo 'Generate keys with password: "password".' . PHP_EOL;
 file_put_contents(
     'data' . DIRECTORY_SEPARATOR . 'new_public.key',
     $key->publicKey()
@@ -110,12 +110,12 @@ file_put_contents(
     'data' . DIRECTORY_SEPARATOR . 'new_private.key',
     $key->privateKey()
 );
-echo 'Private and Public keys were successfully generated.' . PHP_EOL;
+echo 'Private and Public Keys were successfully generated.' . PHP_EOL;
 ```
 
 ### <a name="example-2"></a> Example 2: Register a new user on Virgil's Keys Service
 
-> A Virgil Account will be created implicitly when the first Public Key uploaded. The application can get the information about Public Keys created only for current application. When application uploads new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached to the existing Account instance.
+> A Virgil Account will be created when the first Public Key is uploaded. The application can get the information about Public Keys created only for the current application. When application uploads new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached to the existing Account instance.
 
 ```php
 <?php
@@ -153,24 +153,24 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to create Public Key instance.' . PHP_EOL;
+    echo 'Call Keys Service to create a Public Key instance.' . PHP_EOL;
     $publicKey = $keysClient->getPublicKeysClient()->createKey(
         $publicKey,
         $userDataCollection,
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-    echo 'Public Key instance successfully created in Public Keys service.' . PHP_EOL;
+    echo 'A Public Key instance was successfully created in Virgil's Public Keys Service.' . PHP_EOL;
 
 } catch (Exception $e) {
 
@@ -178,9 +178,9 @@ try {
 }
 ```
 
-### <a name="example-3"></a> Example 3: Get user's Public Key from the Keys service
+### <a name="example-3"></a> Example 3: Get a user's Public Key from Virgil's Keys Service
 
-> Action purpose is to get Public Key’s data.
+> Purpose is to get a Public Key’s data.
 
 ```php
 <?php
@@ -200,7 +200,7 @@ try {
     );
 
     // Do service call
-    echo 'Call Keys service to get Public Key instance.' . PHP_EOL;
+    echo 'Call Keys Service to get a Public Key.' . PHP_EOL;
     $publicKey = $keysClient->getPublicKeysClient()->getKey(
         VIRGIL_PUBLIC_KEY_ID
     );
@@ -212,9 +212,9 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Search Public Key data from the Keys service
+### <a name="example-4"></a> Example 4: Search Public Key data from Virgil's Keys Service
 
-> Action purpose is to search public keys by UDID values.
+> The purpose is to search for Public Keys by UDID values.
 
 ```php
 <?php
@@ -233,11 +233,11 @@ try {
     );
 
     // Do service call
-    echo 'Call Keys service to search Public Key instance.' . PHP_EOL;
+    echo 'Call Keys Service to search a Public Key instance.' . PHP_EOL;
     $result = $keysClient->getPublicKeysClient()->grabKey(
         VIRGIL_USER_DATA_VALUE
     );
-    echo 'Public Key instance successfully searched in Keys service.' . PHP_EOL;
+    echo 'Public Key instance successfully searched in Keys Service.' . PHP_EOL;
 
 } catch (Exception $e) {
 
@@ -245,15 +245,15 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Search Public Key signed data from the Keys service
+### <a name="example-5"></a> Example 5: Search Public Key signed data from the Keys Service
 
-> Action purpose is to search public keys by UDID values.
+> The purpose is to search Public Keys by UDID values.
 
 > **Note:**
 
-> If signed version of the action is used, the public key will be returned with all user_data items for this Public Key.
+> If a signed version of the action is used, the Public Key will be returned with all of the user_data items for this Public Key.
 
-> If signed version of the action is used request value parameter is ignored.
+> If a signed version of the action is used, the request value parameter is ignored.
 
 ```php
 <?php
@@ -303,7 +303,7 @@ try {
 
 ### <a name="example-6"></a> Example 6: Update Public Key data
 
-> Action purpose is to update public key’s data.
+> The purpose is to update a Public Key’s data.
 
 > **Note:**
 
@@ -335,16 +335,16 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
    echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to update Public Key instance.' . PHP_EOL;
+    echo 'Call Keys Service to update the Public Key instance.' . PHP_EOL;
     $publicKey = $keysClient->getPublicKeysClient()->updateKey(
         VIRGIL_PUBLIC_KEY_ID,
         $publicKey,
@@ -361,13 +361,13 @@ try {
 
 ### <a name="example-7"></a> Example 7: Delete Public Key data
 
-> Action purpose is to remove public key’s data.
+> The purpose is to remove a Public Key’s data.
 
 > **Note:**
 
-> If signed version of the action is used, the public key will be removed immediately without any confirmation.
+> If a signed version of the action is used, the Public Key will be removed immediately without any confirmation.
 
-> If unsigned version of the action is used the confirmation is required. The action will return action_token response object property and will send confirmation tokens on all public key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit public key remove call persistKey() action with action_token value and the list of confirmation codes.
+> If an unsigned version of the action is used, confirmation is required. The action will return an action_token response object and will send confirmation tokens to all of the Public Key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit public key remove call persistKey() action with action_token value and the list of confirmation codes.
 
 ```php
 <?php
@@ -394,17 +394,17 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to delete Public Key instance.' . PHP_EOL;
+    echo 'Call Keys Service to delete a Public Key instance.' . PHP_EOL;
     $result = $keysClient->getPublicKeysClient()->deleteKey(
         $publicKey,
         $privateKey,
@@ -418,9 +418,9 @@ try {
 }
 ```
 
-### <a name="example-8"></a> Example 8: Reset Public Key
+### <a name="example-8"></a> Example 8: Reset a Public Key
 
-> Action purpose is to reset user’s public key’s data if user lost his Private Key.
+> The purpose is to reset a User’s Public Keys data if the User lost his/her Private Key.
 
 > **Note:**
 
