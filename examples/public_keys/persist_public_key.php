@@ -50,10 +50,7 @@ try {
 
     // Create Keys Service HTTP Client
     $keysClient = new KeysClient(
-        VIRGIL_APPLICATION_TOKEN,
-        array(
-            'base_url' => 'https://keys-stg.virgilsecurity.com'
-        )
+        VIRGIL_APPLICATION_TOKEN
     );
 
     // Do service call

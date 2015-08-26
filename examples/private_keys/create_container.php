@@ -53,10 +53,7 @@ try {
 
     // Create Keys Service HTTP Client
     $privateKeysClient = new PrivateKeysClient(
-        VIRGIL_APPLICATION_TOKEN,
-        array(
-            'base_url' => 'https://keyring-stg.virgilsecurity.com'
-        )
+        VIRGIL_APPLICATION_TOKEN
     );
 
     $privateKeysClient->setHeaders(array(
