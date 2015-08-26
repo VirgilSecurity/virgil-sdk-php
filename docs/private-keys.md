@@ -6,13 +6,13 @@
 - [Installation](#installation)
 - [Examples](#examples)
 - [General statements](#general-statements)
-    - [Example 1: Create New Container Object](#example-1)
+    - [Example 1: Create a New Container Object](#example-1)
     - [Example 2: Get Container Object](#example-2)
     - [Example 3: Delete Container Object](#example-3)
     - [Example 4: Update Container Object](#example-4)
     - [Example 5: Reset Container Password](#example-5)
     - [Example 6: Persist Container Object](#example-6)
-    - [Example 7: Create Private Key Inside Container Object](#example-7)
+    - [Example 7: Create a Private Key Inside Container Object](#example-7)
     - [Example 8: Get Private Key Object](#example-8)
     - [Example 9: Delete Private Key object](#example-9)
 - [License](#license)
@@ -71,12 +71,12 @@ This section describes common case library usage scenarios;
 
 ### General statements
 
-1. You are ready to work with the PHP Library if you have already:
+1. You are ready to work with the PHP Library if you:
   1. Created an Application under [Virgil Security, Inc](https://virgilsecurity.com/dashboard).
   2. Created Private and Public Keys on your local machine.
   3. Created and confirmed your Account in the Public Keys service.
   4. Loaded a Public Key to the Public Key service.
-  5. Use same email that you used for the Public Key service.
+  5. Use the same email that you used for the Public Key service.
 2. Examples MUST be run from their directory.
 3. Before running examples you have to install dependencies (run command ```composer install``` or ```php composer.phar install``)
 4. Replace the example value of `VIRGIL_APPLICATION_TOKEN` variable with your real Application token.
