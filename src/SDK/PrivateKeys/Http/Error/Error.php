@@ -39,6 +39,9 @@ class Error extends CommonError {
         60004 => 'Verification error. Verification token hash expired',
 
         70001 => 'Application Token error. Application token invalid',
-        70002 => 'Application Token error. Application token service error'
+        70002 => 'Application Token error. Application token service error',
+
+        80001 => 'UUID(`request_sign_uuid`) request parameter validation failed',
+        80002 => 'UUID(`request_sign_uuid`) has already used in another call. Please generate another one.'
     );
 }
