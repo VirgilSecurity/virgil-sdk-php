@@ -11,8 +11,8 @@
     - [Example 3: Get a user's Public Key from Virgil's Keys Service](#example-3)
     - [Example 4: Search Public Key data in Virgil's Keys Service](#example-4)
     - [Example 5: Search Public Key signed data in Virgil's Keys Service](#example-5)
-    - [Example 6: Update Public Key data](#example-6)
-    - [Example 7: Delete Public Key data](#example-7)
+    - [Example 6: Update Public Key Data](#example-6)
+    - [Example 7: Delete Public Key Data](#example-7)
     - [Example 8: Reset Public Key](#example-8)
     - [Example 9: Confirm Public Key](#example-9)
     - [Example 10: Create Public Key User Data](#example-10)
@@ -100,7 +100,7 @@ use Virgil\Crypto\VirgilKeyPair;
 
 $key = new VirgilKeyPair('password');
 
-echo 'Generate keys with password: "password".' . PHP_EOL;
+echo 'Generate Keys with the password: "password".' . PHP_EOL;
 file_put_contents(
     'data' . DIRECTORY_SEPARATOR . 'new_public.key',
     $key->publicKey()
