@@ -113,9 +113,9 @@ file_put_contents(
 echo 'Private and Public Keys were successfully generated.' . PHP_EOL;
 ```
 
-### <a name="example-2"></a> Example 2: Register a new user on Virgil's Keys Service
+### <a name="example-2"></a> Example 2: Register a New User on Virgil's Keys Service
 
-> A Virgil Account will be created when the first Public Key is uploaded. The application can get the information about Public Keys created only for the current application. When application uploads new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached to the existing Account instance.
+> A Virgil Account will be created when the first Public Key is uploaded. An application can only get information about Public Keys created for the current application. When the application uploads a new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached it to the existing Account instance.
 
 ```php
 <?php
@@ -178,9 +178,9 @@ try {
 }
 ```
 
-### <a name="example-3"></a> Example 3: Get a user's Public Key from Virgil's Keys Service
+### <a name="example-3"></a> Example 3: Get a User's Public Key from Virgil's Keys Service
 
-> Purpose is to get a Public Key’s data.
+> Get a Public Key’s data.
 
 ```php
 <?php
@@ -212,9 +212,9 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Search Public Key data from Virgil's Keys Service
+### <a name="example-4"></a> Example 4: Search Public Key data within Virgil's Keys Service
 
-> The purpose is to search for Public Keys by UDID values.
+> Search for Public Keys by UDID values.
 
 ```php
 <?php
@@ -245,9 +245,9 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Search Public Key signed data from the Keys Service
+### <a name="example-5"></a> Example 5: Search Public Key Signed Data from the Keys Service
 
-> The purpose is to search Public Keys by UDID values.
+> Search Public Keys by UDID values.
 
 > **Note:**
 
