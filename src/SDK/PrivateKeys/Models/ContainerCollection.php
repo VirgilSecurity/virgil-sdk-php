@@ -6,7 +6,7 @@ use Virgil\SDK\Common\Models\Base\Collection;
 
 class ContainerCollection extends Collection {
 
-    public function add(PrivateKey $object) {
+    public function add($object) {
 
         parent::add($object);
     }
