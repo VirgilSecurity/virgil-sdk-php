@@ -679,7 +679,7 @@ try {
 }
 ```
 
-### <a name="example-13"></a> Example 13: Confirm User Data
+### <a name="example-13"></a> Example 13: Resend a User's Confirmation Code
 
 > Resend a User's confirmation code.
 
