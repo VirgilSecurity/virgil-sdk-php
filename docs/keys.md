@@ -253,8 +253,6 @@ try {
 
 > If a signed version of the action is used, the Public Key will be returned with all of the user_data items for this Public Key.
 
-> If a signed version of the action is used, the request value parameter is ignored.
-
 ```php
 <?php
 require_once '../vendor/autoload.php';
