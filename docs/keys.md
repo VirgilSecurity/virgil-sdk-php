@@ -212,7 +212,7 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Search Public Key data within Virgil's Keys Service
+### <a name="example-4"></a> Example 4: Search Public Key Data within Virgil's Keys Service
 
 > Search for Public Keys by UDID values.
 
@@ -357,7 +357,7 @@ try {
 }
 ```
 
-### <a name="example-7"></a> Example 7: Delete Public Key data
+### <a name="example-7"></a> Example 7: Delete Public Key Data
 
 > The purpose is to remove a Public Key’s data.
 
@@ -471,7 +471,7 @@ try {
 }
 ```
 
-### <a name="example-9"></a> Example 9: Confirm Public Key
+### <a name="example-9"></a> Example 9: Confirm a Public Key
 
 > Confirm a Public Key’s data.
 
@@ -584,7 +584,7 @@ try {
 }
 ```
 
-### <a name="example-11"></a> Example 11: Delete User Data from Public Key
+### <a name="example-11"></a> Example 11: Delete User Data from the Public Key
 
 > Remove user data item from the Public Key.
 
