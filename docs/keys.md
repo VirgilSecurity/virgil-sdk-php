@@ -479,7 +479,7 @@ try {
 
 > Confirm a Public Key’s data if the X-VIRGILREQUEST-SIGN HTTP header was omitted on deleteKey() action or resetKey action was invoked.
 
-> In this case user must collect all the confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well as action_token parameter received on previous action.
+> In this case, the User must collect all the confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well as action_token parameter received on previous action.
 
 ```php
 <?php
@@ -586,7 +586,7 @@ try {
 
 ### <a name="example-11"></a> Example 11: Delete User Data from Public Key
 
-> The action purpose is to remove user data item from the public key.
+> Remove user data item from the Public Key.
 
 ```php
 <?php
@@ -615,14 +615,14 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
     echo 'Call Keys service to delete User Data instance.' . PHP_EOL;
@@ -641,7 +641,7 @@ try {
 
 ### <a name="example-12"></a> Example 12: Confirm User Data
 
-> The action purpose is to confirm user data item.
+> Confirm User Data item.
 
 ```php
 <?php
@@ -681,7 +681,7 @@ try {
 
 ### <a name="example-13"></a> Example 13: Confirm User Data
 
-> The action purpose is to resend user confirmation code.
+> Resend a User's confirmation code.
 
 ```php
 <?php
@@ -710,14 +710,14 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
     echo 'Call Keys service to resend confirmation.' . PHP_EOL;
