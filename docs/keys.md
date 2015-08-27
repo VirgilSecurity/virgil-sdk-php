@@ -299,13 +299,13 @@ try {
 }
 ```
 
-### <a name="example-6"></a> Example 6: Update Public Key data
+### <a name="example-6"></a> Example 6: Update Public Key Data
 
-> The purpose is to update a Public Key’s data.
+> Update a Public Key’s data.
 
 > **Note:**
 
-> User still controls the Public/Private Keys pair and provides request sign for authentication purposes. That’s why user authorisation is required via X-VIRGIL-REQUEST-SIGN HTTP header. Public Key modification takes place immediately after action invocation.
+> User still controls the Public/Private Keys pair and provides requested signature for authentication purposes. That’s why user authorisation is required via X-VIRGIL-REQUEST-SIGN HTTP header. Public Key modification takes place immediately after action invocation.
 
 ```php
 <?php
@@ -365,7 +365,7 @@ try {
 
 > If a signed version of the action is used, the Public Key will be removed immediately without any confirmation.
 
-> If an unsigned version of the action is used, confirmation is required. The action will return an action_token response object and will send confirmation tokens to all of the Public Key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit public key remove call persistKey() action with action_token value and the list of confirmation codes.
+> If an unsigned version of the action is used, confirmation is required. The action will return an action_token response object and will send confirmation tokens to all of the Public Key’s confirmed UDIDs. The list of masked UDID’s will be returned in user_ids response object property. To commit a Public Key remove call persistKey() action with action_token value and the list of confirmation codes.
 
 ```php
 <?php
@@ -418,11 +418,11 @@ try {
 
 ### <a name="example-8"></a> Example 8: Reset a Public Key
 
-> The purpose is to reset a User’s Public Keys data if the User lost his/her Private Key.
+> Reset a User’s Public Keys data if the User lost his/her Private Key.
 
 > **Note:**
 
-> After action invocation the user will receive the confirmation tokens on all his confirmed UDIDs. The Public Key data won’t be updated until call persistKey() action is invoked with token value from this step and confirmation codes sent to UDIDs. The list of UDIDs used as confirmation tokens recipients will be listed asuser_ids response parameters.
+> After action invocation the user will receive the confirmation tokens on all his confirmed UDIDs. The Public Key data won’t be updated until the call persistKey() action is invoked with the token value from this step and confirmation codes sent to UDIDs. The list of UDIDs used as confirmation tokens recipients will be listed as user_ids response parameters.
 
 ```php
 <?php
@@ -446,24 +446,24 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to reset Public Key instance.' . PHP_EOL;
+    echo 'Call Keys Service to reset Public Key instance.' . PHP_EOL;
     $result = $keysClient->getPublicKeysClient()->resetKey(
         VIRGIL_PUBLIC_KEY_ID,
         $publicKey,
         $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-    echo 'Public Key instance successfully resetted.' . PHP_EOL;
+    echo 'Public Key instance successfully reset.' . PHP_EOL;
 
 } catch (Exception $e) {
 
@@ -473,13 +473,13 @@ try {
 
 ### <a name="example-9"></a> Example 9: Confirm Public Key
 
-> The action purpose is to confirm public key’s data.
+> Confirm a Public Key’s data.
 
 > **Note:**
 
-> Confirm public key’s data if X-VIRGILREQUEST-SIGN HTTP header was omitted on deleteKey() action or resetKey action was invoked.
+> Confirm a Public Key’s data if the X-VIRGILREQUEST-SIGN HTTP header was omitted on deleteKey() action or resetKey action was invoked.
 
-> In this case user must collect all confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well ac action_token parameter received on previous action.
+> In this case user must collect all the confirmation codes sent to all confirmed UDIDs and specify them in the request body in confirmation_codes parameter as well as action_token parameter received on previous action.
 
 ```php
 <?php
@@ -519,7 +519,7 @@ try {
 
 ### <a name="example-10"></a> Example 10: Create Public Key User Data
 
-> The acction's purpose is to append UDIDs and UDINFOs to the Public Keys for the current application.
+> Append UDIDs and UDINFOs to Public Keys for the current application.
 
 > **Note:**
 
@@ -560,14 +560,14 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
     echo 'Call Keys service to create User Data instance.' . PHP_EOL;
