@@ -59,7 +59,7 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;

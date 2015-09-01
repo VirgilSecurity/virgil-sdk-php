@@ -62,14 +62,14 @@ try {
     $publicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully readed.' . PHP_EOL;
+    echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
     echo 'Call Keys service to resend confirmation.' . PHP_EOL;

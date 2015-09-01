@@ -42,7 +42,7 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient;
 
 
 const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_NAME            = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_USER_NAME            = 'example.email@gmail.com';
 const VIRGIL_CONTAINER_PASSWORD   = 'password';
 const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
@@ -67,7 +67,7 @@ try {
     $privateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully readed.' . PHP_EOL;
+    echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
     echo 'Call Private Key service to delete Container instance.' . PHP_EOL;

@@ -43,12 +43,12 @@ use Virgil\SDK\PrivateKeys\Client as PrivateKeysClient,
 
 
 const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_USER_NAME              = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_USER_NAME              = 'example.email@gmail.com';
 const VIRGIL_CONTAINER_PASSWORD     = 'password';
 
 const VIRGIL_USER_DATA_CLASS        = 'user_id';
 const VIRGIL_USER_DATA_TYPE         = 'email';
-const VIRGIL_USER_DATA_VALUE        = 'suhinin.dmitriy@gmail.com';
+const VIRGIL_USER_DATA_VALUE        = 'example.email@gmail.com';
 
 const VIRGIL_NEW_CONTAINER_PASSWORD = 'password';
 
