@@ -102,12 +102,12 @@ $key = new VirgilKeyPair('password');
 
 echo 'Generate Keys with the password: "password".' . PHP_EOL;
 file_put_contents(
-    'data' . DIRECTORY_SEPARATOR . 'new_public.key',
+    'data' . DIRECTORY_SEPARATOR . 'public.key',
     $key->publicKey()
 );
 
 file_put_contents(
-    'data' . DIRECTORY_SEPARATOR . 'new_private.key',
+    'data' . DIRECTORY_SEPARATOR . 'private.key',
     $key->privateKey()
 );
 echo 'Private and Public Keys were successfully generated.' . PHP_EOL;
@@ -151,14 +151,14 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 
@@ -278,7 +278,7 @@ try {
 
     echo 'Read Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data' . DIRECTORY_SEPARATOR . 'new_private.key'
+        '../data' . DIRECTORY_SEPARATOR . 'private.key'
     );
     echo 'Private Key is:' . PHP_EOL;
     echo $privateKey . PHP_EOL;
@@ -329,24 +329,38 @@ try {
         'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 
-    echo 'Reading Public Key.' . PHP_EOL;
-    $publicKey = file_get_contents(
+    echo 'Reading Old Public Key.' . PHP_EOL;
+    $oldPublicKey = file_get_contents(
+        '../data/public.key'
+    );
+    echo 'Old Public Key data successfully read.' . PHP_EOL;
+
+    echo 'Reading Old Private Key.' . PHP_EOL;
+    $oldPrivateKey = file_get_contents(
+        '../data/private.key'
+    );
+    echo 'Old Private Key data successfully read.' . PHP_EOL;
+
+    echo 'Reading New Public Key.' . PHP_EOL;
+    $newPublicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully read.' . PHP_EOL;
+    echo 'New Public Key data successfully read.' . PHP_EOL;
 
-   echo 'Reading Private Key.' . PHP_EOL;
-    $privateKey = file_get_contents(
+    echo 'Reading New Private Key.' . PHP_EOL;
+    $newPrivateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully read.' . PHP_EOL;
+    echo 'New Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
     echo 'Call Keys Service to update the Public Key instance.' . PHP_EOL;
     $publicKey = $keysClient->getPublicKeysClient()->updateKey(
         VIRGIL_PUBLIC_KEY_ID,
-        $publicKey,
-        $privateKey,
+        $oldPublicKey,
+        $oldPrivateKey,
+        $newPublicKey,
+        $newPrivateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
     echo 'Public Key instance successfully updated in Public Keys service.' . PHP_EOL;
@@ -390,14 +404,14 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 
@@ -444,14 +458,14 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 
@@ -558,14 +572,14 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 
@@ -613,14 +627,14 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 
@@ -708,14 +722,13 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
-
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 

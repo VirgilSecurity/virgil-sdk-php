@@ -49,7 +49,6 @@ class PublicKeyHelper extends BaseHelper {
     public static function grab($userDataValue, $publicKeyId = null, $privateKey = null, $privateKeyPassword = null) {
 
         $keysClient = self::getKeysClient();
-
         if(!is_null($publicKeyId)) {
             $keysClient->setHeaders(array(
                 'X-VIRGIL-REQUEST-SIGN-PK-ID' => $publicKeyId
@@ -60,6 +59,24 @@ class PublicKeyHelper extends BaseHelper {
             $userDataValue,
             $privateKey,
             $privateKeyPassword
+        );
+    }
+
+    public static function update($publicKeyId, $oldPublicKey, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
+
+        $keysClient = self::getKeysClient();
+        $keysClient->setHeaders(array(
+            'X-VIRGIL-REQUEST-SIGN-PK-ID' => $publicKeyId
+        ));
+
+        return $keysClient->getPublicKeysClient()->updateKey(
+            $publicKeyId,
+            $oldPublicKey,
+            $oldPrivateKey,
+            $newPublicKey,
+            $newPrivateKey,
+            $oldPrivateKeyPassword,
+            $newPrivateKeyPassword
         );
     }
 } 

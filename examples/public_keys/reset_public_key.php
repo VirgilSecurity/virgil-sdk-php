@@ -54,14 +54,14 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 

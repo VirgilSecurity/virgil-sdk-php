@@ -1,11 +1,8 @@
 <?php
 
-use Virgil\Crypto\VirgilKeyPair;
+class UpdatePublicKeyTest extends PHPUnit_Framework_TestCase {
 
-class GetPublicKeyTest extends PHPUnit_Framework_TestCase {
-
-
-    public function test_Should_Get_PublicKey() {
+    public function test_Should_Update_PublicKey() {
 
         PublicKeyHelper::setupPublicKey();
 
@@ -19,13 +16,17 @@ class GetPublicKeyTest extends PHPUnit_Framework_TestCase {
             MailinatorHelper::fetchMessage()
         );
 
-        $publicKey = PublicKeyHelper::get(
-            $publicKey->publicKeyId
+        $publicKey = PublicKeyHelper::update(
+            $publicKey->publicKeyId,
+            Constants::VIRGIL_PUBLIC_KEY,
+            Constants::VIRGIL_PRIVATE_KEY,
+            Constants::VIRGIL_PUBLIC_KEY_NEW,
+            Constants::VIRGIL_PRIVATE_KEY_NEW
         );
 
         $this->assertEquals(
-            Constants::VIRGIL_PUBLIC_KEY,
+            Constants::VIRGIL_PUBLIC_KEY_NEW,
             $publicKey->publicKey
         );
     }
-}
+} 

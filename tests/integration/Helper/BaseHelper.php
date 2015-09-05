@@ -26,5 +26,17 @@ class BaseHelper {
                 Constants::VIRGIL_PRIVATE_KEY
             );
         } catch(Exception $ex) {}
+
+        try {
+            $publicKey = PublicKeyHelper::grab(
+                Constants::VIRGIL_USER_DATA_VALUE
+            );
+
+            PublicKeyHelper::delete(
+                $publicKey->get(0)->publicKeyId,
+                Constants::VIRGIL_PRIVATE_KEY_NEW
+            );
+        } catch(Exception $ex) {}
+
     }
 } 

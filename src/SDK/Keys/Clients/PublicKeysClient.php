@@ -80,20 +80,20 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
         );
     }
 
-    public function updateKey($publicKeyId, $publicKey, $privateKey, $privateKeyPassword = null) {
+    public function updateKey($publicKeyId, $oldPublicKey, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
 
         $requestSignUUID = GUID::generate();
         $request = array(
             'request_sign_uuid' => $requestSignUUID,
             'public_key' => base64_encode(
-                $publicKey
+                $newPublicKey
             ),
             'uuid_sign' =>
                 base64_encode(
                     Sign::createSign(
                         $requestSignUUID,
-                        $privateKey,
-                        $privateKeyPassword
+                        $newPrivateKey,
+                        $newPrivateKeyPassword
                     )
                 )
         );
@@ -101,8 +101,8 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
         Sign::createRequestSign(
             $this->getConnection(),
             $request,
-            $privateKey,
-            $privateKeyPassword
+            $oldPrivateKey,
+            $oldPrivateKeyPassword
         );
 
         return new PublicKey(

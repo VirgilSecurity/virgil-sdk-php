@@ -49,4 +49,29 @@ class MailinatorHelper {
         $query = $this->call('email',array('id' => $msgId));
         return $query["data"];
     }
+
+    public static function fetchMessage() {
+
+        sleep(5);
+
+        $mailClient = new MailinatorHelper(
+            Constants::VIRGIL_MAILINATOR_TOKEN
+        );
+
+        $messages = $mailClient->fetchInbox(
+            Constants::VIRGIL_USER_DATA_VALUE
+        );
+        $message  = array_pop($messages);
+        $messageContent = $mailClient->fetchMail(
+            $message['id']
+        );
+
+        preg_match(
+            '/<b style="font-weight: bold;">([0-9a-z]{6})<\/b>/i',
+            $messageContent['parts'][0]['body'],
+            $matches
+        );
+
+        return trim($matches['1']);
+    }
 }

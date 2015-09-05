@@ -11,29 +11,9 @@ class GrabPublicKeyTest extends PHPUnit_Framework_TestCase {
             Constants::VIRGIL_PUBLIC_KEY
         );
 
-        sleep(5);
-
-        $mailClient = new MailinatorHelper(
-            Constants::VIRGIL_MAILINATOR_TOKEN
-        );
-
-        $messages = $mailClient->fetchInbox(
-            Constants::VIRGIL_USER_DATA_VALUE
-        );
-        $message  = array_pop($messages);
-        $messageContent = $mailClient->fetchMail(
-            $message['id']
-        );
-
-        preg_match(
-            '/<b style="font-weight: bold;">([0-9a-z]{6})<\/b>/i',
-            $messageContent['parts'][0]['body'],
-            $matches
-        );
-
         UserDataHelper::persist(
             $publicKey->userData->get(0)->id->userDataId,
-            trim($matches[1])
+            MailinatorHelper::fetchMessage()
         );
 
         $publicKey = PublicKeyHelper::grab(
@@ -55,33 +35,9 @@ class GrabPublicKeyTest extends PHPUnit_Framework_TestCase {
             Constants::VIRGIL_PUBLIC_KEY
         );
 
-        sleep(5);
-
-        $mailClient = new MailinatorHelper(
-            Constants::VIRGIL_MAILINATOR_TOKEN
-        );
-
-        $messages = $mailClient->fetchInbox(
-            Constants::VIRGIL_USER_DATA_VALUE
-        );
-        $message  = array_pop($messages);
-        $messageContent = $mailClient->fetchMail(
-            $message['id']
-        );
-
-        preg_match(
-            '/<b style="font-weight: bold;">([0-9a-z]{6})<\/b>/i',
-            $messageContent['parts'][0]['body'],
-            $matches
-        );
-
         UserDataHelper::persist(
             $publicKey->userData->get(0)->id->userDataId,
-            trim($matches[1])
-        );
-
-        $publicKey = PublicKeyHelper::get(
-            $publicKey->publicKeyId
+            MailinatorHelper::fetchMessage()
         );
 
         $publicKey = PublicKeyHelper::grab(

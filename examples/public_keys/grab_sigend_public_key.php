@@ -60,7 +60,7 @@ try {
 
     echo 'Read Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data' . DIRECTORY_SEPARATOR . 'new_private.key'
+        '../data' . DIRECTORY_SEPARATOR . 'private.key'
     );
     echo 'Private Key is:' . PHP_EOL;
     echo $privateKey . PHP_EOL;
