@@ -34,10 +34,17 @@
     ],
     "require": {
         "virgil/crypto": "dev-master",
-        "guzzlehttp/guzzle": "5.3.0"
+        "guzzlehttp/guzzle": "5.3.0",
+        "phpunit/phpunit": "4.8.*"
     },
     "minimum-stability": "dev",
     "autoload": {
+        "classmap": [
+            "tests/integration/Data/Constants.php",
+            "tests/integration/Helper/PublicKeyHelper.php",
+            "tests/integration/Helper/UserDataHelper.php",
+            "tests/integration/Helper/MailinatorHelper.php"
+        ],
         "psr-4": {
             "Virgil\\": "src/"
         }
