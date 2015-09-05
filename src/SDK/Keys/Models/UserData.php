@@ -29,6 +29,8 @@ class UserData extends Model {
                 $this->id->userDataId = $data['id']['user_data_id'];
             }
 
+            unset($data['id']);
+
             foreach($data as $field => $value) {
                 $field = $this->toCamelcase(
                     $field
