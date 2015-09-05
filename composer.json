@@ -41,6 +41,7 @@
     "autoload": {
         "classmap": [
             "tests/integration/Data/Constants.php",
+            "tests/integration/Helper/BaseHelper.php",
             "tests/integration/Helper/PublicKeyHelper.php",
             "tests/integration/Helper/UserDataHelper.php",
             "tests/integration/Helper/MailinatorHelper.php"

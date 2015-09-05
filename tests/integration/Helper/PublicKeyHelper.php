@@ -1,21 +1,11 @@
 <?php
 
 use Virgil\SDK\Keys\Models\UserData,
-    Virgil\SDK\Keys\Models\UserDataCollection,
-    Virgil\SDK\Keys\Client as KeysClient;
+    Virgil\SDK\Keys\Models\UserDataCollection;
 
-class PublicKeyHelper {
-
+class PublicKeyHelper extends BaseHelper {
 
     public static function create($privateKey, $publicKey, $privateKeyPassword = null) {
-
-        // Create Keys Service HTTP Client
-        $keysClient = new KeysClient(
-            Constants::VIRGIL_APPLICATION_TOKEN,
-            array(
-                'base_url' => Constants::VIRGIL_KEYS_BASE_URL
-            )
-        );
 
         $userData = new UserData();
         $userData->class = Constants::VIRGIL_USER_DATA_CLASS;
@@ -27,7 +17,7 @@ class PublicKeyHelper {
             $userData
         );
 
-        return $keysClient->getPublicKeysClient()->createKey(
+        return self::getKeysClient()->getPublicKeysClient()->createKey(
             $publicKey,
             $userDataCollection,
             $privateKey,
@@ -37,15 +27,29 @@ class PublicKeyHelper {
 
     public static function get($publicKeyId) {
 
-        $keysClient = new KeysClient(
-            Constants::VIRGIL_APPLICATION_TOKEN,
-            array(
-                'base_url' => Constants::VIRGIL_KEYS_BASE_URL
-            )
-        );
-
-        return $keysClient->getPublicKeysClient()->getKey(
+        return self::getKeysClient()->getPublicKeysClient()->getKey(
             $publicKeyId
+        );
+    }
+
+    public static function delete($publicKeyId, $privateKey, $privateKeyPassword = null) {
+
+        $keysClient = self::getKeysClient();
+        $keysClient->setHeaders(array(
+            'X-VIRGIL-REQUEST-SIGN-PK-ID' => $publicKeyId
+        ));
+
+        return $keysClient->getPublicKeysClient()->deleteKey(
+            $publicKeyId,
+            $privateKey,
+            $privateKeyPassword
+        );
+    }
+
+    public static function grab($userDataValue) {
+
+        return self::getKeysClient()->getPublicKeysClient()->grabKey(
+            $userDataValue
         );
     }
 } 

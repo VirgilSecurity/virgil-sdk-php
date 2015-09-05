@@ -9,13 +9,20 @@ class GetPublicKeyTest extends TestCase {
 
     public function test_Should_Get_PublicKey() {
 
-        $keyPair = new VirgilKeyPair();
+        try {
+            $publicKey = PublicKeyHelper::grab(
+                Constants::VIRGIL_USER_DATA_VALUE
+            );
 
-        $keyPairPrivateKey = $keyPair->privateKey();
-        $keyPairPublicKey  = $keyPair->publicKey();
+            PublicKeyHelper::delete(
+                $publicKey->get(0)->publicKeyId,
+                Constants::VIRGIL_PRIVATE_KEY
+            );
+        } catch(Exception $ex) {}
 
         $publicKey = PublicKeyHelper::create(
-            $keyPairPrivateKey, $keyPairPublicKey
+            Constants::VIRGIL_PRIVATE_KEY,
+            Constants::VIRGIL_PUBLIC_KEY
         );
 
         sleep(5);
@@ -49,7 +56,7 @@ class GetPublicKeyTest extends TestCase {
         );
 
         $this->assertEquals(
-            $keyPairPublicKey,
+            Constants::VIRGIL_PUBLIC_KEY,
             $publicKey->publicKey
         );
     }
