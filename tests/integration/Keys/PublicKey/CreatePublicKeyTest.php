@@ -1,27 +1,14 @@
 <?php
 
-use PHPUnit_Framework_TestCase as TestCase,
-
-    Virgil\Crypto\VirgilKeyPair;
-
-
-class CreatePublicKeyTest extends TestCase {
+class CreatePublicKeyTest extends PHPUnit_Framework_TestCase {
 
     public function test_Should_Create_PublicKey() {
 
-        try {
-            $publicKey = PublicKeyHelper::grab(
-                Constants::VIRGIL_USER_DATA_VALUE
-            );
-
-            PublicKeyHelper::delete(
-                $publicKey->get(0)->publicKeyId,
-                Constants::VIRGIL_PRIVATE_KEY
-            );
-        } catch(Exception $ex) {}
+        PublicKeyHelper::setupPublicKey();
 
         $publicKey = PublicKeyHelper::create(
-            Constants::VIRGIL_PRIVATE_KEY, Constants::VIRGIL_PUBLIC_KEY
+            Constants::VIRGIL_PRIVATE_KEY,
+            Constants::VIRGIL_PUBLIC_KEY
         );
 
         $this->assertEquals(

@@ -1,11 +1,11 @@
 <?php
 
-use Virgil\Crypto\VirgilKeyPair;
+use Virgil\SDK\Common\Http\Error,
+    Virgil\SDK\Keys\Exception\WebException;
 
-class GetPublicKeyTest extends PHPUnit_Framework_TestCase {
+class DeletePublicKeyTest extends PHPUnit_Framework_TestCase {
 
-
-    public function test_Should_Get_PublicKey() {
+    public function test_Should_Delete_PublicKey() {
 
         PublicKeyHelper::setupPublicKey();
 
@@ -47,5 +47,22 @@ class GetPublicKeyTest extends PHPUnit_Framework_TestCase {
             Constants::VIRGIL_PUBLIC_KEY,
             $publicKey->publicKey
         );
+
+        PublicKeyHelper::delete(
+            $publicKey->publicKeyId,
+            Constants::VIRGIL_PRIVATE_KEY
+        );
+
+        try {
+            PublicKeyHelper::get(
+                $publicKey->publicKeyId
+            );
+        } catch (WebException $ex) {
+
+            $this->assertEquals(
+                404,
+                $ex->getHttpStatusCode()
+            );
+        }
     }
-}
+} 

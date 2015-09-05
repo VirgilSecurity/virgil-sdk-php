@@ -7,7 +7,7 @@ use GuzzleHttp\Client,
     Virgil\SDK\Common\Http\RequestInterface,
     Virgil\SDK\Common\Http\Response,
     Virgil\SDK\Common\Http\ResponseInterface,
-    Virgil\SDK\Keys\Exceptions\WebException,
+    Virgil\SDK\Keys\Exception\WebException,
     Virgil\SDK\Keys\Http\Error;
 
 class Connection implements ConnectionInterface {

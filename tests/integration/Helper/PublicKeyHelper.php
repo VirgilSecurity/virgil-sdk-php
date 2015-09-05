@@ -46,10 +46,20 @@ class PublicKeyHelper extends BaseHelper {
         );
     }
 
-    public static function grab($userDataValue) {
+    public static function grab($userDataValue, $publicKeyId = null, $privateKey = null, $privateKeyPassword = null) {
 
-        return self::getKeysClient()->getPublicKeysClient()->grabKey(
-            $userDataValue
+        $keysClient = self::getKeysClient();
+
+        if(!is_null($publicKeyId)) {
+            $keysClient->setHeaders(array(
+                'X-VIRGIL-REQUEST-SIGN-PK-ID' => $publicKeyId
+            ));
+        }
+
+        return $keysClient->getPublicKeysClient()->grabKey(
+            $userDataValue,
+            $privateKey,
+            $privateKeyPassword
         );
     }
 } 
