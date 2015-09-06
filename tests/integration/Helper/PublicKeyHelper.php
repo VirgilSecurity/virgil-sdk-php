@@ -78,4 +78,23 @@ class PublicKeyHelper extends BaseHelper {
             $newPrivateKeyPassword
         );
     }
+
+    public static function reset($publicKeyId, $newPublicKey, $newPrivateKey, $newPrivateKeyPassword = null) {
+
+        return self::getKeysClient()->getPublicKeysClient()->resetKey(
+            $publicKeyId,
+            $newPublicKey,
+            $newPrivateKey,
+            $newPrivateKeyPassword
+        );
+    }
+
+    public static function persist($publicKeyId, $actionToken, $confirmationCodes) {
+
+        return self::getKeysClient()->getPublicKeysClient()->persistKey(
+            $publicKeyId,
+            $actionToken,
+            $confirmationCodes
+        );
+    }
 } 
