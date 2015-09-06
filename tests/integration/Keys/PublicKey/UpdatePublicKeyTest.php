@@ -18,7 +18,6 @@ class UpdatePublicKeyTest extends PHPUnit_Framework_TestCase {
 
         $publicKey = PublicKeyHelper::update(
             $publicKey->publicKeyId,
-            Constants::VIRGIL_PUBLIC_KEY,
             Constants::VIRGIL_PRIVATE_KEY,
             Constants::VIRGIL_PUBLIC_KEY_NEW,
             Constants::VIRGIL_PRIVATE_KEY_NEW

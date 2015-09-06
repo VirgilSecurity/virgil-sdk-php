@@ -80,7 +80,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
         );
     }
 
-    public function updateKey($publicKeyId, $oldPublicKey, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
+    public function updateKey($publicKeyId, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
 
         $requestSignUUID = GUID::generate();
         $request = array(

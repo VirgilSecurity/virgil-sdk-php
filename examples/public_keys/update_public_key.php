@@ -56,12 +56,6 @@ try {
         'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 
-    echo 'Reading Old Public Key.' . PHP_EOL;
-    $oldPublicKey = file_get_contents(
-        '../data/public.key'
-    );
-    echo 'Old Public Key data successfully read.' . PHP_EOL;
-
     echo 'Reading Old Private Key.' . PHP_EOL;
     $oldPrivateKey = file_get_contents(
         '../data/private.key'
@@ -84,7 +78,6 @@ try {
     echo 'Call Keys service to update Public Key instance.' . PHP_EOL;
     $publicKey = $keysClient->getPublicKeysClient()->updateKey(
         VIRGIL_PUBLIC_KEY_ID,
-        $oldPublicKey,
         $oldPrivateKey,
         $newPublicKey,
         $newPrivateKey,

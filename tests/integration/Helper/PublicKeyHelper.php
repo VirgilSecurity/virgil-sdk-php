@@ -62,7 +62,7 @@ class PublicKeyHelper extends BaseHelper {
         );
     }
 
-    public static function update($publicKeyId, $oldPublicKey, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
+    public static function update($publicKeyId, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
 
         $keysClient = self::getKeysClient();
         $keysClient->setHeaders(array(
@@ -71,7 +71,6 @@ class PublicKeyHelper extends BaseHelper {
 
         return $keysClient->getPublicKeysClient()->updateKey(
             $publicKeyId,
-            $oldPublicKey,
             $oldPrivateKey,
             $newPublicKey,
             $newPrivateKey,
