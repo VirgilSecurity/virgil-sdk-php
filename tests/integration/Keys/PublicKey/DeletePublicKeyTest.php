@@ -16,7 +16,9 @@ class DeletePublicKeyTest extends PHPUnit_Framework_TestCase {
 
         UserDataHelper::persist(
             $publicKey->userData->get(0)->id->userDataId,
-            MailinatorHelper::fetchMessage()
+            MailinatorHelper::fetchMessage(
+                Constants::VIRGIL_USER_DATA_VALUE1
+            )
         );
 
         $publicKey = PublicKeyHelper::get(

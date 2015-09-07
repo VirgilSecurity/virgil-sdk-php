@@ -13,11 +13,13 @@ class GrabPublicKeyTest extends PHPUnit_Framework_TestCase {
 
         UserDataHelper::persist(
             $publicKey->userData->get(0)->id->userDataId,
-            MailinatorHelper::fetchMessage()
+            MailinatorHelper::fetchMessage(
+                Constants::VIRGIL_USER_DATA_VALUE1
+            )
         );
 
         $publicKey = PublicKeyHelper::grab(
-            Constants::VIRGIL_USER_DATA_VALUE
+            Constants::VIRGIL_USER_DATA_VALUE1
         );
 
         $this->assertEquals(
@@ -37,11 +39,13 @@ class GrabPublicKeyTest extends PHPUnit_Framework_TestCase {
 
         UserDataHelper::persist(
             $publicKey->userData->get(0)->id->userDataId,
-            MailinatorHelper::fetchMessage()
+            MailinatorHelper::fetchMessage(
+                Constants::VIRGIL_USER_DATA_VALUE1
+            )
         );
 
         $publicKey = PublicKeyHelper::grab(
-            Constants::VIRGIL_USER_DATA_VALUE,
+            Constants::VIRGIL_USER_DATA_VALUE1,
             $publicKey->publicKeyId,
             Constants::VIRGIL_PRIVATE_KEY
         );
@@ -62,7 +66,7 @@ class GrabPublicKeyTest extends PHPUnit_Framework_TestCase {
         );
 
         $this->assertEquals(
-            Constants::VIRGIL_USER_DATA_VALUE,
+            Constants::VIRGIL_USER_DATA_VALUE1,
             $publicKey->get(0)->userData->get(0)->value
         );
 

@@ -41,7 +41,7 @@ require_once '../vendor/autoload.php';
 use Virgil\SDK\Keys\Client as KeysClient;
 
 const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_UUID                 =  'aa2141ee-8a50-a7c4-3e4c-513b67918053';
+const VIRGIL_UUID                 = 'aa2141ee-8a50-a7c4-3e4c-513b67918053';
 const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
 const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 

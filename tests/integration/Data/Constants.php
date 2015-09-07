@@ -9,7 +9,8 @@ class Constants {
     const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
     const VIRGIL_USER_DATA_CLASS        = 'user_id';
     const VIRGIL_USER_DATA_TYPE         = 'email';
-    const VIRGIL_USER_DATA_VALUE        = 'virgil.php.keys.sdk.tests@mailinator.com';
+    const VIRGIL_USER_DATA_VALUE1       = 'virgil.php.keys.sdk.tests1@mailinator.com';
+    const VIRGIL_USER_DATA_VALUE2       = 'virgil.php.keys.sdk.tests2@mailinator.com';
 
     const VIRGIL_PUBLIC_KEY = <<<EOD
 -----BEGIN PUBLIC KEY-----

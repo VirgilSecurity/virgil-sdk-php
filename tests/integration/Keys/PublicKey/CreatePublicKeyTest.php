@@ -27,7 +27,7 @@ class CreatePublicKeyTest extends PHPUnit_Framework_TestCase {
         );
 
         $this->assertEquals(
-            Constants::VIRGIL_USER_DATA_VALUE,
+            Constants::VIRGIL_USER_DATA_VALUE1,
             $publicKey->userData->get(0)->value
         );
 

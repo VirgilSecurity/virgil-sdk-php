@@ -5,12 +5,38 @@ use Virgil\SDK\Keys\Models\UserData,
 
 class PublicKeyHelper extends BaseHelper {
 
+    public static function setupPublicKey() {
+
+        try {
+            $publicKey = PublicKeyHelper::grab(
+                Constants::VIRGIL_USER_DATA_VALUE1
+            );
+
+            PublicKeyHelper::delete(
+                $publicKey->get(0)->publicKeyId,
+                Constants::VIRGIL_PRIVATE_KEY
+            );
+        } catch(Exception $ex) {}
+
+        try {
+            $publicKey = PublicKeyHelper::grab(
+                Constants::VIRGIL_USER_DATA_VALUE1
+            );
+
+            PublicKeyHelper::delete(
+                $publicKey->get(0)->publicKeyId,
+                Constants::VIRGIL_PRIVATE_KEY_NEW
+            );
+        } catch(Exception $ex) {}
+
+    }
+
     public static function create($privateKey, $publicKey, $privateKeyPassword = null) {
 
         $userData = new UserData();
         $userData->class = Constants::VIRGIL_USER_DATA_CLASS;
         $userData->type  = Constants::VIRGIL_USER_DATA_TYPE;
-        $userData->value = Constants::VIRGIL_USER_DATA_VALUE;
+        $userData->value = Constants::VIRGIL_USER_DATA_VALUE1;
 
         $userDataCollection = new UserDataCollection();
         $userDataCollection->add(

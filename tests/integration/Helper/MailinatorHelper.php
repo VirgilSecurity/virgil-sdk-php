@@ -50,7 +50,7 @@ class MailinatorHelper {
         return $query["data"];
     }
 
-    public static function fetchMessage() {
+    public static function fetchMessage($email) {
 
         sleep(5);
 
@@ -59,7 +59,7 @@ class MailinatorHelper {
         );
 
         $messages = $mailClient->fetchInbox(
-            Constants::VIRGIL_USER_DATA_VALUE
+            $email
         );
         $message  = array_pop($messages);
         $messageContent = $mailClient->fetchMail(
