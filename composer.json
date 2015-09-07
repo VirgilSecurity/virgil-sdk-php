@@ -33,7 +33,7 @@
         }
     ],
     "require": {
-        "virgil/crypto": "dev-master",
+        "virgil/crypto": "1.0.1",
         "guzzlehttp/guzzle": "5.3.0"
     },
     "minimum-stability": "dev",
