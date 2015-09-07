@@ -45,7 +45,7 @@ use Virgil\SDK\Keys\Models\UserData,
 const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
 const VIRGIL_USER_DATA_CLASS        = 'user_id';
 const VIRGIL_USER_DATA_TYPE         = 'email';
-const VIRGIL_USER_DATA_VALUE        = 'kuznecov.dmitriy.php@gmail.com';
+const VIRGIL_USER_DATA_VALUE        = 'example.email@gmail.com';
 const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
 const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
@@ -67,14 +67,14 @@ try {
 
     echo 'Reading Public Key.' . PHP_EOL;
     $publicKey = file_get_contents(
-        '../data/new_public.key'
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 

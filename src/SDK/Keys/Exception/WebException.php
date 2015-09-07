@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\SDK\Keys\Exceptions;
+namespace Virgil\SDK\Keys\Exception;
 
 class WebException extends \Exception {
 

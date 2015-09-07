@@ -62,7 +62,7 @@ try {
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(
-        '../data/new_private.key'
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 
