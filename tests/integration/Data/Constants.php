@@ -4,9 +4,10 @@ class Constants {
 
     const VIRGIL_MAILINATOR_TOKEN       = '3b0f46370d9f44cb9b5ac0e80dda97d7';
 
-    const VIRGIL_KEYS_BASE_URL          = 'https://keys-stg.virgilsecurity.com';
+    const VIRGIL_KEYS_BASE_URL          = 'https://keys.virgilsecurity.com';
+    const VIRGIL_PRIVATE_KEYS_URL       = 'https://keys-private.virgilsecurity.com';
 
-    const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
+    const VIRGIL_APPLICATION_TOKEN      = '45fd8a505f50243fa8400594ba0b2b29';
     const VIRGIL_USER_DATA_CLASS        = 'user_id';
     const VIRGIL_USER_DATA_TYPE         = 'email';
     const VIRGIL_USER_DATA_VALUE1       = 'virgil.php.keys.sdk.tests1@mailinator.com';

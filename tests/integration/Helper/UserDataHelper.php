@@ -36,8 +36,18 @@ class UserDataHelper extends BaseHelper {
         );
     }
 
-    public static function resend() {
+    public static function resend($uuid, $publicKeyId, $privateKey) {
 
+        // Create Keys Service HTTP Client
+        $keysClient = self::getKeysClient();
+        $keysClient->setHeaders(array(
+            'X-VIRGIL-REQUEST-SIGN-PK-ID' => $publicKeyId
+        ));
+
+        $keysClient->getUserDataClient()->resendConfirmation(
+            $uuid,
+            $privateKey
+        );
     }
 
     public static function persist($uuid, $confirmationCode) {
