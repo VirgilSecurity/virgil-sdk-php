@@ -52,26 +52,30 @@ class MailinatorHelper {
 
     public static function fetchMessage($email) {
 
-        sleep(10);
+        do {
 
-        $mailClient = new MailinatorHelper(
-            Constants::VIRGIL_MAILINATOR_TOKEN
-        );
+            $mailClient = new MailinatorHelper(
+                Constants::VIRGIL_MAILINATOR_TOKEN
+            );
 
-        $messages = $mailClient->fetchInbox(
-            $email
-        );
-        $message  = array_pop($messages);
-        $messageContent = $mailClient->fetchMail(
-            $message['id']
-        );
+            $messages = $mailClient->fetchInbox(
+                $email
+            );
+            $message  = array_pop($messages);
+            $messageContent = $mailClient->fetchMail(
+                $message['id']
+            );
 
-        preg_match(
-            '/<b style="font-weight: bold;">([0-9a-z]{6})<\/b>/i',
-            $messageContent['parts'][0]['body'],
-            $matches
-        );
+            preg_match(
+                '/<b style="font-weight: bold;">([0-9a-z]{6})<\/b>/i',
+                $messageContent['parts'][0]['body'],
+                $matches
+            );
 
-        return trim($matches['1']);
+            $message = trim($matches['1']);
+
+        } while (empty($message));
+
+        return $message;
     }
 }
