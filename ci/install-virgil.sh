@@ -38,5 +38,5 @@
 cd "$HOME"
 git clone https://github.com/VirgilSecurity/virgil.git
 cd virgil && mkdir build && cd build
-cmake -DPLATFORM_NAME=PHP -DSWIG_EXECUTABLE=/home/travis/swig/bin -DCMAKE_INSTALL_PREFIX=$HOME/virgil ..
+cmake -DPLATFORM_NAME=PHP -DSWIG_EXECUTABLE="$HOME/swig/bin" -DSWIG_DIR="$HOME/swig" -DCMAKE_INSTALL_PREFIX=$HOME/virgil ..
 make && make install
