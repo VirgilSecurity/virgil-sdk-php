@@ -7,8 +7,8 @@ cache:
     - $HOME/swig
     - $HOME/virgil
 
-language
-  -php
+language:
+  - php
 
 php:
   - 5.6
