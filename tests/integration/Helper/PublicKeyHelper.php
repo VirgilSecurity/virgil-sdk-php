@@ -43,7 +43,8 @@ class PublicKeyHelper extends BaseHelper {
             $userData
         );
 
-        return self::getKeysClient()->getPublicKeysClient()->createKey(
+        $keysClient = self::getKeysClient();
+        return $keysClient->getPublicKeysClient()->createKey(
             $publicKey,
             $userDataCollection,
             $privateKey,
@@ -53,7 +54,8 @@ class PublicKeyHelper extends BaseHelper {
 
     public static function get($publicKeyId) {
 
-        return self::getKeysClient()->getPublicKeysClient()->getKey(
+        $keysClient = self::getKeysClient();
+        return $keysClient->getPublicKeysClient()->getKey(
             $publicKeyId
         );
     }
@@ -107,7 +109,8 @@ class PublicKeyHelper extends BaseHelper {
 
     public static function reset($publicKeyId, $newPublicKey, $newPrivateKey, $newPrivateKeyPassword = null) {
 
-        return self::getKeysClient()->getPublicKeysClient()->resetKey(
+        $keysClient = self::getKeysClient();
+        return $keysClient->getPublicKeysClient()->resetKey(
             $publicKeyId,
             $newPublicKey,
             $newPrivateKey,
@@ -117,7 +120,8 @@ class PublicKeyHelper extends BaseHelper {
 
     public static function persist($publicKeyId, $actionToken, $confirmationCodes) {
 
-        return self::getKeysClient()->getPublicKeysClient()->persistKey(
+        $keysClient = self::getKeysClient();
+        return $keysClient->getPublicKeysClient()->persistKey(
             $publicKeyId,
             $actionToken,
             $confirmationCodes

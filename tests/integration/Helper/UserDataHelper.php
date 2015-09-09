@@ -38,7 +38,6 @@ class UserDataHelper extends BaseHelper {
 
     public static function resend($uuid, $publicKeyId, $privateKey) {
 
-        // Create Keys Service HTTP Client
         $keysClient = self::getKeysClient();
         $keysClient->setHeaders(array(
             'X-VIRGIL-REQUEST-SIGN-PK-ID' => $publicKeyId
@@ -52,7 +51,8 @@ class UserDataHelper extends BaseHelper {
 
     public static function persist($uuid, $confirmationCode) {
 
-        return self::getKeysClient()->getUserDataClient()->persistUserData(
+        $keysClient = self::getKeysClient();
+        return $keysClient->getUserDataClient()->persistUserData(
             $uuid,
             $confirmationCode
         );
