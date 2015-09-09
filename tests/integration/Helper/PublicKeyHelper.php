@@ -8,22 +8,22 @@ class PublicKeyHelper extends BaseHelper {
     public static function setupPublicKey() {
 
         try {
-            $publicKey = PublicKeyHelper::grab(
+            $publicKey = self::grab(
                 Constants::VIRGIL_USER_DATA_VALUE1
             );
 
-            PublicKeyHelper::delete(
+            self::delete(
                 $publicKey->get(0)->publicKeyId,
                 Constants::VIRGIL_PRIVATE_KEY
             );
         } catch(Exception $ex) {}
 
         try {
-            $publicKey = PublicKeyHelper::grab(
+            $publicKey = self::grab(
                 Constants::VIRGIL_USER_DATA_VALUE1
             );
 
-            PublicKeyHelper::delete(
+            self::delete(
                 $publicKey->get(0)->publicKeyId,
                 Constants::VIRGIL_PRIVATE_KEY_NEW
             );

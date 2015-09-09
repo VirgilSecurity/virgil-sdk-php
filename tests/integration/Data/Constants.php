@@ -12,6 +12,14 @@ class Constants {
     const VIRGIL_USER_DATA_TYPE         = 'email';
     const VIRGIL_USER_DATA_VALUE1       = 'virgil.php.keys.sdk.tests1@mailinator.com';
     const VIRGIL_USER_DATA_VALUE2       = 'virgil.php.keys.sdk.tests2@mailinator.com';
+    const VIRGIL_USER_DATA_VALUE3       = 'virgil.php.keys.sdk.tests3@mailinator.com';
+
+    const VIRGIL_PUBLIC_KEY_ID          = '8f5b109d-03ab-2da7-f471-6a7e16008f5a';
+
+    const VIRGIL_CONTAINER_TYPE_NORMAL  = 'normal';
+    const VIRGIL_CONTAINER_TYPE_EASY    = 'easy';
+    const VIRGIL_CONTAINER_PASSWORD     = 'password';
+    const VIRGIL_CONTAINER_PASSWORD_NEW = 'new password';
 
     const VIRGIL_PUBLIC_KEY = <<<EOD
 -----BEGIN PUBLIC KEY-----

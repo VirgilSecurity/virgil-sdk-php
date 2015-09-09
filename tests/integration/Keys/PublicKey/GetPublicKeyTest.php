@@ -1,7 +1,5 @@
 <?php
 
-use Virgil\Crypto\VirgilKeyPair;
-
 class GetPublicKeyTest extends PHPUnit_Framework_TestCase {
 
 

@@ -6,17 +6,19 @@ use Virgil\SDK\Common\Models\Base\Model;
 
 class PrivateKey extends Model {
 
-    public $public_key_id;
-    public $private_key;
+    public $publicKeyId;
+    public $privateKey;
 
     public function __construct(array $data = array()) {
 
-        if(!empty($data)) {
-            foreach($data as $field => $value) {
-                if(property_exists($this, $field)) {
-                    $this->{$field} = $value;
-                }
-            }
+        if(isset($data['private_key'])) {
+            $this->privateKey = base64_decode(
+                $data['private_key']
+            );
+        }
+
+        if(isset($data['public_key_id'])) {
+            $this->publicKeyId = $data['public_key_id'];
         }
     }
 

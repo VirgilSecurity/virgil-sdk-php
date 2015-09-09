@@ -44,7 +44,9 @@
             "tests/integration/Helper/BaseHelper.php",
             "tests/integration/Helper/PublicKeyHelper.php",
             "tests/integration/Helper/UserDataHelper.php",
-            "tests/integration/Helper/MailinatorHelper.php"
+            "tests/integration/Helper/MailinatorHelper.php",
+            "tests/integration/Helper/PrivateKeyHelper.php",
+            "tests/integration/Helper/ContainerHelper.php"
         ],
         "psr-4": {
             "Virgil\\": "src/"
