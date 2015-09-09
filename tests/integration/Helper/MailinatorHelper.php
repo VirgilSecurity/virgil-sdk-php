@@ -52,7 +52,7 @@ class MailinatorHelper {
 
     public static function fetchMessage($email) {
 
-        sleep(5);
+        sleep(10);
 
         $mailClient = new MailinatorHelper(
             Constants::VIRGIL_MAILINATOR_TOKEN
