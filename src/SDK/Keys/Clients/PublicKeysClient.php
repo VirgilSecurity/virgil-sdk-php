@@ -80,7 +80,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
         );
     }
 
-    public function updateKey($publicKeyId, $oldPublicKey, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
+    public function updateKey($publicKeyId, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null) {
 
         $requestSignUUID = GUID::generate();
         $request = array(
@@ -114,7 +114,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
 
     }
 
-    public function deleteKey($publicKey, $privateKey, $privateKeyPassword = null) {
+    public function deleteKey($publicKeyId, $privateKey, $privateKeyPassword = null) {
 
         $request = array(
             'request_sign_uuid' => GUID::generate()
@@ -128,7 +128,7 @@ class PublicKeysClient extends ApiClient implements PublicKeysClientInterface {
         );
 
         return $this->delete(
-            'public-key/' . $publicKey,
+            'public-key/' . $publicKeyId,
             $request
         )->getBody();
     }

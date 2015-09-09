@@ -1,6 +1,6 @@
 {
     "require": {
-        "virgil/crypto": "1.0.1",
-        "virgil/keys-sdk": "1.0.1"
+        "virgil/crypto": "dev-master",
+        "virgil/keys-sdk": "dev-master"
     }
 }

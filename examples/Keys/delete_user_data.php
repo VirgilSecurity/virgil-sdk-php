@@ -40,10 +40,10 @@ require_once '../vendor/autoload.php';
 
 use Virgil\SDK\Keys\Client as KeysClient;
 
-
-const VIRGIL_APPLICATION_TOKEN      = '17da4b6d03fad06954b5dccd82439b10';
-const VIRGIL_PUBLIC_KEY_ID          = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
-const VIRGIL_PRIVATE_KEY_PASSWORD   = 'password';
+const VIRGIL_APPLICATION_TOKEN    = '17da4b6d03fad06954b5dccd82439b10';
+const VIRGIL_UUID                 = 'aa2141ee-8a50-a7c4-3e4c-513b67918053';
+const VIRGIL_PRIVATE_KEY_PASSWORD = 'password';
+const VIRGIL_PUBLIC_KEY_ID        = '5d3a8909-5fe5-2abb-232c-3cf9c277b111';
 
 try {
 
@@ -56,41 +56,27 @@ try {
         'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 
-    echo 'Reading Old Public Key.' . PHP_EOL;
-    $oldPublicKey = file_get_contents(
-        '../data/public.key'
-    );
-    echo 'Old Public Key data successfully read.' . PHP_EOL;
-
-    echo 'Reading Old Private Key.' . PHP_EOL;
-    $oldPrivateKey = file_get_contents(
-        '../data/private.key'
-    );
-    echo 'Old Private Key data successfully read.' . PHP_EOL;
-
     echo 'Reading Public Key.' . PHP_EOL;
-    $newPublicKey = file_get_contents(
-        '../data/new_public.key'
+    $publicKey = file_get_contents(
+        '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
 
+
     echo 'Reading Private Key.' . PHP_EOL;
-    $newPrivateKey = file_get_contents(
-        '../data/new_private.key'
+    $privateKey = file_get_contents(
+        '../data/private.key'
     );
     echo 'Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to update Public Key instance.' . PHP_EOL;
-    $publicKey = $keysClient->getPublicKeysClient()->updateKey(
-        VIRGIL_PUBLIC_KEY_ID,
-        $oldPublicKey,
-        $oldPrivateKey,
-        $newPublicKey,
-        $newPrivateKey,
+    echo 'Call Keys service to delete User Data instance.' . PHP_EOL;
+    $keysClient->getUserDataClient()->deleteUserData(
+        VIRGIL_UUID,
+        $privateKey,
         VIRGIL_PRIVATE_KEY_PASSWORD
     );
-    echo 'Public Key instance successfully updated in Public Keys service.' . PHP_EOL;
+    echo 'User Data instance successfully deleted from Public Keys service.' . PHP_EOL;
 
 } catch (Exception $e) {
 

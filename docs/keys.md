@@ -329,35 +329,28 @@ try {
         'X-VIRGIL-REQUEST-SIGN-PK-ID' => VIRGIL_PUBLIC_KEY_ID
     ));
 
-    echo 'Reading Old Public Key.' . PHP_EOL;
-    $oldPublicKey = file_get_contents(
-        '../data/public.key'
-    );
-    echo 'Old Public Key data successfully read.' . PHP_EOL;
-
     echo 'Reading Old Private Key.' . PHP_EOL;
     $oldPrivateKey = file_get_contents(
         '../data/private.key'
     );
     echo 'Old Private Key data successfully read.' . PHP_EOL;
 
-    echo 'Reading Public Key.' . PHP_EOL;
+    echo 'Reading New Public Key.' . PHP_EOL;
     $newPublicKey = file_get_contents(
         '../data/new_public.key'
     );
-    echo 'Public Key data successfully read.' . PHP_EOL;
+    echo 'New Public Key data successfully read.' . PHP_EOL;
 
-    echo 'Reading Private Key.' . PHP_EOL;
+    echo 'Reading New Private Key.' . PHP_EOL;
     $newPrivateKey = file_get_contents(
         '../data/new_private.key'
     );
-    echo 'Private Key data successfully read.' . PHP_EOL;
+    echo 'New Private Key data successfully read.' . PHP_EOL;
 
     // Do service call
-    echo 'Call Keys service to update Public Key instance.' . PHP_EOL;
+    echo 'Call Keys Service to update the Public Key instance.' . PHP_EOL;
     $publicKey = $keysClient->getPublicKeysClient()->updateKey(
         VIRGIL_PUBLIC_KEY_ID,
-        $oldPublicKey,
         $oldPrivateKey,
         $newPublicKey,
         $newPrivateKey,
@@ -725,7 +718,6 @@ try {
         '../data/public.key'
     );
     echo 'Public Key data successfully read.' . PHP_EOL;
-
 
     echo 'Reading Private Key.' . PHP_EOL;
     $privateKey = file_get_contents(

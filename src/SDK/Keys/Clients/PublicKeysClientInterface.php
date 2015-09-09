@@ -12,7 +12,7 @@ interface PublicKeysClientInterface {
 
     public function createKey($publicKey, UserDataCollection $userData, $privateKey , $privateKeyPassword = null);
 
-    public function updateKey($publicKeyId, $oldPublicKey, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null);
+    public function updateKey($publicKeyId, $oldPrivateKey, $newPublicKey, $newPrivateKey, $oldPrivateKeyPassword = null, $newPrivateKeyPassword = null);
 
     public function deleteKey($publicKey, $privateKey, $privateKeyPassword = null);
 
