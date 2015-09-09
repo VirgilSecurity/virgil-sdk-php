@@ -35,8 +35,14 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
+# Download and build Virgil Crypto PHP extension
 cd "$HOME"
 git clone https://github.com/VirgilSecurity/virgil.git
 cd virgil && mkdir build && cd build
 cmake -DPLATFORM_NAME=PHP -DSWIG_EXECUTABLE="$HOME/swig/bin/swig" -DSWIG_DIR="$HOME/swig" -DCMAKE_INSTALL_PREFIX=$HOME/virgil ..
 make && make install
+
+# Install the extension in the current phpenv
+cd "$HOME/virgil/lib"
+(cp virgil_php.so `ls -d ~/.phpenv/versions/$(phpenv version-name)/lib/php/extensions/no-debug-zts-* | head -1` && echo "extension=virgil_php.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini) || exit 1
+
