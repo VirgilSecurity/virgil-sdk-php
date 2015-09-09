@@ -28,6 +28,7 @@ before_install:
   - bash ./ci/install-virgil.sh
 
 before_script:
+  composer selfupdate
   composer update
 
 script:
