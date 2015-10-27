@@ -7,10 +7,10 @@
 - [Examples](#examples)
 - [General statements](#general-statements)
 - [Example 1: Generate keys](#example-1)
-- [Example 2: Register a New User on Virgil Keys Service](#example-2)
-- [Example 3: Get a User's Public Key from Virgil Keys Service](#example-3)
-- [Example 4: Search Public Key Data in Virgil Keys Service](#example-4)
-- [Example 5: Search Public Key Signed Data in Virgil Keys Service](#example-5)
+- [Example 2: Register a New User](#example-2)
+- [Example 3: Get a User's Public Key](#example-3)
+- [Example 4: Search Public Key Data](#example-4)
+- [Example 5: Search Public Key Signed Data](#example-5)
 - [Example 6: Update Public Key Data](#example-6)
 - [Example 7: Delete Public Key Data](#example-7)
 - [Example 8: Reset Public Key](#example-8)
@@ -113,7 +113,7 @@ file_put_contents(
 echo 'Private and Public Keys were successfully generated.' . PHP_EOL;
 ```
 
-### <a name="example-2"></a> Example 2: Register a New User on Virgil's Keys Service
+### <a name="example-2"></a> Example 2: Register a New User
 
 > A Virgil Account will be created when the first Public Key is uploaded. An application can only get information about Public Keys created for the current application. When the application uploads a new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached it to the existing Account instance.
 
@@ -178,7 +178,7 @@ try {
 }
 ```
 
-### <a name="example-3"></a> Example 3: Get a User's Public Key from Virgil's Keys Service
+### <a name="example-3"></a> Example 3: Get a User's Public Key
 
 > Get a Public Key’s data.
 
@@ -212,7 +212,7 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Search Public Key Data within Virgil's Keys Service
+### <a name="example-4"></a> Example 4: Search Public Key Data
 
 > Search for Public Keys by UDID values.
 
@@ -245,7 +245,7 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Search Public Key Signed Data from the Keys Service
+### <a name="example-5"></a> Example 5: Search Public Key Signed Data
 
 > Search Public Keys by UDID values.
 
