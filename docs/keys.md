@@ -646,7 +646,7 @@ try {
 }
 ```
 
-### <a name="example-12"></a> Example 12: Confirm User Data
+### Example 12: Confirm User Data
 
 > Confirm User Data item.
 
