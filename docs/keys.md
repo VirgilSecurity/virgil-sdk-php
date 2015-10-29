@@ -9,7 +9,7 @@
 - [Example 1: Generate keys](#example-1-generate-keys)
 - [Example 2: Register a New User](#example-2-register-a-new-user)
 - [Example 3: Get a User's Public Key](#example-3-get-a-users-public-key)
-- [Example 4: Search Public Key](#example-4-search-public-key-data)
+- [Example 4: Search Public Key](#example-4-search-public-key)
 - [Example 5: Search Public Key Signed](#example-5-search-public-key-signed)
 - [Example 6: Update Public Key](#example-6-update-public-key)
 - [Example 7: Delete Public Key](#example-7-delete-public-key)
