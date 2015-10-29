@@ -9,14 +9,14 @@
 - [Example 1: Generate keys](#example-1-generate-keys)
 - [Example 2: Register a New User](#example-2-register-a-new-user)
 - [Example 3: Get a User's Public Key](#example-3-get-a-users-public-key)
-- [Example 4: Search Public Key Data](#example-4-search-public-key-data)
+- [Example 4: Search Public Key](#example-4-search-public-key-data)
 - [Example 5: Search Public Key Signed](#example-5-search-public-key-signed)
-- [Example 6: Update Public Key Data](#example-6-update-public-key)
-- [Example 7: Delete Public Key Data](#example-7-delete-public-key)
+- [Example 6: Update Public Key](#example-6-update-public-key)
+- [Example 7: Delete Public Key](#example-7-delete-public-key)
 - [Example 8: Reset Public Key](#example-8-reset-a-public-key)
-- [Example 9: Confirm Public Key](#example-9-confirm-a-public-key)
+- [Example 9: Confirm Public Key](#example-9-confirm-public-key)
 - [Example 10: Create User Data](#example-10-create-user-data)
-- [Example 11: Remove User Data](#example-11-delete-user-data)
+- [Example 11: Delete User Data](#example-11-delete-user-data)
 - [Example 12: Confirm User Data](#example-12-confirm-user-data)
 - [Example 13: Resend Confirmation for User Data](#example-13-resend-a-users-confirmation-code)
 - [License](#license)
@@ -212,7 +212,7 @@ try {
 }
 ```
 
-### Example 4: Search Public Key Data
+### Example 4: Search Public Key
 
 > Search for Public Keys by UDID values.
 
@@ -646,7 +646,7 @@ try {
 }
 ```
 
-### <a name="example-12"></a> Example 12: Confirm User Data
+### Example 12: Confirm User Data
 
 > Confirm User Data item.
 
