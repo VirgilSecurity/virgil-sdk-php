@@ -6,13 +6,13 @@
 - [Installation](#installation)
 - [Examples](#examples)
 - [General statements](#general-statements)
-- [Example 1: Create a New Container](#example-1)
+- [Example 1: Create Container](#example-1)
 - [Example 2: Get Container](#example-2)
 - [Example 3: Delete Container](#example-3)
 - [Example 4: Update Container](#example-4)
-- [Example 5: Reset Container Password](#example-5)
+- [Example 5: Reset Container](#example-5)
 - [Example 6: Persist Container](#example-6)
-- [Example 7: Create a Private Key Inside Container](#example-7)
+- [Example 7: Create a Private Key](#example-7)
 - [Example 8: Get Private Key](#example-8)
 - [Example 9: Delete Private Key](#example-9)
 - [License](#license)
@@ -53,11 +53,11 @@ Virgil Security's Crypto Library can be found [here](https://github.com/VirgilSe
  ``` cmake -DPLATFORM_NAME=PHP -DCMAKE_INSTALL_PREFIX=../install .. ```
 10. Build the library. ``` make ```
 11. Install the library. ``` make install ```
-12. Add to your php.ini ```extension=path/to/your/virgil_php.so```, replace ``"path/to/your/virgil_php.so"`` with the path where the virgil_php.so extension is located.
+12. Add to your php.ini ``` extension=path/to/your/virgil_php.so```, replace ``"path/to/your/virgil_php.so"`` with the path where the virgil_php.so extension is located.
 
 ## Installation
 
-```
+```bash
 php composer.phar install
 ```
 
@@ -84,7 +84,7 @@ Common case library usage scenarios;
 6. Replace the example value of `VIRGIL_PUBLIC_KEY_ID` with the real Public Key ID value. You can take this value from the Public Keys service when registering a new Public Key.
 7. Replace the example value of `VIRGIL_PRIVATE_KEY_PASSWORD` with the value that you used when you generated the Private Key. If you didn't specify it when you generated the Private Key, then just remove it from the method invocations.
 
-### <a name="example-1"></a> Example 1: Create a New Container
+### <a name="example-1"></a> Example 1: Create a Container.
 
 > Create a new container object to store future Private Key's instances.
 
@@ -137,7 +137,7 @@ try {
 }
 ```
 
-### <a name="example-2"></a> Example 2: Get Container Data.
+### <a name="example-2"></a> Example 2: Get Container.
 
 > Get Container Object Data.
 
@@ -295,7 +295,7 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Reset the Container Password
+### <a name="example-5"></a> Example 5: Reset Container.
 
 > Reset a user's forgotten Private Key password.
 
@@ -397,7 +397,7 @@ try {
 }
 ```
 
-### <a name="example-7"></a> Example 7: Create a Private Key inside the Container.
+### <a name="example-7"></a> Example 7: Create a Private Key.
 
 > Load an existing Private Key into the Private Keys service and associate it with the existing Container object.
 
