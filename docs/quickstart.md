@@ -84,8 +84,8 @@ use Virgil\Crypto\VirgilKeyPair;
 
 $key = new VirgilKeyPair();
 
-file_get_contents('new_public.key', $key->publicKey());
-file_get_contents('new_private.key', $key->privateKey());
+file_put_contents('new_public.key', $key->publicKey());
+file_put_contents('new_private.key', $key->privateKey());
 ```
 
 ## Register User
