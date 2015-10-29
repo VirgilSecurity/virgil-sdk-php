@@ -2,23 +2,23 @@
 
 - [Introduction](#introduction)
 - [Build prerequisite](#build-prerequisite)
-- [Build](#build)
+- [Build](#user-content-build)
 - [Installation](#installation)
 - [Examples](#examples)
 - [General statements](#general-statements)
-- [Example 1: Generate keys](#example-1-пenerate-keys)
+- [Example 1: Generate keys](#example-1-generate-keys)
 - [Example 2: Register a New User](#example-2-register-a-new-user)
-- [Example 3: Get a User's Public Key](#example-3-)
-- [Example 4: Search Public Key Data](#example-4)
-- [Example 5: Search Public Key Signed](#example-5)
-- [Example 6: Update Public Key Data](#example-6)
-- [Example 7: Delete Public Key Data](#example-7)
-- [Example 8: Reset Public Key](#example-8)
-- [Example 9: Confirm Public Key](#example-9)
-- [Example 10: Create User Data](#example-10)
-- [Example 11: Remove User Data](#example-11)
-- [Example 12: Confirm User Data](#example-12)
-- [Example 13: Resend Confirmation for User Data](#example-13)
+- [Example 3: Get a User's Public Key](#example-3-get-a-users-public-key)
+- [Example 4: Search Public Key Data](#example-4-search-public-key-data)
+- [Example 5: Search Public Key Signed](#example-5-search-public-key-signed)
+- [Example 6: Update Public Key Data](#example-6-update-public-key)
+- [Example 7: Delete Public Key Data](#example-7-delete-public-key)
+- [Example 8: Reset Public Key](#example-8-reset-a-public-key)
+- [Example 9: Confirm Public Key](#example-9-confirm-a-public-key)
+- [Example 10: Create User Data](#example-10-create-user-data)
+- [Example 11: Remove User Data](#example-11-delete-user-data)
+- [Example 12: Confirm User Data](#example-12-confirm-user-data)
+- [Example 13: Resend Confirmation for User Data](#example-13-resend-a-users-confirmation-code)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -524,7 +524,7 @@ try {
 }
 ```
 
-### Example 10: Create User Data
+### Example 10: Create Public Key User Data
 
 > Append UDIDs and UDINFOs to Public Keys for the current application.
 
@@ -646,7 +646,7 @@ try {
 }
 ```
 
-### Example 12: Confirm User Data
+### <a name="example-12"></a> Example 12: Confirm User Data
 
 > Confirm User Data item.
 
