@@ -1,6 +1,6 @@
 # Virgil Security Keys SDK
 
-- [Introduction](#user-content-introduction)
+- [Introduction](#introduction)
 - [Build prerequisite](#build-prerequisite)
 - [Build](#build)
 - [Installation](#installation)
