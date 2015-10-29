@@ -4,21 +4,21 @@
 - [Build prerequisite](#build-prerequisite)
 - [Build](#user-content-build)
 - [Installation](#installation)
-- [Examples](#examples)
 - [General statements](#general-statements)
-- [Example 1: Generate keys](#example-1-generate-keys)
-- [Example 2: Register a New User](#example-2-register-a-new-user)
-- [Example 3: Get a User's Public Key](#example-3-get-a-users-public-key)
-- [Example 4: Search Public Key](#example-4-search-public-key)
-- [Example 5: Search Public Key Signed](#example-5-search-public-key-signed)
-- [Example 6: Update Public Key](#example-6-update-public-key)
-- [Example 7: Delete Public Key](#example-7-delete-public-key)
-- [Example 8: Reset Public Key](#example-8-reset-a-public-key)
-- [Example 9: Confirm Public Key](#example-9-confirm-public-key)
-- [Example 10: Create User Data](#example-10-create-user-data)
-- [Example 11: Delete User Data](#example-11-delete-user-data)
-- [Example 12: Confirm User Data](#example-12-confirm-user-data)
-- [Example 13: Resend Confirmation for User Data](#example-13-resend-a-users-confirmation-code)
+- [Examples](#examples)
+  - [Generate keys](#generate-keys)
+  - [Register a New User](#register-a-new-user)
+  - [Get a User's Public Key](#get-a-users-public-key)
+  - [Search Public Key](#search-public-key)
+  - [Search Public Key Signed](#search-public-key-signed)
+  - [Update Public Key](#update-public-key)
+  - [Delete Public Key](#delete-public-key)
+  - [Reset Public Key](#reset-a-public-key)
+  - [Confirm Public Key](#confirm-public-key)
+  - [Create User Data](#create-user-data)
+  - [Delete User Data](#delete-user-data)
+  - [Confirm User Data](#confirm-user-data)
+  - [Resend Confirmation for User Data](#resend-a-users-confirmation-code)
 - [License](#license)
 - [Contacts](#contacts)
 
@@ -65,15 +65,6 @@ Virgil Security's Crypto Stack Library can be found [here](https://github.com/Vi
 php composer.phar install
 ```
 
-## Examples
-
-This section describes common case library usage scenarios.
-
-  * CRUD operations for Virgil's Public Keys;
-  * CRUD operations for Virgil's Public Key User Data;
-  * Virgil's Public Keys search functionality;
-  * Virgil's Public Keys Reset and Persist functionality.
-
 ### General statements
 
 1. Examples MUST be run from their directory.
@@ -84,7 +75,16 @@ This section describes common case library usage scenarios.
 6. Replace the example value of `VIRGIL_USER_DATA_VALUE` with your real email address. It needs to confirm some data and invocation of some endpoints inside the Public Key service.
 7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while you generated the Private Key, then just remove it from the method invocations.
 
-### Example 1: Generate Keys
+## Examples
+
+This section describes common case library usage scenarios.
+
+  * CRUD operations for Virgil's Public Keys;
+  * CRUD operations for Virgil's Public Key User Data;
+  * Virgil's Public Keys search functionality;
+  * Virgil's Public Keys Reset and Persist functionality.
+
+### Generate Keys
 
 > **Note:**
 
@@ -113,7 +113,7 @@ file_put_contents(
 echo 'Private and Public Keys were successfully generated.' . PHP_EOL;
 ```
 
-### Example 2: Register a New User
+### Register a New User
 
 > A Virgil Account will be created when the first Public Key is uploaded. An application can only get information about Public Keys created for the current application. When the application uploads a new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached it to the existing Account instance.
 
@@ -178,7 +178,7 @@ try {
 }
 ```
 
-### Example 3: Get a User's Public Key
+### Get a User's Public Key
 
 > Get a Public Key’s data.
 
@@ -212,7 +212,7 @@ try {
 }
 ```
 
-### Example 4: Search Public Key
+### Search Public Key
 
 > Search for Public Keys by UDID values.
 
@@ -245,7 +245,7 @@ try {
 }
 ```
 
-### Example 5: Search Public Key Signed
+### Search Public Key Signed
 
 > Search Public Keys by UDID values.
 
@@ -299,7 +299,7 @@ try {
 }
 ```
 
-### Example 6: Update Public Key
+### Update Public Key
 
 > Update a Public Key’s data.
 
@@ -364,7 +364,7 @@ try {
 }
 ```
 
-### Example 7: Delete Public Key
+### Delete Public Key
 
 > The purpose is to remove a Public Key’s data.
 
@@ -423,7 +423,7 @@ try {
 }
 ```
 
-### Example 8: Reset a Public Key
+### Reset a Public Key
 
 > Reset a User’s Public Keys data if the User lost his/her Private Key.
 
@@ -478,7 +478,7 @@ try {
 }
 ```
 
-### Example 9: Confirm Public Key
+### Confirm Public Key
 
 > Confirm a Public Key’s data.
 
@@ -524,7 +524,7 @@ try {
 }
 ```
 
-### Example 10: Create User Data
+### Create User Data
 
 > Append UDIDs and UDINFOs to Public Keys for the current application.
 
@@ -591,7 +591,7 @@ try {
 }
 ```
 
-### Example 11: Delete User Data
+### Delete User Data
 
 > Remove user data item from the Public Key.
 
@@ -646,7 +646,7 @@ try {
 }
 ```
 
-### Example 12: Confirm User Data
+### Confirm User Data
 
 > Confirm User Data item.
 
@@ -686,7 +686,7 @@ try {
 }
 ```
 
-### Example 13: Resend a User's Confirmation Code
+### Resend a User's Confirmation Code
 
 > Resend a User's confirmation code.
 
