@@ -478,7 +478,7 @@ try {
 }
 ```
 
-### Example 9: Confirm a Public Key
+### Example 9: Confirm Public Key
 
 > Confirm a Public Key’s data.
 
