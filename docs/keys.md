@@ -524,7 +524,7 @@ try {
 }
 ```
 
-### Example 10: Create Public Key User Data
+### Example 10: Create User Data
 
 > Append UDIDs and UDINFOs to Public Keys for the current application.
 
