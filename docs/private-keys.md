@@ -84,7 +84,7 @@ Common case library usage scenarios;
 6. Replace the example value of `VIRGIL_PUBLIC_KEY_ID` with the real Public Key ID value. You can take this value from the Public Keys service when registering a new Public Key.
 7. Replace the example value of `VIRGIL_PRIVATE_KEY_PASSWORD` with the value that you used when you generated the Private Key. If you didn't specify it when you generated the Private Key, then just remove it from the method invocations.
 
-### <a name="example-1"></a> Example 1: Create a Container.
+### Example 1: Create a Container.
 
 > Create a new container object to store future Private Key's instances.
 
@@ -137,7 +137,7 @@ try {
 }
 ```
 
-### <a name="example-2"></a> Example 2: Get Container.
+### Example 2: Get Container.
 
 > Get Container Object Data.
 
@@ -179,7 +179,7 @@ try {
 }
 ```
 
-### <a name="example-3"></a> Example 3: Delete Container.
+### Example 3: Delete Container.
 
 > Delete existing container object from the Private Key service.
 
@@ -232,7 +232,7 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Update Container.
+### Example 4: Update Container.
 
 > Update an existing Container object.
 
@@ -295,7 +295,7 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Reset Container.
+### Example 5: Reset Container.
 
 > Reset a user's forgotten Private Key password.
 
@@ -353,7 +353,7 @@ try {
 }
 ```
 
-### <a name="example-6"></a> Example 6: Persist Container.
+### Example 6: Persist Container.
 
 > Confirm the password reset action.
 
@@ -397,7 +397,7 @@ try {
 }
 ```
 
-### <a name="example-7"></a> Example 7: Create a Private Key.
+### Example 7: Create Private Key.
 
 > Load an existing Private Key into the Private Keys service and associate it with the existing Container object.
 
@@ -451,7 +451,7 @@ try {
 }
 ```
 
-### <a name="example-8"></a> Example 8: Get Private Key.
+### Example 8: Get Private Key.
 
 > Get a Private Key object.
 
@@ -492,7 +492,7 @@ try {
 }
 ```
 
-### <a name="example-9"></a> Example 9: Delete Private Key.
+### Example 9: Delete Private Key.
 
 > Delete a Private Key object. A Private Key object will be disconnected from the Container Object and then deleted from the Private Key service.
 
