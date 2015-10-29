@@ -1,14 +1,14 @@
 # Virgil Security Keys SDK
 
-- [Introduction](#introduction)
+- [Introduction](#user-content-introduction)
 - [Build prerequisite](#build-prerequisite)
 - [Build](#build)
 - [Installation](#installation)
 - [Examples](#examples)
 - [General statements](#general-statements)
-- [Example 1: Generate keys](#example-1)
-- [Example 2: Register a New User](#example-2)
-- [Example 3: Get a User's Public Key](#example-3)
+- [Example 1: Generate keys](#example-1-пenerate-keys)
+- [Example 2: Register a New User](#example-2-register-a-new-user)
+- [Example 3: Get a User's Public Key](#example-3-)
 - [Example 4: Search Public Key Data](#example-4)
 - [Example 5: Search Public Key Signed](#example-5)
 - [Example 6: Update Public Key Data](#example-6)
