@@ -7,7 +7,7 @@
     - [Generate keys](#generate-keys)
     - [Register User](#register-user)
     - [Store Private Key](#store-private-key)
-    - [Get a Public Key](#get-a-public-key)
+    - [Get Public Key](#get-public-key)
     - [Encrypt Data](#encrypt-data)
     - [Decrypt Data](#decrypt-data)
     - [Sign Data](#sign-data)
@@ -228,7 +228,7 @@ try {
 }
 ```
 
-## Get a Recepient's Public Key
+## Get Public Key
 
 Get public key from Public Keys Service.
 
