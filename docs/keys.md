@@ -10,13 +10,13 @@
 - [Example 2: Register a New User](#example-2)
 - [Example 3: Get a User's Public Key](#example-3)
 - [Example 4: Search Public Key Data](#example-4)
-- [Example 5: Search Public Key Signed Data](#example-5)
+- [Example 5: Search Public Key Signed](#example-5)
 - [Example 6: Update Public Key Data](#example-6)
 - [Example 7: Delete Public Key Data](#example-7)
 - [Example 8: Reset Public Key](#example-8)
 - [Example 9: Confirm Public Key](#example-9)
-- [Example 10: Create Public Key User Data](#example-10)
-- [Example 11: Remove User Data from a Public Key](#example-11)
+- [Example 10: Create User Data](#example-10)
+- [Example 11: Remove User Data](#example-11)
 - [Example 12: Confirm User Data](#example-12)
 - [Example 13: Resend Confirmation for User Data](#example-13)
 - [License](#license)
@@ -61,7 +61,7 @@ Virgil Security's Crypto Stack Library can be found [here](https://github.com/Vi
 
 ## Installation
 
-```
+```bash
 php composer.phar install
 ```
 
@@ -245,7 +245,7 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Search Public Key Signed Data
+### <a name="example-5"></a> Example 5: Search Public Key Signed
 
 > Search Public Keys by UDID values.
 
@@ -299,7 +299,7 @@ try {
 }
 ```
 
-### <a name="example-6"></a> Example 6: Update Public Key Data
+### <a name="example-6"></a> Example 6: Update Public Key
 
 > Update a Public Key’s data.
 
@@ -364,7 +364,7 @@ try {
 }
 ```
 
-### <a name="example-7"></a> Example 7: Delete Public Key Data
+### <a name="example-7"></a> Example 7: Delete Public Key
 
 > The purpose is to remove a Public Key’s data.
 
@@ -591,7 +591,7 @@ try {
 }
 ```
 
-### <a name="example-11"></a> Example 11: Delete User Data from the Public Key
+### <a name="example-11"></a> Example 11: Delete User Data
 
 > Remove user data item from the Public Key.
 
