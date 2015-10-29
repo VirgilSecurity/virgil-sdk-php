@@ -84,7 +84,7 @@ This section describes common case library usage scenarios.
 6. Replace the example value of `VIRGIL_USER_DATA_VALUE` with your real email address. It needs to confirm some data and invocation of some endpoints inside the Public Key service.
 7. Replace example value of `VIRGIL_PRIVATE_KEY_PASSWORD` to the value that you have used when generate Private Key. If you didn't specify it while you generated the Private Key, then just remove it from the method invocations.
 
-### <a name="example-1"></a> Example 1: Generate Keys
+### Example 1: Generate Keys
 
 > **Note:**
 
@@ -113,7 +113,7 @@ file_put_contents(
 echo 'Private and Public Keys were successfully generated.' . PHP_EOL;
 ```
 
-### <a name="example-2"></a> Example 2: Register a New User
+### Example 2: Register a New User
 
 > A Virgil Account will be created when the first Public Key is uploaded. An application can only get information about Public Keys created for the current application. When the application uploads a new Public Key and there is an Account created for another application with the same UDID, the Public Key will be implicitly attached it to the existing Account instance.
 
@@ -178,7 +178,7 @@ try {
 }
 ```
 
-### <a name="example-3"></a> Example 3: Get a User's Public Key
+### Example 3: Get a User's Public Key
 
 > Get a Public Key’s data.
 
@@ -212,7 +212,7 @@ try {
 }
 ```
 
-### <a name="example-4"></a> Example 4: Search Public Key Data
+### Example 4: Search Public Key Data
 
 > Search for Public Keys by UDID values.
 
@@ -245,7 +245,7 @@ try {
 }
 ```
 
-### <a name="example-5"></a> Example 5: Search Public Key Signed
+### Example 5: Search Public Key Signed
 
 > Search Public Keys by UDID values.
 
@@ -299,7 +299,7 @@ try {
 }
 ```
 
-### <a name="example-6"></a> Example 6: Update Public Key
+### Example 6: Update Public Key
 
 > Update a Public Key’s data.
 
@@ -364,7 +364,7 @@ try {
 }
 ```
 
-### <a name="example-7"></a> Example 7: Delete Public Key
+### Example 7: Delete Public Key
 
 > The purpose is to remove a Public Key’s data.
 
@@ -423,7 +423,7 @@ try {
 }
 ```
 
-### <a name="example-8"></a> Example 8: Reset a Public Key
+### Example 8: Reset a Public Key
 
 > Reset a User’s Public Keys data if the User lost his/her Private Key.
 
@@ -478,7 +478,7 @@ try {
 }
 ```
 
-### <a name="example-9"></a> Example 9: Confirm a Public Key
+### Example 9: Confirm a Public Key
 
 > Confirm a Public Key’s data.
 
@@ -524,7 +524,7 @@ try {
 }
 ```
 
-### <a name="example-10"></a> Example 10: Create Public Key User Data
+### Example 10: Create Public Key User Data
 
 > Append UDIDs and UDINFOs to Public Keys for the current application.
 
@@ -591,7 +591,7 @@ try {
 }
 ```
 
-### <a name="example-11"></a> Example 11: Delete User Data
+### Example 11: Delete User Data
 
 > Remove user data item from the Public Key.
 
@@ -686,7 +686,7 @@ try {
 }
 ```
 
-### <a name="example-13"></a> Example 13: Resend a User's Confirmation Code
+### Example 13: Resend a User's Confirmation Code
 
 > Resend a User's confirmation code.
 
