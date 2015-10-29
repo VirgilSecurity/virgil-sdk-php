@@ -32,7 +32,7 @@ X-VIRGIL-APPLICATION-TOKEN: { YOUR_APPLICATION_TOKEN }
 
 There are several ways to install and use the Crypto Library and Virgil’s SDK in your environment.
 
-1. Install with Package Management System
+1. Install with [Package Management System](#package-management-systems)
 2. [Download](http://virgilsecurity.com/documents/php/downloads) from our web site
 3. [Build](http://vigrilsecurity.com/documents/php/crypto-lib#build) by yourself
 
