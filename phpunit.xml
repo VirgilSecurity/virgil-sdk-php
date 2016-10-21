@@ -1,4 +1,4 @@
-<phpunit bootstrap="./tests/Bootstrap.php" colors="true">
+<phpunit bootstrap="./tests/Bootstrap.php" colors="true" beStrictAboutTestsThatDoNotTestAnything="true">
     <testsuites>
         <testsuite name="Virgil PHP Keys SDK Tests">
             <directory>./tests</directory>
