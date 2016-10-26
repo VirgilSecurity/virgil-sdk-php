@@ -3,17 +3,15 @@
 namespace Virgil\SDK\Cryptography;
 
 
-class VirgilKey implements Key
+class VirgilKey implements KeyInterface
 {
-    /** @var string  */
     protected $receiverId;
 
-    /** @var string  */
     protected $value;
 
     /**
      * VirgilKey constructor.
-     * @param string $receiverId public key hash
+     * @param string $receiverId receiver id for current key
      * @param string $value DER key value
      */
     public function __construct($receiverId, $value)
@@ -22,17 +20,11 @@ class VirgilKey implements Key
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
     public function getReceiverId()
     {
         return $this->receiverId;
     }
 
-    /**
-     * @return string
-     */
     public function getValue()
     {
         return $this->value;

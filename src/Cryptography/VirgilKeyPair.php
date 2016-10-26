@@ -3,12 +3,10 @@
 namespace Virgil\SDK\Cryptography;
 
 
-class VirgilKeyPair implements KeyPair
+class VirgilKeyPair implements KeyPairInterface
 {
-    /** @var VirgilKey */
     protected $publicKey;
 
-    /** @var VirgilKey */
     protected $privateKey;
 
     /**

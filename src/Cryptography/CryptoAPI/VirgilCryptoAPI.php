@@ -4,7 +4,11 @@ namespace Virgil\SDK\Cryptography\CryptoAPI;
 
 
 use Virgil\Crypto\VirgilHash;
-use Virgil\Crypto\VirgilKeyPair as LibraryKeyPair;
+use Virgil\Crypto\VirgilSigner;
+use Virgil\Crypto\VirgilStreamSigner;
+use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilCipher;
+use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
+use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamDataSource;
 use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\ComputePublicKeyHashException;
 use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\DecryptPrivateKeyException;
 use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\EncryptPrivateKeyException;
@@ -13,11 +17,16 @@ use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\GenerateException;
 use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\IsKeyPairMatchException;
 use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\PrivateKeyToDERException;
 use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\PublicKeyToDERException;
+use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\SignException;
+use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\VerifyException;
+use Virgil\Crypto\VirgilKeyPair as LibraryKeyPair;
+use Virgil\Crypto\VirgilChunkCipher as LibraryChunkCipher;
+use Virgil\Crypto\VirgilCipher as LibraryCipher;
 
 class VirgilCryptoAPI implements CryptoAPI
 {
     /**
-     * @param integer $type Key generation type
+     * @inheritdoc
      * @return VirgilKeyPair
      * @throws GenerateException
      */
@@ -33,8 +42,7 @@ class VirgilCryptoAPI implements CryptoAPI
     }
 
     /**
-     * @param string $key
-     * @return mixed
+     * @inheritdoc
      * @throws PrivateKeyToDERException
      */
     public function privateKeyToDER($key)
@@ -47,8 +55,7 @@ class VirgilCryptoAPI implements CryptoAPI
     }
 
     /**
-     * @param string $key
-     * @return mixed
+     * @inheritdoc
      * @throws PublicKeyToDERException
      */
     public function publicKeyToDER($key)
@@ -61,9 +68,7 @@ class VirgilCryptoAPI implements CryptoAPI
     }
 
     /**
-     * @param string $publicKey
-     * @param string $privateKey
-     * @return mixed
+     * @inheritdoc
      * @throws IsKeyPairMatchException
      */
     public function isKeyPairMatch($publicKey, $privateKey)
@@ -76,9 +81,7 @@ class VirgilCryptoAPI implements CryptoAPI
     }
 
     /**
-     * @param mixed $keyDER DER public key value
-     * @param integer $algorithm Hash algorithm
-     * @return mixed
+     * @inheritdoc
      * @throws ComputePublicKeyHashException
      */
     public function computeKeyHash($keyDER, $algorithm)
@@ -93,9 +96,7 @@ class VirgilCryptoAPI implements CryptoAPI
 
 
     /**
-     * @param string $privateKey
-     * @param string $password
-     * @return string
+     * @inheritdoc
      * @throws ExtractPublicKeyException
      */
     public function extractPublicKey($privateKey, $password)
@@ -108,9 +109,7 @@ class VirgilCryptoAPI implements CryptoAPI
     }
 
     /**
-     * @param string $privateKey
-     * @param string $password
-     * @return string
+     * @inheritdoc
      * @throws EncryptPrivateKeyException
      */
     public function encryptPrivateKey($privateKey, $password)
@@ -123,9 +122,7 @@ class VirgilCryptoAPI implements CryptoAPI
     }
 
     /**
-     * @param string $privateKey
-     * @param string $password
-     * @return string
+     * @inheritdoc
      * @throws DecryptPrivateKeyException
      */
     public function decryptPrivateKey($privateKey, $password)
@@ -137,4 +134,78 @@ class VirgilCryptoAPI implements CryptoAPI
         }
     }
 
+    /**
+     * @inheritdoc
+     * @throws SignException
+     */
+    public function sign($data, $privateKey)
+    {
+        try {
+            $signer = new VirgilSigner();
+            return $signer->sign($data, $privateKey);
+        } catch (\Exception $e) {
+            throw new SignException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @inheritdoc
+     * @throws VerifyException
+     */
+    public function verify($data, $signature, $publicKey)
+    {
+        try {
+            $signer = new VirgilSigner();
+            return $signer->verify($data, $signature, $publicKey);
+        } catch (\Exception $e) {
+            throw new VerifyException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @return VirgilCipher
+     */
+    public function cipher()
+    {
+        return new VirgilCipher(new LibraryCipher());
+    }
+
+    /**
+     * @return VirgilStreamCipher
+     */
+    public function streamCipher()
+    {
+        return new VirgilStreamCipher(new LibraryChunkCipher());
+    }
+
+    /**
+     * @inheritdoc
+     * @throws SignException
+     */
+    public function streamSign($stream, $privateKey)
+    {
+        try {
+            $signer = new VirgilStreamSigner();
+            $dataStream = new VirgilStreamDataSource($stream);
+            $dataStream->reset();
+            return $signer->sign($dataStream, $privateKey);
+        } catch (\Exception $e) {
+            throw new SignException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @inheritdoc
+     * @throws VerifyException
+     */
+    public function streamVerify($stream, $signature, $publicKey)
+    {
+        try {
+            $signer = new VirgilStreamSigner();
+            $dataStream = new VirgilStreamDataSource($stream);
+            return $signer->verify($dataStream, $signature, $publicKey);
+        } catch (\Exception $e) {
+            throw new VerifyException($e->getMessage(), $e->getCode());
+        }
+    }
 }

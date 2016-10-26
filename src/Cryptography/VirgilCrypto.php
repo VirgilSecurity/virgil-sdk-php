@@ -3,25 +3,25 @@
 namespace Virgil\SDK\Cryptography;
 
 
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoAPI;
+use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilCipher;
+use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
+use Virgil\SDK\Cryptography\CryptoAPI\CryptoAPI;
 
-class VirgilCrypto implements Crypto
+class VirgilCrypto implements CryptoInterface
 {
-    /** @var VirgilCryptoAPI */
     private $cryptoAPI;
 
     /**
      * VirgilCrypto constructor.
-     * @param VirgilCryptoAPI $cryptoApi
+     * @param CryptoAPI $cryptoApi
      */
-    public function __construct(VirgilCryptoAPI $cryptoApi)
+    public function __construct(CryptoAPI $cryptoApi)
     {
         $this->cryptoAPI = $cryptoApi;
     }
 
     /**
-     * @param integer $cryptoType
-     * @throws VirgilCryptoException
+     * @inheritdoc
      * @return VirgilKeyPair
      */
     public function generateKeys($cryptoType = VirgilCryptoType::DefaultType)
@@ -35,5 +35,40 @@ class VirgilCrypto implements Crypto
             new VirgilKey($publicKeyHash, $publicKeyDER),
             new VirgilKey($publicKeyHash, $privateKeyDER)
         );
+    }
+
+    public function encrypt($data, $recipients)
+    {
+        /** @var VirgilCipher $cipher */
+        $cipher = $this->cryptoAPI->cipher();
+        foreach ($recipients as $recipient) {
+            $cipher->addKeyRecipient($recipient->getReceiverId(), $recipient->getValue());
+        }
+        return $cipher->encrypt($data);
+    }
+
+    public function decrypt($encryptedData, KeyInterface $privateKey)
+    {
+        /** @var VirgilCipher $cipher */
+        $cipher = $this->cryptoAPI->cipher();
+        return $cipher->decryptWithKey($encryptedData, $privateKey->getReceiverId(), $privateKey->getValue());
+    }
+
+    public function streamEncrypt($source, $sin, $recipients)
+    {
+        /** @var VirgilStreamCipher $cipher */
+        $cipher = $this->cryptoAPI->streamCipher();
+        /** @var KeyInterface $recipient */
+        foreach ($recipients as $recipient) {
+            $cipher->addKeyRecipient($recipient->getReceiverId(), $recipient->getValue());
+        }
+        $cipher->encrypt($source, $sin);
+    }
+
+    public function streamDecrypt($source, $sin, KeyInterface $privateKey)
+    {
+        /** @var VirgilStreamCipher $cipher */
+        $cipher = $this->cryptoAPI->streamCipher();
+        $cipher->decryptWithKey($source, $sin, $privateKey->getReceiverId(), $privateKey->getValue());
     }
 }

@@ -5,10 +5,8 @@ namespace Virgil\SDK\Cryptography\CryptoAPI;
 
 class VirgilKeyPair implements KeyPair
 {
-    /** @var string  */
     private $publicKey;
 
-    /** @var string  */
     private $privateKey;
 
     /**
@@ -22,17 +20,11 @@ class VirgilKeyPair implements KeyPair
         $this->privateKey = $privateKey;
     }
 
-    /**
-     * @return string
-     */
     public function getPublicKey()
     {
         return $this->publicKey;
     }
 
-    /**
-     * @return string
-     */
     public function getPrivateKey()
     {
         return $this->privateKey;

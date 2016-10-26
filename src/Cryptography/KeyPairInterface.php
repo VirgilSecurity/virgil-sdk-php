@@ -3,15 +3,19 @@
 namespace Virgil\SDK\Cryptography;
 
 
-interface KeyPair
+interface KeyPairInterface
 {
     /**
-     * @return Key
+     * Get public key
+     *
+     * @return KeyInterface
      */
     public function getPublicKey();
 
     /**
-     * @return Key
+     * Get private key
+     *
+     * @return KeyInterface
      */
     public function getPrivateKey();
 }
