@@ -188,24 +188,24 @@ class VirgilCryptoAPITest extends TestCase
     public function testDataDecryptNoRecipients()
     {
         $data = 'data';
-        $recieverId = 'SALGH&';
+        $receiverId = 'SALGH&';
         $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
         /** @var VirgilCipher $cipher */
         $cipher = $this->virgilCryptoAPI->cipher();
         $encryptedData = $cipher->encrypt($data);
-        $cipher->decryptWithKey($encryptedData, $recieverId, $keys->getPrivateKey());
+        $cipher->decryptWithKey($encryptedData, $receiverId, $keys->getPrivateKey());
     }
 
     public function testDataEncryptAndDecrypt()
     {
         $data = 'data';
-        $recieverId = 'SALGH&';
+        $receiverId = 'SALGH&';
         $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
         /** @var VirgilCipher $cipher */
         $cipher = $this->virgilCryptoAPI->cipher();
-        $cipher->addKeyRecipient($recieverId, $keys->getPublicKey());
+        $cipher->addKeyRecipient($receiverId, $keys->getPublicKey());
         $encryptedData = $cipher->encrypt($data);
-        $this->assertEquals($data, $cipher->decryptWithKey($encryptedData, $recieverId, $keys->getPrivateKey()));
+        $this->assertEquals($data, $cipher->decryptWithKey($encryptedData, $receiverId, $keys->getPrivateKey()));
     }
 
     public function testStreamEncryptAndDecrypt()
@@ -215,7 +215,7 @@ class VirgilCryptoAPITest extends TestCase
         $sin = fopen('php://memory', 'r+');
 
         fwrite($source, $data);
-        $recieverId = 'fsat3';
+        $receiverId = 'fsat3';
         $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
 
         /** @var VirgilStreamCipher $streamCipher */
@@ -224,16 +224,16 @@ class VirgilCryptoAPITest extends TestCase
         /** @var VirgilCipher $cipher */
         $cipher = $this->virgilCryptoAPI->cipher();
 
-        $streamCipher->addKeyRecipient($recieverId, $keys->getPublicKey());
-        $cipher->addKeyRecipient($recieverId, $keys->getPublicKey());
+        $streamCipher->addKeyRecipient($receiverId, $keys->getPublicKey());
+        $cipher->addKeyRecipient($receiverId, $keys->getPublicKey());
 
         $streamCipher->encrypt($source, $sin);
 
         rewind($sin);
-        $this->assertEquals($data, $cipher->decryptWithKey(stream_get_contents($sin), $recieverId, $keys->getPrivateKey()));
+        $this->assertEquals($data, $cipher->decryptWithKey(stream_get_contents($sin), $receiverId, $keys->getPrivateKey()));
 
         rewind($source);
-        $streamCipher->decryptWithKey($sin, $source, $recieverId, $keys->getPrivateKey());
+        $streamCipher->decryptWithKey($sin, $source, $receiverId, $keys->getPrivateKey());
 
         rewind($source);
         $this->assertEquals($data, stream_get_contents($source));

@@ -3,7 +3,7 @@
 namespace Virgil\SDK\Cryptography\CryptoAPI;
 
 
-interface KeyPair
+interface KeyPairInterface
 {
     /**
      * @return string

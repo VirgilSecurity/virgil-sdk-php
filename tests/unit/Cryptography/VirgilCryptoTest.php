@@ -23,14 +23,12 @@ class VirgilCryptoTest extends TestCase
 
         $virgilKeyPair = new CryptoAPIVirgilKeyPair($publicKey, $privateKey);
 
-        /** @var VirgilCryptoAPI $virgilCryptoAPIMock */
         $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class,
             ['generate', 'publicKeyToDER', 'privateKeyToDER', 'computeKeyHash']);
 
-
         $virgilCryptoAPIMock->expects($this->once())
             ->method('generate')
-            ->with($this->identicalTo(VirgilCryptoType::DefaultType))
+            ->with(VirgilCryptoType::DefaultType)
             ->willReturn($virgilKeyPair);
 
         $virgilCryptoAPIMock->expects($this->once())
@@ -96,5 +94,211 @@ class VirgilCryptoTest extends TestCase
         $virgilCrypto->streamDecrypt($sin, $source, $keys2->getPrivateKey());
         rewind($source);
         $this->assertEquals($data, stream_get_contents($source));
+    }
+
+    public function testCalculateFingerprint()
+    {
+        $content = 'fingerprint_content';
+
+        $virgilCryptoAPIMock = $this->createMock(VirgilCryptoAPI::class);
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('computeKeyHash')
+            ->with($content, VirgilHashAlgorithmType::SHA256)
+            ->willReturn('fingerprint_content_hash');
+
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+        $this->assertEquals('fingerprint_content_hash', $virgilCrypto->calculateFingerprint($content));
+    }
+
+    public function testDataSignVerify()
+    {
+        $content = 'data_to_sign';
+
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['sign', 'verify']);
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('sign')
+            ->with($content, $keys->getPrivateKey()->getValue())
+            ->willReturn('data_signature');
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('verify')
+            ->with($content, 'data_signature', $keys->getPublicKey()->getValue())
+            ->willReturn(true);
+
+        $signature = $virgilCrypto->sign($content, $keys->getPrivateKey());
+        $this->assertTrue($virgilCrypto->verify($content, $signature, $keys->getPublicKey()));
+    }
+
+    public function testStreamSignVerify()
+    {
+        $content = 'data_to_encrypt';
+        $source = fopen('php://memory', 'r');
+        fwrite($source, $content);
+
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['streamSign', 'streamVerify']);
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('streamSign')
+            ->with($source, $keys->getPrivateKey()->getValue())
+            ->willReturn('data_signature');
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('streamVerify')
+            ->with($source, 'data_signature', $keys->getPublicKey()->getValue())
+            ->willReturn(true);
+
+        $signature = $virgilCrypto->streamSign($source, $keys->getPrivateKey());
+        $this->assertTrue($virgilCrypto->streamVerify($source, $signature, $keys->getPublicKey()));
+    }
+
+    public function testExtractPublicKeyFromPrivateOne()
+    {
+        $virgilCrypto = new VirgilCrypto(new VirgilCryptoAPI());
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $this->assertEquals($keys->getPublicKey(), $virgilCrypto->extractPublicKey($keys->getPrivateKey()));
+    }
+
+    public function testExportPublicKey()
+    {
+        $publicKeyDERvalue = 'public_key_der_value';
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['publicKeyToDER']);
+
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('publicKeyToDER')
+            ->with($keys->getPublicKey()->getValue())
+            ->willReturn($publicKeyDERvalue);
+
+        $this->assertEquals($publicKeyDERvalue, $virgilCrypto->exportPublicKey($keys->getPublicKey()));
+    }
+
+    public function testExportPrivateKey()
+    {
+        $privateKeyDERvalue = 'private_key_der_value';
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['privateKeyToDER']);
+
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('privateKeyToDER')
+            ->with($keys->getPrivateKey()->getValue())
+            ->willReturn($privateKeyDERvalue);
+
+        $this->assertEquals($privateKeyDERvalue, $virgilCrypto->exportPrivateKey($keys->getPrivateKey()));
+    }
+
+    public function testExportPrivateKeyWithPassword()
+    {
+        $privateKeyDERvalue = 'private_key_der_value';
+        $password = 'secure_password';
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['privateKeyToDER']);
+
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('privateKeyToDER')
+            ->with($keys->getPrivateKey()->getValue(), $password)
+            ->willReturn($privateKeyDERvalue);
+
+        $this->assertEquals($privateKeyDERvalue, $virgilCrypto->exportPrivateKey($keys->getPrivateKey(), $password));
+    }
+
+    public function testImportPrivateKey()
+    {
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['computeKeyHash', 'extractPublicKey']);
+
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $exportedKey = $virgilCrypto->exportPrivateKey($keys->getPrivateKey());
+
+        $expectedPrivateKey = new VirgilKey(
+            'fingerprint_content_hash',
+            $exportedKey
+        );
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('computeKeyHash')
+            ->with('extracted_public_key', VirgilHashAlgorithmType::SHA256)
+            ->willReturn('fingerprint_content_hash');
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('extractPublicKey')
+            ->with($exportedKey, '')
+            ->willReturn('extracted_public_key');
+
+        $this->assertEquals($expectedPrivateKey, $virgilCrypto->importPrivateKey($exportedKey));
+    }
+
+    public function testImportPrivateKeyWithPassword()
+    {
+        $password = 'secure_password';
+
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['computeKeyHash', 'extractPublicKey']);
+
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $exportedKey = $virgilCrypto->exportPrivateKey($keys->getPrivateKey(), $password);
+
+        $expectedPrivateKey = new VirgilKey(
+            'fingerprint_content_hash',
+            $keys->getPrivateKey()->getValue()
+        );
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('computeKeyHash')
+            ->with('extracted_public_key', VirgilHashAlgorithmType::SHA256)
+            ->willReturn('fingerprint_content_hash');
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('extractPublicKey')
+            ->with($keys->getPrivateKey()->getValue(), '')
+            ->willReturn('extracted_public_key');
+
+        $this->assertEquals($expectedPrivateKey, $virgilCrypto->importPrivateKey($exportedKey, $password));
+    }
+
+
+    public function testImportPublicKey()
+    {
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['computeKeyHash']);
+
+        $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
+
+        $keys = $virgilCrypto->generateKeys();
+
+        $exportedKey = $virgilCrypto->exportPublicKey($keys->getPublicKey());
+
+        $expectedPublicKey = new VirgilKey(
+            'fingerprint_content_hash',
+            $exportedKey
+        );
+
+        $virgilCryptoAPIMock->expects($this->once())
+            ->method('computeKeyHash')
+            ->with($exportedKey, VirgilHashAlgorithmType::SHA256)
+            ->willReturn('fingerprint_content_hash');
+
+        $this->assertEquals($expectedPublicKey, $virgilCrypto->importPublicKey($exportedKey));
     }
 }

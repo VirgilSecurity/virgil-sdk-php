@@ -5,13 +5,13 @@ namespace Virgil\SDK\Cryptography\CryptoAPI;
 
 use Virgil\SDK\Cryptography\CryptoAPI\Cipher\CipherInterface;
 
-interface CryptoAPI
+interface CryptoApiInterface
 {
     /**
      * Generate public/private key
      *
      * @param integer $type Key generation type
-     * @return KeyPair
+     * @return KeyPairInterface
      */
     public function generate($type);
 
@@ -19,9 +19,10 @@ interface CryptoAPI
      * Converts private key to DER format
      *
      * @param string $key
+     * @param string $password
      * @return string
      */
-    public function privateKeyToDER($key);
+    public function privateKeyToDER($key, $password = '');
 
     /**
      * Converts public key to DER format

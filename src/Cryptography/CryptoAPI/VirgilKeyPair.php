@@ -3,7 +3,7 @@
 namespace Virgil\SDK\Cryptography\CryptoAPI;
 
 
-class VirgilKeyPair implements KeyPair
+class VirgilKeyPair implements KeyPairInterface
 {
     private $publicKey;
 

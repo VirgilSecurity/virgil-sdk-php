@@ -23,7 +23,7 @@ use Virgil\Crypto\VirgilKeyPair as LibraryKeyPair;
 use Virgil\Crypto\VirgilChunkCipher as LibraryChunkCipher;
 use Virgil\Crypto\VirgilCipher as LibraryCipher;
 
-class VirgilCryptoAPI implements CryptoAPI
+class VirgilCryptoAPI implements CryptoApiInterface
 {
     /**
      * @inheritdoc
@@ -45,10 +45,13 @@ class VirgilCryptoAPI implements CryptoAPI
      * @inheritdoc
      * @throws PrivateKeyToDERException
      */
-    public function privateKeyToDER($key)
+    public function privateKeyToDER($key, $password = '')
     {
         try {
-            return LibraryKeyPair::privateKeyToDER($key);
+            if (strlen($password) === 0) {
+                return LibraryKeyPair::privateKeyToDER($key);
+            }
+            return LibraryKeyPair::privateKeyToDER($this->encryptPrivateKey($key, $password), $password);
         } catch (\Exception $e) {
             throw new PrivateKeyToDERException($e->getMessage(), $e->getCode());
         }
