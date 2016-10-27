@@ -4,17 +4,17 @@ namespace Virgil\Tests\Unit\Cryptography;
 use PHPUnit\Framework\TestCase;
 use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilCipher;
 use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoAPI;
+use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
 use Virgil\SDK\Cryptography\VirgilCryptoType;
 
 class VirgilCryptoAPITest extends TestCase
 {
-    /** @var VirgilCryptoAPI */
+    /** @var VirgilCryptoApi */
     private $virgilCryptoAPI;
 
     public function setUp()
     {
-        $this->virgilCryptoAPI = new VirgilCryptoAPI();
+        $this->virgilCryptoAPI = new VirgilCryptoApi();
         parent::setUp();
     }
 

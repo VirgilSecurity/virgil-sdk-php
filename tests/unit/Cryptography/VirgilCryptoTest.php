@@ -2,7 +2,7 @@
 namespace Virgil\Tests\Unit\Cryptography;
 
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoAPI;
+use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
 use Virgil\SDK\Cryptography\VirgilCrypto;
 use Virgil\SDK\Cryptography\VirgilCryptoType;
 use Virgil\SDK\Cryptography\VirgilHashAlgorithmType;
@@ -23,7 +23,7 @@ class VirgilCryptoTest extends TestCase
 
         $virgilKeyPair = new CryptoAPIVirgilKeyPair($publicKey, $privateKey);
 
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class,
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class,
             ['generate', 'publicKeyToDER', 'privateKeyToDER', 'computeKeyHash']);
 
         $virgilCryptoAPIMock->expects($this->once())
@@ -60,7 +60,7 @@ class VirgilCryptoTest extends TestCase
     public function testEncryptDecrypt()
     {
         $data = 'data_to_encrypt';
-        $virgilCrypto = new VirgilCrypto(new VirgilCryptoAPI());
+        $virgilCrypto = new VirgilCrypto(new VirgilCryptoApi());
         $keys = $virgilCrypto->generateKeys();
         $keys2 = $virgilCrypto->generateKeys();
         $keys3 = $virgilCrypto->generateKeys();
@@ -77,7 +77,7 @@ class VirgilCryptoTest extends TestCase
         $source = fopen('php://memory', 'r+');
         $sin = fopen('php://memory', 'r+');
         fwrite($source, $data);
-        $virgilCrypto = new VirgilCrypto(new VirgilCryptoAPI());
+        $virgilCrypto = new VirgilCrypto(new VirgilCryptoApi());
         $keys = $virgilCrypto->generateKeys();
         $keys2 = $virgilCrypto->generateKeys();
 
@@ -100,7 +100,7 @@ class VirgilCryptoTest extends TestCase
     {
         $content = 'fingerprint_content';
 
-        $virgilCryptoAPIMock = $this->createMock(VirgilCryptoAPI::class);
+        $virgilCryptoAPIMock = $this->createMock(VirgilCryptoApi::class);
 
         $virgilCryptoAPIMock->expects($this->once())
             ->method('computeKeyHash')
@@ -115,7 +115,7 @@ class VirgilCryptoTest extends TestCase
     {
         $content = 'data_to_sign';
 
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['sign', 'verify']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['sign', 'verify']);
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 
         $keys = $virgilCrypto->generateKeys();
@@ -140,7 +140,7 @@ class VirgilCryptoTest extends TestCase
         $source = fopen('php://memory', 'r');
         fwrite($source, $content);
 
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['streamSign', 'streamVerify']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['streamSign', 'streamVerify']);
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 
         $keys = $virgilCrypto->generateKeys();
@@ -161,7 +161,7 @@ class VirgilCryptoTest extends TestCase
 
     public function testExtractPublicKeyFromPrivateOne()
     {
-        $virgilCrypto = new VirgilCrypto(new VirgilCryptoAPI());
+        $virgilCrypto = new VirgilCrypto(new VirgilCryptoApi());
 
         $keys = $virgilCrypto->generateKeys();
 
@@ -171,7 +171,7 @@ class VirgilCryptoTest extends TestCase
     public function testExportPublicKey()
     {
         $publicKeyDERvalue = 'public_key_der_value';
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['publicKeyToDER']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['publicKeyToDER']);
 
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 
@@ -188,7 +188,7 @@ class VirgilCryptoTest extends TestCase
     public function testExportPrivateKey()
     {
         $privateKeyDERvalue = 'private_key_der_value';
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['privateKeyToDER']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['privateKeyToDER']);
 
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 
@@ -206,7 +206,7 @@ class VirgilCryptoTest extends TestCase
     {
         $privateKeyDERvalue = 'private_key_der_value';
         $password = 'secure_password';
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['privateKeyToDER']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['privateKeyToDER']);
 
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 
@@ -222,7 +222,7 @@ class VirgilCryptoTest extends TestCase
 
     public function testImportPrivateKey()
     {
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['computeKeyHash', 'extractPublicKey']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['computeKeyHash', 'extractPublicKey']);
 
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 
@@ -252,7 +252,7 @@ class VirgilCryptoTest extends TestCase
     {
         $password = 'secure_password';
 
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['computeKeyHash', 'extractPublicKey']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['computeKeyHash', 'extractPublicKey']);
 
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 
@@ -281,7 +281,7 @@ class VirgilCryptoTest extends TestCase
 
     public function testImportPublicKey()
     {
-        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoAPI::class, ['computeKeyHash']);
+        $virgilCryptoAPIMock = $this->createPartialMock(VirgilCryptoApi::class, ['computeKeyHash']);
 
         $virgilCrypto = new VirgilCrypto($virgilCryptoAPIMock);
 

@@ -23,7 +23,7 @@ use Virgil\Crypto\VirgilKeyPair as LibraryKeyPair;
 use Virgil\Crypto\VirgilChunkCipher as LibraryChunkCipher;
 use Virgil\Crypto\VirgilCipher as LibraryCipher;
 
-class VirgilCryptoAPI implements CryptoApiInterface
+abstract class AbstractVirgilCryptoApi implements CryptoApiInterface
 {
     /**
      * @inheritdoc
