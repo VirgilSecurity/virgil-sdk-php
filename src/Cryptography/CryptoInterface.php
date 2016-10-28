@@ -3,6 +3,8 @@
 namespace Virgil\SDK\Cryptography;
 
 
+use Virgil\SDK\BufferInterface;
+
 interface CryptoInterface
 {
     /**
@@ -16,27 +18,27 @@ interface CryptoInterface
     /**
      * Encrypt data with a list of recipients
      *
-     * @param $data
-     * @param KeyInterface[] $recipients
-     * @return string
+     * @param string $data
+     * @param PublicKeyInterface[] $recipients
+     * @return BufferInterface
      */
     public function encrypt($data, $recipients);
 
     /**
      * Decrypt encrypted data by given private key
      *
-     * @param $encryptedData
-     * @param KeyInterface $privateKey
-     * @return string
+     * @param BufferInterface $encryptedData
+     * @param PrivateKeyInterface $privateKey
+     * @return BufferInterface
      */
-    public function decrypt($encryptedData, KeyInterface $privateKey);
+    public function decrypt(BufferInterface $encryptedData, PrivateKeyInterface $privateKey);
 
     /**
      * Encrypt source stream to sin stream with a list of recipients
      *
      * @param $source
      * @param $sin
-     * @param KeyInterface[] $recipients
+     * @param PublicKeyInterface[] $recipients
      */
     public function streamEncrypt($source, $sin, $recipients);
 
@@ -45,95 +47,95 @@ interface CryptoInterface
      *
      * @param $source
      * @param $sin
-     * @param KeyInterface $privateKey
+     * @param PrivateKeyInterface $privateKey
      */
-    public function streamDecrypt($source, $sin, KeyInterface $privateKey);
+    public function streamDecrypt($source, $sin, PrivateKeyInterface $privateKey);
 
     /**
      * Calculate fingerprint by given content
      *
-     * @param $content
-     * @return string
+     * @param BufferInterface $content
+     * @return BufferInterface
      */
-    public function calculateFingerprint($content);
+    public function calculateFingerprint(BufferInterface $content);
 
     /**
      * Calculate signature for content by given private key
      *
      * @param string $content
-     * @param KeyInterface $privateKey
-     * @return string
+     * @param PrivateKeyInterface $privateKey
+     * @return BufferInterface
      */
-    public function sign($content, KeyInterface $privateKey);
+    public function sign($content, PrivateKeyInterface $privateKey);
 
     /**
      * Verify signed content by given signature and signer public key value
      *
      * @param string $content
-     * @param string $signature
-     * @param KeyInterface $publicKey
+     * @param BufferInterface $signature
+     * @param PublicKeyInterface $publicKey
      * @return bool
      */
-    public function verify($content, $signature, KeyInterface $publicKey);
+    public function verify($content, BufferInterface $signature, PublicKeyInterface $publicKey);
 
     /**
      * Calculate signature for streamed content by given private key
      *
      * @param resource $source
-     * @param KeyInterface $privateKey
-     * @return string
+     * @param PrivateKeyInterface $privateKey
+     * @return BufferInterface
      */
-    public function streamSign($source, KeyInterface $privateKey);
+    public function streamSign($source, PrivateKeyInterface $privateKey);
 
     /**
      * Verify signed streamed content by given signature and signer public key value
      *
      * @param resource $source
-     * @param string $signature
-     * @param KeyInterface $publicKey
+     * @param BufferInterface $signature
+     * @param PublicKeyInterface $publicKey
      * @return bool
      */
-    public function streamVerify($source, $signature, KeyInterface $publicKey);
+    public function streamVerify($source, BufferInterface $signature, PublicKeyInterface $publicKey);
 
     /**
      * Extract public key instance from private key
      *
-     * @param KeyInterface $privateKey
-     * @return KeyInterface
+     * @param PrivateKeyInterface $privateKey
+     * @return PublicKeyInterface
      */
-    public function extractPublicKey(KeyInterface $privateKey);
+    public function extractPublicKey(PrivateKeyInterface $privateKey);
 
     /**
      * Export public key to material representation
      *
-     * @param KeyInterface $publicKey
-     * @return string
+     * @param PublicKeyInterface $publicKey
+     * @return BufferInterface
      */
-    public function exportPublicKey(KeyInterface $publicKey);
+    public function exportPublicKey(PublicKeyInterface $publicKey);
 
     /**
      * Export private key to material representation
      *
-     * @param KeyInterface $privateKey
+     * @param PrivateKeyInterface $privateKey
      * @param string $password
-     * @return string
+     * @return BufferInterface
      */
-    public function exportPrivateKey(KeyInterface $privateKey, $password = '');
+    public function exportPrivateKey(PrivateKeyInterface $privateKey, $password = '');
 
     /**
      * Imports the Private key from material representation
      *
-     * @param string $privateKeyDERvalue
+     * @param BufferInterface $privateKeyDER
      * @param string $password
-     * @return KeyInterface
+     * @return PrivateKeyInterface
      */
-    public function importPrivateKey($privateKeyDERvalue, $password = '');
+    public function importPrivateKey(BufferInterface $privateKeyDER, $password = '');
 
     /**
      * Imports the Public key from material representation
      *
-     * @param string $exportedKey
-     * @return KeyInterface
+     * @param BufferInterface $exportedKey
+     * @return PublicKeyInterface
      */
-    public function importPublicKey($exportedKey);
+    public function importPublicKey(BufferInterface $exportedKey);
 }

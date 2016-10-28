@@ -5,9 +5,9 @@ use PHPUnit\Framework\TestCase;
 use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilCipher;
 use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
 use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
-use Virgil\SDK\Cryptography\VirgilCryptoType;
+use Virgil\SDK\Cryptography\KeyPairType;
 
-class VirgilCryptoAPITest extends TestCase
+class VirgilCryptoApiTest extends TestCase
 {
     /** @var VirgilCryptoApi */
     private $virgilCryptoAPI;
@@ -20,8 +20,8 @@ class VirgilCryptoAPITest extends TestCase
 
     public function testThisShouldGenerateKeys()
     {
-        $key = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
-        $key2 = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $key = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
+        $key2 = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
 
         $this->assertTrue($this->virgilCryptoAPI->isKeyPairMatch($key->getPublicKey(), $key->getPrivateKey()));
         $this->assertFalse($this->virgilCryptoAPI->isKeyPairMatch($key2->getPublicKey(), $key->getPrivateKey()));
@@ -56,13 +56,13 @@ class VirgilCryptoAPITest extends TestCase
      */
     public function testWrongAlgorithmShouldThrowExceptionOnComputePublicKeyHash()
     {
-        $this->virgilCryptoAPI->computeKeyHash('wrong key', 'wrong algorithm');
+        $this->virgilCryptoAPI->computeHash('wrong key', 'wrong algorithm');
     }
 
     public function testExtractPublicKey()
     {
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
-        $keys2 = $this->virgilCryptoAPI->generate(VirgilCryptoType::EC_BP384R1);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
+        $keys2 = $this->virgilCryptoAPI->generate(KeyPairType::EC_BP384R1);
         $extractedPublicKey = $this->virgilCryptoAPI->extractPublicKey($keys->getPrivateKey(), '');
         $this->assertEquals($keys->getPublicKey(), $extractedPublicKey);
 
@@ -80,14 +80,14 @@ class VirgilCryptoAPITest extends TestCase
 
     public function testEncryptPrivateKey()
     {
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $encryptedPrivateKey = $this->virgilCryptoAPI->encryptPrivateKey($keys->getPrivateKey(), 'qwerty');
         $this->assertNotEquals($keys->getPrivateKey(), $encryptedPrivateKey);
     }
 
     public function testDecryptPrivateKey()
     {
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $encryptedPrivateKey = $this->virgilCryptoAPI->encryptPrivateKey($keys->getPrivateKey(), 'qwerty');
         $this->assertNotEquals($keys->getPrivateKey(), $encryptedPrivateKey);
         $decryptedPrivateKey = $this->virgilCryptoAPI->decryptPrivateKey($encryptedPrivateKey, 'qwerty');
@@ -118,7 +118,7 @@ class VirgilCryptoAPITest extends TestCase
     {
         $data = 'data';
         $signature = 'wrong signature';
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $isValid = $this->virgilCryptoAPI->verify($data, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
     }
@@ -132,7 +132,7 @@ class VirgilCryptoAPITest extends TestCase
         $data = 'data';
         fwrite($source, $data);
         $signature = 'wrong signature';
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $isValid = $this->virgilCryptoAPI->streamVerify($source, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
     }
@@ -148,12 +148,12 @@ class VirgilCryptoAPITest extends TestCase
     public function testDataIsSignedAndVerified()
     {
         $data = 'data';
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $signature = $this->virgilCryptoAPI->sign($data, $keys->getPrivateKey());
         $isValid = $this->virgilCryptoAPI->verify($data, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
 
-        $keys2 = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys2 = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $isValid = $this->virgilCryptoAPI->verify($data, $signature, $keys2->getPublicKey());
         $this->assertFalse($isValid);
     }
@@ -172,12 +172,12 @@ class VirgilCryptoAPITest extends TestCase
         $source = fopen('php://memory', 'r+');
         $data = 'data';
         fwrite($source, $data);
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $signature = $this->virgilCryptoAPI->streamSign($source, $keys->getPrivateKey());
         $isValid = $this->virgilCryptoAPI->streamVerify($source, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
 
-        $keys2 = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys2 = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         $isValid = $this->virgilCryptoAPI->streamVerify($source, $signature, $keys2->getPublicKey());
         $this->assertFalse($isValid);
     }
@@ -189,7 +189,7 @@ class VirgilCryptoAPITest extends TestCase
     {
         $data = 'data';
         $receiverId = 'SALGH&';
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         /** @var VirgilCipher $cipher */
         $cipher = $this->virgilCryptoAPI->cipher();
         $encryptedData = $cipher->encrypt($data);
@@ -200,7 +200,7 @@ class VirgilCryptoAPITest extends TestCase
     {
         $data = 'data';
         $receiverId = 'SALGH&';
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
         /** @var VirgilCipher $cipher */
         $cipher = $this->virgilCryptoAPI->cipher();
         $cipher->addKeyRecipient($receiverId, $keys->getPublicKey());
@@ -216,7 +216,7 @@ class VirgilCryptoAPITest extends TestCase
 
         fwrite($source, $data);
         $receiverId = 'fsat3';
-        $keys = $this->virgilCryptoAPI->generate(VirgilCryptoType::DefaultType);
+        $keys = $this->virgilCryptoAPI->generate(KeyPairType::DefaultType);
 
         /** @var VirgilStreamCipher $streamCipher */
         $streamCipher = $this->virgilCryptoAPI->streamCipher();

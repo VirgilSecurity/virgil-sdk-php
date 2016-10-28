@@ -11,17 +11,17 @@ class VirgilKeyPair implements KeyPairInterface
 
     /**
      * VirgilKeyPair constructor.
-     * @param VirgilKey $publicKey
-     * @param VirgilKey $privateKey
+     * @param VirgilPublicKey $publicKey
+     * @param VirgilPrivateKey $privateKey
      */
-    public function __construct(VirgilKey $publicKey, VirgilKey $privateKey)
+    public function __construct(VirgilPublicKey $publicKey, VirgilPrivateKey $privateKey)
     {
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
     }
 
     /**
-     * @return VirgilKey
+     * @return VirgilPublicKey
      */
     public function getPublicKey()
     {
@@ -29,7 +29,7 @@ class VirgilKeyPair implements KeyPairInterface
     }
 
     /**
-     * @return VirgilKey
+     * @return VirgilPrivateKey
      */
     public function getPrivateKey()
     {

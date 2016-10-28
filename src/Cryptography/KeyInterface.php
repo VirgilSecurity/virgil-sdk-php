@@ -3,19 +3,21 @@
 namespace Virgil\SDK\Cryptography;
 
 
+use Virgil\SDK\Buffer;
+
 interface KeyInterface
 {
     /**
      * Get receiver id for current key
      *
-     * @return string
+     * @return Buffer
      */
     public function getReceiverId();
 
     /**
-     * Get DER key value
+     * Get key value
      *
-     * @return string
+     * @return Buffer
      */
     public function getValue();
 }

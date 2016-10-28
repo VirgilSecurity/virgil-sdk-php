@@ -8,14 +8,14 @@ interface KeyPairInterface
     /**
      * Get public key
      *
-     * @return KeyInterface
+     * @return PublicKeyInterface
      */
     public function getPublicKey();
 
     /**
      * Get private key
      *
-     * @return KeyInterface
+     * @return PrivateKeyInterface
      */
     public function getPrivateKey();
 }

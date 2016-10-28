@@ -3,21 +3,23 @@
 namespace Virgil\SDK\Cryptography;
 
 
-class VirgilKey implements KeyInterface
+use Virgil\SDK\Buffer;
+
+abstract class AbstractVirgilKey implements KeyInterface
 {
     protected $receiverId;
 
     protected $value;
 
     /**
-     * VirgilKey constructor.
+     * AbstractVirgilKey constructor.
      * @param string $receiverId receiver id for current key
      * @param string $value DER key value
      */
     public function __construct($receiverId, $value)
     {
-        $this->receiverId = $receiverId;
-        $this->value = $value;
+        $this->receiverId = new Buffer($receiverId);
+        $this->value =  new Buffer($value);
     }
 
     public function getReceiverId()

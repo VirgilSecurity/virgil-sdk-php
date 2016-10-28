@@ -5,7 +5,7 @@ namespace Virgil\SDK\Cryptography;
 
 use Virgil\Crypto\VirgilHash;
 
-class VirgilHashAlgorithmType
+class HashAlgorithm
 {
     const DefaultType = VirgilHash::Algorithm_SHA256;
 

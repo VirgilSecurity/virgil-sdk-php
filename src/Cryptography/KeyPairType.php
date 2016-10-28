@@ -5,7 +5,7 @@ namespace Virgil\SDK\Cryptography;
 
 use Virgil\Crypto\VirgilKeyPair as LibraryKeyPair;
 
-class VirgilCryptoType
+class KeyPairType
 {
     const DefaultType = LibraryKeyPair::Type_FAST_EC_ED25519;
 

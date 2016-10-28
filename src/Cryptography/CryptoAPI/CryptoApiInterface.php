@@ -48,7 +48,7 @@ interface CryptoApiInterface
      * @param integer $algorithm Hash algorithm
      * @return string
      */
-    public function computeKeyHash($key, $algorithm);
+    public function computeHash($key, $algorithm);
 
     /**
      * Extracts public key from a private key
