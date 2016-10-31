@@ -11,6 +11,8 @@ use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
 
 class VirgilCrypto implements CryptoInterface
 {
+    private $customParamKeySignature = 'VIRGIL-DATA-SIGNATURE';
+
     private $cryptoApi;
 
     /**
@@ -159,5 +161,31 @@ class VirgilCrypto implements CryptoInterface
             $this->cryptoApi->computeHash($exportedKey->getData(), HashAlgorithm::DefaultType),
             $this->cryptoApi->publicKeyToDER($exportedKey->getData())
         );
+    }
+
+    public function signThenEncrypt($data, PrivateKeyInterface $privateKey, $recipients)
+    {
+        /** @var VirgilPrivateKey $privateKey */
+        $signature = $this->cryptoApi->sign($data, $privateKey->getValue()->getData());
+        $cipher = $this->cryptoApi->cipher();
+        $cipher->customParams()->setData($this->customParamKeySignature, $signature);
+        /** @var VirgilPublicKey $recipient */
+        foreach ($recipients as $recipient) {
+            $cipher->addKeyRecipient($recipient->getReceiverId()->getData(), $recipient->getValue()->getData());
+        }
+        return new Buffer($cipher->encrypt($data));
+    }
+
+    public function decryptThenVerify(BufferInterface $encryptedData, PrivateKeyInterface $privateKey, PublicKeyInterface $publicKey)
+    {
+        /** @var VirgilPrivateKey $privateKey */
+        /** @var VirgilPrivateKey $publicKey */
+        $cipher = $this->cryptoApi->cipher();
+        $decryptedData = $cipher->decryptWithKey($encryptedData->getData(), $privateKey->getReceiverId()->getData(), $privateKey->getValue()->getData());
+        $signature = $cipher->customParams()->getData($this->customParamKeySignature);
+        if (!$this->cryptoApi->verify($decryptedData, $signature, $publicKey->getValue()->getData())) {
+            throw new SignatureIsNotValidException();
+        }
+        return new Buffer($decryptedData);
     }
 }

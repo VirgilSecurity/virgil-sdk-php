@@ -298,4 +298,15 @@ class VirgilCryptoTest extends TestCase
 
         $this->assertEquals($expectedPublicKey, $virgilCrypto->importPublicKey($exportedKey));
     }
+
+    public function testDataEncryptionDecryptionWithSignAndVerifyAtOnce()
+    {
+        $content = 'data_to_encrypt';
+        $virgilCrypto = new VirgilCrypto();
+        $aliceKeys = $virgilCrypto->generateKeys();
+        $bobKeys = $virgilCrypto->generateKeys();
+        $cipherData = $virgilCrypto->signThenEncrypt($content, $aliceKeys->getPrivateKey(), [$bobKeys->getPublicKey()]);
+
+        $this->assertEquals(new Buffer($content), $virgilCrypto->decryptThenVerify($cipherData, $bobKeys->getPrivateKey(), $aliceKeys->getPublicKey()));
+    }
 }

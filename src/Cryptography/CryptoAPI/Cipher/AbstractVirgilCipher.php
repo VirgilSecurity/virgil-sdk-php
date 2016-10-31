@@ -31,4 +31,9 @@ abstract class AbstractVirgilCipher implements CipherInterface
             throw new CipherException($e->getMessage(), $e->getCode());
         }
     }
+
+    public function customParams()
+    {
+        return $this->cipher->customParams();
+    }
 }

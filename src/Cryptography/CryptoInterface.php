@@ -138,4 +138,24 @@ interface CryptoInterface
      * @return PublicKeyInterface
      */
     public function importPublicKey(BufferInterface $exportedKey);
+
+    /**
+     * Sign then encrypt data with a list of recipients
+     *
+     * @param string $data
+     * @param PrivateKeyInterface $privateKey
+     * @param PublicKeyInterface[] $recipients
+     * @return BufferInterface
+     */
+    public function signThenEncrypt($data, PrivateKeyInterface $privateKey, $recipients);
+
+    /**
+     * Decrypt then verify encrypted data
+     *
+     * @param BufferInterface $encryptedData
+     * @param PrivateKeyInterface $privateKey
+     * @param PublicKeyInterface $publicKey
+     * @return BufferInterface
+     */
+    public function decryptThenVerify(BufferInterface $encryptedData, PrivateKeyInterface $privateKey, PublicKeyInterface $publicKey);
 }
