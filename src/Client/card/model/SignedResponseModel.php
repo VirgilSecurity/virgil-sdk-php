@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\SDK\Client\Model;
+namespace Virgil\SDK\Client\Card\Model;
 
 
 class SignedResponseModel

@@ -1,11 +1,12 @@
 <?php
 
-namespace Virgil\SDK\Client\Mapper;
+namespace Virgil\SDK\Client\Card\Mapper;
 
 
-use Virgil\SDK\Client\Model\SearchCriteria;
+use Virgil\SDK\Client\Card\Model\SearchCriteria;
+use Virgil\SDK\Client\JsonModelMapper;
 
-class SearchCriteriaMapper implements JsonModelMapper
+class SearchCriteriaRequestMapper implements JsonModelMapper
 {
 
     public function toModel($json)

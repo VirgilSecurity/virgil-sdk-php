@@ -5,9 +5,9 @@ namespace Virgil\Tests\Unit\Client\Mapper;
 
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\RuntimeException;
+use Virgil\SDK\Client\Card\Mapper\SearchCriteriaRequestMapper;
+use Virgil\SDK\Client\Card\Model\SearchCriteria;
 use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\Mapper\SearchCriteriaMapper;
-use Virgil\SDK\Client\Model\SearchCriteria;
 
 class SearchCriteriaTest extends TestCase
 {
@@ -18,7 +18,7 @@ class SearchCriteriaTest extends TestCase
      */
     public function testMapSearchCriteriaToJson($expectedJson, $args)
     {
-        $mapper = new SearchCriteriaMapper();
+        $mapper = new SearchCriteriaRequestMapper();
         $model = new SearchCriteria(...$args);
         $this->assertEquals($expectedJson, $mapper->toJson($model));
     }
@@ -31,7 +31,7 @@ class SearchCriteriaTest extends TestCase
      */
     public function testMapSearchCriteriaToModel($json)
     {
-        $mapper = new SearchCriteriaMapper();
+        $mapper = new SearchCriteriaRequestMapper();
         $mapper->toModel($json);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\SDK\Client\Mapper;
+namespace Virgil\SDK\Client;
 
 
 use JsonSerializable;

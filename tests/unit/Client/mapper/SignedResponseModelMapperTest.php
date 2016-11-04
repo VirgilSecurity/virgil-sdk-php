@@ -4,12 +4,12 @@ namespace Virgil\Tests\Unit\Client\Mapper;
 
 
 use PHPUnit\Framework\TestCase;
+use Virgil\SDK\Client\Card\Mapper\SignedResponseModelMapper;
+use Virgil\SDK\Client\Card\Model\CardContentModel;
+use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
+use Virgil\SDK\Client\Card\Model\SignedResponseMetaModel;
+use Virgil\SDK\Client\Card\Model\SignedResponseModel;
 use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\Mapper\SignedResponseModelMapper;
-use Virgil\SDK\Client\Model\CardContentModel;
-use Virgil\SDK\Client\Model\DeviceInfoModel;
-use Virgil\SDK\Client\Model\SignedResponseMetaModel;
-use Virgil\SDK\Client\Model\SignedResponseModel;
 
 class SignedResponseModelMapperTest extends TestCase
 {

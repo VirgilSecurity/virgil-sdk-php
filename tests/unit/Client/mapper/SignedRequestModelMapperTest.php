@@ -4,13 +4,13 @@ namespace Virgil\Tests\Unit\Client\Mapper;
 
 
 use PHPUnit\Framework\TestCase;
+use Virgil\SDK\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\SDK\Client\Card\Model\CardContentModel;
+use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
+use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
+use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\SDK\Client\Card\Model\SignedRequestModel;
 use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\Mapper\SignedRequestModelMapper;
-use Virgil\SDK\Client\Model\CardContentModel;
-use Virgil\SDK\Client\Model\DeviceInfoModel;
-use Virgil\SDK\Client\Model\RevokeCardContentModel;
-use Virgil\SDK\Client\Model\SignedRequestMetaModel;
-use Virgil\SDK\Client\Model\SignedRequestModel;
 
 class SignedRequestModelMapperTest extends TestCase
 {
