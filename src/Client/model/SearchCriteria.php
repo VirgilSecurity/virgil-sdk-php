@@ -1,11 +1,15 @@
 <?php
 
-namespace Virgil\SDK\Client;
+namespace Virgil\SDK\Client\Model;
 
-
-use Virgil\SDK\AbstractJsonSerializable;
-
-class SearchCriteria extends AbstractJsonSerializable
+/**
+ * Class SearchCriteria
+ *
+ * TODO: add search criteria builder for convenient usage.
+ * SearchQuery::builder().identity('identity1').identity('identity2).identityType('email').scope('global').build()
+ * @package Virgil\SDK\Client\Model
+ */
+class SearchCriteria
 {
     private $identities;
     private $identityType;
@@ -46,16 +50,5 @@ class SearchCriteria extends AbstractJsonSerializable
     public function getScope()
     {
         return $this->scope;
-    }
-
-    function jsonSerialize()
-    {
-        return array_filter([
-            'identities' => $this->identities,
-            'identity_type' => $this->identityType,
-            'scope' => $this->scope
-        ], function ($value) {
-            return count($value) !== 0;
-        });
     }
 }

@@ -4,9 +4,8 @@ namespace Virgil\SDK\Client\Model;
 
 
 use JsonSerializable;
-use Virgil\SDK\AbstractJsonSerializable;
 
-class SignedRequestModel extends AbstractJsonSerializable
+class SignedRequestModel
 {
     protected $cardContent;
     protected $meta;
@@ -36,14 +35,6 @@ class SignedRequestModel extends AbstractJsonSerializable
     public function getMeta()
     {
         return $this->meta;
-    }
-
-    function jsonSerialize()
-    {
-        return [
-            'content_snapshot' => base64_encode(json_encode($this->cardContent)),
-            'meta' => $this->meta
-        ];
     }
 }
 

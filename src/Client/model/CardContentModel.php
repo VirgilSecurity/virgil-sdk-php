@@ -5,7 +5,7 @@ namespace Virgil\SDK\Client\Model;
 
 use Virgil\SDK\AbstractJsonSerializable;
 
-class CreateCardContentModel extends AbstractJsonSerializable
+class CardContentModel extends AbstractJsonSerializable
 {
     private $identity;
     private $identityType;
@@ -30,7 +30,7 @@ class CreateCardContentModel extends AbstractJsonSerializable
         $this->publicKey = $publicKey;
         $this->data = $data;
         $this->scope = $scope;
-        $this->info = $info;
+        $this->info = $info === null ? new DeviceInfoModel() : $info;
     }
 
     /**

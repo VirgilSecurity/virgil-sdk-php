@@ -1,18 +1,18 @@
 <?php
 
-namespace Virgil\Tests\Unit\Client;
+namespace Virgil\Tests\Unit\Client\Mapper;
 
 
 use PHPUnit\Framework\TestCase;
 use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\Model\CreateCardContentModel;
+use Virgil\SDK\Client\Mapper\SignedRequestModelMapper;
+use Virgil\SDK\Client\Model\CardContentModel;
 use Virgil\SDK\Client\Model\DeviceInfoModel;
 use Virgil\SDK\Client\Model\RevokeCardContentModel;
 use Virgil\SDK\Client\Model\SignedRequestMetaModel;
 use Virgil\SDK\Client\Model\SignedRequestModel;
-use Virgil\SDK\Client\SearchCriteria;
 
-class CardModelJsonSerializationTest extends TestCase
+class SignedRequestModelMapperTest extends TestCase
 {
     /**
      * @dataProvider createCardDataProvider
@@ -20,14 +20,15 @@ class CardModelJsonSerializationTest extends TestCase
      * @param $contentData
      * @param $metaData
      */
-    public function testCreateCardModel($expectedJson, $contentData, $metaData)
+    public function testMapSignedCreateRequestModelToJson($expectedJson, $contentData, $metaData)
     {
+        $mapper = new SignedRequestModelMapper();
         $model = new SignedRequestModel(
-            new CreateCardContentModel(...$contentData),
+            new CardContentModel(...$contentData),
             new SignedRequestMetaModel(...$metaData)
         );
 
-        $this->assertEquals($expectedJson, $model->__toString());
+        $this->assertEquals($expectedJson, $mapper->toJson($model));
     }
 
     /**
@@ -36,37 +37,27 @@ class CardModelJsonSerializationTest extends TestCase
      * @param $contentData
      * @param $metaData
      */
-    public function testRevokeCardModel($expectedJson, $contentData, $metaData)
+    public function testMapSignedRevokeRequestModelToJson($expectedJson, $contentData, $metaData)
     {
+        $mapper = new SignedRequestModelMapper();
         $model = new SignedRequestModel(
             new RevokeCardContentModel(...$contentData),
             new SignedRequestMetaModel(...$metaData)
         );
 
-        $this->assertEquals($expectedJson, $model->__toString());
+        $this->assertEquals($expectedJson, $mapper->toJson($model));
     }
 
     /**
-     * @dataProvider searchCardDataProvider
-     * @param $expectedJson
-     * @param $args
+     * @dataProvider createCardDataProvider
+     * @expectedException \RuntimeException
+     * @param $json
      */
-    public function testSearchCriteria($expectedJson, $args)
+    public function testMapSignedRequestModelToJson($json)
     {
-        $model = new SearchCriteria(...$args);
-        $this->assertEquals($expectedJson, $model->__toString());
-    }
+        $mapper = new SignedRequestModelMapper();
 
-    public function searchCardDataProvider()
-    {
-        return [
-            [   '{"identities":["user@virgilsecurity.com","another.user@virgilsecurity.com"],"identity_type":"email","scope":"global"}',
-                [['user@virgilsecurity.com', 'another.user@virgilsecurity.com'], 'email', CardScope::TYPE_GLOBAL]
-            ],
-            [   '{"identities":["user2@virgilsecurity.com","another.user2@virgilsecurity.com"]}',
-                [['user2@virgilsecurity.com', 'another.user2@virgilsecurity.com']]
-            ]
-        ];
+        $mapper->toModel($json);
     }
 
     public function createCardDataProvider()
