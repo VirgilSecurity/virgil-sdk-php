@@ -1,9 +1,10 @@
 <?php
 
-namespace Virgil\SDK\Client\Mapper;
+namespace Virgil\SDK\Client\Card\Mapper;
 
 
-use Virgil\SDK\Client\Model\SignedRequestModel;
+use Virgil\SDK\Client\Card\Model\SignedRequestModel;
+use Virgil\SDK\Client\JsonModelMapper;
 
 class SignedRequestModelMapper implements JsonModelMapper
 {

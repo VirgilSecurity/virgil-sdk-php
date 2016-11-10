@@ -1,23 +1,19 @@
 <?php
 
-namespace Virgil\SDK\Client\Mapper;
+namespace Virgil\SDK\Client;
 
-
-use JsonSerializable;
 
 interface JsonModelMapper
 {
     /**
      * Make model from json string.
-     *
      * @param $json
-     * @return JsonSerializable
+     * @return mixed
      */
     public function toModel($json);
 
     /**
      * Make json string from model.
-     *
      * @param mixed $model
      * @return string
      */
