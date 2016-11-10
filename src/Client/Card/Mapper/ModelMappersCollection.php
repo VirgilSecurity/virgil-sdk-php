@@ -3,6 +3,8 @@
 namespace Virgil\SDK\Client\Card\Mapper;
 
 
+use Virgil\SDK\Client\HashMapJsonMapper;
+
 class ModelMappersCollection implements ModelMappersCollectionInterface
 {
     /**
@@ -21,18 +23,32 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      * @var SearchCriteriaRequestMapper
      */
     private $criteriaRequestMapper;
+    /**
+     * @var HashMapJsonMapper
+     */
+    private $hashMapJsonMapper;
 
+    /**
+     * ModelMappersCollection constructor.
+     * @param SignedResponseModelMapper $responseModelMapper
+     * @param SignedRequestModelMapper $requestModelMapper
+     * @param SearchCriteriaResponseMapper $criteriaResponseMapper
+     * @param SearchCriteriaRequestMapper $criteriaRequestMapper
+     * @param HashMapJsonMapper $hashMapModelMapper
+     */
     public function __construct(
         SignedResponseModelMapper $responseModelMapper,
         SignedRequestModelMapper $requestModelMapper,
         SearchCriteriaResponseMapper $criteriaResponseMapper,
-        SearchCriteriaRequestMapper $criteriaRequestMapper
+        SearchCriteriaRequestMapper $criteriaRequestMapper,
+        HashMapJsonMapper $hashMapModelMapper
     )
     {
         $this->responseModelMapper = $responseModelMapper;
         $this->requestModelMapper = $requestModelMapper;
         $this->criteriaResponseMapper = $criteriaResponseMapper;
         $this->criteriaRequestMapper = $criteriaRequestMapper;
+        $this->hashMapJsonMapper = $hashMapModelMapper;
     }
 
     public function getSignedRequestModelMapper()
@@ -53,5 +69,10 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
     public function getSearchCriteriaRequestMapper()
     {
         return $this->criteriaRequestMapper;
+    }
+
+    public function getHashMapJsonMapper()
+    {
+        return $this->hashMapJsonMapper;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\Tests\Unit\Client\Mapper;
+namespace Virgil\Tests\Unit\Client\Card\Mapper;
 
 
 use PHPUnit\Framework\TestCase;

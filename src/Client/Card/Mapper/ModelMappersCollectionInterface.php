@@ -26,4 +26,9 @@ interface ModelMappersCollectionInterface
      * @return JsonModelMapper
      */
     public function getSearchCriteriaRequestMapper();
+
+    /**
+     * @return JsonModelMapper
+     */
+    public function getHashMapJsonMapper();
 }

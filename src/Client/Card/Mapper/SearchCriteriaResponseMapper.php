@@ -8,12 +8,12 @@ use Virgil\SDK\Client\JsonModelMapper;
 
 class SearchCriteriaResponseMapper implements JsonModelMapper
 {
-
-    /**
-     * @var SignedResponseModelMapper
-     */
     private $mapper;
 
+    /**
+     * SearchCriteriaResponseMapper constructor.
+     * @param SignedResponseModelMapper $mapper
+     */
     public function __construct(SignedResponseModelMapper $mapper)
     {
         $this->mapper = $mapper;
