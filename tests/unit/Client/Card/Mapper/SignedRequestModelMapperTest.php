@@ -4,7 +4,9 @@ namespace Virgil\Tests\Unit\Client\Card\Mapper;
 
 
 use PHPUnit\Framework\TestCase;
+use Virgil\SDK\Client\Card\Mapper\CreateRequestModelMapper;
 use Virgil\SDK\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\SDK\Client\Card\Mapper\RevokeRequestModelMapper;
 use Virgil\SDK\Client\Card\Model\CardContentModel;
 use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
 use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
@@ -50,14 +52,42 @@ class SignedRequestModelMapperTest extends TestCase
 
     /**
      * @dataProvider createCardDataProvider
-     * @expectedException \RuntimeException
      * @param $json
+     * @param $contentData
+     * @param $metaData
      */
-    public function testMapSignedRequestModelToJson($json)
+    public function testMapSignedCreateRequestJsonToModel($json, $contentData, $metaData)
     {
-        $mapper = new SignedRequestModelMapper();
+        $mapper = new CreateRequestModelMapper( new SignedRequestModelMapper());
 
-        $mapper->toModel($json);
+        $expectedModel = new SignedRequestModel(
+            new CardContentModel(...$contentData),
+            new SignedRequestMetaModel(...$metaData)
+        );
+
+        $model = $mapper->toModel($json);
+
+        $this->assertEquals($expectedModel, $model);
+    }
+
+    /**
+     * @dataProvider revokeCardDataProvider
+     * @param $json
+     * @param $contentData
+     * @param $metaData
+     */
+    public function testMapSignedRevokeRequestJsonToModel($json, $contentData, $metaData)
+    {
+        $mapper = new RevokeRequestModelMapper( new SignedRequestModelMapper() );
+
+        $expectedModel = new SignedRequestModel(
+            new RevokeCardContentModel(...$contentData),
+            new SignedRequestMetaModel(...$metaData)
+        );
+
+        $model = $mapper->toModel($json);
+
+        $this->assertEquals($expectedModel, $model);
     }
 
     public function createCardDataProvider()

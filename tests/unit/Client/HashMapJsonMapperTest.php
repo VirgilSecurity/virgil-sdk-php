@@ -1,7 +1,8 @@
 <?php
+namespace Virgil\Tests\Unit\Client;
+
 use PHPUnit\Framework\TestCase;
 use Virgil\SDK\Client\HashMapJsonMapper;
-
 
 class HashMapJsonMapperTest extends TestCase
 {

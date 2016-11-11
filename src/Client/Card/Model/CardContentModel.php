@@ -23,7 +23,7 @@ class CardContentModel extends AbstractJsonSerializable
      * @param string $scope
      * @param DeviceInfoModel $info
      */
-    public function __construct($identity, $identityType, $publicKey, $scope, array $data = null, DeviceInfoModel $info = null)
+    public function __construct($identity, $identityType, $publicKey, $scope, array $data = [], DeviceInfoModel $info = null)
     {
         $this->identity = $identity;
         $this->identityType = $identityType;

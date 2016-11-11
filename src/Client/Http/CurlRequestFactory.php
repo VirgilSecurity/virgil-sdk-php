@@ -7,6 +7,15 @@ class CurlRequestFactory implements RequestFactoryInterface
 {
     protected $defaultOptions = [];
 
+    /**
+     * CurlRequestFactory constructor.
+     * @param array $options
+     */
+    public function __construct(array $options = [])
+    {
+        $this->defaultOptions = $options;
+    }
+
     public function create(array $options)
     {
         $request = new CurlRequest();

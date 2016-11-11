@@ -5,15 +5,22 @@ namespace Virgil\SDK\Client\Card\Mapper;
 
 use Virgil\SDK\Client\Card\Model\CardContentModel;
 use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseMetaModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseModel;
+use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\SDK\Client\Card\Model\SignedRequestModel;
 use Virgil\SDK\Client\JsonModelMapper;
 
-class SignedResponseModelMapper implements JsonModelMapper
+class CreateRequestModelMapper implements JsonModelMapper
 {
+    private $signedRequestModelMapper;
+
+    public function __construct(SignedRequestModelMapper $signedRequestModelMapper)
+    {
+        $this->signedRequestModelMapper = $signedRequestModelMapper;
+    }
+
     /**
      * @inheritdoc
-     * @return SignedResponseModel
+     * @return SignedRequestModel
      */
     public function toModel($json)
     {
@@ -30,18 +37,13 @@ class SignedResponseModelMapper implements JsonModelMapper
             new DeviceInfoModel($cardContentData['info']['device'], $cardContentData['info']['device_name'])
         );
 
-        $cardMetaModel = new SignedResponseMetaModel(
-            $cardMetaData['signs'],
-            new \DateTime($cardMetaData['created_at']),
-            $cardMetaData['card_version'],
-            $cardMetaData['fingerprint']
-        );
+        $cardMetaModel = new SignedRequestMetaModel($cardMetaData['signs']);
 
-        return new SignedResponseModel($data['id'], $cardContentModel, $cardMetaModel);
+        return new SignedRequestModel($cardContentModel, $cardMetaModel);
     }
 
     public function toJson($model)
     {
-        throw new \RuntimeException('Method ' . __METHOD__ . ' is disabled for this mapper');
+        return $this->signedRequestModelMapper->toJson($model);
     }
 }
