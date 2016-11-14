@@ -3,7 +3,9 @@
 namespace Virgil\SDK\Cryptography;
 
 
-class VirgilCryptoException extends \Exception
+use Virgil\SDK\VirgilException;
+
+class VirgilCryptoException extends VirgilException
 {
 
 }

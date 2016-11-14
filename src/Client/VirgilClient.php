@@ -3,6 +3,7 @@
 namespace Virgil\SDK\Client;
 
 
+use Virgil\SDK\Buffer;
 use Virgil\SDK\Client\Card\CardServiceParams;
 use Virgil\SDK\Client\Card\CardsService;
 use Virgil\SDK\Client\Card\CardsServiceInterface;
@@ -19,6 +20,8 @@ use Virgil\SDK\Client\Http\CurlRequestFactory;
 class VirgilClient
 {
     private $cardsService;
+    /** @var  CardValidatorInterface */
+    private $cardValidator;
 
     /**
      * VirgilClient constructor.
@@ -40,7 +43,7 @@ class VirgilClient
 
         return array_map(
             function (SignedResponseModel $responseModel) {
-                return $this->responseToCard($responseModel);
+                return $this->buildAndVerifyCard($responseModel);
             }, $response
         );
     }
@@ -53,7 +56,7 @@ class VirgilClient
     {
         $response = $this->cardsService->create($request->getRequestModel());
 
-        return $this->responseToCard($response);
+        return $this->buildAndVerifyCard($response);
     }
 
     /**
@@ -72,7 +75,16 @@ class VirgilClient
     {
         $response = $this->cardsService->get($id);
 
-        return $this->responseToCard($response);
+        return $this->buildAndVerifyCard($response);
+    }
+
+    /**
+     * Sets the card validator.
+     * @param CardValidatorInterface $validator
+     */
+    public function setCardValidator(CardValidatorInterface $validator)
+    {
+        $this->cardValidator = $validator;
     }
 
     /**
@@ -118,15 +130,52 @@ class VirgilClient
     {
         return new Card(
             $responseModel->getId(),
+            Buffer::fromBase64($responseModel->getContentSnapshot()),
             $responseModel->getCardContent()->getIdentity(),
             $responseModel->getCardContent()->getIdentityType(),
-            $responseModel->getCardContent()->getPublicKey(),
+            Buffer::fromBase64($responseModel->getCardContent()->getPublicKey()),
             $responseModel->getCardContent()->getScope(),
             $responseModel->getCardContent()->getData(),
             $responseModel->getCardContent()->getInfo()->getDevice(),
             $responseModel->getCardContent()->getInfo()->getDeviceName(),
             $responseModel->getMeta()->getCardVersion(),
-            $responseModel->getMeta()->getSigns()
+            call_user_func(function () use ($responseModel) {
+                $signs = $responseModel->getMeta()->getSigns();
+                foreach ($signs as &$sign) {
+                    $sign = Buffer::fromBase64($sign);
+                }
+                return $signs;
+            })
         );
+    }
+
+    /**
+     * Validate card.
+     * @param Card $card
+     * @throws CardValidationException
+     */
+    private function validateCard(Card $card)
+    {
+        if ($this->cardValidator == null) {
+            return;
+        }
+
+        $isValid = $this->cardValidator->validate($card);
+        if (!$isValid) {
+            throw new CardValidationException('Card with id' . $card->getId() . ' is invalid. Please check signs.');
+        }
+    }
+
+    /**
+     * Builds and verify card from response.
+     * @param SignedResponseModel $responseModel
+     * @throws CardValidationException
+     * @return Card
+     */
+    private function buildAndVerifyCard(SignedResponseModel $responseModel)
+    {
+        $card = $this->responseToCard($responseModel);
+        $this->validateCard($card);
+        return $card;
     }
 }

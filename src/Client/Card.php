@@ -3,6 +3,8 @@
 namespace Virgil\SDK\Client;
 
 
+use Virgil\SDK\BufferInterface;
+
 class Card
 {
     private $id;
@@ -15,23 +17,26 @@ class Card
     private $deviceName;
     private $signatures;
     private $version;
+    private $snapshot;
 
     /**
      * Card constructor.
      * @param string $id
+     * @param BufferInterface $snapshot
      * @param string $identity
      * @param string $identityType
-     * @param string $publicKey
+     * @param BufferInterface $publicKey
      * @param string $scope
      * @param array $data
      * @param string $device
      * @param string $deviceName
      * @param string $version
-     * @param array $signatures
+     * @param BufferInterface[] $signatures
      */
-    public function __construct($id, $identity, $identityType, $publicKey, $scope, array $data = [], $device = null, $deviceName = null, $version, array $signatures)
+    public function __construct($id, BufferInterface $snapshot, $identity, $identityType, BufferInterface $publicKey, $scope, array $data = [], $device = null, $deviceName = null, $version, array $signatures)
     {
         $this->id = $id;
+        $this->snapshot = $snapshot;
         $this->identity = $identity;
         $this->identityType = $identityType;
         $this->publicKey = $publicKey;
@@ -45,9 +50,9 @@ class Card
 
     /**
      * Gets the public key.
-     * @return string
+     * @return BufferInterface
      */
-    public function getGetPublicKey()
+    public function getPublicKey()
     {
         return $this->publicKey;
     }
@@ -56,7 +61,7 @@ class Card
      * Gets the type of the identity.
      * @return string
      */
-    public function getGetIdentityType()
+    public function getIdentityType()
     {
         return $this->identityType;
     }
@@ -98,8 +103,18 @@ class Card
     }
 
     /**
+     * Get sign by signid.
+     * @param string $signatureId
+     * @return BufferInterface
+     */
+    public function getSignature($signatureId)
+    {
+        return $this->signatures[$signatureId];
+    }
+
+    /**
      * Gets the signs.
-     * @return array
+     * @return BufferInterface[]
      */
     public function getSignatures()
     {
@@ -131,5 +146,14 @@ class Card
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * Gets the Virgil Card snapshot.
+     * @return BufferInterface
+     */
+    public function getSnapshot()
+    {
+        return $this->snapshot;
     }
 }

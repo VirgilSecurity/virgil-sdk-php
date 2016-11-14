@@ -37,7 +37,7 @@ class SignedResponseModelMapper implements JsonModelMapper
             $cardMetaData['fingerprint']
         );
 
-        return new SignedResponseModel($data['id'], $cardContentModel, $cardMetaModel);
+        return new SignedResponseModel($data['id'], $data['content_snapshot'], $cardContentModel, $cardMetaModel);
     }
 
     public function toJson($model)
