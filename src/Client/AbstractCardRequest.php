@@ -36,20 +36,29 @@ abstract class AbstractCardRequest
     }
 
     /**
-     * Gets the card meta.
-     * @return SignedRequestMetaModel
-     */
-    protected function getCardMeta()
-    {
-        return new SignedRequestMetaModel($this->signatures);
-    }
-
-    /**
      * Gets the signatures.
      * @return array
      */
     public function getSignatures()
     {
         return $this->signatures;
+    }
+
+    /**
+     * Gets card request snapshot.
+     * @return string
+     */
+    public function snapshot()
+    {
+        return $this->getRequestModel()->getSnapshot();
+    }
+
+    /**
+     * Gets the card meta.
+     * @return SignedRequestMetaModel
+     */
+    protected function getCardMeta()
+    {
+        return new SignedRequestMetaModel($this->signatures);
     }
 }

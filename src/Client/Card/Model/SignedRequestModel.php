@@ -36,5 +36,14 @@ class SignedRequestModel
     {
         return $this->meta;
     }
+
+    /**
+     * Returns base64 encoded request snapshot.
+     * @return string
+     */
+    public function getSnapshot()
+    {
+        return base64_encode(json_encode($this->cardContent));
+    }
 }
 

@@ -130,7 +130,7 @@ class VirgilClient
     {
         return new Card(
             $responseModel->getId(),
-            Buffer::fromBase64($responseModel->getContentSnapshot()),
+            Buffer::fromBase64($responseModel->getSnapshot()),
             $responseModel->getCardContent()->getIdentity(),
             $responseModel->getCardContent()->getIdentityType(),
             Buffer::fromBase64($responseModel->getCardContent()->getPublicKey()),
@@ -139,13 +139,14 @@ class VirgilClient
             $responseModel->getCardContent()->getInfo()->getDevice(),
             $responseModel->getCardContent()->getInfo()->getDeviceName(),
             $responseModel->getMeta()->getCardVersion(),
-            call_user_func(function () use ($responseModel) {
-                $signs = $responseModel->getMeta()->getSigns();
-                foreach ($signs as &$sign) {
-                    $sign = Buffer::fromBase64($sign);
-                }
-                return $signs;
-            })
+            call_user_func(
+                function ($signs) {
+                    foreach ($signs as &$sign) {
+                        $sign = Buffer::fromBase64($sign);
+                    }
+                    return $signs;
+                }, $responseModel->getMeta()->getSigns()
+            )
         );
     }
 

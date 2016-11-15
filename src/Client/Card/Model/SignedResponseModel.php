@@ -52,7 +52,7 @@ class SignedResponseModel
     /**
      * @return string
      */
-    public function getContentSnapshot()
+    public function getSnapshot()
     {
         return $this->contentSnapshot;
     }

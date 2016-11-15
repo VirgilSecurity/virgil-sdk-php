@@ -22,7 +22,7 @@ class SignedRequestModelMapper implements JsonModelMapper
         }
 
         return json_encode([
-            'content_snapshot' => base64_encode(json_encode($model->getCardContent())),
+            'content_snapshot' => $model->getSnapshot(),
             'meta' => $model->getMeta()
         ]);
     }
