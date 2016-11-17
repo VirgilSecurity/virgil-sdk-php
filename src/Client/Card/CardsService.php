@@ -4,18 +4,26 @@ namespace Virgil\SDK\Client\Card;
 
 
 use Virgil\SDK\Client\Card\Mapper\ModelMappersCollectionInterface;
+use Virgil\SDK\Client\Card\Model\ErrorResponseModel;
 use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
 use Virgil\SDK\Client\Card\Model\SearchCriteria;
 use Virgil\SDK\Client\Card\Model\SignedRequestModel;
 use Virgil\SDK\Client\Http\ClientInterface;
 use Virgil\SDK\Client\Http\ResponseInterface;
-use Virgil\SDK\Client\JsonModelMapper;
 
 class CardsService implements CardsServiceInterface
 {
     private $httpClient;
     private $mappers;
     private $params;
+    private $defaultErrorMessages = [
+        400 => 'Request error',
+        401 => 'Authentication error',
+        403 => 'Forbidden',
+        404 => 'Entity not found',
+        405 => 'Method not allowed',
+        500 => 'Server error'
+    ];
 
     /**
      * CardsService constructor.
@@ -38,7 +46,8 @@ class CardsService implements CardsServiceInterface
             );
         };
 
-        return $this->makeRequest($request, $this->mappers->getSignedResponseModelMapper());
+        $response = $this->makeRequest($request);
+        return $this->mappers->getSignedResponseModelMapper()->toModel($response->getBody());
     }
 
     public function delete(SignedRequestModel $model)
@@ -51,7 +60,7 @@ class CardsService implements CardsServiceInterface
             );
         };
 
-        return $this->makeRequest($request, $this->mappers->getHashMapJsonMapper());
+        $this->makeRequest($request);
     }
 
     public function search(SearchCriteria $model)
@@ -62,7 +71,8 @@ class CardsService implements CardsServiceInterface
             );
         };
 
-        return $this->makeRequest($request, $this->mappers->getSearchCriteriaResponseMapper());
+        $response = $this->makeRequest($request);
+        return $this->mappers->getSearchCriteriaResponseMapper()->toModel($response->getBody());
     }
 
     public function get($id)
@@ -71,39 +81,33 @@ class CardsService implements CardsServiceInterface
             return $this->httpClient->get($this->params->getGetEndpoint($id));
         };
 
-        return $this->makeRequest($request, $this->mappers->getSignedResponseModelMapper());
+        $response = $this->makeRequest($request);
+        return $this->mappers->getSignedResponseModelMapper()->toModel($response->getBody());
     }
 
     /**
-     * Make request to http client and parse response to object.
+     * Makes request to http client and gets response object.
      * @param callable $request
-     * @param JsonModelMapper $responseMapper
      * @throws CardsServiceException
-     * @return mixed
+     * @return ResponseInterface
      */
-    protected function makeRequest($request, JsonModelMapper $responseMapper)
+    protected function makeRequest($request)
     {
         /** @var ResponseInterface $result */
         $result = call_user_func($request);
 
         if (!$result->getHttpStatus()->isSuccess()) {
-            $response = json_decode($result->getBody(), true);
+            /** @var ErrorResponseModel $response */
+            $response = $this->mappers->getErrorResponseModelMapper()->toModel($result->getBody());
+
             throw new CardsServiceException(
-                $this->getErrorMessage($response['code']),
-                $response['code']
+                $response->getMessageOrDefault(
+                    $this->defaultErrorMessages[(int)$result->getHttpStatus()->getStatus()]
+                ),
+                $result->getHttpStatus()->getStatus()
             );
         }
 
-        return $responseMapper->toModel($result->getBody());
-    }
-
-    /**
-     * Get error message by code.
-     * @param $code
-     * @return string
-     */
-    protected function getErrorMessage($code)
-    {
-        return CardsErrorMessages::getMessage($code);
+        return $result;
     }
 }

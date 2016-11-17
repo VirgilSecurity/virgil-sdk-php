@@ -8,6 +8,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 use Virgil\SDK\Client\Card\CardServiceParams;
 use Virgil\SDK\Client\Card\CardsServiceException;
 use Virgil\SDK\Client\Card\CardsService;
+use Virgil\SDK\Client\Card\Mapper\ErrorResponseModelMapper;
 use Virgil\SDK\Client\Card\Mapper\ModelMappersCollection;
 use Virgil\SDK\Client\Card\Mapper\SearchCriteriaRequestMapper;
 use Virgil\SDK\Client\Card\Mapper\SearchCriteriaResponseMapper;
@@ -22,7 +23,6 @@ use Virgil\SDK\Client\Card\Model\SignedRequestModel;
 use Virgil\SDK\Client\Card\Model\SignedResponseMetaModel;
 use Virgil\SDK\Client\Card\Model\SignedResponseModel;
 use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\HashMapJsonMapper;
 use Virgil\SDK\Client\Http\CurlClient;
 use Virgil\SDK\Client\Http\CurlRequest;
 use Virgil\SDK\Client\Http\CurlRequestFactory;
@@ -49,7 +49,7 @@ class CardsServiceTest extends TestCase
             new SignedRequestModelMapper(),
             new SearchCriteriaResponseMapper(new SignedResponseModelMapper()),
             new SearchCriteriaRequestMapper(),
-            new HashMapJsonMapper()
+            new ErrorResponseModelMapper()
         );
 
         $params = new CardServiceParams(
@@ -82,7 +82,7 @@ class CardsServiceTest extends TestCase
         try {
             $this->cardService->get('card-id');
         } catch (CardsServiceException $exception) {
-            $this->assertEquals('20300', $exception->getCode());
+            $this->assertEquals('401', $exception->getCode());
             $this->assertEquals('The Virgil access token was not specified or is invalid', $exception->getMessage());
         }
     }
@@ -127,7 +127,7 @@ class CardsServiceTest extends TestCase
                 $options = $actualRequest->getOptions();
                 $requestJson = '{"content_snapshot":"eyJpZGVudGl0eSI6ImFsaWNlIiwiaWRlbnRpdHlfdHlwZSI6Im1lbWJlciIsInB1YmxpY19rZXkiOiJwdWJsaWMta2V5Iiwic2NvcGUiOiJhcHBsaWNhdGlvbiJ9","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}';
 
-                return $options[CURLOPT_URL] == 'http://mutable.host/card/' &&
+                return $options[CURLOPT_URL] == 'http://mutable.host/card' &&
                 in_array('Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }', $options[CURLOPT_HTTPHEADER]) &&
                 $options[CURLOPT_CUSTOMREQUEST] == 'POST' && $options[CURLOPT_POST] == true &&
                 $options[CURLOPT_POSTFIELDS] == $requestJson;
@@ -165,7 +165,7 @@ class CardsServiceTest extends TestCase
                 $options = $actualRequest->getOptions();
                 $requestJson = '{"identities":["user@virgilsecurity.com","another.user@virgilsecurity.com"],"identity_type":"email","scope":"global"}';
 
-                return $options[CURLOPT_URL] == 'http://immutable.host/card/actions/search/' &&
+                return $options[CURLOPT_URL] == 'http://immutable.host/card/actions/search' &&
                 in_array('Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }', $options[CURLOPT_HTTPHEADER]) &&
                 $options[CURLOPT_CUSTOMREQUEST] == 'POST' && $options[CURLOPT_POST] == true &&
                 $options[CURLOPT_POSTFIELDS] == $requestJson;
@@ -211,7 +211,7 @@ class CardsServiceTest extends TestCase
             ->method('doRequest')
             ->with($this->callback(function (CurlRequest $actualRequest) {
                 $options = $actualRequest->getOptions();
-                $requestJson = '{"content_snapshot":"eyJpZCI6ImFsaWNlLWZpbmdlcnByaW50LWlkLTEiLCJyZXZvY2F0aW9uX3JlYXNvbiI6ImNvbXByb21pc2VkIn0=","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}';
+                $requestJson = '{"content_snapshot":"eyJjYXJkX2lkIjoiYWxpY2UtZmluZ2VycHJpbnQtaWQtMSIsInJldm9jYXRpb25fcmVhc29uIjoiY29tcHJvbWlzZWQifQ==","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}';
 
                 return $options[CURLOPT_URL] == 'http://mutable.host/card/alice-fingerprint-id-1' &&
                 in_array('Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }', $options[CURLOPT_HTTPHEADER]) &&
@@ -229,8 +229,6 @@ class CardsServiceTest extends TestCase
             new SignedRequestMetaModel(['sign-id-1' => '_sign1', 'sign-id-2' => '_sign2'])
         );
 
-        $response = $this->cardService->delete($request);
-
-        $this->assertEquals([], $response);
+        $this->assertNull($this->cardService->delete($request));
     }
 }

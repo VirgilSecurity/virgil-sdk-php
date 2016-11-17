@@ -48,6 +48,10 @@ class CardsErrorMessages
         30139 => "Virigl Card revocation reason isn't specified or is invalid"
     ];
 
+    /**
+     * @param $errorCode
+     * @return string
+     */
     public static function getMessage($errorCode)
     {
         return static::$errors[$errorCode];

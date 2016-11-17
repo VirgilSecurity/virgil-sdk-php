@@ -3,12 +3,12 @@
 namespace Virgil\SDK\Client\Card\Mapper;
 
 
+use Virgil\SDK\Client\AbstractJsonModelMapper;
 use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
 use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
 use Virgil\SDK\Client\Card\Model\SignedRequestModel;
-use Virgil\SDK\Client\JsonModelMapper;
 
-class RevokeRequestModelMapper implements JsonModelMapper
+class RevokeRequestModelMapper extends AbstractJsonModelMapper
 {
     private $signedRequestModelMapper;
 
@@ -28,7 +28,7 @@ class RevokeRequestModelMapper implements JsonModelMapper
         $cardMetaData = $data['meta'];
 
         $cardContentModel = new RevokeCardContentModel(
-            $cardContentData['id'],
+            $cardContentData['card_id'],
             $cardContentData['revocation_reason']
         );
 

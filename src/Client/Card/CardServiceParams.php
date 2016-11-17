@@ -40,7 +40,7 @@ class CardServiceParams implements CardServiceParamsInterface
      */
     protected function buildEndpoint($host, $uri)
     {
-        return rtrim($host, '/') . '/' . trim($uri, '/') . '/';
+        return rtrim($host, '/') . '/' . trim($uri, '/');
     }
 
     /**
@@ -71,11 +71,11 @@ class CardServiceParams implements CardServiceParamsInterface
 
     public function getDeleteEndpoint($id = null)
     {
-        return $id === null ? $this->deleteEndpoint : $this->deleteEndpoint . $id;
+        return $id === null ? $this->deleteEndpoint : $this->deleteEndpoint . '/' . $id;
     }
 
     public function getGetEndpoint($id = null)
     {
-        return $id === null ? $this->getEndpoint : $this->getEndpoint . $id;
+        return $id === null ? $this->getEndpoint : $this->getEndpoint . '/' . $id;
     }
 }

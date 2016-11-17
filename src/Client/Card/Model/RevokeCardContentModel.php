@@ -24,7 +24,7 @@ class RevokeCardContentModel extends AbstractJsonSerializable
     function jsonSerialize()
     {
         return [
-            'id' => $this->id,
+            'card_id' => $this->id,
             'revocation_reason' => $this->revocationReason
         ];
     }

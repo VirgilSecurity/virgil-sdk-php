@@ -70,7 +70,7 @@ class Card
      * Gets the identity.
      * @return string
      */
-    public function getGetIdentity()
+    public function getIdentity()
     {
         return $this->identity;
     }

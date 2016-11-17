@@ -1,0 +1,23 @@
+[
+  {
+    "identity": "alice",
+    "identity_type": "phpsdktest",
+    "public_key": "MCowBQYDK2VwAyEA1l5joJnI3D3mWG4jMDXogDALBk/eRM8x9pI+AYAzdmg=",
+    "private_key": "MC4CAQAwBQYDK2VwBCIEID1ZgLVd2kCIMzkPEwCMm20sUuLmOXdnuUBeuTD+z774",
+    "scope": "application"
+  },
+  {
+    "identity": "bob",
+    "identity_type": "phpsdktest",
+    "public_key": "MCowBQYDK2VwAyEA7kG9VrNh7EtxPVuSWseA/YzN0JeHISAos42yzFJML0E=",
+    "private_key": "MC4CAQAwBQYDK2VwBCIEIKqtmi+hwH0RQo4xQRjPIk6JR8Zqmp+UeJ3TfcsrpTGW",
+    "scope": "application"
+  },
+  {
+    "identity": "greg",
+    "identity_type": "phpsdktest",
+    "public_key": "MCowBQYDK2VwAyEAHElwUStWfnxHVE0Oai6SP6kN56YdX0aAu8zs3eNmjKQ=",
+    "private_key": "MC4CAQAwBQYDK2VwBCIEIPW7HGLbSdDCuyBIA9YMW2Nlm7NawICg0nGFrHJyWSmi",
+    "scope": "application"
+  }
+]

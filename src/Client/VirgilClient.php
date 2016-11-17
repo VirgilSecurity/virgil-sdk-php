@@ -7,6 +7,7 @@ use Virgil\SDK\Buffer;
 use Virgil\SDK\Client\Card\CardServiceParams;
 use Virgil\SDK\Client\Card\CardsService;
 use Virgil\SDK\Client\Card\CardsServiceInterface;
+use Virgil\SDK\Client\Card\Mapper\ErrorResponseModelMapper;
 use Virgil\SDK\Client\Card\Mapper\ModelMappersCollection;
 use Virgil\SDK\Client\Card\Mapper\SearchCriteriaRequestMapper;
 use Virgil\SDK\Client\Card\Mapper\SearchCriteriaResponseMapper;
@@ -108,7 +109,7 @@ class VirgilClient
             new CurlRequestFactory(
                 [CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]
             ),
-            ['Authorization' => 'VIRGIL { ' . $virgilClientParams->getAccessToken() . ' }']
+            ['Authorization' => 'VIRGIL ' . $virgilClientParams->getAccessToken()]
         );
 
         $mappers = new ModelMappersCollection(
@@ -116,7 +117,7 @@ class VirgilClient
             new SignedRequestModelMapper(),
             new SearchCriteriaResponseMapper(new SignedResponseModelMapper()),
             new SearchCriteriaRequestMapper(),
-            new HashMapJsonMapper()
+            new ErrorResponseModelMapper()
         );
 
         return new CardsService($params, $httpClient, $mappers);

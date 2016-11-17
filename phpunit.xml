@@ -1,7 +1,23 @@
-<phpunit bootstrap="./tests/Bootstrap.php" colors="true" beStrictAboutTestsThatDoNotTestAnything="true">
+<phpunit bootstrap="./tests/bootstrap.php" colors="true" beStrictAboutTestsThatDoNotTestAnything="true">
     <testsuites>
-        <testsuite name="Virgil PHP Keys SDK Tests">
-            <directory>./tests</directory>
+        <testsuite name="UnitTests">
+            <directory>./tests/unit/</directory>
+        </testsuite>
+        <testsuite name="FunctionalTests">
+            <directory>./tests/functional/</directory>
+        </testsuite>
+        <testsuite name="IntegrationTests">
+            <directory>./tests/integration/</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <includePath>.</includePath>
+        <const name="VIRGIL_FIXTURE_PATH" value="./tests/fixtures/"/>
+        <const name="VIRGIL_TEST_CONFIG_PATH" value="./tests/config.json"/>
+    </php>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
 </phpunit>

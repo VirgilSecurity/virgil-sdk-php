@@ -3,17 +3,11 @@
 namespace Virgil\SDK\Client\Card\Mapper;
 
 
+use Virgil\SDK\Client\AbstractJsonModelMapper;
 use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\JsonModelMapper;
 
-class SearchCriteriaRequestMapper implements JsonModelMapper
+class SearchCriteriaRequestMapper extends AbstractJsonModelMapper
 {
-
-    public function toModel($json)
-    {
-        throw new \RuntimeException('Method ' . __METHOD__ . ' is disabled for this mapper');
-    }
-
     public function toJson($model)
     {
         /** @var SearchCriteria $model */

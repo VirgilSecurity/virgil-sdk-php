@@ -3,6 +3,7 @@
 namespace Virgil\SDK\Client;
 
 
+use Virgil\SDK\Buffer;
 use Virgil\SDK\Client\Card\Mapper\RevokeRequestModelMapper;
 use Virgil\SDK\Client\Card\Mapper\SignedRequestModelMapper;
 use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
@@ -69,7 +70,7 @@ class RevokeCardRequest extends AbstractCardRequest
         /** @var SignedRequestMetaModel $meta */
         $meta = $model->getMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
-            $request->appendSignature($signKey, $sign);
+            $request->appendSignature($signKey, Buffer::fromBase64($sign));
         }
 
         return $request;

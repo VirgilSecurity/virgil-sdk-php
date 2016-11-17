@@ -3,13 +3,13 @@
 namespace Virgil\SDK\Client\Card\Mapper;
 
 
+use Virgil\SDK\Client\AbstractJsonModelMapper;
 use Virgil\SDK\Client\Card\Model\CardContentModel;
 use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
 use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
 use Virgil\SDK\Client\Card\Model\SignedRequestModel;
-use Virgil\SDK\Client\JsonModelMapper;
 
-class CreateRequestModelMapper implements JsonModelMapper
+class CreateRequestModelMapper extends AbstractJsonModelMapper
 {
     private $signedRequestModelMapper;
 

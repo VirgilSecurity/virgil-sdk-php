@@ -110,12 +110,12 @@ class SignedRequestModelMapperTest extends TestCase
     {
         return [
             [
-                '{"content_snapshot":"eyJpZCI6ImFsaWNlLWZpbmdlcnByaW50LWlkLTEiLCJyZXZvY2F0aW9uX3JlYXNvbiI6ImNvbXByb21pc2VkIn0=","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}',
+                '{"content_snapshot":"eyJjYXJkX2lkIjoiYWxpY2UtZmluZ2VycHJpbnQtaWQtMSIsInJldm9jYXRpb25fcmVhc29uIjoiY29tcHJvbWlzZWQifQ==","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}',
                 ['alice-fingerprint-id-1', 'compromised'],
                 [['sign-id-1' => '_sign1', 'sign-id-2' => '_sign2']]
             ],
             [
-                '{"content_snapshot":"eyJpZCI6ImFsaWNlLWZpbmdlcnByaW50LWlkLTIiLCJyZXZvY2F0aW9uX3JlYXNvbiI6InVuc3BlY2lmaWVkIn0=","meta":{"signs":{"sign-id-3":"_sign3","sign-id-4":"_sign4"}}}',
+                '{"content_snapshot":"eyJjYXJkX2lkIjoiYWxpY2UtZmluZ2VycHJpbnQtaWQtMiIsInJldm9jYXRpb25fcmVhc29uIjoidW5zcGVjaWZpZWQifQ==","meta":{"signs":{"sign-id-3":"_sign3","sign-id-4":"_sign4"}}}',
                 ['alice-fingerprint-id-2', 'unspecified'],
                 [['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4']]
             ]

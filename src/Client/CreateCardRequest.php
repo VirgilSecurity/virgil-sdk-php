@@ -134,7 +134,7 @@ class CreateCardRequest extends AbstractCardRequest
         /** @var SignedRequestMetaModel $meta */
         $meta = $model->getMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
-            $request->appendSignature($signKey, $sign);
+            $request->appendSignature($signKey, Buffer::fromBase64($sign));
         }
 
         return $request;

@@ -3,10 +3,10 @@
 namespace Virgil\SDK\Client\Card\Mapper;
 
 
+use Virgil\SDK\Client\AbstractJsonModelMapper;
 use Virgil\SDK\Client\Card\Model\SignedResponseModel;
-use Virgil\SDK\Client\JsonModelMapper;
 
-class SearchCriteriaResponseMapper implements JsonModelMapper
+class SearchCriteriaResponseMapper extends AbstractJsonModelMapper
 {
     private $mapper;
 

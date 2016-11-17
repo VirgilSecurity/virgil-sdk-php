@@ -19,7 +19,6 @@ interface CardsServiceInterface
     /**
      * Delete card by given request model.
      * @param SignedRequestModel $model
-     * @return array
      */
     public function delete(SignedRequestModel $model);
 

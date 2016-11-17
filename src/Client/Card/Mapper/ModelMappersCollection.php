@@ -3,7 +3,6 @@
 namespace Virgil\SDK\Client\Card\Mapper;
 
 
-use Virgil\SDK\Client\HashMapJsonMapper;
 
 class ModelMappersCollection implements ModelMappersCollectionInterface
 {
@@ -24,9 +23,9 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      */
     private $criteriaRequestMapper;
     /**
-     * @var HashMapJsonMapper
+     * @var ErrorResponseModelMapper
      */
-    private $hashMapJsonMapper;
+    private $errorResponseModelMapper;
 
     /**
      * ModelMappersCollection constructor.
@@ -34,21 +33,20 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      * @param SignedRequestModelMapper $requestModelMapper
      * @param SearchCriteriaResponseMapper $criteriaResponseMapper
      * @param SearchCriteriaRequestMapper $criteriaRequestMapper
-     * @param HashMapJsonMapper $hashMapModelMapper
+     * @param ErrorResponseModelMapper $errorResponseModelMapper
      */
     public function __construct(
         SignedResponseModelMapper $responseModelMapper,
         SignedRequestModelMapper $requestModelMapper,
         SearchCriteriaResponseMapper $criteriaResponseMapper,
         SearchCriteriaRequestMapper $criteriaRequestMapper,
-        HashMapJsonMapper $hashMapModelMapper
-    )
+        ErrorResponseModelMapper $errorResponseModelMapper)
     {
         $this->responseModelMapper = $responseModelMapper;
         $this->requestModelMapper = $requestModelMapper;
         $this->criteriaResponseMapper = $criteriaResponseMapper;
         $this->criteriaRequestMapper = $criteriaRequestMapper;
-        $this->hashMapJsonMapper = $hashMapModelMapper;
+        $this->errorResponseModelMapper = $errorResponseModelMapper;
     }
 
     public function getSignedRequestModelMapper()
@@ -71,8 +69,8 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
         return $this->criteriaRequestMapper;
     }
 
-    public function getHashMapJsonMapper()
+    public function getErrorResponseModelMapper()
     {
-        return $this->hashMapJsonMapper;
+        return $this->errorResponseModelMapper;
     }
 }

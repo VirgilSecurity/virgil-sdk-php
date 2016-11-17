@@ -3,6 +3,7 @@
 namespace Virgil\SDK\Client;
 
 
+use Virgil\SDK\BufferInterface;
 use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
 use Virgil\SDK\Client\Card\Model\SignedRequestModel;
 
@@ -27,10 +28,10 @@ abstract class AbstractCardRequest
 
     /**
      * Append signature to request.
-     * @param $signatureId
-     * @param $signature
+     * @param string $signatureId
+     * @param BufferInterface $signature
      */
-    public function appendSignature($signatureId, $signature)
+    public function appendSignature($signatureId, BufferInterface $signature)
     {
         $this->signatures[$signatureId] = $signature;
     }
@@ -59,6 +60,14 @@ abstract class AbstractCardRequest
      */
     protected function getCardMeta()
     {
-        return new SignedRequestMetaModel($this->signatures);
+        return new SignedRequestMetaModel(
+            call_user_func(function ($signatures) {
+                /** @var BufferInterface $signature */
+                foreach ($signatures as &$signature) {
+                    $signature = $signature->toBase64();
+                }
+                return $signatures;
+            }, $this->signatures)
+        );
     }
 }

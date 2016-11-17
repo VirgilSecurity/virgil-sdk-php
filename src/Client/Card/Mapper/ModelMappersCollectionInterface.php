@@ -3,32 +3,32 @@
 namespace Virgil\SDK\Client\Card\Mapper;
 
 
-use Virgil\SDK\Client\JsonModelMapper;
+use Virgil\SDK\Client\JsonModelMapperInterface;
 
 interface ModelMappersCollectionInterface
 {
     /**
-     * @return JsonModelMapper
+     * @return JsonModelMapperInterface
      */
     public function getSignedRequestModelMapper();
 
     /**
-     * @return JsonModelMapper
+     * @return JsonModelMapperInterface
      */
     public function getSignedResponseModelMapper();
 
     /**
-     * @return JsonModelMapper
+     * @return JsonModelMapperInterface
      */
     public function getSearchCriteriaResponseMapper();
 
     /**
-     * @return JsonModelMapper
+     * @return JsonModelMapperInterface
      */
     public function getSearchCriteriaRequestMapper();
 
     /**
-     * @return JsonModelMapper
+     * @return JsonModelMapperInterface
      */
-    public function getHashMapJsonMapper();
+    public function getErrorResponseModelMapper();
 }

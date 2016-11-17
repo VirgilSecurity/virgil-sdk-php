@@ -3,6 +3,7 @@
 namespace Virgil\Tests\Unit\Client;
 
 use PHPUnit\Framework\TestCase;
+use Virgil\SDK\Buffer;
 use Virgil\SDK\Client\RevocationReason;
 use Virgil\SDK\Client\RevokeCardRequest;
 
@@ -20,7 +21,7 @@ class RevokeCardRequestTest extends TestCase
         );
 
         foreach ($signs as $signKey => $sign) {
-            $request->appendSignature($signKey, $sign);
+            $request->appendSignature($signKey, Buffer::fromBase64($sign));
         }
 
         $exportedRequest = $request->export();

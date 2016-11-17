@@ -3,6 +3,8 @@
 namespace Virgil\SDK\Client\Card;
 
 
-class CardsServiceException extends \Exception
+use Virgil\SDK\VirgilException;
+
+class CardsServiceException extends VirgilException
 {
 }

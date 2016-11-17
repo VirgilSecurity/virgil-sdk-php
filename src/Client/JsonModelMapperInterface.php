@@ -3,7 +3,7 @@
 namespace Virgil\SDK\Client;
 
 
-interface JsonModelMapper
+interface JsonModelMapperInterface
 {
     /**
      * Make model from json string.
