@@ -3,7 +3,9 @@
 namespace Virgil\SDK\Cryptography;
 
 
-class VirgilPublicKey extends AbstractVirgilKey implements PublicKeyInterface
+use Virgil\SDK\Contracts\PublicKeyInterface;
+
+class VirgilPublicKey extends VirgilKey implements PublicKeyInterface
 {
 
 }

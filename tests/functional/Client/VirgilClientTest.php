@@ -79,17 +79,20 @@ class VirgilClientTest extends TestCase
     public function testCreateCardFailOnBadSelfSign($identity, $identityType, $scope, BufferInterface $publicKey, BufferInterface $privateKey)
     {
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
-        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()))->toHex();
 
         $keys = $this->crypto->generateKeys();
 
-        $this->requestSigner->selfSign($request, $this->crypto->importPrivateKey($keys->getPrivateKey()->getValue()));
+        $this->requestSigner->selfSign($request, $keys->getPrivateKey());
+        $this->requestSigner->authoritySign($request, $this->applicationSettings['id'], $this->crypto->importPrivateKey(
+            Buffer::fromBase64($this->applicationSettings['private_key']),
+            $this->applicationSettings['password']
+        ));
 
         try {
             $this->virgilClient->createCard($request);
         } catch (CardsServiceException $exception) {
             $this->assertEquals('400', $exception->getCode());
-            $this->assertContains('SCR sign item signed digest is invalid for the application', $exception->getMessage());
+            $this->assertContains('SCR sign item signed digest is invalid for the Virgil Card public key', $exception->getMessage());
         }
     }
 
@@ -179,7 +182,7 @@ class VirgilClientTest extends TestCase
 
             $cardData = function () use ($identity, $identityType, $scope, $crypto) {
                 $keys = $crypto->generateKeys();
-                return [$identity(), $identityType, $scope, $keys->getPublicKey()->getValue(), $keys->getPrivateKey()->getValue()];
+                return [$identity(), $identityType, $scope, $crypto->exportPublicKey($keys->getPublicKey()), $crypto->exportPrivateKey($keys->getPrivateKey())];
             };
 
             self::$cardsData = [$cardData(), $cardData(), $cardData()];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\SDK\Cryptography;
+namespace Virgil\SDK\Contracts;
 
 
 interface PrivateKeyInterface

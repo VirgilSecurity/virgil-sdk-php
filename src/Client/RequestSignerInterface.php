@@ -3,7 +3,7 @@
 namespace Virgil\SDK\Client;
 
 
-use Virgil\SDK\Cryptography\PrivateKeyInterface;
+use Virgil\SDK\Contracts\PrivateKeyInterface;
 
 interface RequestSignerInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\SDK\Cryptography;
+namespace Virgil\SDK\Contracts;
 
 
 use Virgil\SDK\BufferInterface;
@@ -10,10 +10,9 @@ interface CryptoInterface
     /**
      * Generate key pair by given crypto type
      *
-     * @param integer $cryptoType
      * @return KeyPairInterface
      */
-    public function generateKeys($cryptoType);
+    public function generateKeys();
 
     /**
      * Encrypt data with a list of recipients

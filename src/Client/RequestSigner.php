@@ -4,8 +4,8 @@ namespace Virgil\SDK\Client;
 
 
 use Virgil\SDK\Buffer;
-use Virgil\SDK\Cryptography\CryptoInterface;
-use Virgil\SDK\Cryptography\PrivateKeyInterface;
+use Virgil\SDK\Contracts\CryptoInterface;
+use Virgil\SDK\Contracts\PrivateKeyInterface;
 
 class RequestSigner implements RequestSignerInterface
 {

@@ -7,6 +7,7 @@ interface CardValidatorInterface
 {
     /**
      * Validates the specified Card.
+     *
      * @param Card $card
      * @return bool
      */

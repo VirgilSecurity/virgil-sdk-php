@@ -3,6 +3,8 @@
 namespace Virgil\SDK\Cryptography;
 
 
+use Virgil\SDK\Contracts\KeyPairInterface;
+
 class VirgilKeyPair implements KeyPairInterface
 {
     protected $publicKey;

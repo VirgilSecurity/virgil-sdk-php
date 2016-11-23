@@ -5,7 +5,7 @@ namespace Virgil\SDK\Client;
 
 use Virgil\SDK\Buffer;
 use Virgil\SDK\BufferInterface;
-use Virgil\SDK\Cryptography\CryptoInterface;
+use Virgil\SDK\Contracts\CryptoInterface;
 
 class CardValidator implements CardValidatorInterface
 {
@@ -16,6 +16,7 @@ class CardValidator implements CardValidatorInterface
 
     /**
      * CardValidator constructor.
+     *
      * @param CryptoInterface $crypto
      */
     public function __construct(CryptoInterface $crypto)
@@ -58,6 +59,7 @@ class CardValidator implements CardValidatorInterface
 
     /**
      * Add verifier to verification list.
+     *
      * @param string $verifierId
      * @param BufferInterface $verifierPublicKey
      */
