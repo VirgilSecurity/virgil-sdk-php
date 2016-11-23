@@ -12,6 +12,7 @@ class SignedResponseMetaModel
 
     /**
      * SignedResponseMetaModel constructor.
+     *
      * @param array $signs
      * @param \DateTime $createdAt
      * @param string $cardVersion

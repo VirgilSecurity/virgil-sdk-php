@@ -12,6 +12,7 @@ class RevokeCardContentModel extends AbstractJsonSerializable
 
     /**
      * RevokeCardContentModel constructor.
+     *
      * @param string $id
      * @param string $revocationReason
      */

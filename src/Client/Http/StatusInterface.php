@@ -7,6 +7,7 @@ interface StatusInterface
 {
     /**
      * Check if status is successful.
+     *
      * @return bool
      */
     public function isSuccess();
@@ -14,6 +15,7 @@ interface StatusInterface
 
     /**
      * Get status value.
+     *
      * @return string
      */
     public function getStatus();

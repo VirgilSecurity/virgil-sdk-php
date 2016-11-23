@@ -26,6 +26,7 @@ class VirgilClient
 
     /**
      * VirgilClient constructor.
+     *
      * @param VirgilClientParams $virgilClientParams
      * @param CardsServiceInterface $cardsService
      */
@@ -81,6 +82,7 @@ class VirgilClient
 
     /**
      * Sets the card validator.
+     *
      * @param CardValidatorInterface $validator
      */
     public function setCardValidator(CardValidatorInterface $validator)
@@ -153,6 +155,7 @@ class VirgilClient
 
     /**
      * Validate card.
+     *
      * @param Card $card
      * @throws CardValidationException
      */
@@ -170,6 +173,7 @@ class VirgilClient
 
     /**
      * Builds and verify card from response.
+     *
      * @param SignedResponseModel $responseModel
      * @throws CardValidationException
      * @return Card

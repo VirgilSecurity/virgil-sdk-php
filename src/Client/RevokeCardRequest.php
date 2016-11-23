@@ -16,6 +16,7 @@ class RevokeCardRequest extends AbstractCardRequest
 
     /**
      * RevokeCardRequest constructor.
+     *
      * @param string $id
      * @param string $reason
      */
@@ -50,11 +51,22 @@ class RevokeCardRequest extends AbstractCardRequest
         );
     }
 
+    /**
+     * Exports card to base64 json string.
+     *
+     * @return string
+     */
     public function export()
     {
         return base64_encode(self::getRequestModelJsonMapper()->toJson($this->getRequestModel()));
     }
 
+    /**
+     * Imports card from base64 json string.
+     *
+     * @param $exportedRequest
+     * @return RevokeCardRequest
+     */
     public static function import($exportedRequest)
     {
         $modelJson = base64_decode($exportedRequest);
@@ -76,6 +88,9 @@ class RevokeCardRequest extends AbstractCardRequest
         return $request;
     }
 
+    /**
+     * @return RevokeRequestModelMapper
+     */
     public static function getRequestModelJsonMapper()
     {
         return new RevokeRequestModelMapper(new SignedRequestModelMapper());

@@ -21,6 +21,7 @@ class Card
 
     /**
      * Card constructor.
+     *
      * @param string $id
      * @param BufferInterface $snapshot
      * @param string $identity
@@ -50,15 +51,17 @@ class Card
 
     /**
      * Gets the public key.
+     *
      * @return BufferInterface
      */
-    public function getPublicKey()
+    public function getPublicKeyData()
     {
         return $this->publicKey;
     }
 
     /**
      * Gets the type of the identity.
+     *
      * @return string
      */
     public function getIdentityType()
@@ -68,6 +71,7 @@ class Card
 
     /**
      * Gets the identity.
+     *
      * @return string
      */
     public function getIdentity()
@@ -77,6 +81,7 @@ class Card
 
     /**
      * Gets the Virgil Card fingerprint.
+     *
      * @return string
      */
     public function getId()
@@ -86,6 +91,7 @@ class Card
 
     /**
      * Gets the scope.
+     *
      * @return string
      */
     public function getScope()
@@ -95,6 +101,7 @@ class Card
 
     /**
      * Gets the data.
+     *
      * @return array
      */
     public function getData()
@@ -104,6 +111,7 @@ class Card
 
     /**
      * Get sign by signid.
+     *
      * @param string $signatureId
      * @return BufferInterface
      */
@@ -114,6 +122,7 @@ class Card
 
     /**
      * Gets the signs.
+     *
      * @return BufferInterface[]
      */
     public function getSignatures()
@@ -123,6 +132,7 @@ class Card
 
     /**
      * Gets the name of the device.
+     *
      * @return string
      */
     public function getDeviceName()
@@ -132,6 +142,7 @@ class Card
 
     /**
      * Gets the device.
+     *
      * @return string
      */
     public function getDevice()
@@ -141,6 +152,7 @@ class Card
 
     /**
      * Gets the version.
+     *
      * @return string
      */
     public function getVersion()
@@ -150,6 +162,7 @@ class Card
 
     /**
      * Gets the Virgil Card snapshot.
+     *
      * @return BufferInterface
      */
     public function getSnapshot()

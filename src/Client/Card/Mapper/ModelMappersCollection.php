@@ -29,6 +29,7 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
 
     /**
      * ModelMappersCollection constructor.
+     *
      * @param SignedResponseModelMapper $responseModelMapper
      * @param SignedRequestModelMapper $requestModelMapper
      * @param SearchCriteriaResponseMapper $criteriaResponseMapper

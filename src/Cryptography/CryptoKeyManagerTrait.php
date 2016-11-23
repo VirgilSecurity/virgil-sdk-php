@@ -3,19 +3,19 @@
 namespace Virgil\SDK\Cryptography;
 
 
-trait KeyStorageTrait
+trait CryptoKeyManagerTrait
 {
     private $keys = [];
 
     /**
      * Get key from storage.
      *
-     * @param KeyInterface $key
-     * @return KeyEntryInterface
+     * @param CryptoKey $key
+     * @return CryptoKeyEntry
      */
-    protected function getKey(KeyInterface $key)
+    protected function getKey(CryptoKey $key)
     {
-        if(!$this->hasKey($key)) {
+        if (!$this->hasKey($key)) {
             throw new \InvalidArgumentException('Key is not valid: key id - ' . $key->getId());
         }
         return $this->keys[$key->getId()];
@@ -24,10 +24,10 @@ trait KeyStorageTrait
     /**
      * Check if key with given hash exists in storage.
      *
-     * @param KeyInterface $key
+     * @param CryptoKey $key
      * @return bool
      */
-    protected function hasKey(KeyInterface $key)
+    protected function hasKey(CryptoKey $key)
     {
         return array_key_exists($key->getId(), $this->keys);
     }
@@ -35,11 +35,11 @@ trait KeyStorageTrait
     /**
      * Put key to storage.
      *
-     * @param KeyInterface $key
-     * @param KeyEntryInterface $virgilKey
+     * @param CryptoKey $key
+     * @param CryptoKeyEntry $virgilKey
      * @return bool
      */
-    protected function putKey(KeyInterface $key, KeyEntryInterface $virgilKey)
+    protected function putKey(CryptoKey $key, CryptoKeyEntry $virgilKey)
     {
         if (!$this->hasKey($key)) {
             $this->keys[$key->getId()] = $virgilKey;

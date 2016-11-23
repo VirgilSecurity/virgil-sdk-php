@@ -4,8 +4,8 @@ namespace Virgil\SDK\Client;
 
 
 use Virgil\SDK\Buffer;
-use Virgil\SDK\BufferInterface;
 use Virgil\SDK\Contracts\CryptoInterface;
+use Virgil\SDK\Contracts\PublicKeyInterface;
 
 class CardValidator implements CardValidatorInterface
 {
@@ -22,7 +22,8 @@ class CardValidator implements CardValidatorInterface
     public function __construct(CryptoInterface $crypto)
     {
         $this->crypto = $crypto;
-        $this->addVerifier($this->serviceCardId, Buffer::fromBase64($this->servicePublicKey));
+        $publicKey = $crypto->importPublicKey(Buffer::fromBase64($this->servicePublicKey));
+        $this->addVerifier($this->serviceCardId, $publicKey);
     }
 
 
@@ -35,7 +36,7 @@ class CardValidator implements CardValidatorInterface
             return false;
         }
 
-        $this->addVerifier($fingerprintHex, $card->getPublicKey());
+        $this->addVerifier($fingerprintHex, $this->crypto->importPublicKey($card->getPublicKeyData()));
 
         foreach ($this->verifiers as $verifierKey => $verifier) {
 
@@ -61,10 +62,10 @@ class CardValidator implements CardValidatorInterface
      * Add verifier to verification list.
      *
      * @param string $verifierId
-     * @param BufferInterface $verifierPublicKey
+     * @param PublicKeyInterface $verifierPublicKey
      */
-    public function addVerifier($verifierId, BufferInterface $verifierPublicKey)
+    public function addVerifier($verifierId, PublicKeyInterface $verifierPublicKey)
     {
-        $this->verifiers[$verifierId] = $this->crypto->importPublicKey($verifierPublicKey);
+        $this->verifiers[$verifierId] = $verifierPublicKey;
     }
 }

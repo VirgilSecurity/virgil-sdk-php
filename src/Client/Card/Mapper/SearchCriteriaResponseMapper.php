@@ -12,6 +12,7 @@ class SearchCriteriaResponseMapper extends AbstractJsonModelMapper
 
     /**
      * SearchCriteriaResponseMapper constructor.
+     *
      * @param SignedResponseModelMapper $mapper
      */
     public function __construct(SignedResponseModelMapper $mapper)

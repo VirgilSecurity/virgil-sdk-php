@@ -7,6 +7,7 @@ interface ClientInterface
 {
     /**
      * Make and execute HTTP POST request.
+     *
      * @param string $uri
      * @param mixed $body
      * @param array $headers
@@ -16,6 +17,7 @@ interface ClientInterface
 
     /**
      * Make and execute HTTP DELETE request.
+     *
      * @param string $uri
      * @param mixed $body
      * @param array $headers
@@ -25,6 +27,7 @@ interface ClientInterface
 
     /**
      * Make and execute HTTP GET request.
+     *
      * @param string $uri
      * @param array $params
      * @param array $headers
@@ -34,6 +37,7 @@ interface ClientInterface
 
     /**
      * Execute given request.
+     *
      * @param RequestInterface $request
      * @return ResponseInterface
      */
@@ -41,12 +45,14 @@ interface ClientInterface
 
     /**
      * Get default headers for all outbound requests.
+     *
      * @return array
      */
     public function getHeaders();
 
     /**
      * Set default headers for all outbound requests.
+     *
      * @param array $headers
      */
     public function setHeaders($headers);

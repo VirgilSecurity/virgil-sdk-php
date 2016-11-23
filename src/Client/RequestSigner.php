@@ -13,6 +13,7 @@ class RequestSigner implements RequestSignerInterface
 
     /**
      * RequestSigner constructor.
+     *
      * @param CryptoInterface $crypto
      */
     public function __construct(CryptoInterface $crypto)

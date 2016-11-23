@@ -27,6 +27,7 @@ class CardsService implements CardsServiceInterface
 
     /**
      * CardsService constructor.
+     *
      * @param CardServiceParamsInterface $params
      * @param ClientInterface $httpClient
      * @param ModelMappersCollectionInterface $mappers
@@ -87,6 +88,7 @@ class CardsService implements CardsServiceInterface
 
     /**
      * Makes request to http client and gets response object.
+     *
      * @param callable $request
      * @throws CardsServiceException
      * @return ResponseInterface

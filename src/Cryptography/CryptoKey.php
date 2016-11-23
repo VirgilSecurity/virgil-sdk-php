@@ -3,12 +3,13 @@
 namespace Virgil\SDK\Cryptography;
 
 
-class VirgilKey implements KeyInterface
+class CryptoKey
 {
     private $hash;
 
     /**
      * VirgilKey constructor.
+     *
      * @param string $hash
      */
     public function __construct($hash)
@@ -16,6 +17,9 @@ class VirgilKey implements KeyInterface
         $this->hash = $hash;
     }
 
+    /**
+     * @return string
+     */
     public function getId()
     {
         return $this->hash;

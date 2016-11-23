@@ -7,4 +7,5 @@ use Virgil\SDK\VirgilException;
 
 class CardsServiceException extends VirgilException
 {
+
 }

@@ -5,14 +5,14 @@ namespace Virgil\SDK\Cryptography;
 
 use Virgil\SDK\Buffer;
 
-class VirgilKeyEntry implements KeyEntryInterface
+class CryptoKeyEntry
 {
     protected $receiverId;
-
     protected $value;
 
     /**
      * VirgilKeyEntry constructor.
+     *
      * @param string $receiverId receiver id for current key
      * @param string $value DER key value
      */
@@ -22,11 +22,17 @@ class VirgilKeyEntry implements KeyEntryInterface
         $this->value = new Buffer($value);
     }
 
+    /**
+     * @return Buffer
+     */
     public function getReceiverId()
     {
         return $this->receiverId;
     }
 
+    /**
+     * @return Buffer
+     */
     public function getValue()
     {
         return $this->value;

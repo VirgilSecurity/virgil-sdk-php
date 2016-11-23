@@ -12,6 +12,7 @@ class SignedRequestModel
 
     /**
      * SignedRequestModel constructor.
+     *
      * @param JsonSerializable $cardContent
      * @param JsonSerializable $meta
      */
@@ -39,6 +40,7 @@ class SignedRequestModel
 
     /**
      * Returns base64 encoded request snapshot.
+     *
      * @return string
      */
     public function getSnapshot()

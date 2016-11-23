@@ -8,22 +8,22 @@ use Virgil\SDK\Contracts\KeyPairInterface;
 class VirgilKeyPair implements KeyPairInterface
 {
     protected $publicKey;
-
     protected $privateKey;
 
     /**
      * VirgilKeyPair constructor.
-     * @param VirgilPublicKey $publicKey
-     * @param VirgilPrivateKey $privateKey
+     *
+     * @param PublicKey $publicKey
+     * @param PrivateKey $privateKey
      */
-    public function __construct(VirgilPublicKey $publicKey, VirgilPrivateKey $privateKey)
+    public function __construct(PublicKey $publicKey, PrivateKey $privateKey)
     {
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
     }
 
     /**
-     * @return VirgilPublicKey
+     * @return PublicKey
      */
     public function getPublicKey()
     {
@@ -31,7 +31,7 @@ class VirgilKeyPair implements KeyPairInterface
     }
 
     /**
-     * @return VirgilPrivateKey
+     * @return PrivateKey
      */
     public function getPrivateKey()
     {

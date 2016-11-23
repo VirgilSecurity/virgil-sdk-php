@@ -13,12 +13,14 @@ abstract class AbstractCardRequest
 
     /**
      * Gets the card content.
+     *
      * @return mixed
      */
     protected abstract function getCardContent();
 
     /**
      * Gets the request model.
+     *
      * @return SignedRequestModel
      */
     public function getRequestModel()
@@ -28,6 +30,7 @@ abstract class AbstractCardRequest
 
     /**
      * Append signature to request.
+     *
      * @param string $signatureId
      * @param BufferInterface $signature
      */
@@ -38,6 +41,7 @@ abstract class AbstractCardRequest
 
     /**
      * Gets the signatures.
+     *
      * @return array
      */
     public function getSignatures()
@@ -47,6 +51,7 @@ abstract class AbstractCardRequest
 
     /**
      * Gets card request snapshot.
+     *
      * @return string
      */
     public function snapshot()
@@ -56,6 +61,7 @@ abstract class AbstractCardRequest
 
     /**
      * Gets the card meta.
+     *
      * @return SignedRequestMetaModel
      */
     protected function getCardMeta()

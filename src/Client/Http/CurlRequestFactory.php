@@ -9,6 +9,7 @@ class CurlRequestFactory implements RequestFactoryInterface
 
     /**
      * CurlRequestFactory constructor.
+     *
      * @param array $options
      */
     public function __construct(array $options = [])

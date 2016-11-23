@@ -12,6 +12,7 @@ abstract class AbstractVirgilCipher implements CipherInterface
 
     /**
      * AbstractVirgilCipher constructor.
+     *
      * @param VirgilCipherBase $cipher
      */
     public function __construct(VirgilCipherBase $cipher)

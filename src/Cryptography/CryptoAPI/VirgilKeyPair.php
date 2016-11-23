@@ -6,11 +6,11 @@ namespace Virgil\SDK\Cryptography\CryptoAPI;
 class VirgilKeyPair implements KeyPairInterface
 {
     private $publicKey;
-
     private $privateKey;
 
     /**
      * VirgilKeyPair constructor.
+     *
      * @param string $publicKey
      * @param string $privateKey
      */

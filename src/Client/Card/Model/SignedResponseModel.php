@@ -12,6 +12,7 @@ class SignedResponseModel
 
     /**
      * SignedResponseModel constructor.
+     *
      * @param string $id
      * @param string $contentSnapshot
      * @param CardContentModel $cardContent

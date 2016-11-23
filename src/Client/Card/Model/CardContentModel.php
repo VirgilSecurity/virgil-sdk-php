@@ -16,6 +16,7 @@ class CardContentModel extends AbstractJsonSerializable
 
     /**
      * CardContent constructor.
+     * 
      * @param string $identity
      * @param string $identityType
      * @param string $publicKey

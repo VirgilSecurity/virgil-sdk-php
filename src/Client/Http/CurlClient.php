@@ -10,6 +10,7 @@ class CurlClient implements ClientInterface
 
     /**
      * CurlClient constructor.
+     *
      * @param RequestFactoryInterface $curlRequestFactory
      * @param array $headers Default headers for all outbound requests.
      */

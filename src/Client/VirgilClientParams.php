@@ -12,6 +12,7 @@ class VirgilClientParams
 
     /**
      * VirgilClientParams constructor.
+     *
      * @param string $accessToken
      */
     public function __construct($accessToken)
@@ -92,6 +93,7 @@ class VirgilClientParams
 
     /**
      * Checks if given url is valid.
+     *
      * @param string $serviceUrl
      * @return bool
      */

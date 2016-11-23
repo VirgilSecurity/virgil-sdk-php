@@ -17,6 +17,7 @@ class SearchCriteria
 
     /**
      * SearchCriteria constructor.
+     *
      * @param array $identities
      * @param string $identityType
      * @param string $scope

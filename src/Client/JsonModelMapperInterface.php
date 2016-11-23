@@ -7,6 +7,7 @@ interface JsonModelMapperInterface
 {
     /**
      * Make model from json string.
+     *
      * @param $json
      * @return mixed
      */
@@ -14,6 +15,7 @@ interface JsonModelMapperInterface
 
     /**
      * Make json string from model.
+     *
      * @param mixed $model
      * @return string
      */

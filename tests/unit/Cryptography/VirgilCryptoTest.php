@@ -9,8 +9,8 @@ use Virgil\SDK\Cryptography\KeyPairType;
 use Virgil\SDK\Cryptography\HashAlgorithm;
 use Virgil\SDK\Cryptography\VirgilKeyPair;
 use Virgil\SDK\Cryptography\CryptoAPI\VirgilKeyPair as CryptoAPIVirgilKeyPair;
-use Virgil\SDK\Cryptography\VirgilPrivateKey;
-use Virgil\SDK\Cryptography\VirgilPublicKey;
+use Virgil\SDK\Cryptography\PrivateKey;
+use Virgil\SDK\Cryptography\PublicKey;
 
 class VirgilCryptoTest extends TestCase
 {
@@ -23,7 +23,7 @@ class VirgilCryptoTest extends TestCase
         $privateKeyHash = new Buffer('private_key_hash');
 
         $expectedKeys = new VirgilKeyPair(
-            new VirgilPublicKey($publicKeyHash->toHex()), new VirgilPrivateKey($privateKeyHash->toHex())
+            new PublicKey($publicKeyHash->toHex()), new PrivateKey($privateKeyHash->toHex())
         );
 
         $virgilKeyPair = new CryptoAPIVirgilKeyPair($publicKey, $privateKey);
@@ -287,7 +287,7 @@ class VirgilCryptoTest extends TestCase
     {
         $virgilCrypto = new VirgilCrypto();
         try {
-            $virgilCrypto->sign('data_to_sign', new VirgilPrivateKey('not_existed_key_hash'));
+            $virgilCrypto->sign('data_to_sign', new PrivateKey('not_existed_key_hash'));
         } catch (\InvalidArgumentException $exception) {
             $this->assertContains('not_existed_key_hash', $exception->getMessage());
         }

@@ -9,6 +9,7 @@ class Status implements StatusInterface
 
     /**
      * Status constructor.
+     *
      * @param string $status
      */
     public function __construct($status)

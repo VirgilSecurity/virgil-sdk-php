@@ -11,6 +11,7 @@ class VirgilStreamDataSink extends VirgilDataSink
 
     /**
      * VirgilStreamDataSink constructor.
+     *
      * @param resource $stream
      */
     public function __construct($stream)

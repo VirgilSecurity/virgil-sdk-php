@@ -10,6 +10,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * CurlRequest constructor.
+     *
      * @param string $url
      */
     public function __construct($url = null)
@@ -19,6 +20,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * Execute curl request.
+     *
      * @return mixed
      */
     public function execute()
@@ -29,6 +31,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * Get info from request.
+     *
      * @param string $name
      * @return mixed
      */
@@ -39,6 +42,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * Set request option.
+     *
      * @param string $name
      * @param mixed $value
      * @return void
@@ -50,6 +54,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * Set request options.
+     *
      * @param array $options
      * @return void
      */
@@ -60,6 +65,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * Get all request options.
+     *
      * @return array
      */
     public function getOptions()
@@ -69,6 +75,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * Close a curl session.
+     *
      * @return void
      */
     public function close()

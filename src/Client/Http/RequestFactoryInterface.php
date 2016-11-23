@@ -7,6 +7,7 @@ interface RequestFactoryInterface
 {
     /**
      * Creates RequestInterface by given options.
+     *
      * @param array $options
      * @return RequestInterface
      */
@@ -14,6 +15,7 @@ interface RequestFactoryInterface
 
     /**
      * Setups default options for a factory.
+     *
      * @param array $options
      * @return mixed
      */

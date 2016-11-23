@@ -11,6 +11,7 @@ class ErrorResponseModel
 
     /**
      * ErrorResponse constructor.
+     *
      * @param string $errorCode
      */
     public function __construct($errorCode = null)
@@ -20,6 +21,7 @@ class ErrorResponseModel
 
     /**
      * Gets error message or return default.
+     *
      * @param string $defaultMessage
      * @return string
      */
@@ -34,6 +36,7 @@ class ErrorResponseModel
 
     /**
      * Gets error code.
+     *
      * @return string
      */
     public function getCode()
@@ -43,6 +46,7 @@ class ErrorResponseModel
 
     /**
      * Checks if model is empty.
+     *
      * @return bool
      */
     public function isEmpty()

@@ -22,6 +22,7 @@ class CreateCardRequest extends AbstractCardRequest
 
     /**
      * CreateCardRequest constructor.
+     *
      * @param string $identity
      * @param string $identityType
      * @param BufferInterface $publicKey

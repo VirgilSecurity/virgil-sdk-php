@@ -20,6 +20,7 @@ class CardServiceParams implements CardServiceParamsInterface
 
     /**
      * CardServiceParams constructor.
+     *
      * @param array $params
      */
     public function __construct(array $params)
@@ -34,6 +35,7 @@ class CardServiceParams implements CardServiceParamsInterface
 
     /**
      * Build endpoint from given host and uri.
+     *
      * @param string $host
      * @param string $uri
      * @return string
@@ -45,6 +47,7 @@ class CardServiceParams implements CardServiceParamsInterface
 
     /**
      * Validate params.
+     *
      * @param array $params
      */
     protected function validateParams(array $params)

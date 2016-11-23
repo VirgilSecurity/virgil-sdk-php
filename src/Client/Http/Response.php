@@ -11,6 +11,7 @@ class Response implements ResponseInterface
 
     /**
      * Response constructor.
+     *
      * @param StatusInterface $status
      * @param $headers
      * @param $body

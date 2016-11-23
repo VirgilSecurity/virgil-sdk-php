@@ -12,6 +12,11 @@ class RevokeRequestModelMapper extends AbstractJsonModelMapper
 {
     private $signedRequestModelMapper;
 
+    /**
+     * RevokeRequestModelMapper constructor.
+     *
+     * @param SignedRequestModelMapper $signedRequestModelMapper
+     */
     public function __construct(SignedRequestModelMapper $signedRequestModelMapper)
     {
         $this->signedRequestModelMapper = $signedRequestModelMapper;

@@ -9,6 +9,7 @@ class Buffer implements BufferInterface
 
     /**
      * Buffer constructor.
+     *
      * @param mixed $rawData
      */
     public function __construct($rawData)
@@ -37,7 +38,6 @@ class Buffer implements BufferInterface
     {
         return new self(hex2bin($hex));
     }
-
 
     public function toBase64()
     {

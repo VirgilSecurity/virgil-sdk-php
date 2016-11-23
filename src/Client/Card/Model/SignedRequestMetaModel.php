@@ -11,6 +11,7 @@ class SignedRequestMetaModel extends AbstractJsonSerializable
 
     /**
      * SignedRequestMetaModel constructor.
+     *
      * @param array $signs
      */
     public function __construct(array $signs)

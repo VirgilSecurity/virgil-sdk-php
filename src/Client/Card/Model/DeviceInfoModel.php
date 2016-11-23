@@ -12,6 +12,7 @@ class DeviceInfoModel extends AbstractJsonSerializable
 
     /**
      * DeviceInfo constructor.
+     *
      * @param string $device
      * @param string $deviceName
      */

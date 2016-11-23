@@ -11,6 +11,7 @@ interface CardsServiceInterface
 {
     /**
      * Create card by given request model.
+     *
      * @param SignedRequestModel $model
      * @return SignedResponseModel
      */
@@ -18,12 +19,14 @@ interface CardsServiceInterface
 
     /**
      * Delete card by given request model.
+     *
      * @param SignedRequestModel $model
      */
     public function delete(SignedRequestModel $model);
 
     /**
      * Search cards by given search criteria.
+     *
      * @param SearchCriteria $model
      * @return SignedResponseModel[]
      */
@@ -31,6 +34,7 @@ interface CardsServiceInterface
 
     /**
      * Retrieve card by given id.
+     *
      * @param string $id
      * @return SignedResponseModel
      */

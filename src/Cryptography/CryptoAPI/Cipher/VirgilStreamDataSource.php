@@ -8,11 +8,11 @@ use Virgil\Crypto\VirgilDataSource;
 class VirgilStreamDataSource extends VirgilDataSource
 {
     private $stream;
-
     private $dataChunk;
 
     /**
      * VirgilStreamDataSource constructor.
+     *
      * @param resource $stream
      * @param int $dataChunk
      */
