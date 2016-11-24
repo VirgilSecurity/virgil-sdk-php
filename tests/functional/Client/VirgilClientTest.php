@@ -35,7 +35,7 @@ class VirgilClientTest extends TestCase
 
         $params = new VirgilClientParams($this->applicationSettings['access_token']);
         $params->setCardsServiceAddress('https://cards-stg.virgilsecurity.com');
-        $params->setReadOnlyCardsServiceAddress('https://cards-ro-stg.virgilsecurity.com');
+        $params->setReadCardsServiceAddress('https://cards-ro-stg.virgilsecurity.com');
         $params->setIdentityServiceAddress('https://identity-stg.virgilsecurity.com');
         $this->virgilClient = new VirgilClient($params);
 
@@ -105,7 +105,7 @@ class VirgilClientTest extends TestCase
             }, self::$cardsData), self::$cardsData[0][1], self::$cardsData[0][2]
         );
 
-        $cards = $this->virgilClient->searchCard($searchCriteria);
+        $cards = $this->virgilClient->searchCards($searchCriteria);
 
         $this->assertEquals(count($searchCriteria->getIdentities()), count($cards));
         foreach ($cards as $card) {
@@ -165,7 +165,7 @@ class VirgilClientTest extends TestCase
             $this->assertContains('Entity not found', $exception->getMessage());
         }
 
-        $cards = $this->virgilClient->searchCard(new SearchCriteria(
+        $cards = $this->virgilClient->searchCards(new SearchCriteria(
             [$identity], $identityType, $scope
         ));
 

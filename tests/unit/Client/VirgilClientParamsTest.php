@@ -31,7 +31,7 @@ class VirgilClientParamsTest extends TestCase
     public function testSetReadOnlyCardsServiceAddress()
     {
         $params = new VirgilClientParams('S&OAhi');
-        $params->setReadOnlyCardsServiceAddress('wrong-url');
+        $params->setReadCardsServiceAddress('wrong-url');
     }
 
     /**

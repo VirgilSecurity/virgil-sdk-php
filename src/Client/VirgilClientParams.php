@@ -19,7 +19,7 @@ class VirgilClientParams
     {
         $this->accessToken = $accessToken;
         $this->setCardsServiceAddress('https://cards.virgilsecurity.com');
-        $this->setReadOnlyCardsServiceAddress('https://cards-ro.virgilsecurity.com');
+        $this->setReadCardsServiceAddress('https://cards-ro.virgilsecurity.com');
         $this->setIdentityServiceAddress('https://identity.virgilsecurity.com');
     }
 
@@ -62,7 +62,7 @@ class VirgilClientParams
     /**
      * @param string $readOnlyCardsServiceAddress
      */
-    public function setReadOnlyCardsServiceAddress($readOnlyCardsServiceAddress)
+    public function setReadCardsServiceAddress($readOnlyCardsServiceAddress)
     {
         if (!$this->checkServiceUrl($readOnlyCardsServiceAddress)) {
             throw new \InvalidArgumentException(__METHOD__);

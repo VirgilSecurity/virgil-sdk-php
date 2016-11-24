@@ -25,6 +25,17 @@ class VirgilClient
     private $cardValidator;
 
     /**
+     * Makes client by provided access token
+     *
+     * @param string $accessToken
+     * @return VirgilClient
+     */
+    public static function create($accessToken)
+    {
+        return new self(new VirgilClientParams($accessToken));
+    }
+
+    /**
      * VirgilClient constructor.
      *
      * @param VirgilClientParams $virgilClientParams
@@ -39,7 +50,7 @@ class VirgilClient
      * @param SearchCriteria $criteria
      * @return Card[]
      */
-    public function searchCard(SearchCriteria $criteria)
+    public function searchCards(SearchCriteria $criteria)
     {
         $response = $this->cardsService->search($criteria);
 

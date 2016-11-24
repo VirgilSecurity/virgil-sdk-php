@@ -117,7 +117,7 @@ class VirgilClientTest extends TestCase
 
         $virgilClientParams = new VirgilClientParams('asfja8');
         $client = new VirgilClient($virgilClientParams, $cardsServiceMock);
-        $cards = $client->searchCard($searchCriteria);
+        $cards = $client->searchCards($searchCriteria);
         $this->assertEquals($expectedCards, $cards);
     }
 
