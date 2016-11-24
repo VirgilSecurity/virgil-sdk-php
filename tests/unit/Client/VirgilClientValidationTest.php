@@ -79,7 +79,7 @@ class VirgilClientValidationTest extends TestCase
         $client = new VirgilClient(new VirgilClientParams('asfja8'), $cardsServiceMock);
         $cardValidator = new CardValidator(new VirgilCrypto());
         $client->setCardValidator($cardValidator);
-        $client->searchCard($sc);
+        $client->searchCards($sc);
     }
 
     /**
