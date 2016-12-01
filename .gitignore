@@ -2,4 +2,5 @@
 .idea/
 vendor/
 composer.lock
+phpunit.xml
 tests/config.json
