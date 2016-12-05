@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Client\Card;
+namespace Virgil\Sdk\Client\Card;
 
 
 class CardsErrorMessages

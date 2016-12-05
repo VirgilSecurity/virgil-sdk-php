@@ -1,15 +1,14 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
-
-use Virgil\SDK\Buffer;
-use Virgil\SDK\BufferInterface;
-use Virgil\SDK\Client\Card\Mapper\CreateRequestModelMapper;
-use Virgil\SDK\Client\Card\Mapper\SignedRequestModelMapper;
-use Virgil\SDK\Client\Card\Model\CardContentModel;
-use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
-use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\BufferInterface;
+use Virgil\Sdk\Client\Card\Mapper\CreateRequestModelMapper;
+use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\Card\Model\CardContentModel;
+use Virgil\Sdk\Client\Card\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
 
 class CreateCardRequest extends AbstractCardRequest
 {

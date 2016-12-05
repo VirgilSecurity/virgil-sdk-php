@@ -1,9 +1,9 @@
 <?php
 
-namespace Virgil\SDK\Cryptography\CryptoAPI;
+namespace Virgil\Sdk\Cryptography\CryptoAPI;
 
 
-use Virgil\SDK\Cryptography\CryptoAPI\Cipher\CipherInterface;
+use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\CipherInterface;
 
 interface CryptoApiInterface
 {

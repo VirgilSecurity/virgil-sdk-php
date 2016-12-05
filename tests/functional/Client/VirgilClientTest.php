@@ -4,19 +4,19 @@ namespace Virgil\Tests\Functional\Client;
 
 
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Buffer;
-use Virgil\SDK\BufferInterface;
-use Virgil\SDK\Client\Card;
-use Virgil\SDK\Client\Card\CardsServiceException;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\CreateCardRequest;
-use Virgil\SDK\Client\RequestSigner;
-use Virgil\SDK\Client\RevocationReason;
-use Virgil\SDK\Client\RevokeCardRequest;
-use Virgil\SDK\Client\VirgilClient;
-use Virgil\SDK\Client\VirgilClientParams;
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\BufferInterface;
+use Virgil\Sdk\Client\Card;
+use Virgil\Sdk\Client\Card\CardsServiceException;
+use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\CardScope;
+use Virgil\Sdk\Client\CreateCardRequest;
+use Virgil\Sdk\Client\RequestSigner;
+use Virgil\Sdk\Client\RevocationReason;
+use Virgil\Sdk\Client\RevokeCardRequest;
+use Virgil\Sdk\Client\VirgilClient;
+use Virgil\Sdk\Client\VirgilClientParams;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class VirgilClientTest extends TestCase
 {

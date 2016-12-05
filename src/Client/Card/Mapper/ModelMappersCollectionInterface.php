@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Client\Card\Mapper;
 
-namespace Virgil\SDK\Client\Card\Mapper;
 
-
-use Virgil\SDK\Client\JsonModelMapperInterface;
+use Virgil\Sdk\Client\JsonModelMapperInterface;
 
 interface ModelMappersCollectionInterface
 {

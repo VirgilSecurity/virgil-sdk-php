@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK;
+namespace Virgil\Sdk;
 
 
 class Buffer implements BufferInterface

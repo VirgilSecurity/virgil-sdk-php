@@ -1,10 +1,10 @@
 <?php
-
 namespace Virgil\Tests\Unit\Client;
 
 
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Client\VirgilClientParams;
+
+use Virgil\Sdk\Client\VirgilClientParams;
 
 class VirgilClientParamsTest extends TestCase
 {

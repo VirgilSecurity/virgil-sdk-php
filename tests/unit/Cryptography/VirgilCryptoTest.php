@@ -1,16 +1,18 @@
 <?php
 namespace Virgil\Tests\Unit\Cryptography;
 
+
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
-use Virgil\SDK\Cryptography\VirgilCrypto;
-use Virgil\SDK\Cryptography\KeyPairType;
-use Virgil\SDK\Cryptography\HashAlgorithm;
-use Virgil\SDK\Cryptography\VirgilKeyPair;
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilKeyPair as CryptoAPIVirgilKeyPair;
-use Virgil\SDK\Cryptography\PrivateKey;
-use Virgil\SDK\Cryptography\PublicKey;
+
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Cryptography\CryptoAPI\VirgilCryptoApi;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\KeyPairType;
+use Virgil\Sdk\Cryptography\HashAlgorithm;
+use Virgil\Sdk\Cryptography\VirgilKeyPair;
+use Virgil\Sdk\Cryptography\CryptoAPI\VirgilKeyPair as CryptoAPIVirgilKeyPair;
+use Virgil\Sdk\Cryptography\PrivateKey;
+use Virgil\Sdk\Cryptography\PublicKey;
 
 class VirgilCryptoTest extends TestCase
 {

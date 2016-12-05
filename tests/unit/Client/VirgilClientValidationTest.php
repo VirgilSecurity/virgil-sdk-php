@@ -1,29 +1,29 @@
 <?php
-
 namespace Virgil\Tests\Unit\Client;
 
 
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\Card\CardsService;
-use Virgil\SDK\Client\Card\Model\CardContentModel;
-use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
-use Virgil\SDK\Client\Card\Model\SignedRequestModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseMetaModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseModel;
-use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\CardValidator;
-use Virgil\SDK\Client\CreateCardRequest;
-use Virgil\SDK\Client\VirgilClient;
-use Virgil\SDK\Client\VirgilClientParams;
-use Virgil\SDK\Cryptography\VirgilCrypto;
+
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\Card\CardsService;
+use Virgil\Sdk\Client\Card\Model\CardContentModel;
+use Virgil\Sdk\Client\Card\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
+use Virgil\Sdk\Client\Card\Model\SignedResponseMetaModel;
+use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
+use Virgil\Sdk\Client\CardScope;
+use Virgil\Sdk\Client\CardValidator;
+use Virgil\Sdk\Client\CreateCardRequest;
+use Virgil\Sdk\Client\VirgilClient;
+use Virgil\Sdk\Client\VirgilClientParams;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class VirgilClientValidationTest extends TestCase
 {
     /**
-     * @expectedException \Virgil\SDK\Client\CardValidationException
+     * @expectedException \Virgil\Sdk\Client\CardValidationException
      */
     public function testGetCardValidationFailBecauseOfInvalidSing()
     {
@@ -48,7 +48,7 @@ class VirgilClientValidationTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Client\CardValidationException
+     * @expectedException \Virgil\Sdk\Client\CardValidationException
      */
     public function testSearchCardValidationFailBecauseOfInvalidSing()
     {
@@ -83,7 +83,7 @@ class VirgilClientValidationTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Client\CardValidationException
+     * @expectedException \Virgil\Sdk\Client\CardValidationException
      */
     public function testCreateCardValidationFailBecauseOfInvalidSing()
     {

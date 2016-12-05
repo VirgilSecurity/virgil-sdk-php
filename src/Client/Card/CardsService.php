@@ -1,15 +1,14 @@
 <?php
+namespace Virgil\Sdk\Client\Card;
 
-namespace Virgil\SDK\Client\Card;
 
-
-use Virgil\SDK\Client\Card\Mapper\ModelMappersCollectionInterface;
-use Virgil\SDK\Client\Card\Model\ErrorResponseModel;
-use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\Card\Model\SignedRequestModel;
-use Virgil\SDK\Client\Http\ClientInterface;
-use Virgil\SDK\Client\Http\ResponseInterface;
+use Virgil\Sdk\Client\Card\Mapper\ModelMappersCollectionInterface;
+use Virgil\Sdk\Client\Card\Model\ErrorResponseModel;
+use Virgil\Sdk\Client\Card\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
+use Virgil\Sdk\Client\Http\ClientInterface;
+use Virgil\Sdk\Client\Http\ResponseInterface;
 
 class CardsService implements CardsServiceInterface
 {

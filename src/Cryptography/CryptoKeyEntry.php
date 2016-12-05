@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Cryptography;
 
-namespace Virgil\SDK\Cryptography;
 
-
-use Virgil\SDK\Buffer;
+use Virgil\Sdk\Buffer;
 
 class CryptoKeyEntry
 {

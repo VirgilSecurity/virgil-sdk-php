@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
-
-use Virgil\SDK\BufferInterface;
+use Virgil\Sdk\BufferInterface;
 
 class Card
 {

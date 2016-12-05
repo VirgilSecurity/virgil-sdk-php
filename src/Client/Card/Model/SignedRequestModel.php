@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Client\Card\Model;
+namespace Virgil\Sdk\Client\Card\Model;
 
 
 use JsonSerializable;

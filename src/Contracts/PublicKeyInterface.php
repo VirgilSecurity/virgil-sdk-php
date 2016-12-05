@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Contracts;
+namespace Virgil\Sdk\Contracts;
 
 
 interface PublicKeyInterface

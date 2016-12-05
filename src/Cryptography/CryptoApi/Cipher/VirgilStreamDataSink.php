@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\SDK\Cryptography\CryptoAPI\Cipher;
+namespace Virgil\Sdk\Cryptography\CryptoAPI\Cipher;
 
 
 use Virgil\Crypto\VirgilDataSink;

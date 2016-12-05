@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Client\Card\Model;
 
-namespace Virgil\SDK\Client\Card\Model;
 
-
-use Virgil\SDK\Client\Card\CardsErrorMessages;
+use Virgil\Sdk\Client\Card\CardsErrorMessages;
 
 class ErrorResponseModel
 {

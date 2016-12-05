@@ -1,9 +1,11 @@
 <?php
 namespace Virgil\Tests\Integration\Cryptography;
 
+
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Cryptography\VirgilCrypto;
+
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class VirgilCryptoCompatibilityTest extends TestCase
 {

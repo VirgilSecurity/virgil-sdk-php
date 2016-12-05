@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Cryptography;
 
-namespace Virgil\SDK\Cryptography;
 
-
-use Virgil\SDK\Contracts\KeyPairInterface;
+use Virgil\Sdk\Contracts\KeyPairInterface;
 
 class VirgilKeyPair implements KeyPairInterface
 {

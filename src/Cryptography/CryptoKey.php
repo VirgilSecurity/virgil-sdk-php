@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Cryptography;
+namespace Virgil\Sdk\Cryptography;
 
 
 class CryptoKey

@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Cryptography;
 
-namespace Virgil\SDK\Cryptography;
 
-
-use Virgil\SDK\Contracts\PrivateKeyInterface;
+use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 class PrivateKey extends CryptoKey implements PrivateKeyInterface
 {

@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Contracts;
 
-namespace Virgil\SDK\Contracts;
 
-
-use Virgil\SDK\BufferInterface;
+use Virgil\Sdk\BufferInterface;
 
 interface CryptoInterface
 {

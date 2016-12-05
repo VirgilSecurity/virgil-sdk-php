@@ -1,8 +1,9 @@
 <?php
-
 namespace Virgil\Tests\Unit\Client;
 
+
 use PHPUnit\Framework\TestCase;
+
 use Virgil\SDK\Buffer;
 use Virgil\SDK\Client\RevocationReason;
 use Virgil\SDK\Client\RevokeCardRequest;

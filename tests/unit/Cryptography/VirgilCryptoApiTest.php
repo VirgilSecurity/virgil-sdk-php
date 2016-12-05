@@ -1,11 +1,13 @@
 <?php
 namespace Virgil\Tests\Unit\Cryptography;
 
+
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilCipher;
-use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
-use Virgil\SDK\Cryptography\KeyPairType;
+
+use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\VirgilCipher;
+use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
+use Virgil\Sdk\Cryptography\CryptoAPI\VirgilCryptoApi;
+use Virgil\Sdk\Cryptography\KeyPairType;
 
 class VirgilCryptoApiTest extends TestCase
 {
@@ -28,7 +30,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\GenerateException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\GenerateException
      */
     public function testWrongTypeShouldThrowExceptionOnGenerateKeys()
     {
@@ -36,7 +38,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\PublicKeyToDERException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\PublicKeyToDERException
      */
     public function testWrongPublicKeyShouldThrowExceptionOnPublicKeyToDER()
     {
@@ -44,7 +46,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\PrivateKeyToDERException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\PrivateKeyToDERException
      */
     public function testWrongPrivateKeyShouldThrowExceptionOnPrivateKeyToDER()
     {
@@ -52,7 +54,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\ComputePublicKeyHashException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\ComputePublicKeyHashException
      */
     public function testWrongAlgorithmShouldThrowExceptionOnComputePublicKeyHash()
     {
@@ -71,7 +73,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\ExtractPublicKeyException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\ExtractPublicKeyException
      */
     public function testWrongPrivateKeyShouldThrowExceptionOnExtractPublicKey()
     {
@@ -96,7 +98,7 @@ class VirgilCryptoApiTest extends TestCase
 
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\EncryptPrivateKeyException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\EncryptPrivateKeyException
      */
     public function testWrongPrivateKeyOrEmptyPasswordShouldThrowExceptionOnEncryptPrivateKey()
     {
@@ -104,7 +106,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\DecryptPrivateKeyException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\DecryptPrivateKeyException
      */
     public function testWrongPrivateKeyOrEmptyPasswordShouldThrowExceptionOnDecryptPrivateKey()
     {
@@ -112,7 +114,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\VerifyException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\VerifyException
      */
     public function testWrongKeyOrSignatureShouldThrowExceptionOnVerify()
     {
@@ -124,7 +126,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\VerifyException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\VerifyException
      */
     public function testWrongKeyOrSignatureShouldThrowExceptionOnStreamVerify()
     {
@@ -138,7 +140,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\SignException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\SignException
      */
     public function testWrongPrivateKeyShouldThrowExceptionOnSign()
     {
@@ -159,7 +161,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\SignException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\SignException
      */
     public function testWrongPrivateKeyShouldThrowExceptionOnStreamSign()
     {
@@ -183,7 +185,7 @@ class VirgilCryptoApiTest extends TestCase
     }
 
     /**
-     * @expectedException \Virgil\SDK\Cryptography\CryptoAPI\Exceptions\CipherException
+     * @expectedException \Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\CipherException
      */
     public function testDataDecryptNoRecipients()
     {

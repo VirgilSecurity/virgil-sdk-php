@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Client\Card\Mapper;
+namespace Virgil\Sdk\Client\Card\Mapper;
 
 
 

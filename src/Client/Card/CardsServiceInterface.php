@@ -1,11 +1,10 @@
 <?php
+namespace Virgil\Sdk\Client\Card;
 
-namespace Virgil\SDK\Client\Card;
 
-
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\Card\Model\SignedRequestModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseModel;
+use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
+use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
 
 interface CardsServiceInterface
 {

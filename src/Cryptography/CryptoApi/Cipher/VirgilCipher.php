@@ -1,9 +1,9 @@
 <?php
 
-namespace Virgil\SDK\Cryptography\CryptoAPI\Cipher;
+namespace Virgil\Sdk\Cryptography\CryptoAPI\Cipher;
 
 
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\CipherException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\CipherException;
 
 class VirgilCipher extends AbstractVirgilCipher
 {

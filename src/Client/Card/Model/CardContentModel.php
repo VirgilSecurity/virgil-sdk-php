@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Client\Card\Model;
 
-namespace Virgil\SDK\Client\Card\Model;
 
-
-use Virgil\SDK\AbstractJsonSerializable;
+use Virgil\Sdk\AbstractJsonSerializable;
 
 class CardContentModel extends AbstractJsonSerializable
 {

@@ -1,13 +1,12 @@
 <?php
+namespace Virgil\Sdk\Client\Card\Mapper;
 
-namespace Virgil\SDK\Client\Card\Mapper;
 
-
-use Virgil\SDK\Client\AbstractJsonModelMapper;
-use Virgil\SDK\Client\Card\Model\CardContentModel;
-use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseMetaModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseModel;
+use Virgil\Sdk\Client\AbstractJsonModelMapper;
+use Virgil\Sdk\Client\Card\Model\CardContentModel;
+use Virgil\Sdk\Client\Card\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\Card\Model\SignedResponseMetaModel;
+use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
 
 class SignedResponseModelMapper extends AbstractJsonModelMapper
 {

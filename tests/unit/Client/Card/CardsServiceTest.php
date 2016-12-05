@@ -4,30 +4,32 @@ namespace Virgil\Tests\Unit\Client\Card;
 
 
 use PHPUnit\Framework\TestCase;
+
 use PHPUnit_Framework_MockObject_MockObject;
-use Virgil\SDK\Client\Card\CardServiceParams;
-use Virgil\SDK\Client\Card\CardsServiceException;
-use Virgil\SDK\Client\Card\CardsService;
-use Virgil\SDK\Client\Card\Mapper\ErrorResponseModelMapper;
-use Virgil\SDK\Client\Card\Mapper\ModelMappersCollection;
-use Virgil\SDK\Client\Card\Mapper\SearchCriteriaRequestMapper;
-use Virgil\SDK\Client\Card\Mapper\SearchCriteriaResponseMapper;
-use Virgil\SDK\Client\Card\Mapper\SignedRequestModelMapper;
-use Virgil\SDK\Client\Card\Mapper\SignedResponseModelMapper;
-use Virgil\SDK\Client\Card\Model\CardContentModel;
-use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
-use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
-use Virgil\SDK\Client\Card\Model\SignedRequestModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseMetaModel;
-use Virgil\SDK\Client\Card\Model\SignedResponseModel;
-use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\Http\CurlClient;
-use Virgil\SDK\Client\Http\CurlRequest;
-use Virgil\SDK\Client\Http\CurlRequestFactory;
-use Virgil\SDK\Client\Http\Response;
-use Virgil\SDK\Client\Http\Status;
+
+use Virgil\Sdk\Client\Card\CardServiceParams;
+use Virgil\Sdk\Client\Card\CardsServiceException;
+use Virgil\Sdk\Client\Card\CardsService;
+use Virgil\Sdk\Client\Card\Mapper\ErrorResponseModelMapper;
+use Virgil\Sdk\Client\Card\Mapper\ModelMappersCollection;
+use Virgil\Sdk\Client\Card\Mapper\SearchCriteriaRequestMapper;
+use Virgil\Sdk\Client\Card\Mapper\SearchCriteriaResponseMapper;
+use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\Card\Mapper\SignedResponseModelMapper;
+use Virgil\Sdk\Client\Card\Model\CardContentModel;
+use Virgil\Sdk\Client\Card\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\Card\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
+use Virgil\Sdk\Client\Card\Model\SignedResponseMetaModel;
+use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
+use Virgil\Sdk\Client\CardScope;
+use Virgil\Sdk\Client\Http\CurlClient;
+use Virgil\Sdk\Client\Http\CurlRequest;
+use Virgil\Sdk\Client\Http\CurlRequestFactory;
+use Virgil\Sdk\Client\Http\Response;
+use Virgil\Sdk\Client\Http\Status;
 
 class CardsServiceTest extends TestCase
 {

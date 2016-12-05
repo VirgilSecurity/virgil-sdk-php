@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
-
-use Virgil\SDK\VirgilException;
+use Virgil\Sdk\VirgilException;
 
 class CardValidationException extends VirgilException
 {

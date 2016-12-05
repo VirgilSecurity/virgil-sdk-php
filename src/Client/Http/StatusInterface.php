@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Client\Http;
+namespace Virgil\Sdk\Client\Http;
 
 
 interface StatusInterface

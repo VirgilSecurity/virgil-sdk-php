@@ -1,13 +1,12 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
-
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\Card\Mapper\RevokeRequestModelMapper;
-use Virgil\SDK\Client\Card\Mapper\SignedRequestModelMapper;
-use Virgil\SDK\Client\Card\Model\RevokeCardContentModel;
-use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\Card\Mapper\RevokeRequestModelMapper;
+use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\Card\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
 
 class RevokeCardRequest extends AbstractCardRequest
 {

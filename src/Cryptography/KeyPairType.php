@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Cryptography;
+namespace Virgil\Sdk\Cryptography;
 
 
 use Virgil\Crypto\VirgilKeyPair as LibraryKeyPair;

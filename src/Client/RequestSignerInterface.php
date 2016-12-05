@@ -1,9 +1,8 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
-
-use Virgil\SDK\Contracts\PrivateKeyInterface;
+use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 interface RequestSignerInterface
 {

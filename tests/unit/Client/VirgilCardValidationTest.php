@@ -1,14 +1,14 @@
 <?php
-
 namespace Virgil\Tests\Unit\Client;
 
 
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\Card;
-use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\CardValidator;
-use Virgil\SDK\Cryptography\VirgilCrypto;
+
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\Card;
+use Virgil\Sdk\Client\CardScope;
+use Virgil\Sdk\Client\CardValidator;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class VirgilCardValidationTest extends TestCase
 {

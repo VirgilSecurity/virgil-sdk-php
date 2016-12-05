@@ -1,9 +1,9 @@
 <?php
-
 namespace Virgil\Tests\Unit\Client\Http;
 
 
 use PHPUnit\Framework\TestCase;
+
 use Virgil\SDK\Client\Http\ClientInterface;
 use Virgil\SDK\Client\Http\CurlRequest;
 use Virgil\SDK\Client\Http\CurlRequestFactory;

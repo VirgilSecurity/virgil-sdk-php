@@ -1,23 +1,24 @@
 <?php
 
-namespace Virgil\SDK\Cryptography\CryptoAPI;
+namespace Virgil\Sdk\Cryptography\CryptoAPI;
+
 
 use Virgil\Crypto\VirgilHash;
 use Virgil\Crypto\VirgilSigner;
 use Virgil\Crypto\VirgilStreamSigner;
-use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilCipher;
-use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
-use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamDataSource;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\ComputePublicKeyHashException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\DecryptPrivateKeyException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\EncryptPrivateKeyException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\ExtractPublicKeyException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\GenerateException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\IsKeyPairMatchException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\PrivateKeyToDERException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\PublicKeyToDERException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\SignException;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\VerifyException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\VirgilCipher;
+use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
+use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\VirgilStreamDataSource;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\ComputePublicKeyHashException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\DecryptPrivateKeyException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\EncryptPrivateKeyException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\ExtractPublicKeyException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\GenerateException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\IsKeyPairMatchException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\PrivateKeyToDERException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\PublicKeyToDERException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\SignException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\VerifyException;
 use Virgil\Crypto\VirgilKeyPair as LibraryKeyPair;
 use Virgil\Crypto\VirgilChunkCipher as LibraryChunkCipher;
 use Virgil\Crypto\VirgilCipher as LibraryCipher;

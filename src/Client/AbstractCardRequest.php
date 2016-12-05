@@ -1,11 +1,10 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
-
-use Virgil\SDK\BufferInterface;
-use Virgil\SDK\Client\Card\Model\SignedRequestMetaModel;
-use Virgil\SDK\Client\Card\Model\SignedRequestModel;
+use Virgil\Sdk\BufferInterface;
+use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
 
 abstract class AbstractCardRequest
 {

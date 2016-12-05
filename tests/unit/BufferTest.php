@@ -3,7 +3,8 @@ namespace Virgil\Tests\Unit\Cryptography;
 
 
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Buffer;
+
+use Virgil\Sdk\Buffer;
 
 class BufferTest extends TestCase
 {

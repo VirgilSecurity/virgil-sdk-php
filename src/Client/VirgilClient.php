@@ -1,22 +1,21 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
-
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\Card\CardServiceParams;
-use Virgil\SDK\Client\Card\CardsService;
-use Virgil\SDK\Client\Card\CardsServiceInterface;
-use Virgil\SDK\Client\Card\Mapper\ErrorResponseModelMapper;
-use Virgil\SDK\Client\Card\Mapper\ModelMappersCollection;
-use Virgil\SDK\Client\Card\Mapper\SearchCriteriaRequestMapper;
-use Virgil\SDK\Client\Card\Mapper\SearchCriteriaResponseMapper;
-use Virgil\SDK\Client\Card\Mapper\SignedRequestModelMapper;
-use Virgil\SDK\Client\Card\Mapper\SignedResponseModelMapper;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\Card\Model\SignedResponseModel;
-use Virgil\SDK\Client\Http\CurlClient;
-use Virgil\SDK\Client\Http\CurlRequestFactory;
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\Card\CardServiceParams;
+use Virgil\Sdk\Client\Card\CardsService;
+use Virgil\Sdk\Client\Card\CardsServiceInterface;
+use Virgil\Sdk\Client\Card\Mapper\ErrorResponseModelMapper;
+use Virgil\Sdk\Client\Card\Mapper\ModelMappersCollection;
+use Virgil\Sdk\Client\Card\Mapper\SearchCriteriaRequestMapper;
+use Virgil\Sdk\Client\Card\Mapper\SearchCriteriaResponseMapper;
+use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\Card\Mapper\SignedResponseModelMapper;
+use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
+use Virgil\Sdk\Client\Http\CurlClient;
+use Virgil\Sdk\Client\Http\CurlRequestFactory;
 
 class VirgilClient
 {

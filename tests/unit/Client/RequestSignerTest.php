@@ -1,15 +1,15 @@
 <?php
-
 namespace Virgil\Tests\Unit\Client;
 
 
 use PHPUnit\Framework\TestCase;
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\CreateCardRequest;
-use Virgil\SDK\Client\RequestSigner;
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
-use Virgil\SDK\Cryptography\VirgilCrypto;
+
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\CardScope;
+use Virgil\Sdk\Client\CreateCardRequest;
+use Virgil\Sdk\Client\RequestSigner;
+use Virgil\Sdk\Cryptography\CryptoAPI\VirgilCryptoApi;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class RequestSignerTest extends TestCase
 {

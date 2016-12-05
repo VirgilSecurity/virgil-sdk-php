@@ -1,16 +1,16 @@
 <?php
+namespace Virgil\Sdk\Cryptography;
 
-namespace Virgil\SDK\Cryptography;
 
 use Virgil\Crypto\VirgilCipher;
-use Virgil\SDK\Buffer;
-use Virgil\SDK\BufferInterface;
-use Virgil\SDK\Contracts\CryptoInterface;
-use Virgil\SDK\Contracts\PrivateKeyInterface;
-use Virgil\SDK\Contracts\PublicKeyInterface;
-use Virgil\SDK\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
-use Virgil\SDK\Cryptography\CryptoAPI\CryptoApiInterface;
-use Virgil\SDK\Cryptography\CryptoAPI\VirgilCryptoApi;
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\BufferInterface;
+use Virgil\Sdk\Contracts\CryptoInterface;
+use Virgil\Sdk\Contracts\PrivateKeyInterface;
+use Virgil\Sdk\Contracts\PublicKeyInterface;
+use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
+use Virgil\Sdk\Cryptography\CryptoAPI\CryptoApiInterface;
+use Virgil\Sdk\Cryptography\CryptoAPI\VirgilCryptoApi;
 
 class VirgilCrypto implements CryptoInterface
 {

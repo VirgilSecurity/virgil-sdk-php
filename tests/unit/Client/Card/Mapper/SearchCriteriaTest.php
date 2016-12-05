@@ -1,13 +1,13 @@
 <?php
-
-namespace Virgil\Tests\Unit\Client\Card\Mapper;
+namespace Virgil\Sdk\Tests\Unit\Client\Card\Mapper;
 
 
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\RuntimeException;
-use Virgil\SDK\Client\Card\Mapper\SearchCriteriaRequestMapper;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\CardScope;
+
+use Virgil\Sdk\Client\Card\Mapper\SearchCriteriaRequestMapper;
+use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\CardScope;
 
 class SearchCriteriaTest extends TestCase
 {

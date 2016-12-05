@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK\Client;
+namespace Virgil\Sdk\Client;
 
 
 class RevocationReason

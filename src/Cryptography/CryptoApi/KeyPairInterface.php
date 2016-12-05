@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\SDK\Cryptography\CryptoAPI;
+namespace Virgil\Sdk\Cryptography\CryptoAPI;
 
 
 interface KeyPairInterface

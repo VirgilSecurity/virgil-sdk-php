@@ -1,10 +1,10 @@
 <?php
 
-namespace Virgil\SDK\Cryptography\CryptoAPI\Cipher;
+namespace Virgil\Sdk\Cryptography\CryptoAPI\Cipher;
 
 
 use Virgil\Crypto\VirgilCipherBase;
-use Virgil\SDK\Cryptography\CryptoAPI\Exceptions\CipherException;
+use Virgil\Sdk\Cryptography\CryptoAPI\Exceptions\CipherException;
 
 abstract class AbstractVirgilCipher implements CipherInterface
 {

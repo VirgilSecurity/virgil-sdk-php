@@ -1,6 +1,5 @@
 <?php
-
-namespace Virgil\SDK;
+namespace Virgil\Sdk;
 
 
 abstract class AbstractJsonSerializable implements \JsonSerializable, \Countable
