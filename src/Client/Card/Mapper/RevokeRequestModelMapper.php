@@ -11,6 +11,7 @@ class RevokeRequestModelMapper extends AbstractJsonModelMapper
 {
     private $signedRequestModelMapper;
 
+
     /**
      * RevokeRequestModelMapper constructor.
      *
@@ -20,6 +21,7 @@ class RevokeRequestModelMapper extends AbstractJsonModelMapper
     {
         $this->signedRequestModelMapper = $signedRequestModelMapper;
     }
+
 
     /**
      * @inheritdoc
@@ -32,14 +34,14 @@ class RevokeRequestModelMapper extends AbstractJsonModelMapper
         $cardMetaData = $data['meta'];
 
         $cardContentModel = new RevokeCardContentModel(
-            $cardContentData['card_id'],
-            $cardContentData['revocation_reason']
+            $cardContentData['card_id'], $cardContentData['revocation_reason']
         );
 
         $cardMetaModel = new SignedRequestMetaModel($cardMetaData['signs']);
 
         return new SignedRequestModel($cardContentModel, $cardMetaModel);
     }
+
 
     public function toJson($model)
     {

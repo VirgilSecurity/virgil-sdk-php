@@ -14,12 +14,17 @@ class SearchCriteriaRequestMapper extends AbstractJsonModelMapper
             throw new \InvalidArgumentException('Invalid model passed. Instance of SearchCriteria accept only.');
         }
 
-        return json_encode(array_filter([
-            'identities' => $model->getIdentities(),
-            'identity_type' => $model->getIdentityType(),
-            'scope' => $model->getScope()
-        ], function ($value) {
-            return count($value) !== 0;
-        }));
+        return json_encode(
+            array_filter(
+                [
+                    'identities'    => $model->getIdentities(),
+                    'identity_type' => $model->getIdentityType(),
+                    'scope'         => $model->getScope(),
+                ],
+                function ($value) {
+                    return count($value) !== 0;
+                }
+            )
+        );
     }
 }

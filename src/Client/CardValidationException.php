@@ -6,5 +6,4 @@ use Virgil\Sdk\VirgilException;
 
 class CardValidationException extends VirgilException
 {
-
 }

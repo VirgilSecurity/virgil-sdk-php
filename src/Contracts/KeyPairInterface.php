@@ -2,17 +2,21 @@
 namespace Virgil\Sdk\Contracts;
 
 
+/**
+ * Interface represents an asymmetric key pair that is comprised of both public and private keys.
+ */
 interface KeyPairInterface
 {
     /**
-     * Get public key
+     * Gets public key.
      *
      * @return PublicKeyInterface
      */
     public function getPublicKey();
 
+
     /**
-     * Get private key
+     * Gets private key.
      *
      * @return PrivateKeyInterface
      */

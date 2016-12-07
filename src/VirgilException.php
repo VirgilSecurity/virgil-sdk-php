@@ -2,7 +2,11 @@
 namespace Virgil\Sdk;
 
 
-class VirgilException extends \Exception
-{
+use Exception;
 
+/**
+ * Base exception class.
+ */
+class VirgilException extends Exception
+{
 }

@@ -7,11 +7,12 @@ class CurlClient implements ClientInterface
     private $curlRequestFactory;
     private $headers;
 
+
     /**
      * CurlClient constructor.
      *
      * @param RequestFactoryInterface $curlRequestFactory
-     * @param array $headers Default headers for all outbound requests.
+     * @param array                   $headers Default headers for all outbound requests.
      */
     public function __construct(RequestFactoryInterface $curlRequestFactory, array $headers = [])
     {
@@ -19,14 +20,18 @@ class CurlClient implements ClientInterface
         $this->headers = $headers;
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function post($uri, $body, $headers = [])
     {
         $options = [
-            CURLOPT_URL => $this->prepareUri($uri),
-            CURLOPT_HTTPHEADER => $this->prepareHeaders($headers),
+            CURLOPT_URL           => $this->prepareUri($uri),
+            CURLOPT_HTTPHEADER    => $this->prepareHeaders($headers),
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => $body
+            CURLOPT_POST          => 1,
+            CURLOPT_POSTFIELDS    => $body,
         ];
 
         $curlRequest = $this->curlRequestFactory->create($options);
@@ -34,57 +39,81 @@ class CurlClient implements ClientInterface
         return $this->doRequest($curlRequest);
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function delete($uri, $body, $headers = [])
     {
-        $curlRequest = $this->curlRequestFactory->create([
-            CURLOPT_URL => $this->prepareUri($uri),
-            CURLOPT_HTTPHEADER => $this->prepareHeaders($headers),
-            CURLOPT_CUSTOMREQUEST => 'DELETE',
-            CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => $body
-        ]);
+        $curlRequest = $this->curlRequestFactory->create(
+            [
+                CURLOPT_URL           => $this->prepareUri($uri),
+                CURLOPT_HTTPHEADER    => $this->prepareHeaders($headers),
+                CURLOPT_CUSTOMREQUEST => 'DELETE',
+                CURLOPT_POST          => 1,
+                CURLOPT_POSTFIELDS    => $body,
+            ]
+        );
 
         return $this->doRequest($curlRequest);
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function get($uri, $params = [], $headers = [])
     {
-        $curlRequest = $this->curlRequestFactory->create([
-            CURLOPT_URL => $this->prepareUri($uri, $params),
-            CURLOPT_HTTPHEADER => $this->prepareHeaders($headers),
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPGET => true
-        ]);
+        $curlRequest = $this->curlRequestFactory->create(
+            [
+                CURLOPT_URL           => $this->prepareUri($uri, $params),
+                CURLOPT_HTTPHEADER    => $this->prepareHeaders($headers),
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPGET       => true,
+            ]
+        );
 
         return $this->doRequest($curlRequest);
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function doRequest(RequestInterface $request)
     {
         /** @var CurlRequest $request */
         $response = $request->execute();
         $status = $request->getInfo(CURLINFO_HTTP_CODE);
         $request->close();
+
         return $this->buildResponse($status, $response);
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function getHeaders()
     {
         return $this->headers;
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function setHeaders($headers)
     {
         $this->headers = $headers;
     }
 
+
     protected function buildResponse($status, $response)
     {
-        return new Response(
-            new Status($status),
-            ...explode("\r\n\r\n", $response, 2)
-        );
+        return new Response(new Status($status), ...explode("\r\n\r\n", $response, 2));
     }
+
 
     protected function prepareHeaders($headers)
     {
@@ -97,11 +126,13 @@ class CurlClient implements ClientInterface
         return $result;
     }
 
+
     protected function prepareUri($uri, $params = [])
     {
         if (!empty($params)) {
             $uri = $uri . '?' . http_build_query($params);
         }
+
         return $uri;
     }
 }

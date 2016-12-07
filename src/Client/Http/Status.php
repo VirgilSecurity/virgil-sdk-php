@@ -6,6 +6,7 @@ class Status implements StatusInterface
 {
     private $status;
 
+
     /**
      * Status constructor.
      *
@@ -16,11 +17,19 @@ class Status implements StatusInterface
         $this->status = $status;
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function isSuccess()
     {
         return strval($this->status)[0] === '2';
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function getStatus()
     {
         return $this->status;

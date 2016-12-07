@@ -8,6 +8,7 @@ class ErrorResponseModel
 {
     private $errorCode;
 
+
     /**
      * ErrorResponse constructor.
      *
@@ -18,20 +19,23 @@ class ErrorResponseModel
         $this->errorCode = $errorCode;
     }
 
+
     /**
      * Gets error message or return default.
      *
      * @param string $defaultMessage
+     *
      * @return string
      */
     public function getMessageOrDefault($defaultMessage = 'unspecified error')
     {
-        if($this->isEmpty()) {
+        if ($this->isEmpty()) {
             return $defaultMessage;
         }
 
         return CardsErrorMessages::getMessage($this->errorCode);
     }
+
 
     /**
      * Gets error code.
@@ -42,6 +46,7 @@ class ErrorResponseModel
     {
         return $this->errorCode;
     }
+
 
     /**
      * Checks if model is empty.

@@ -9,6 +9,7 @@ class SearchCriteriaResponseMapper extends AbstractJsonModelMapper
 {
     private $mapper;
 
+
     /**
      * SearchCriteriaResponseMapper constructor.
      *
@@ -18,6 +19,7 @@ class SearchCriteriaResponseMapper extends AbstractJsonModelMapper
     {
         $this->mapper = $mapper;
     }
+
 
     /**
      * @inheritdoc
@@ -33,6 +35,7 @@ class SearchCriteriaResponseMapper extends AbstractJsonModelMapper
 
         return $models;
     }
+
 
     public function toJson($model)
     {

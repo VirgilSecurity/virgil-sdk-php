@@ -23,10 +23,26 @@ class VirgilClient
     /** @var  CardValidatorInterface */
     private $cardValidator;
 
+
+    /**
+     * VirgilClient constructor.
+     *
+     * @param VirgilClientParams    $virgilClientParams
+     * @param CardsServiceInterface $cardsService
+     */
+    public function __construct(VirgilClientParams $virgilClientParams, CardsServiceInterface $cardsService = null)
+    {
+        $cardsService === null ? $this->cardsService = $this->initializeCardService(
+            $virgilClientParams
+        ) : $this->cardsService = $cardsService;
+    }
+
+
     /**
      * Makes client by provided access token
      *
      * @param string $accessToken
+     *
      * @return VirgilClient
      */
     public static function create($accessToken)
@@ -34,19 +50,10 @@ class VirgilClient
         return new self(new VirgilClientParams($accessToken));
     }
 
-    /**
-     * VirgilClient constructor.
-     *
-     * @param VirgilClientParams $virgilClientParams
-     * @param CardsServiceInterface $cardsService
-     */
-    public function __construct(VirgilClientParams $virgilClientParams, CardsServiceInterface $cardsService = null)
-    {
-        $cardsService === null ? $this->cardsService = $this->initializeCardService($virgilClientParams) : $this->cardsService = $cardsService;
-    }
 
     /**
      * @param SearchCriteria $criteria
+     *
      * @return Card[]
      */
     public function searchCards(SearchCriteria $criteria)
@@ -56,12 +63,15 @@ class VirgilClient
         return array_map(
             function (SignedResponseModel $responseModel) {
                 return $this->buildAndVerifyCard($responseModel);
-            }, $response
+            },
+            $response
         );
     }
 
+
     /**
      * @param CreateCardRequest $request
+     *
      * @return Card
      */
     public function createCard(CreateCardRequest $request)
@@ -71,6 +81,7 @@ class VirgilClient
         return $this->buildAndVerifyCard($response);
     }
 
+
     /**
      * @param RevokeCardRequest $request
      */
@@ -79,8 +90,10 @@ class VirgilClient
         $this->cardsService->delete($request->getRequestModel());
     }
 
+
     /**
      * @param $id
+     *
      * @return Card
      */
     public function getCard($id)
@@ -89,6 +102,7 @@ class VirgilClient
 
         return $this->buildAndVerifyCard($response);
     }
+
 
     /**
      * Sets the card validator.
@@ -100,28 +114,29 @@ class VirgilClient
         $this->cardValidator = $validator;
     }
 
+
     /**
      * @param VirgilClientParams $virgilClientParams
+     *
      * @return CardsService
      */
     private function initializeCardService(VirgilClientParams $virgilClientParams)
     {
         $params = new CardServiceParams(
             [
-                'mutable_host' => $virgilClientParams->getCardsServiceAddress(),
-                'immutable_host' => $virgilClientParams->getReadOnlyCardsServiceAddress(),
+                'mutable_host'    => $virgilClientParams->getCardsServiceAddress(),
+                'immutable_host'  => $virgilClientParams->getReadOnlyCardsServiceAddress(),
                 'search_endpoint' => '/v4/card/actions/search',
                 'create_endpoint' => '/v4/card',
                 'delete_endpoint' => '/v4/card',
-                'get_endpoint' => '/v4/card',
+                'get_endpoint'    => '/v4/card',
             ]
         );
 
         $httpClient = new CurlClient(
-            new CurlRequestFactory(
-                [CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]
-            ),
-            ['Authorization' => 'VIRGIL ' . $virgilClientParams->getAccessToken()]
+            new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]), [
+            'Authorization' => 'VIRGIL ' . $virgilClientParams->getAccessToken(),
+        ]
         );
 
         $mappers = new ModelMappersCollection(
@@ -135,8 +150,10 @@ class VirgilClient
         return new CardsService($params, $httpClient, $mappers);
     }
 
+
     /**
      * @param SignedResponseModel $responseModel
+     *
      * @return Card
      */
     private function responseToCard(SignedResponseModel $responseModel)
@@ -157,16 +174,20 @@ class VirgilClient
                     foreach ($signs as &$sign) {
                         $sign = Buffer::fromBase64($sign);
                     }
+
                     return $signs;
-                }, $responseModel->getMeta()->getSigns()
+                },
+                $responseModel->getMeta()->getSigns()
             )
         );
     }
+
 
     /**
      * Validate card.
      *
      * @param Card $card
+     *
      * @throws CardValidationException
      */
     private function validateCard(Card $card)
@@ -181,10 +202,12 @@ class VirgilClient
         }
     }
 
+
     /**
      * Builds and verify card from response.
      *
      * @param SignedResponseModel $responseModel
+     *
      * @throws CardValidationException
      * @return Card
      */
@@ -192,6 +215,7 @@ class VirgilClient
     {
         $card = $this->responseToCard($responseModel);
         $this->validateCard($card);
+
         return $card;
     }
 }

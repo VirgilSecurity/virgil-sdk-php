@@ -2,7 +2,6 @@
 namespace Virgil\Sdk\Client\Card\Mapper;
 
 
-
 class ModelMappersCollection implements ModelMappersCollectionInterface
 {
     /**
@@ -26,22 +25,23 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      */
     private $errorResponseModelMapper;
 
+
     /**
      * ModelMappersCollection constructor.
      *
-     * @param SignedResponseModelMapper $responseModelMapper
-     * @param SignedRequestModelMapper $requestModelMapper
+     * @param SignedResponseModelMapper    $responseModelMapper
+     * @param SignedRequestModelMapper     $requestModelMapper
      * @param SearchCriteriaResponseMapper $criteriaResponseMapper
-     * @param SearchCriteriaRequestMapper $criteriaRequestMapper
-     * @param ErrorResponseModelMapper $errorResponseModelMapper
+     * @param SearchCriteriaRequestMapper  $criteriaRequestMapper
+     * @param ErrorResponseModelMapper     $errorResponseModelMapper
      */
     public function __construct(
         SignedResponseModelMapper $responseModelMapper,
         SignedRequestModelMapper $requestModelMapper,
         SearchCriteriaResponseMapper $criteriaResponseMapper,
         SearchCriteriaRequestMapper $criteriaRequestMapper,
-        ErrorResponseModelMapper $errorResponseModelMapper)
-    {
+        ErrorResponseModelMapper $errorResponseModelMapper
+    ) {
         $this->responseModelMapper = $responseModelMapper;
         $this->requestModelMapper = $requestModelMapper;
         $this->criteriaResponseMapper = $criteriaResponseMapper;
@@ -49,25 +49,30 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
         $this->errorResponseModelMapper = $errorResponseModelMapper;
     }
 
+
     public function getSignedRequestModelMapper()
     {
         return $this->requestModelMapper;
     }
+
 
     public function getSignedResponseModelMapper()
     {
         return $this->responseModelMapper;
     }
 
+
     public function getSearchCriteriaResponseMapper()
     {
         return $this->criteriaResponseMapper;
     }
 
+
     public function getSearchCriteriaRequestMapper()
     {
         return $this->criteriaRequestMapper;
     }
+
 
     public function getErrorResponseModelMapper()
     {

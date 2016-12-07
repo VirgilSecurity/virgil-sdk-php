@@ -18,23 +18,35 @@ class Card
     private $version;
     private $snapshot;
 
+
     /**
      * Card constructor.
      *
-     * @param string $id
-     * @param BufferInterface $snapshot
-     * @param string $identity
-     * @param string $identityType
-     * @param BufferInterface $publicKey
-     * @param string $scope
-     * @param array $data
-     * @param string $device
-     * @param string $deviceName
-     * @param string $version
+     * @param string            $id
+     * @param BufferInterface   $snapshot
+     * @param string            $identity
+     * @param string            $identityType
+     * @param BufferInterface   $publicKey
+     * @param string            $scope
+     * @param array             $data
+     * @param string            $device
+     * @param string            $deviceName
+     * @param string            $version
      * @param BufferInterface[] $signatures
      */
-    public function __construct($id, BufferInterface $snapshot, $identity, $identityType, BufferInterface $publicKey, $scope, array $data = [], $device = null, $deviceName = null, $version, array $signatures)
-    {
+    public function __construct(
+        $id,
+        BufferInterface $snapshot,
+        $identity,
+        $identityType,
+        BufferInterface $publicKey,
+        $scope,
+        array $data = [],
+        $device = null,
+        $deviceName = null,
+        $version,
+        array $signatures
+    ) {
         $this->id = $id;
         $this->snapshot = $snapshot;
         $this->identity = $identity;
@@ -48,6 +60,7 @@ class Card
         $this->version = $version;
     }
 
+
     /**
      * Gets the public key.
      *
@@ -57,6 +70,7 @@ class Card
     {
         return $this->publicKey;
     }
+
 
     /**
      * Gets the type of the identity.
@@ -68,6 +82,7 @@ class Card
         return $this->identityType;
     }
 
+
     /**
      * Gets the identity.
      *
@@ -77,6 +92,7 @@ class Card
     {
         return $this->identity;
     }
+
 
     /**
      * Gets the Virgil Card fingerprint.
@@ -88,6 +104,7 @@ class Card
         return $this->id;
     }
 
+
     /**
      * Gets the scope.
      *
@@ -97,6 +114,7 @@ class Card
     {
         return $this->scope;
     }
+
 
     /**
      * Gets the data.
@@ -108,16 +126,19 @@ class Card
         return $this->data;
     }
 
+
     /**
      * Get sign by signid.
      *
      * @param string $signatureId
+     *
      * @return BufferInterface
      */
     public function getSignature($signatureId)
     {
         return $this->signatures[$signatureId];
     }
+
 
     /**
      * Gets the signs.
@@ -129,6 +150,7 @@ class Card
         return $this->signatures;
     }
 
+
     /**
      * Gets the name of the device.
      *
@@ -138,6 +160,7 @@ class Card
     {
         return $this->deviceName;
     }
+
 
     /**
      * Gets the device.
@@ -149,6 +172,7 @@ class Card
         return $this->device;
     }
 
+
     /**
      * Gets the version.
      *
@@ -158,6 +182,7 @@ class Card
     {
         return $this->version;
     }
+
 
     /**
      * Gets the Virgil Card snapshot.

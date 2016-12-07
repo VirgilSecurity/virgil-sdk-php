@@ -2,9 +2,7 @@
 namespace Virgil\Sdk\Client\Card\Model;
 
 
-use Virgil\Sdk\AbstractJsonSerializable;
-
-class CardContentModel extends AbstractJsonSerializable
+class CardContentModel extends AbstractModel
 {
     private $identity;
     private $identityType;
@@ -13,18 +11,25 @@ class CardContentModel extends AbstractJsonSerializable
     private $scope;
     private $info;
 
+
     /**
      * CardContent constructor.
-     * 
-     * @param string $identity
-     * @param string $identityType
-     * @param string $publicKey
-     * @param array $data
-     * @param string $scope
+     *
+     * @param string          $identity
+     * @param string          $identityType
+     * @param string          $publicKey
+     * @param array           $data
+     * @param string          $scope
      * @param DeviceInfoModel $info
      */
-    public function __construct($identity, $identityType, $publicKey, $scope, array $data = [], DeviceInfoModel $info = null)
-    {
+    public function __construct(
+        $identity,
+        $identityType,
+        $publicKey,
+        $scope,
+        array $data = [],
+        DeviceInfoModel $info = null
+    ) {
         $this->identity = $identity;
         $this->identityType = $identityType;
         $this->publicKey = $publicKey;
@@ -32,6 +37,7 @@ class CardContentModel extends AbstractJsonSerializable
         $this->scope = $scope;
         $this->info = $info === null ? new DeviceInfoModel() : $info;
     }
+
 
     /**
      * @return string
@@ -41,6 +47,7 @@ class CardContentModel extends AbstractJsonSerializable
         return $this->identity;
     }
 
+
     /**
      * @return string
      */
@@ -48,6 +55,7 @@ class CardContentModel extends AbstractJsonSerializable
     {
         return $this->identityType;
     }
+
 
     /**
      * @return string
@@ -57,6 +65,7 @@ class CardContentModel extends AbstractJsonSerializable
         return $this->publicKey;
     }
 
+
     /**
      * @return array
      */
@@ -64,6 +73,7 @@ class CardContentModel extends AbstractJsonSerializable
     {
         return $this->data;
     }
+
 
     /**
      * @return string
@@ -73,6 +83,7 @@ class CardContentModel extends AbstractJsonSerializable
         return $this->scope;
     }
 
+
     /**
      * @return DeviceInfoModel
      */
@@ -81,17 +92,21 @@ class CardContentModel extends AbstractJsonSerializable
         return $this->info;
     }
 
+
     function jsonSerialize()
     {
-        return array_filter([
-            'identity' => $this->identity,
-            'identity_type' => $this->identityType,
-            'public_key' => $this->publicKey,
-            'data' => $this->data,
-            'scope' => $this->scope,
-            'info' => $this->info,
-        ], function ($value) {
-            return count($value) !== 0;
-        });
+        return array_filter(
+            [
+                'identity'      => $this->identity,
+                'identity_type' => $this->identityType,
+                'public_key'    => $this->publicKey,
+                'data'          => $this->data,
+                'scope'         => $this->scope,
+                'info'          => $this->info,
+            ],
+            function ($value) {
+                return count($value) !== 0;
+            }
+        );
     }
 }

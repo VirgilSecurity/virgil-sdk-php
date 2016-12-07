@@ -2,242 +2,418 @@
 namespace Virgil\Sdk\Cryptography;
 
 
-use Virgil\Crypto\VirgilCipher;
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\BufferInterface;
+
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
-use Virgil\Sdk\Cryptography\CryptoAPI\Cipher\VirgilStreamCipher;
-use Virgil\Sdk\Cryptography\CryptoAPI\CryptoApiInterface;
-use Virgil\Sdk\Cryptography\CryptoAPI\VirgilCryptoApi;
 
+use Virgil\Sdk\Cryptography\Constants\HashAlgorithm;
+use Virgil\Sdk\Cryptography\Constants\KeyPairType;
+
+use Virgil\Sdk\Cryptography\Core\Cipher\CipherInputOutputInterface;
+use Virgil\Sdk\Cryptography\Core\Cipher\CipherInterface;
+
+use Virgil\Sdk\Cryptography\Core\CryptoServiceInterface;
+use Virgil\Sdk\Cryptography\Core\VirgilCryptoService;
+
+use Virgil\Sdk\Cryptography\Core\Cipher\VirgilStreamCipher;
+
+use Virgil\Sdk\Cryptography\KeyEntryStorage\KeyEntry;
+use Virgil\Sdk\Cryptography\KeyEntryStorage\KeyEntryStorageTrait;
+
+/**
+ * Class provides a cryptographic operations in applications, such as hashing,
+ * signature generation and verification, and encryption and decryption.
+ *
+ * In most cases crypto operations like encrypt\decrypt or sign\verify need crypto keys.
+ * Thus class also responsible for generation or exporting and importing such keys to perform crypto operations or
+ * it is possible extract public from private key by using appropriate method.
+ *
+ */
 class VirgilCrypto implements CryptoInterface
 {
-    use CryptoKeyManagerTrait;
+    use KeyEntryStorageTrait;
 
-    private $customParamKeySignature = 'VIRGIL-DATA-SIGNATURE';
-    private $cryptoApi;
+    const CUSTOM_PARAM_KEY_SIGNATURE = 'VIRGIL-DATA-SIGNATURE';
+
+    /** @var VirgilCryptoService $cryptoService */
+    private $cryptoService;
+
 
     /**
-     * VirgilCrypto constructor.
+     * Class constructor.
      *
-     * @param CryptoApiInterface $cryptoApi
+     * @param CryptoServiceInterface $cryptoService
      */
-    public function __construct(CryptoApiInterface $cryptoApi = null)
+    public function __construct(CryptoServiceInterface $cryptoService = null)
     {
-        $cryptoApi !== null ? $this->cryptoApi = $cryptoApi : $this->cryptoApi = new VirgilCryptoApi();
+        if ($cryptoService === null) {
+            $cryptoService = new VirgilCryptoService();
+        }
+
+        $this->cryptoService = $cryptoService;
     }
 
+
     /**
-     * @inheritdoc
+     * Generates the public\private key pair by specific crypto type.
+     *
+     * @param int $cryptoType is one of key pair type constant
+     *
      * @return VirgilKeyPair
      */
-    public function generateKeys($cryptoType = KeyPairType::DefaultType)
+    public function generateKeys($cryptoType = KeyPairType::FAST_EC_ED25519)
     {
-        $keys = $this->cryptoApi->generate($cryptoType);
-        $publicKeyDER = $this->cryptoApi->publicKeyToDER($keys->getPublicKey());
-        $privateKeyDER = $this->cryptoApi->privateKeyToDER($keys->getPrivateKey());
+        $keyPair = $this->cryptoService->generateKeyPair($cryptoType);
+        $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($keyPair->getPublicKey());
+        $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($keyPair->getPrivateKey());
 
-        $publicKeyHash = new Buffer($this->cryptoApi->computeHash($publicKeyDER, HashAlgorithm::DefaultType));
-        $privateKeyHash = new Buffer($this->cryptoApi->computeHash($privateKeyDER, HashAlgorithm::DefaultType));
+        $publicKeyHash = new Buffer(
+            $this->cryptoService->computeHash($publicKeyDerEncoded, HashAlgorithm::SHA256)
+        );
+        $privateKeyHash = new Buffer(
+            $this->cryptoService->computeHash($privateKeyDerEncoded, HashAlgorithm::SHA256)
+        );
 
-        $publicKey = new PublicKey($publicKeyHash->toHex());
-        $publicKeyEntry = new CryptoKeyEntry($publicKeyHash->getData(), $publicKeyDER);
+        $publicKeyReference = new PublicKeyReference($publicKeyHash->toHex());
+        $privateKeyReference = new PrivateKeyReference($privateKeyHash->toHex());
 
-        $privateKey = new PrivateKey($privateKeyHash->toHex());
-        $privateKeyEntry = new CryptoKeyEntry($publicKeyHash->getData(), $privateKeyDER);
+        $publicKeyEntry = new KeyEntry($publicKeyHash->getData(), $publicKeyDerEncoded);
+        $privateKeyEntry = new KeyEntry($publicKeyHash->getData(), $privateKeyDerEncoded);
 
-        $this->putKey($publicKey, $publicKeyEntry);
-        $this->putKey($privateKey, $privateKeyEntry);
+        $this->persistKeyEntry($publicKeyReference, $publicKeyEntry);
+        $this->persistKeyEntry($privateKeyReference, $privateKeyEntry);
 
-        return new VirgilKeyPair($publicKey, $privateKey);
+        return new VirgilKeyPair($publicKeyReference, $privateKeyReference);
     }
 
-    public function encrypt($data, $recipients)
-    {
-        /** @var VirgilCipher $cipher */
-        $cipher = $this->cryptoApi->cipher();
-        /** @var PublicKey $recipient */
-        foreach ($recipients as $recipient) {
-            $keyEntry = $this->getKey($recipient);
-            $cipher->addKeyRecipient($keyEntry->getReceiverId()->getData(), $keyEntry->getValue()->getData());
-        }
-        return new Buffer($cipher->encrypt($data));
-    }
-
-    public function decrypt(BufferInterface $encryptedData, PrivateKeyInterface $privateKey)
-    {
-        /** @var VirgilCipher $cipher */
-        $cipher = $this->cryptoApi->cipher();
-        /** @var PrivateKey $privateKey */
-        $keyEntry = $this->getKey($privateKey);
-        return new Buffer($cipher->decryptWithKey($encryptedData->getData(), $keyEntry->getReceiverId()->getData(), $keyEntry->getValue()->getData()));
-    }
-
-    public function streamEncrypt($source, $sin, $recipients)
-    {
-        /** @var VirgilStreamCipher $cipher */
-        $cipher = $this->cryptoApi->streamCipher();
-        /** @var PublicKey $recipient */
-        foreach ($recipients as $recipient) {
-            $keyEntry = $this->getKey($recipient);
-            $cipher->addKeyRecipient($keyEntry->getReceiverId()->getData(), $keyEntry->getValue()->getData());
-        }
-        $cipher->encrypt($source, $sin);
-    }
-
-    public function streamDecrypt($source, $sin, PrivateKeyInterface $privateKey)
-    {
-        /** @var VirgilStreamCipher $cipher */
-        $cipher = $this->cryptoApi->streamCipher();
-        /** @var PrivateKey $privateKey */
-        $keyEntry = $this->getKey($privateKey);
-        $cipher->decryptWithKey($source, $sin, $keyEntry->getReceiverId()->getData(), $keyEntry->getValue()->getData());
-    }
 
     /**
      * @inheritdoc
-     * @return Buffer
+     */
+    public function encrypt($content, array $recipientsPublicKeys)
+    {
+        $cipher = $this->cryptoService->createCipher();
+
+        return new Buffer(
+            $this->encryptContent(
+                $cipher->createInputOutput($content),
+                $recipientsPublicKeys,
+                $cipher
+            )
+        );
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function decrypt(BufferInterface $encryptedContent, PrivateKeyInterface $recipientPrivateKey)
+    {
+        $cipher = $this->cryptoService->createCipher();
+
+        return new Buffer(
+            $this->decryptContent(
+                $cipher->createInputOutput($encryptedContent->getData()),
+                $recipientPrivateKey,
+                $cipher
+            )
+        );
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function encryptStream($source, $sin, array $recipientsPublicKeys)
+    {
+        /** @var VirgilStreamCipher $cipher */
+        $cipher = $this->cryptoService->createStreamCipher();
+
+        $this->encryptContent($cipher->createInputOutput($source, $sin), $recipientsPublicKeys, $cipher);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function decryptStream($source, $sin, PrivateKeyInterface $recipientPrivateKey)
+    {
+        /** @var VirgilStreamCipher $cipher */
+        $cipher = $this->cryptoService->createStreamCipher();
+
+        $this->decryptContent(
+            $cipher->createInputOutput($source, $sin),
+            $recipientPrivateKey,
+            $cipher
+        );
+    }
+
+
+    /**
+     * @inheritdoc
      */
     public function calculateFingerprint(BufferInterface $content)
     {
-        return new Buffer($this->cryptoApi->computeHash($content->getData(), HashAlgorithm::DefaultType));
+        $contentHash = $this->cryptoService->computeHash($content->getData(), HashAlgorithm::SHA256);
+
+        return new Buffer($contentHash);
     }
 
-    public function sign($content, PrivateKeyInterface $privateKey)
-    {
-        /** @var PrivateKey $privateKey */
-        return new Buffer($this->cryptoApi->sign($content, $this->getKey($privateKey)->getValue()->getData()));
-    }
-
-    public function verify($content, BufferInterface $signature, PublicKeyInterface $publicKey)
-    {
-        /** @var PublicKey $publicKey */
-        return $this->cryptoApi->verify($content, $signature->getData(), $this->getKey($publicKey)->getValue()->getData());
-    }
-
-    public function streamSign($source, PrivateKeyInterface $privateKey)
-    {
-        /** @var PrivateKey $privateKey */
-        $keyEntry = $this->getKey($privateKey);
-        return new Buffer($this->cryptoApi->streamSign($source, $keyEntry->getValue()->getData()));
-    }
-
-    public function streamVerify($source, BufferInterface $signature, PublicKeyInterface $publicKey)
-    {
-        /** @var PublicKey $publicKey */
-        $keyEntry = $this->getKey($publicKey);
-        return $this->cryptoApi->streamVerify($source, $signature->getData(), $keyEntry->getValue()->getData());
-    }
 
     /**
      * @inheritdoc
-     * @return PublicKey
+     */
+    public function sign($content, PrivateKeyInterface $signerPrivateKey)
+    {
+        /** @var PrivateKeyReference $signerPrivateKey */
+        $signerPrivateKeyEntryValue = $this->getKeyEntry($signerPrivateKey)->getValue();
+
+        $signature = $this->cryptoService->sign($content, $signerPrivateKeyEntryValue);
+
+        return new Buffer($signature);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function verify($content, BufferInterface $signature, PublicKeyInterface $signerPublicKey)
+    {
+        /** @var PublicKeyReference $signerPublicKey */
+        $signerPublicKeyEntryValue = $this->getKeyEntry($signerPublicKey)->getValue();
+
+        return $this->cryptoService->verify(
+            $content,
+            $signature->getData(),
+            $signerPublicKeyEntryValue
+        );
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function signStream($source, PrivateKeyInterface $signerPrivateKey)
+    {
+        /** @var PrivateKeyReference $signerPrivateKey */
+        $signerPrivateKeyEntryValue = $this->getKeyEntry($signerPrivateKey)->getValue();
+
+        $signature = $this->cryptoService->signStream($source, $signerPrivateKeyEntryValue);
+
+        return new Buffer($signature);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function verifyStream($source, BufferInterface $signature, PublicKeyInterface $signerPublicKey)
+    {
+        /** @var PublicKeyReference $signerPublicKey */
+        $signerPublicKeyEntryValue = $this->getKeyEntry($signerPublicKey)->getValue();
+
+        return $this->cryptoService->verifyStream($source, $signature->getData(), $signerPublicKeyEntryValue);
+    }
+
+
+    /**
+     * @inheritdoc
      */
     public function extractPublicKey(PrivateKeyInterface $privateKey)
     {
-        /** @var PrivateKey $privateKey */
-        $privateKeyData = $this->getKey($privateKey);
+        /** @var PrivateKeyReference $privateKey */
+        $privateKeyEntry = $this->getKeyEntry($privateKey);
 
-        $publicKeyData = $this->cryptoApi->extractPublicKey($privateKeyData->getValue()->getData(), '');
-        $publicKeyHash = new Buffer($this->cryptoApi->computeHash($publicKeyData, HashAlgorithm::DefaultType));
-
-        $publicKey = new PublicKey($publicKeyHash->toHex());
-        $keyEntry = new CryptoKeyEntry(
-            $privateKeyData->getReceiverId()->getData(),
-            $publicKeyData
+        $extractedPublicKey = $this->cryptoService->extractPublicKey($privateKeyEntry->getValue(), '');
+        $extractedPublicKeyHash = new Buffer(
+            $this->cryptoService->computeHash($extractedPublicKey, HashAlgorithm::SHA256)
         );
 
-        $this->putKey($publicKey, $keyEntry);
+        $publicKeyReference = new PublicKeyReference($extractedPublicKeyHash->toHex());
+        $extractedKeyEntry = new KeyEntry($privateKeyEntry->getRecipientId(), $extractedPublicKey);
 
-        return $publicKey;
+        $this->persistKeyEntry($publicKeyReference, $extractedKeyEntry);
+
+        return $publicKeyReference;
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function exportPublicKey(PublicKeyInterface $publicKey)
     {
-        /** @var PublicKey $publicKey */
-        $keyEntry = $this->getKey($publicKey);
-        return new Buffer($this->cryptoApi->publicKeyToDER($keyEntry->getValue()->getData()));
+        /** @var PublicKeyReference $publicKey */
+        $publicKeyEntryValue = $this->getKeyEntry($publicKey)->getValue();
+
+        $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($publicKeyEntryValue);
+
+        return new Buffer($publicKeyDerEncoded);
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function exportPrivateKey(PrivateKeyInterface $privateKey, $password = '')
     {
-        /** @var PrivateKey $privateKey */
-        $keyEntry = $this->getKey($privateKey);
-        return new Buffer($this->cryptoApi->privateKeyToDER($keyEntry->getValue()->getData(), $password));
+        /** @var PrivateKeyReference $privateKey */
+        $privateKeyEntryValue = $this->getKeyEntry($privateKey)->getValue();
+
+        $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($privateKeyEntryValue, $password);
+
+        return new Buffer($privateKeyDerEncoded);
     }
+
 
     /**
      * @inheritdoc
-     * @return PrivateKey
      */
-    public function importPrivateKey(BufferInterface $privateKeyDER, $password = '')
+    public function importPrivateKey(BufferInterface $exportedPrivateKey, $password = '')
     {
         if (strlen($password) === 0) {
-            $privateKeyDERvalue = $this->cryptoApi->privateKeyToDER($privateKeyDER->getData());
+            $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($exportedPrivateKey->getData());
         } else {
-            $privateKeyDERvalue = $this->cryptoApi->decryptPrivateKey($privateKeyDER->getData(), $password);
+            $privateKeyDerEncoded = $this->cryptoService->decryptPrivateKey($exportedPrivateKey->getData(), $password);
         }
 
-        $privateKeyHash = new Buffer($this->cryptoApi->computeHash($privateKeyDERvalue, HashAlgorithm::DefaultType));
-        $privateKey = new PrivateKey(
-            $privateKeyHash->toHex()
-        );
-        $keyEntry = new CryptoKeyEntry(
-            $this->cryptoApi->computeHash($this->cryptoApi->extractPublicKey($privateKeyDERvalue, ''), HashAlgorithm::DefaultType),
-            $this->cryptoApi->privateKeyToDER($privateKeyDERvalue)
+        $privateKeyHash = new Buffer(
+            $this->cryptoService->computeHash($privateKeyDerEncoded, HashAlgorithm::SHA256)
         );
 
-        $this->putKey($privateKey, $keyEntry);
+        $privateKeyReference = new PrivateKeyReference($privateKeyHash->toHex());
 
-        return $privateKey;
+        $publicKeyHash = $this->cryptoService->computeHash(
+            $this->cryptoService->extractPublicKey($privateKeyDerEncoded, ''),
+            HashAlgorithm::SHA256
+        );
+
+        $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($privateKeyDerEncoded);
+
+        $keyEntry = new KeyEntry($publicKeyHash, $privateKeyDerEncoded);
+
+        $this->persistKeyEntry($privateKeyReference, $keyEntry);
+
+        return $privateKeyReference;
     }
+
 
     /**
      * @inheritdoc
-     * @return PublicKey
      */
-    public function importPublicKey(BufferInterface $exportedKey)
+    public function importPublicKey(BufferInterface $exportedPublicKey)
     {
-        $hash = new Buffer($this->cryptoApi->computeHash($exportedKey->getData(), HashAlgorithm::DefaultType));
-        $publicKey = new PublicKey($hash->toHex());
-        $keyEntry = new CryptoKeyEntry(
-            $hash->getData(),
-            $this->cryptoApi->publicKeyToDER($exportedKey->getData())
+        $publicKeyHash = $this->cryptoService->computeHash($exportedPublicKey->getData(), HashAlgorithm::SHA256);
+
+        $publicKeyHash = new Buffer($publicKeyHash);
+        $publicKeyReference = new PublicKeyReference($publicKeyHash->toHex());
+
+        $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($exportedPublicKey->getData());
+
+        $keyEntry = new KeyEntry($publicKeyHash->getData(), $publicKeyDerEncoded);
+
+        $this->persistKeyEntry($publicKeyReference, $keyEntry);
+
+        return $publicKeyReference;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function signThenEncrypt($content, PrivateKeyInterface $signerPrivateKey, array $recipientsPublicKeys)
+    {
+        $signature = $this->sign($content, $signerPrivateKey);
+
+        $cipher = $this->cryptoService->createCipher();
+        $cipher->setCustomParam(self::CUSTOM_PARAM_KEY_SIGNATURE, $signature->getData());
+
+        return new Buffer(
+            $this->encryptContent($cipher->createInputOutput($content), $recipientsPublicKeys, $cipher)
+        );
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function decryptThenVerify(
+        BufferInterface $encryptedAndSignedContent,
+        PrivateKeyInterface $recipientPrivateKey,
+        PublicKeyInterface $signerPublicKey
+    ) {
+        $cipher = $this->cryptoService->createCipher();
+
+        $decryptedContent = $this->decryptContent(
+            $cipher->createInputOutput($encryptedAndSignedContent->getData()),
+            $recipientPrivateKey,
+            $cipher
         );
 
-        $this->putKey($publicKey, $keyEntry);
+        $signature = $cipher->getCustomParam(self::CUSTOM_PARAM_KEY_SIGNATURE);
 
-        return $publicKey;
-    }
-
-    public function signThenEncrypt($data, PrivateKeyInterface $privateKey, $recipients)
-    {
-        /** @var PrivateKey $privateKey */
-        $signature = $this->cryptoApi->sign($data, $this->getKey($privateKey)->getValue()->getData());
-        $cipher = $this->cryptoApi->cipher();
-        $cipher->customParams()->setData($this->customParamKeySignature, $signature);
-        /** @var PublicKey $recipient */
-        foreach ($recipients as $recipient) {
-            $keyEntry = $this->getKey($recipient);
-            $cipher->addKeyRecipient($keyEntry->getReceiverId()->getData(), $keyEntry->getValue()->getData());
-        }
-        return new Buffer($cipher->encrypt($data));
-    }
-
-    public function decryptThenVerify(BufferInterface $encryptedData, PrivateKeyInterface $privateKey, PublicKeyInterface $publicKey)
-    {
-        $cipher = $this->cryptoApi->cipher();
-        /** @var PrivateKey $privateKey */
-        $privateKeyEntry = $this->getKey($privateKey);
-        /** @var PrivateKey $publicKey */
-        $publicKeyEntry = $this->getKey($publicKey);
-        $decryptedData = $cipher->decryptWithKey($encryptedData->getData(), $privateKeyEntry->getReceiverId()->getData(), $privateKeyEntry->getValue()->getData());
-        $signature = $cipher->customParams()->getData($this->customParamKeySignature);
-        if (!$this->cryptoApi->verify($decryptedData, $signature, $publicKeyEntry->getValue()->getData())) {
+        if (!$this->verify($decryptedContent, new Buffer($signature), $signerPublicKey)) {
             throw new SignatureIsNotValidException();
         }
-        return new Buffer($decryptedData);
+
+        return new Buffer($decryptedContent);
+    }
+
+
+    /**
+     * Encrypts the content with a list of recipients public keys and cipher.
+     *
+     * @param CipherInputOutputInterface $cipherInputOutput
+     * @param PublicKeyInterface[]       $recipientsPublicKeys
+     * @param CipherInterface            $cipher
+     *
+     * @return string
+     */
+    private function encryptContent(
+        CipherInputOutputInterface $cipherInputOutput,
+        array $recipientsPublicKeys,
+        CipherInterface $cipher
+    ) {
+        /** @var PublicKeyReference $recipientPublicKey */
+        foreach ($recipientsPublicKeys as $recipientPublicKey) {
+            $recipientPublicKeyEntry = $this->getKeyEntry($recipientPublicKey);
+
+            $cipher->addKeyRecipient(
+                $recipientPublicKeyEntry->getRecipientId(),
+                $recipientPublicKeyEntry->getValue()
+            );
+        }
+
+        return $cipher->encrypt($cipherInputOutput);
+    }
+
+
+    /**
+     * Decrypts encrypted content by given recipient private key and cipher.
+     *
+     * @param CipherInputOutputInterface $cipherInputOutput
+     * @param PrivateKeyInterface        $recipientPrivateKey
+     * @param CipherInterface            $cipher
+     *
+     * @return string
+     */
+    private function decryptContent(
+        CipherInputOutputInterface $cipherInputOutput,
+        PrivateKeyInterface $recipientPrivateKey,
+        CipherInterface $cipher
+    ) {
+        /** @var PrivateKeyReference $recipientPrivateKey */
+        $recipientPrivateKeyEntry = $this->getKeyEntry($recipientPrivateKey);
+
+        $decryptedContent = $cipher->decryptWithKey(
+            $cipherInputOutput,
+            $recipientPrivateKeyEntry->getRecipientId(),
+            $recipientPrivateKeyEntry->getValue()
+        );
+
+        return $decryptedContent;
     }
 }

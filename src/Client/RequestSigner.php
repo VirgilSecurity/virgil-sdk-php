@@ -10,6 +10,7 @@ class RequestSigner implements RequestSignerInterface
 {
     private $crypto;
 
+
     /**
      * RequestSigner constructor.
      *
@@ -20,12 +21,14 @@ class RequestSigner implements RequestSignerInterface
         $this->crypto = $crypto;
     }
 
+
     public function selfSign(AbstractCardRequest $request, PrivateKeyInterface $privateKey)
     {
         $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()));
         $signature = $this->crypto->sign($fingerprint->getData(), $privateKey);
         $request->appendSignature($fingerprint->toHex(), $signature);
     }
+
 
     public function authoritySign(AbstractCardRequest $request, $appId, PrivateKeyInterface $privateKey)
     {

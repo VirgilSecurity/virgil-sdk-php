@@ -2,12 +2,11 @@
 namespace Virgil\Sdk\Client\Card\Model;
 
 
-use Virgil\Sdk\AbstractJsonSerializable;
-
-class RevokeCardContentModel extends AbstractJsonSerializable
+class RevokeCardContentModel extends AbstractModel
 {
     private $id;
     private $revocationReason;
+
 
     /**
      * RevokeCardContentModel constructor.
@@ -21,13 +20,15 @@ class RevokeCardContentModel extends AbstractJsonSerializable
         $this->revocationReason = $revocationReason;
     }
 
+
     function jsonSerialize()
     {
         return [
-            'card_id' => $this->id,
-            'revocation_reason' => $this->revocationReason
+            'card_id'           => $this->id,
+            'revocation_reason' => $this->revocationReason,
         ];
     }
+
 
     /**
      * @return string
@@ -36,6 +37,7 @@ class RevokeCardContentModel extends AbstractJsonSerializable
     {
         return $this->id;
     }
+
 
     /**
      * @return string

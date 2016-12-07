@@ -44,11 +44,13 @@ class CardsErrorMessages
         30136 => "SCR sign item signed digest is invalid for the virgil identity service",
         30137 => "Global Virigl Card cannot be created unconfirmed(which means that Virgil Identity service sign is mandatory)",
         30138 => "Virigl Card with the same fingerprint exists already",
-        30139 => "Virigl Card revocation reason isn't specified or is invalid"
+        30139 => "Virigl Card revocation reason isn't specified or is invalid",
     ];
+
 
     /**
      * @param $errorCode
+     *
      * @return string
      */
     public static function getMessage($errorCode)

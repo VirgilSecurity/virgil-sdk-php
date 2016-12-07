@@ -8,7 +8,7 @@ use Virgil\Sdk\Buffer;
 use Virgil\Sdk\Client\CardScope;
 use Virgil\Sdk\Client\CreateCardRequest;
 use Virgil\Sdk\Client\RequestSigner;
-use Virgil\Sdk\Cryptography\CryptoAPI\VirgilCryptoApi;
+use Virgil\Sdk\Cryptography\Core\VirgilCryptoService;
 use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class RequestSignerTest extends TestCase
@@ -17,7 +17,7 @@ class RequestSignerTest extends TestCase
     {
         /** @var VirgilCrypto $cryptoMock */
         $cryptoMock = $this->getMockBuilder(VirgilCrypto::class)
-            ->setConstructorArgs([new VirgilCryptoApi()])
+            ->setConstructorArgs([new VirgilCryptoService()])
             ->setMethods(['sign'])
             ->getMock();
 
@@ -46,7 +46,7 @@ class RequestSignerTest extends TestCase
     {
         /** @var VirgilCrypto $cryptoMock */
         $cryptoMock = $this->getMockBuilder(VirgilCrypto::class)
-            ->setConstructorArgs([new VirgilCryptoApi()])
+            ->setConstructorArgs([new VirgilCryptoService()])
             ->setMethods(['sign'])
             ->getMock();
 

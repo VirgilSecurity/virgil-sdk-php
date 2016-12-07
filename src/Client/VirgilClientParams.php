@@ -9,6 +9,7 @@ class VirgilClientParams
     private $readOnlyCardsServiceAddress;
     private $identityServiceAddress;
 
+
     /**
      * VirgilClientParams constructor.
      *
@@ -22,6 +23,7 @@ class VirgilClientParams
         $this->setIdentityServiceAddress('https://identity.virgilsecurity.com');
     }
 
+
     /**
      * @return string
      */
@@ -30,6 +32,7 @@ class VirgilClientParams
         return $this->accessToken;
     }
 
+
     /**
      * @return string
      */
@@ -37,6 +40,7 @@ class VirgilClientParams
     {
         return $this->cardsServiceAddress;
     }
+
 
     /**
      * @param string $cardsServiceAddress
@@ -50,6 +54,7 @@ class VirgilClientParams
         $this->cardsServiceAddress = $cardsServiceAddress;
     }
 
+
     /**
      * @return string
      */
@@ -57,6 +62,7 @@ class VirgilClientParams
     {
         return $this->readOnlyCardsServiceAddress;
     }
+
 
     /**
      * @param string $readOnlyCardsServiceAddress
@@ -70,6 +76,7 @@ class VirgilClientParams
         $this->readOnlyCardsServiceAddress = $readOnlyCardsServiceAddress;
     }
 
+
     /**
      * @return string
      */
@@ -77,6 +84,7 @@ class VirgilClientParams
     {
         return $this->identityServiceAddress;
     }
+
 
     /**
      * @param string $identityServiceAddress
@@ -90,10 +98,12 @@ class VirgilClientParams
         $this->identityServiceAddress = $identityServiceAddress;
     }
 
+
     /**
      * Checks if given url is valid.
      *
      * @param string $serviceUrl
+     *
      * @return bool
      */
     private function checkServiceUrl($serviceUrl)

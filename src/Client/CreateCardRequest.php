@@ -19,6 +19,7 @@ class CreateCardRequest extends AbstractCardRequest
     private $info;
     private $scope;
 
+
     /**
      * CreateCardRequest constructor.
      *
@@ -29,8 +30,14 @@ class CreateCardRequest extends AbstractCardRequest
      * @param array $data
      * @param DeviceInfoModel $info
      */
-    public function __construct($identity, $identityType, BufferInterface $publicKey, $scope = CardScope::TYPE_APPLICATION, $data = [], DeviceInfoModel $info = null)
-    {
+    public function __construct(
+        $identity,
+        $identityType,
+        BufferInterface $publicKey,
+        $scope = CardScope::TYPE_APPLICATION,
+        $data = [],
+        DeviceInfoModel $info = null
+    ) {
         $this->identity = $identity;
         $this->identityType = $identityType;
         $this->publicKey = $publicKey;
@@ -39,80 +46,10 @@ class CreateCardRequest extends AbstractCardRequest
         $this->scope = $scope;
     }
 
-    /**
-     * @return string
-     */
-    public function getIdentity()
-    {
-        return $this->identity;
-    }
-
-    /**
-     * @return BufferInterface
-     */
-    public function getPublicKey()
-    {
-        return $this->publicKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentityType()
-    {
-        return $this->identityType;
-    }
-
-    /**
-     * @return DeviceInfoModel
-     */
-    public function getInfo()
-    {
-        return $this->info;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * @inheritdoc
-     * @return CardContentModel
-     */
-    protected function getCardContent()
-    {
-        return new CardContentModel(
-            $this->identity,
-            $this->identityType,
-            $this->publicKey->toBase64(),
-            $this->scope,
-            $this->data,
-            $this->info
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function export()
-    {
-        return base64_encode(self::getRequestModelJsonMapper()->toJson($this->getRequestModel()));
-    }
 
     /**
      * @param $exportedRequest
+     *
      * @return CreateCardRequest
      */
     public static function import($exportedRequest)
@@ -140,11 +77,92 @@ class CreateCardRequest extends AbstractCardRequest
         return $request;
     }
 
+
     /**
      * @return CreateRequestModelMapper
      */
     public static function getRequestModelJsonMapper()
     {
         return new CreateRequestModelMapper(new SignedRequestModelMapper());
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getIdentity()
+    {
+        return $this->identity;
+    }
+
+
+    /**
+     * @return BufferInterface
+     */
+    public function getPublicKey()
+    {
+        return $this->publicKey;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getIdentityType()
+    {
+        return $this->identityType;
+    }
+
+
+    /**
+     * @return DeviceInfoModel
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function export()
+    {
+        return base64_encode(self::getRequestModelJsonMapper()->toJson($this->getRequestModel()));
+    }
+
+
+    /**
+     * @inheritdoc
+     * @return CardContentModel
+     */
+    protected function getCardContent()
+    {
+        return new CardContentModel(
+            $this->identity,
+            $this->identityType,
+            $this->publicKey->toBase64(),
+            $this->scope,
+            $this->data,
+            $this->info
+        );
     }
 }

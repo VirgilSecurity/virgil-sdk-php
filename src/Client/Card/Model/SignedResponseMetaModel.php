@@ -9,13 +9,14 @@ class SignedResponseMetaModel
     private $cardVersion;
     private $fingerprint;
 
+
     /**
      * SignedResponseMetaModel constructor.
      *
-     * @param array $signs
+     * @param array     $signs
      * @param \DateTime $createdAt
-     * @param string $cardVersion
-     * @param string $fingerprint
+     * @param string    $cardVersion
+     * @param string    $fingerprint
      */
     public function __construct(array $signs, \DateTime $createdAt, $cardVersion, $fingerprint)
     {
@@ -25,6 +26,7 @@ class SignedResponseMetaModel
         $this->fingerprint = $fingerprint;
     }
 
+
     /**
      * @return string
      */
@@ -32,6 +34,7 @@ class SignedResponseMetaModel
     {
         return $this->cardVersion;
     }
+
 
     /**
      * @return \DateTime
@@ -41,6 +44,7 @@ class SignedResponseMetaModel
         return $this->createdAt;
     }
 
+
     /**
      * @return array
      */
@@ -48,6 +52,7 @@ class SignedResponseMetaModel
     {
         return $this->signs;
     }
+
 
     /**
      * @return string

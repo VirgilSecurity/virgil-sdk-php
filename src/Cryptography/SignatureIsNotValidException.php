@@ -2,9 +2,9 @@
 namespace Virgil\Sdk\Cryptography;
 
 
-use Virgil\Sdk\VirgilException;
-
-class SignatureIsNotValidException extends VirgilException
+/**
+ * Invalid signature exception.
+ */
+class SignatureIsNotValidException extends VirgilCryptoException
 {
-
 }

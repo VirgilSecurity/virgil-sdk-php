@@ -7,6 +7,7 @@ class CurlRequest implements RequestInterface
     private $handle;
     private $options;
 
+
     /**
      * CurlRequest constructor.
      *
@@ -17,6 +18,7 @@ class CurlRequest implements RequestInterface
         $this->handle = $url !== null ? curl_init($url) : curl_init();
     }
 
+
     /**
      * Execute curl request.
      *
@@ -25,13 +27,16 @@ class CurlRequest implements RequestInterface
     public function execute()
     {
         curl_setopt_array($this->handle, $this->options);
+
         return curl_exec($this->handle);
     }
+
 
     /**
      * Get info from request.
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getInfo($name = null)
@@ -39,11 +44,13 @@ class CurlRequest implements RequestInterface
         return $name !== null ? curl_getinfo($this->handle, $name) : curl_getinfo($this->handle);
     }
 
+
     /**
      * Set request option.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return void
      */
     public function setOption($name, $value)
@@ -51,16 +58,19 @@ class CurlRequest implements RequestInterface
         $this->options[$name] = $value;
     }
 
+
     /**
      * Set request options.
      *
      * @param array $options
+     *
      * @return void
      */
     public function setOptions(array $options)
     {
         $this->options = $options;
     }
+
 
     /**
      * Get all request options.
@@ -71,6 +81,7 @@ class CurlRequest implements RequestInterface
     {
         return $this->options;
     }
+
 
     /**
      * Close a curl session.

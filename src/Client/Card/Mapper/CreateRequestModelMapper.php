@@ -12,10 +12,12 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
 {
     private $signedRequestModelMapper;
 
+
     public function __construct(SignedRequestModelMapper $signedRequestModelMapper)
     {
         $this->signedRequestModelMapper = $signedRequestModelMapper;
     }
+
 
     /**
      * @inheritdoc
@@ -40,6 +42,7 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
 
         return new SignedRequestModel($cardContentModel, $cardMetaModel);
     }
+
 
     public function toJson($model)
     {

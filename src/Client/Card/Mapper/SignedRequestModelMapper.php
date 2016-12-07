@@ -14,9 +14,11 @@ class SignedRequestModelMapper extends AbstractJsonModelMapper
             throw new \InvalidArgumentException('Invalid model passed. Instance of SignedRequestModel accept only.');
         }
 
-        return json_encode([
-            'content_snapshot' => $model->getSnapshot(),
-            'meta' => $model->getMeta()
-        ]);
+        return json_encode(
+            [
+                'content_snapshot' => $model->getSnapshot(),
+                'meta'             => $model->getMeta(),
+            ]
+        );
     }
 }

@@ -11,12 +11,14 @@ interface ResponseInterface
      */
     public function getBody();
 
+
     /**
      * Get raw response headers.
      *
      * @return mixed
      */
     public function getHeaders();
+
 
     /**
      * Get HTTP response status.

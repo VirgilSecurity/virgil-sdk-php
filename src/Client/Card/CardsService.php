@@ -12,69 +12,96 @@ use Virgil\Sdk\Client\Http\ResponseInterface;
 
 class CardsService implements CardsServiceInterface
 {
-    private $httpClient;
-    private $mappers;
-    private $params;
-    private $defaultErrorMessages = [
+    const DEFAULT_ERROR_MESSAGES = [
         400 => 'Request error',
         401 => 'Authentication error',
         403 => 'Forbidden',
         404 => 'Entity not found',
         405 => 'Method not allowed',
-        500 => 'Server error'
+        500 => 'Server error',
     ];
+
+    private $httpClient;
+    private $mappers;
+    private $params;
+
 
     /**
      * CardsService constructor.
      *
-     * @param CardServiceParamsInterface $params
-     * @param ClientInterface $httpClient
+     * @param CardServiceParamsInterface      $params
+     * @param ClientInterface                 $httpClient
      * @param ModelMappersCollectionInterface $mappers
      */
-    public function __construct(CardServiceParamsInterface $params, ClientInterface $httpClient, ModelMappersCollectionInterface $mappers)
-    {
+    public function __construct(
+        CardServiceParamsInterface $params,
+        ClientInterface $httpClient,
+        ModelMappersCollectionInterface $mappers
+    ) {
         $this->httpClient = $httpClient;
         $this->mappers = $mappers;
         $this->params = $params;
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function create(SignedRequestModel $model)
     {
         $request = function () use ($model) {
             return $this->httpClient->post(
-                $this->params->getCreateEndpoint(), $this->mappers->getSignedRequestModelMapper()->toJson($model)
+                $this->params->getCreateEndpoint(),
+                $this->mappers->getSignedRequestModelMapper()->toJson($model)
             );
         };
 
         $response = $this->makeRequest($request);
+
         return $this->mappers->getSignedResponseModelMapper()->toModel($response->getBody());
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function delete(SignedRequestModel $model)
     {
         $request = function () use ($model) {
             /** @var RevokeCardContentModel $cardContent */
             $cardContent = $model->getCardContent();
+
             return $this->httpClient->delete(
-                $this->params->getDeleteEndpoint($cardContent->getId()), $this->mappers->getSignedRequestModelMapper()->toJson($model)
+                $this->params->getDeleteEndpoint($cardContent->getId()),
+                $this->mappers->getSignedRequestModelMapper()->toJson($model)
             );
         };
 
         $this->makeRequest($request);
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function search(SearchCriteria $model)
     {
         $request = function () use ($model) {
             return $this->httpClient->post(
-                $this->params->getSearchEndpoint(), $this->mappers->getSearchCriteriaRequestMapper()->toJson($model)
+                $this->params->getSearchEndpoint(),
+                $this->mappers->getSearchCriteriaRequestMapper()->toJson($model)
             );
         };
 
         $response = $this->makeRequest($request);
+
         return $this->mappers->getSearchCriteriaResponseMapper()->toModel($response->getBody());
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function get($id)
     {
         $request = function () use ($id) {
@@ -82,13 +109,16 @@ class CardsService implements CardsServiceInterface
         };
 
         $response = $this->makeRequest($request);
+
         return $this->mappers->getSignedResponseModelMapper()->toModel($response->getBody());
     }
+
 
     /**
      * Makes request to http client and gets response object.
      *
      * @param callable $request
+     *
      * @throws CardsServiceException
      * @return ResponseInterface
      */
@@ -101,12 +131,10 @@ class CardsService implements CardsServiceInterface
             /** @var ErrorResponseModel $response */
             $response = $this->mappers->getErrorResponseModelMapper()->toModel($result->getBody());
 
-            throw new CardsServiceException(
-                $response->getMessageOrDefault(
-                    $this->defaultErrorMessages[(int)$result->getHttpStatus()->getStatus()]
-                ),
-                $result->getHttpStatus()->getStatus()
-            );
+            $httpStatus = (int)$result->getHttpStatus()->getStatus();
+            $serviceErrorMessage = $response->getMessageOrDefault(self::DEFAULT_ERROR_MESSAGES[$httpStatus]);
+
+            throw new CardsServiceException($serviceErrorMessage, $httpStatus);
         }
 
         return $result;

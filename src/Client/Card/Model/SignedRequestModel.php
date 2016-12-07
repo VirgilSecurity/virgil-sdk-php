@@ -9,6 +9,7 @@ class SignedRequestModel
     protected $cardContent;
     protected $meta;
 
+
     /**
      * SignedRequestModel constructor.
      *
@@ -21,6 +22,7 @@ class SignedRequestModel
         $this->meta = $meta;
     }
 
+
     /**
      * @return JsonSerializable
      */
@@ -29,6 +31,7 @@ class SignedRequestModel
         return $this->cardContent;
     }
 
+
     /**
      * @return JsonSerializable
      */
@@ -36,6 +39,7 @@ class SignedRequestModel
     {
         return $this->meta;
     }
+
 
     /**
      * Returns base64 encoded request snapshot.

@@ -9,12 +9,13 @@ class SignedResponseModel
     private $meta;
     private $contentSnapshot;
 
+
     /**
      * SignedResponseModel constructor.
      *
-     * @param string $id
-     * @param string $contentSnapshot
-     * @param CardContentModel $cardContent
+     * @param string                  $id
+     * @param string                  $contentSnapshot
+     * @param CardContentModel        $cardContent
      * @param SignedResponseMetaModel $meta
      */
     public function __construct($id, $contentSnapshot, CardContentModel $cardContent, SignedResponseMetaModel $meta)
@@ -25,6 +26,7 @@ class SignedResponseModel
         $this->contentSnapshot = $contentSnapshot;
     }
 
+
     /**
      * @return string
      */
@@ -32,6 +34,7 @@ class SignedResponseModel
     {
         return $this->id;
     }
+
 
     /**
      * @return CardContentModel
@@ -41,6 +44,7 @@ class SignedResponseModel
         return $this->cardContent;
     }
 
+
     /**
      * @return SignedResponseMetaModel
      */
@@ -48,6 +52,7 @@ class SignedResponseModel
     {
         return $this->meta;
     }
+
 
     /**
      * @return string

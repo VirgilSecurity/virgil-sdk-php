@@ -2,11 +2,10 @@
 namespace Virgil\Sdk\Client\Card\Model;
 
 
-use Virgil\Sdk\AbstractJsonSerializable;
-
-class SignedRequestMetaModel extends AbstractJsonSerializable
+class SignedRequestMetaModel extends AbstractModel
 {
     private $signs;
+
 
     /**
      * SignedRequestMetaModel constructor.
@@ -18,6 +17,7 @@ class SignedRequestMetaModel extends AbstractJsonSerializable
         $this->signs = $signs;
     }
 
+
     /**
      * @return array
      */
@@ -25,6 +25,7 @@ class SignedRequestMetaModel extends AbstractJsonSerializable
     {
         return $this->signs;
     }
+
 
     function jsonSerialize()
     {

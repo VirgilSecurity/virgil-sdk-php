@@ -1,6 +1,7 @@
 <?php
 namespace Virgil\Sdk\Client\Card\Model;
 
+
 /**
  * Class SearchCriteria
  *
@@ -14,10 +15,11 @@ class SearchCriteria
     private $identityType;
     private $scope;
 
+
     /**
      * SearchCriteria constructor.
      *
-     * @param array $identities
+     * @param array  $identities
      * @param string $identityType
      * @param string $scope
      */
@@ -28,6 +30,7 @@ class SearchCriteria
         $this->scope = $scope;
     }
 
+
     /**
      * @return array
      */
@@ -36,6 +39,7 @@ class SearchCriteria
         return $this->identities;
     }
 
+
     /**
      * @return null|string
      */
@@ -43,6 +47,7 @@ class SearchCriteria
     {
         return $this->identityType;
     }
+
 
     /**
      * @return null|string

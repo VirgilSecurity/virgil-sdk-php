@@ -2,12 +2,11 @@
 namespace Virgil\Sdk\Client\Card\Model;
 
 
-use Virgil\Sdk\AbstractJsonSerializable;
-
-class DeviceInfoModel extends AbstractJsonSerializable
+class DeviceInfoModel extends AbstractModel
 {
     private $device;
     private $deviceName;
+
 
     /**
      * DeviceInfo constructor.
@@ -21,6 +20,7 @@ class DeviceInfoModel extends AbstractJsonSerializable
         $this->deviceName = $deviceName;
     }
 
+
     /**
      * @return string
      */
@@ -28,6 +28,7 @@ class DeviceInfoModel extends AbstractJsonSerializable
     {
         return $this->deviceName;
     }
+
 
     /**
      * @return string
@@ -37,13 +38,17 @@ class DeviceInfoModel extends AbstractJsonSerializable
         return $this->device;
     }
 
+
     function jsonSerialize()
     {
-        return array_filter([
-            'device' => $this->device,
-            'device_name' => $this->deviceName
-        ], function ($value) {
-            return count($value) !== 0;
-        });
+        return array_filter(
+            [
+                'device'      => $this->device,
+                'device_name' => $this->deviceName,
+            ],
+            function ($value) {
+                return count($value) !== 0;
+            }
+        );
     }
 }
