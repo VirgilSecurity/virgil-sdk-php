@@ -2,7 +2,10 @@
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
-class StreamCipherInputOutput implements CipherInputOutputInterface
+/**
+ * Class provides input and output streams for cipher operations.
+ */
+class StreamInputOutput implements InputOutputInterface
 {
     /** @var  VirgilStreamDataSource $input */
     private $input;
@@ -14,8 +17,8 @@ class StreamCipherInputOutput implements CipherInputOutputInterface
     /**
      * Class constructor.
      *
-     * @param resource $input
-     * @param resource $output
+     * @param resource $input is stream source.
+     * @param resource $output is stream destination.
      */
     public function __construct($input, $output)
     {
@@ -41,16 +44,4 @@ class StreamCipherInputOutput implements CipherInputOutputInterface
     {
         return $this->output;
     }
-
-
-    //public function setOutput($output)
-    //{
-    //    $this->output = new VirgilStreamDataSink($output);
-    //}
-    //
-    //
-    //public function setInput($input)
-    //{
-    //    $this->input = new VirgilStreamDataSource($input);
-    //}
 }

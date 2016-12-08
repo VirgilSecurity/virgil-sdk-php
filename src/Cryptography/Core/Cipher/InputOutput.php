@@ -4,7 +4,10 @@ namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 use RuntimeException;
 
-class CipherInputOutput implements CipherInputOutputInterface
+/**
+ * Class provides content input for cipher operations.
+ */
+class InputOutput implements InputOutputInterface
 {
     /** @var string $input */
     private $input;
@@ -22,7 +25,7 @@ class CipherInputOutput implements CipherInputOutputInterface
 
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getInput()
     {
@@ -31,22 +34,12 @@ class CipherInputOutput implements CipherInputOutputInterface
 
 
     /**
+     * @inheritdoc
+     *
      * @throws RuntimeException
      */
     public function getOutput()
     {
         throw new RuntimeException('Method ' . __METHOD__ . ' is disabled for this class');
     }
-
-
-    //public function setOutput($output)
-    //{
-    //    $this->output = $output;
-    //}
-    //
-    //
-    //public function setInput($input)
-    //{
-    //    $this->input = $input;
-    //}
 }

@@ -2,7 +2,10 @@
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
-interface CipherInputOutputInterface
+/**
+ * Interface represents input and output for cipher operations.
+ */
+interface InputOutputInterface
 {
     /**
      * @return mixed

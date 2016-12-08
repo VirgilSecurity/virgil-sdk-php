@@ -5,17 +5,23 @@ namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 use Virgil\Crypto\VirgilDataSource;
 
+/**
+ * Class is representation of data provider stream.
+ */
 class VirgilStreamDataSource extends VirgilDataSource
 {
+    /** @var resource $stream */
     private $stream;
+
+    /** @var int $dataChunk */
     private $dataChunk;
 
 
     /**
-     * VirgilStreamDataSource constructor.
+     * Class constructor.
      *
      * @param resource $stream
-     * @param int      $dataChunk
+     * @param int      $dataChunk specifies length number of bytes read.
      */
     public function __construct($stream, $dataChunk = 1024)
     {
@@ -27,7 +33,7 @@ class VirgilStreamDataSource extends VirgilDataSource
 
 
     /**
-     * Checks if there are data chunk to encrypt
+     * Checks if there is data chunk.
      *
      * @return bool
      */
@@ -38,7 +44,7 @@ class VirgilStreamDataSource extends VirgilDataSource
 
 
     /**
-     * Read data chunk from stream for encrypt
+     * Read data chunk from stream.
      *
      * @return string
      */
@@ -49,7 +55,7 @@ class VirgilStreamDataSource extends VirgilDataSource
 
 
     /**
-     * Set stream pointer to begin
+     * Set pointer to begin of the stream.
      *
      * @return bool
      */

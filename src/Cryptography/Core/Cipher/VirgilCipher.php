@@ -4,11 +4,12 @@ namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
 use Exception;
-
 use Virgil\Crypto\VirgilCipher as InternalVirgilCipher;
-
 use Virgil\Sdk\Cryptography\Core\Exceptions\CipherException;
 
+/**
+ * Class implements cipher operations with primitive data (like strings, numbers etc.)
+ */
 class VirgilCipher extends AbstractVirgilCipher
 {
     /**
@@ -27,7 +28,7 @@ class VirgilCipher extends AbstractVirgilCipher
      *
      * @throws CipherException
      */
-    public function encrypt(CipherInputOutputInterface $cipherInputOutput, $embedContentInfo = true)
+    public function encrypt(InputOutputInterface $cipherInputOutput, $embedContentInfo = true)
     {
         try {
             return $this->cipher->encrypt($cipherInputOutput->getInput(), $embedContentInfo);
@@ -42,7 +43,7 @@ class VirgilCipher extends AbstractVirgilCipher
      *
      * @throws CipherException
      */
-    public function decryptWithKey(CipherInputOutputInterface $cipherInputOutput, $recipientId, $privateKey)
+    public function decryptWithKey(InputOutputInterface $cipherInputOutput, $recipientId, $privateKey)
     {
         try {
             return $this->cipher->decryptWithKey($cipherInputOutput->getInput(), $recipientId, $privateKey);
@@ -57,6 +58,6 @@ class VirgilCipher extends AbstractVirgilCipher
      */
     public function createInputOutput(...$args)
     {
-        return new CipherInputOutput($args[0]);
+        return new InputOutput($args[0]);
     }
 }

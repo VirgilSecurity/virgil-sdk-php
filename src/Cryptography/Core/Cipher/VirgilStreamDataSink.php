@@ -5,13 +5,17 @@ namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 use Virgil\Crypto\VirgilDataSink;
 
+/**
+ * Class is representation of data consumer stream.
+ */
 class VirgilStreamDataSink extends VirgilDataSink
 {
+    /** @var resource $stream */
     private $stream;
 
 
     /**
-     * VirgilStreamDataSink constructor.
+     * Class constructor.
      *
      * @param resource $stream
      */
@@ -23,7 +27,7 @@ class VirgilStreamDataSink extends VirgilDataSink
 
 
     /**
-     * Checks if sink stream is good to write
+     * Checks if sink stream is good for write.
      *
      * @return bool
      */
@@ -37,7 +41,7 @@ class VirgilStreamDataSink extends VirgilDataSink
 
 
     /**
-     * Write chunk of encrypted data to sink stream
+     * Write chunk of encrypted data to sink stream.
      *
      * @param string $data
      *

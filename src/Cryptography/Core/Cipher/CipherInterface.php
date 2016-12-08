@@ -5,32 +5,37 @@ namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 use Virgil\Sdk\Cryptography\Core\Exceptions\CipherException;
 
+/**
+ * Interface provides cipher operations.
+ */
 interface CipherInterface
 {
 
     /**
      * Encrypts input content by cipher.
      *
-     * @param CipherInputOutputInterface $cipherInputOutput
-     * @param bool                       $embedContentInfo
+     * @param InputOutputInterface $cipherInputOutput
+     * @param bool                 $embedContentInfo
      *
      * @return mixed
+     *
      * @throws CipherException
      */
-    public function encrypt(CipherInputOutputInterface $cipherInputOutput, $embedContentInfo = true);
+    public function encrypt(InputOutputInterface $cipherInputOutput, $embedContentInfo = true);
 
 
     /**
      * Decrypts encrypted content with private key.
      *
-     * @param CipherInputOutputInterface $cipherInputOutput
-     * @param string                     $recipientId
-     * @param string                     $privateKey
+     * @param InputOutputInterface $cipherInputOutput
+     * @param string               $recipientId
+     * @param string               $privateKey
      *
      * @return mixed
+     *
      * @throws CipherException
      */
-    public function decryptWithKey(CipherInputOutputInterface $cipherInputOutput, $recipientId, $privateKey);
+    public function decryptWithKey(InputOutputInterface $cipherInputOutput, $recipientId, $privateKey);
 
 
     /**
@@ -71,7 +76,7 @@ interface CipherInterface
      *
      * @param array ...$args
      *
-     * @return CipherInputOutputInterface
+     * @return InputOutputInterface
      */
     public function createInputOutput(...$args);
 }

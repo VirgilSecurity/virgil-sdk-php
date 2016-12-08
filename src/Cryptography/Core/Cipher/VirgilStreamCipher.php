@@ -4,10 +4,12 @@ namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
 use Exception;
-
 use Virgil\Crypto\VirgilChunkCipher;
 use Virgil\Sdk\Cryptography\Core\Exceptions\CipherException;
 
+/**
+ * Class implements cipher operations with streams (file, network, memory etc.)
+ */
 class VirgilStreamCipher extends AbstractVirgilCipher
 {
     /**
@@ -26,7 +28,7 @@ class VirgilStreamCipher extends AbstractVirgilCipher
      *
      * @throws CipherException
      */
-    public function encrypt(CipherInputOutputInterface $cipherInputOutput, $embedContentInfo = true)
+    public function encrypt(InputOutputInterface $cipherInputOutput, $embedContentInfo = true)
     {
         try {
             $this->cipher->encrypt($cipherInputOutput->getInput(), $cipherInputOutput->getOutput(), $embedContentInfo);
@@ -41,7 +43,7 @@ class VirgilStreamCipher extends AbstractVirgilCipher
      *
      * @throws CipherException
      */
-    public function decryptWithKey(CipherInputOutputInterface $cipherInputOutput, $recipientId, $privateKey)
+    public function decryptWithKey(InputOutputInterface $cipherInputOutput, $recipientId, $privateKey)
     {
         try {
             $this->cipher->decryptWithKey(
@@ -61,6 +63,6 @@ class VirgilStreamCipher extends AbstractVirgilCipher
      */
     public function createInputOutput(...$args)
     {
-        return new StreamCipherInputOutput($args[0], $args[1]);
+        return new StreamInputOutput($args[0], $args[1]);
     }
 }
