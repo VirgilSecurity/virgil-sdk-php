@@ -2,11 +2,26 @@
 namespace Virgil\Sdk\Client;
 
 
+/**
+ * Class provides params for Virgil Client.
+ * TODO:decide to move constants to config.
+ */
 class VirgilClientParams
 {
+    const CARDS_SERVICE_UR = 'https://cards.virgilsecurity.com';
+    const CARDS_RO_SERVICE_UR = 'https://cards-ro.virgilsecurity.com';
+    const IDENTITY_SERVICE_URL = 'https://identity.virgilsecurity.com';
+
+    /** @var string string $accessToken */
     private $accessToken;
+
+    /** @var string $cardsServiceAddress */
     private $cardsServiceAddress;
+
+    /** @var string $readOnlyCardsServiceAddress */
     private $readOnlyCardsServiceAddress;
+
+    /** @var string $identityServiceAddress */
     private $identityServiceAddress;
 
 
@@ -14,13 +29,20 @@ class VirgilClientParams
      * VirgilClientParams constructor.
      *
      * @param string $accessToken
+     * @param string $cardsServiceAddress
+     * @param string $readOnlyCardsServiceAddress
+     * @param string $identityServiceAddress
      */
-    public function __construct($accessToken)
-    {
+    public function __construct(
+        $accessToken,
+        $cardsServiceAddress = self::CARDS_SERVICE_UR,
+        $readOnlyCardsServiceAddress = self::CARDS_RO_SERVICE_UR,
+        $identityServiceAddress = self::IDENTITY_SERVICE_URL
+    ) {
         $this->accessToken = $accessToken;
-        $this->setCardsServiceAddress('https://cards.virgilsecurity.com');
-        $this->setReadCardsServiceAddress('https://cards-ro.virgilsecurity.com');
-        $this->setIdentityServiceAddress('https://identity.virgilsecurity.com');
+        $this->setCardsServiceAddress($cardsServiceAddress);
+        $this->setReadCardsServiceAddress($readOnlyCardsServiceAddress);
+        $this->setIdentityServiceAddress($identityServiceAddress);
     }
 
 

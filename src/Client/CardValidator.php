@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client;
 
 
+use Exception;
+
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
@@ -49,7 +51,7 @@ class CardValidator implements CardValidatorInterface
 
             try {
                 $isValid = $this->crypto->verify($fingerprint->getData(), $card->getSignature($verifierKey), $verifier);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $isValid = false;
             }
 

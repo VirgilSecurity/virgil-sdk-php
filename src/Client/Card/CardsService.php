@@ -29,12 +29,12 @@ class CardsService implements CardsServiceInterface
     /**
      * CardsService constructor.
      *
-     * @param CardServiceParamsInterface      $params
+     * @param CardsServiceParamsInterface     $params
      * @param ClientInterface                 $httpClient
      * @param ModelMappersCollectionInterface $mappers
      */
     public function __construct(
-        CardServiceParamsInterface $params,
+        CardsServiceParamsInterface $params,
         ClientInterface $httpClient,
         ModelMappersCollectionInterface $mappers
     ) {
@@ -51,7 +51,7 @@ class CardsService implements CardsServiceInterface
     {
         $request = function () use ($model) {
             return $this->httpClient->post(
-                $this->params->getCreateEndpoint(),
+                $this->params->getCreateUrl(),
                 $this->mappers->getSignedRequestModelMapper()->toJson($model)
             );
         };
@@ -72,7 +72,7 @@ class CardsService implements CardsServiceInterface
             $cardContent = $model->getCardContent();
 
             return $this->httpClient->delete(
-                $this->params->getDeleteEndpoint($cardContent->getId()),
+                $this->params->getDeleteUrl($cardContent->getId()),
                 $this->mappers->getSignedRequestModelMapper()->toJson($model)
             );
         };
@@ -88,7 +88,7 @@ class CardsService implements CardsServiceInterface
     {
         $request = function () use ($model) {
             return $this->httpClient->post(
-                $this->params->getSearchEndpoint(),
+                $this->params->getSearchUrl(),
                 $this->mappers->getSearchCriteriaRequestMapper()->toJson($model)
             );
         };
@@ -105,7 +105,7 @@ class CardsService implements CardsServiceInterface
     public function get($id)
     {
         $request = function () use ($id) {
-            return $this->httpClient->get($this->params->getGetEndpoint($id));
+            return $this->httpClient->get($this->params->getGetUrl($id));
         };
 
         $response = $this->makeRequest($request);

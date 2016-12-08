@@ -3,7 +3,7 @@ namespace Virgil\Sdk\Client;
 
 
 use Virgil\Sdk\Buffer;
-use Virgil\Sdk\Client\Card\CardServiceParams;
+use Virgil\Sdk\Client\Card\CardsServiceParams;
 use Virgil\Sdk\Client\Card\CardsService;
 use Virgil\Sdk\Client\Card\CardsServiceInterface;
 use Virgil\Sdk\Client\Card\Mapper\ErrorResponseModelMapper;
@@ -19,7 +19,9 @@ use Virgil\Sdk\Client\Http\CurlRequestFactory;
 
 class VirgilClient
 {
+    /** @var CardsServiceInterface $cardsService */
     private $cardsService;
+
     /** @var  CardValidatorInterface */
     private $cardValidator;
 
@@ -32,9 +34,10 @@ class VirgilClient
      */
     public function __construct(VirgilClientParams $virgilClientParams, CardsServiceInterface $cardsService = null)
     {
-        $cardsService === null ? $this->cardsService = $this->initializeCardService(
-            $virgilClientParams
-        ) : $this->cardsService = $cardsService;
+        if ($cardsService === null) {
+            $cardsService = $this->initializeCardService($virgilClientParams);
+        }
+        $this->cardsService = $cardsService;
     }
 
 
@@ -122,32 +125,29 @@ class VirgilClient
      */
     private function initializeCardService(VirgilClientParams $virgilClientParams)
     {
-        $params = new CardServiceParams(
-            [
-                'mutable_host'    => $virgilClientParams->getCardsServiceAddress(),
-                'immutable_host'  => $virgilClientParams->getReadOnlyCardsServiceAddress(),
-                'search_endpoint' => '/v4/card/actions/search',
-                'create_endpoint' => '/v4/card',
-                'delete_endpoint' => '/v4/card',
-                'get_endpoint'    => '/v4/card',
-            ]
-        );
+        $immutableHost = $virgilClientParams->getReadOnlyCardsServiceAddress();
+        $mutableHost = $virgilClientParams->getCardsServiceAddress();
 
-        $httpClient = new CurlClient(
-            new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]), [
+        $cardsServiceParams = new CardsServiceParams($immutableHost, $mutableHost);
+
+        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+        $httpHeaders = [
             'Authorization' => 'VIRGIL ' . $virgilClientParams->getAccessToken(),
-        ]
-        );
+        ];
 
-        $mappers = new ModelMappersCollection(
-            new SignedResponseModelMapper(),
+        $curlClient = new CurlClient($curlRequestFactory, $httpHeaders);
+
+        $signedResponseModelMapper = new SignedResponseModelMapper();
+
+        $jsonMappers = new ModelMappersCollection(
+            $signedResponseModelMapper,
             new SignedRequestModelMapper(),
-            new SearchCriteriaResponseMapper(new SignedResponseModelMapper()),
+            new SearchCriteriaResponseMapper($signedResponseModelMapper),
             new SearchCriteriaRequestMapper(),
             new ErrorResponseModelMapper()
         );
 
-        return new CardsService($params, $httpClient, $mappers);
+        return new CardsService($cardsServiceParams, $curlClient, $jsonMappers);
     }
 
 
