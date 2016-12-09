@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\BufferInterface;
 use Virgil\Sdk\Client\Card;
-use Virgil\Sdk\Client\Card\CardsServiceException;
-use Virgil\Sdk\Client\Card\Model\SearchCriteria;
+use Virgil\Sdk\Client\VirgilCards\CardsServiceException;
+use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
 use Virgil\Sdk\Client\Constants\CardScope;
 use Virgil\Sdk\Client\Constants\RevocationReason;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
@@ -92,7 +92,7 @@ class VirgilClientTest extends TestCase
             $this->virgilClient->createCard($request);
         } catch (CardsServiceException $exception) {
             $this->assertEquals('400', $exception->getCode());
-            $this->assertContains('SCR sign item signed digest is invalid for the Virgil Card public key', $exception->getMessage());
+            $this->assertContains('SCR sign validation failed', $exception->getMessage());
         }
     }
 

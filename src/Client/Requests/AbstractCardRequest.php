@@ -4,9 +4,9 @@ namespace Virgil\Sdk\Client\Requests;
 
 use Virgil\Sdk\BufferInterface;
 
-use Virgil\Sdk\Client\Card\Model\AbstractModel;
-use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilCards\Model\AbstractModel;
+use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 
 /**
  * Class is a base class for request which requires signatures.

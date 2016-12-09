@@ -4,15 +4,15 @@ namespace Virgil\Sdk\Client;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\Client\Card\CardsServiceParams;
-use Virgil\Sdk\Client\Card\CardsService;
-use Virgil\Sdk\Client\Card\CardsServiceInterface;
-use Virgil\Sdk\Client\Card\Mapper;
+use Virgil\Sdk\Client\VirgilCards\CardsServiceParams;
+use Virgil\Sdk\Client\VirgilCards\CardsService;
+use Virgil\Sdk\Client\VirgilCards\CardsServiceInterface;
+use Virgil\Sdk\Client\VirgilCards\Mapper;
 
 use Virgil\Sdk\Client\Requests;
 
-use Virgil\Sdk\Client\Card\Model\SearchCriteria;
-use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
+use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 
 use Virgil\Sdk\Client\Http\CurlClient;
 use Virgil\Sdk\Client\Http\CurlRequestFactory;

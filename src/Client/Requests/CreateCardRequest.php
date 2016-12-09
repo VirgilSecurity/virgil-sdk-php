@@ -5,12 +5,12 @@ namespace Virgil\Sdk\Client\Requests;
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\BufferInterface;
 
-use Virgil\Sdk\Client\Card\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
-use Virgil\Sdk\Client\Card\Model\CardContentModel;
-use Virgil\Sdk\Client\Card\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 
 use Virgil\Sdk\Client\Constants\CardScope;
 

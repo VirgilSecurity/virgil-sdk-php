@@ -5,7 +5,7 @@ namespace Virgil\Tests\Unit\Client;
 use PHPUnit\Framework\TestCase;
 
 use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
+use Virgil\SDK\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\Constants\CardScope;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 

@@ -4,11 +4,11 @@ namespace Virgil\Sdk\Client\Requests;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\Client\Card\Mapper\RevokeRequestModelMapper;
-use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
-use Virgil\Sdk\Client\Card\Model\RevokeCardContentModel;
-use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 
 class RevokeCardRequest extends AbstractCardRequest
 {
