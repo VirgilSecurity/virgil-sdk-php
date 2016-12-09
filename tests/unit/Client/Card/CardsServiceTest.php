@@ -24,7 +24,7 @@ use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
 use Virgil\Sdk\Client\Card\Model\SignedResponseMetaModel;
 use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
-use Virgil\Sdk\Client\CardScope;
+use Virgil\Sdk\Client\Constants\CardScope;
 use Virgil\Sdk\Client\Http\CurlClient;
 use Virgil\Sdk\Client\Http\CurlRequest;
 use Virgil\Sdk\Client\Http\CurlRequestFactory;

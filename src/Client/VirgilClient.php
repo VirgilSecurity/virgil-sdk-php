@@ -3,46 +3,58 @@ namespace Virgil\Sdk\Client;
 
 
 use Virgil\Sdk\Buffer;
+
 use Virgil\Sdk\Client\Card\CardsServiceParams;
 use Virgil\Sdk\Client\Card\CardsService;
 use Virgil\Sdk\Client\Card\CardsServiceInterface;
-use Virgil\Sdk\Client\Card\Mapper\ErrorResponseModelMapper;
-use Virgil\Sdk\Client\Card\Mapper\ModelMappersCollection;
-use Virgil\Sdk\Client\Card\Mapper\SearchCriteriaRequestMapper;
-use Virgil\Sdk\Client\Card\Mapper\SearchCriteriaResponseMapper;
-use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
-use Virgil\Sdk\Client\Card\Mapper\SignedResponseModelMapper;
+use Virgil\Sdk\Client\Card\Mapper;
+
+use Virgil\Sdk\Client\Requests;
+
 use Virgil\Sdk\Client\Card\Model\SearchCriteria;
 use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
+
 use Virgil\Sdk\Client\Http\CurlClient;
 use Virgil\Sdk\Client\Http\CurlRequestFactory;
 
+use Virgil\Sdk\Client\Validator\CardValidationException;
+use Virgil\Sdk\Client\Validator\CardValidatorInterface;
+
+/**
+ * Before you can use any Virgil services features in your app, you must first initialize VirgilClient class.
+ * You use the VirgilClient object to get access to Create, Revoke and Search for Virgil Cards (Public keys).
+ */
 class VirgilClient
 {
+    const AUTH_HEADER_FORMAT = 'VIRGIL %s';
+
     /** @var CardsServiceInterface $cardsService */
     private $cardsService;
 
-    /** @var  CardValidatorInterface */
+    /** @var CardValidatorInterface */
     private $cardValidator;
 
 
     /**
-     * VirgilClient constructor.
+     * Class constructor.
      *
-     * @param VirgilClientParams    $virgilClientParams
-     * @param CardsServiceInterface $cardsService
+     * @param VirgilClientParamsInterface $virgilClientParams
+     * @param CardsServiceInterface       $cardsService
      */
-    public function __construct(VirgilClientParams $virgilClientParams, CardsServiceInterface $cardsService = null)
-    {
+    public function __construct(
+        VirgilClientParamsInterface $virgilClientParams,
+        CardsServiceInterface $cardsService = null
+    ) {
         if ($cardsService === null) {
             $cardsService = $this->initializeCardService($virgilClientParams);
         }
+
         $this->cardsService = $cardsService;
     }
 
 
     /**
-     * Makes client by provided access token
+     * Makes client by provided access token.
      *
      * @param string $accessToken
      *
@@ -55,6 +67,8 @@ class VirgilClient
 
 
     /**
+     * Performs the Virgil Cards service searching by criteria.
+     *
      * @param SearchCriteria $criteria
      *
      * @return Card[]
@@ -63,21 +77,22 @@ class VirgilClient
     {
         $response = $this->cardsService->search($criteria);
 
-        return array_map(
-            function (SignedResponseModel $responseModel) {
-                return $this->buildAndVerifyCard($responseModel);
-            },
-            $response
-        );
+        $responseModelToCard = function (SignedResponseModel $responseModel) {
+            return $this->buildAndVerifyCard($responseModel);
+        };
+
+        return array_map($responseModelToCard, $response);
     }
 
 
     /**
-     * @param CreateCardRequest $request
+     * Performs the Virgil Cards service card creation by request.
+     *
+     * @param Requests\CreateCardRequest $request
      *
      * @return Card
      */
-    public function createCard(CreateCardRequest $request)
+    public function createCard(Requests\CreateCardRequest $request)
     {
         $response = $this->cardsService->create($request->getRequestModel());
 
@@ -86,15 +101,21 @@ class VirgilClient
 
 
     /**
-     * @param RevokeCardRequest $request
+     * Performs the Virgil Cards service card revoking by request.
+     *
+     * @param Requests\RevokeCardRequest $request
+     *
+     * @return void
      */
-    public function revokeCard(RevokeCardRequest $request)
+    public function revokeCard(Requests\RevokeCardRequest $request)
     {
         $this->cardsService->delete($request->getRequestModel());
     }
 
 
     /**
+     * Performs the Virgil Cards service card searching by ID.
+     *
      * @param $id
      *
      * @return Card
@@ -111,6 +132,8 @@ class VirgilClient
      * Sets the card validator.
      *
      * @param CardValidatorInterface $validator
+     *
+     * @return void
      */
     public function setCardValidator(CardValidatorInterface $validator)
     {
@@ -119,11 +142,13 @@ class VirgilClient
 
 
     /**
-     * @param VirgilClientParams $virgilClientParams
+     * Initialize default card service.
+     *
+     * @param VirgilClientParamsInterface $virgilClientParams
      *
      * @return CardsService
      */
-    private function initializeCardService(VirgilClientParams $virgilClientParams)
+    private function initializeCardService(VirgilClientParamsInterface $virgilClientParams)
     {
         $immutableHost = $virgilClientParams->getReadOnlyCardsServiceAddress();
         $mutableHost = $virgilClientParams->getCardsServiceAddress();
@@ -131,20 +156,22 @@ class VirgilClient
         $cardsServiceParams = new CardsServiceParams($immutableHost, $mutableHost);
 
         $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+
+        //TODO: decide to send additional headers like Content-Type (need negotiate).
         $httpHeaders = [
-            'Authorization' => 'VIRGIL ' . $virgilClientParams->getAccessToken(),
+            'Authorization' => sprintf(self::AUTH_HEADER_FORMAT, $virgilClientParams->getAccessToken()),
         ];
 
         $curlClient = new CurlClient($curlRequestFactory, $httpHeaders);
 
-        $signedResponseModelMapper = new SignedResponseModelMapper();
+        $signedResponseModelMapper = new Mapper\SignedResponseModelMapper();
 
-        $jsonMappers = new ModelMappersCollection(
+        $jsonMappers = new Mapper\ModelMappersCollection(
             $signedResponseModelMapper,
-            new SignedRequestModelMapper(),
-            new SearchCriteriaResponseMapper($signedResponseModelMapper),
-            new SearchCriteriaRequestMapper(),
-            new ErrorResponseModelMapper()
+            new Mapper\SignedRequestModelMapper(),
+            new Mapper\SearchCriteriaResponseMapper($signedResponseModelMapper),
+            new Mapper\SearchCriteriaRequestMapper(),
+            new Mapper\ErrorResponseModelMapper()
         );
 
         return new CardsService($cardsServiceParams, $curlClient, $jsonMappers);
@@ -152,12 +179,22 @@ class VirgilClient
 
 
     /**
+     * Builds card from response model.
+     *
      * @param SignedResponseModel $responseModel
      *
      * @return Card
      */
     private function responseToCard(SignedResponseModel $responseModel)
     {
+        $responseModelSigns = $responseModel->getMeta()->getSigns();
+
+        $responseModelSignsToCardSigns = function ($sign) {
+            return Buffer::fromBase64($sign);
+        };
+
+        $cardSigns = array_map($responseModelSignsToCardSigns, $responseModelSigns);
+
         return new Card(
             $responseModel->getId(),
             Buffer::fromBase64($responseModel->getSnapshot()),
@@ -169,16 +206,7 @@ class VirgilClient
             $responseModel->getCardContent()->getInfo()->getDevice(),
             $responseModel->getCardContent()->getInfo()->getDeviceName(),
             $responseModel->getMeta()->getCardVersion(),
-            call_user_func(
-                function ($signs) {
-                    foreach ($signs as &$sign) {
-                        $sign = Buffer::fromBase64($sign);
-                    }
-
-                    return $signs;
-                },
-                $responseModel->getMeta()->getSigns()
-            )
+            $cardSigns
         );
     }
 
@@ -188,6 +216,8 @@ class VirgilClient
      *
      * @param Card $card
      *
+     * @return void
+     *
      * @throws CardValidationException
      */
     private function validateCard(Card $card)
@@ -196,20 +226,18 @@ class VirgilClient
             return;
         }
 
-        $isValid = $this->cardValidator->validate($card);
-        if (!$isValid) {
-            throw new CardValidationException('Card with id' . $card->getId() . ' is invalid. Please check signs.');
-        }
+        $this->cardValidator->validate($card);
     }
 
 
     /**
-     * Builds and verify card from response.
+     * Builds and verify card from response model.
      *
      * @param SignedResponseModel $responseModel
      *
-     * @throws CardValidationException
      * @return Card
+     *
+     * @throws CardValidationException
      */
     private function buildAndVerifyCard(SignedResponseModel $responseModel)
     {

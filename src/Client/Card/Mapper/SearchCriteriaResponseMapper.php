@@ -2,7 +2,6 @@
 namespace Virgil\Sdk\Client\Card\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
 use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
 
 class SearchCriteriaResponseMapper extends AbstractJsonModelMapper

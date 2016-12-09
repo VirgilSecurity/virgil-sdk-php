@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 use Virgil\SDK\Buffer;
 use Virgil\SDK\Client\Card\Model\DeviceInfoModel;
-use Virgil\SDK\Client\CardScope;
-use Virgil\SDK\Client\CreateCardRequest;
+use Virgil\Sdk\Client\Constants\CardScope;
+use Virgil\Sdk\Client\Requests\CreateCardRequest;
 
 class CreateCardRequestTest extends TestCase
 {

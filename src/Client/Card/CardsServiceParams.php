@@ -100,7 +100,6 @@ class CardsServiceParams implements CardsServiceParamsInterface
      *
      * @param string      $host
      * @param string      $uri
-     *
      * @param string|null $id
      *
      * @return string

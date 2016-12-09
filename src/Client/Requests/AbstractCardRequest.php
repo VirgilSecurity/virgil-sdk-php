@@ -1,18 +1,23 @@
 <?php
-namespace Virgil\Sdk\Client;
+namespace Virgil\Sdk\Client\Requests;
 
 
 use Virgil\Sdk\BufferInterface;
+
+use Virgil\Sdk\Client\Card\Model\AbstractModel;
 use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
 
+/**
+ * Class is a base class for request which requires signatures.
+ */
 abstract class AbstractCardRequest
 {
     protected $signatures = [];
 
 
     /**
-     * Gets the request model.
+     * Returns the request model.
      *
      * @return SignedRequestModel
      */
@@ -35,7 +40,7 @@ abstract class AbstractCardRequest
 
 
     /**
-     * Gets the signatures.
+     * Returns the signatures.
      *
      * @return array
      */
@@ -46,7 +51,7 @@ abstract class AbstractCardRequest
 
 
     /**
-     * Gets card request snapshot.
+     * Returns card request snapshot.
      *
      * @return string
      */
@@ -57,32 +62,27 @@ abstract class AbstractCardRequest
 
 
     /**
-     * Gets the card content.
+     * Returns the card content.
      *
-     * @return mixed
+     * @return AbstractModel
      */
     protected abstract function getCardContent();
 
 
     /**
-     * Gets the card meta.
+     * Returns the card meta.
      *
      * @return SignedRequestMetaModel
      */
     protected function getCardMeta()
     {
-        return new SignedRequestMetaModel(
-            call_user_func(
-                function ($signatures) {
-                    /** @var BufferInterface $signature */
-                    foreach ($signatures as &$signature) {
-                        $signature = $signature->toBase64();
-                    }
-
-                    return $signatures;
-                },
-                $this->signatures
-            )
+        $signatures = array_map(
+            function (BufferInterface $signature) {
+                return $signature->toBase64();
+            },
+            $this->signatures
         );
+
+        return new SignedRequestMetaModel($signatures);
     }
 }

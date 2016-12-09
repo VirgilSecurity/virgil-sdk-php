@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk\Client;
+namespace Virgil\Sdk\Client\Card\Mapper;
 
 
 use RuntimeException;

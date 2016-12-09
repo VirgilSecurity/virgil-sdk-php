@@ -4,23 +4,48 @@ namespace Virgil\Sdk\Client;
 
 use Virgil\Sdk\BufferInterface;
 
+
+/**
+ * Class represents Virgil Cards Service card entity.
+ */
 class Card
 {
+    /** @var string $id */
     private $id;
+
+    /** @var string $identity */
     private $identity;
+
+    /** @var string $identityType */
     private $identityType;
+
+    /** @var BufferInterface $publicKey */
     private $publicKey;
+
+    /** @var string $scope */
     private $scope;
+
+    /** @var array $data */
     private $data;
+
+    /** @var null|string $device */
     private $device;
+
+    /** @var null|string $deviceName */
     private $deviceName;
+
+    /** @var BufferInterface[] $signatures */
     private $signatures;
+
+    /** @var string $version */
     private $version;
+
+    /** @var BufferInterface $snapshot */
     private $snapshot;
 
 
     /**
-     * Card constructor.
+     * Class constructor.
      *
      * @param string            $id
      * @param BufferInterface   $snapshot
@@ -62,7 +87,7 @@ class Card
 
 
     /**
-     * Gets the public key.
+     * Returns the public key.
      *
      * @return BufferInterface
      */
@@ -73,7 +98,7 @@ class Card
 
 
     /**
-     * Gets the type of the identity.
+     * Returns the type of the identity.
      *
      * @return string
      */
@@ -84,7 +109,7 @@ class Card
 
 
     /**
-     * Gets the identity.
+     * Returns the identity.
      *
      * @return string
      */
@@ -95,7 +120,7 @@ class Card
 
 
     /**
-     * Gets the Virgil Card fingerprint.
+     * Returns the Virgil Card fingerprint.
      *
      * @return string
      */
@@ -106,7 +131,7 @@ class Card
 
 
     /**
-     * Gets the scope.
+     * Returns the scope.
      *
      * @return string
      */
@@ -117,7 +142,7 @@ class Card
 
 
     /**
-     * Gets the data.
+     * Returns the data.
      *
      * @return array
      */
@@ -128,7 +153,7 @@ class Card
 
 
     /**
-     * Get sign by signid.
+     * Returns sign by signid.
      *
      * @param string $signatureId
      *
@@ -141,7 +166,7 @@ class Card
 
 
     /**
-     * Gets the signs.
+     * Returns the signs.
      *
      * @return BufferInterface[]
      */
@@ -152,7 +177,7 @@ class Card
 
 
     /**
-     * Gets the name of the device.
+     * Returns the name of the device.
      *
      * @return string
      */
@@ -163,7 +188,7 @@ class Card
 
 
     /**
-     * Gets the device.
+     * Returns the device.
      *
      * @return string
      */
@@ -174,7 +199,7 @@ class Card
 
 
     /**
-     * Gets the version.
+     * Returns the version.
      *
      * @return string
      */
@@ -185,7 +210,7 @@ class Card
 
 
     /**
-     * Gets the Virgil Card snapshot.
+     * Returns the Virgil Card snapshot.
      *
      * @return BufferInterface
      */

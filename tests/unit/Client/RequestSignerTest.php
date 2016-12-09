@@ -5,9 +5,9 @@ namespace Virgil\Tests\Unit\Client;
 use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Buffer;
-use Virgil\Sdk\Client\CardScope;
-use Virgil\Sdk\Client\CreateCardRequest;
-use Virgil\Sdk\Client\RequestSigner;
+use Virgil\Sdk\Client\Constants\CardScope;
+use Virgil\Sdk\Client\Requests\CreateCardRequest;
+use Virgil\Sdk\Client\Requests\RequestSigner;
 use Virgil\Sdk\Cryptography\Core\VirgilCryptoService;
 use Virgil\Sdk\Cryptography\VirgilCrypto;
 

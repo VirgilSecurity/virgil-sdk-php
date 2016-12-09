@@ -3,10 +3,10 @@ namespace Virgil\Sdk\Client;
 
 
 /**
- * Class provides params for Virgil Client.
+ * Class provides params for virgil services.
  * TODO:decide to move constants to config.
  */
-class VirgilClientParams
+class VirgilClientParams implements VirgilClientParamsInterface
 {
     const CARDS_SERVICE_UR = 'https://cards.virgilsecurity.com';
     const CARDS_RO_SERVICE_UR = 'https://cards-ro.virgilsecurity.com';
@@ -26,7 +26,7 @@ class VirgilClientParams
 
 
     /**
-     * VirgilClientParams constructor.
+     * Class constructor.
      *
      * @param string $accessToken
      * @param string $cardsServiceAddress
@@ -47,7 +47,7 @@ class VirgilClientParams
 
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getAccessToken()
     {
@@ -56,7 +56,7 @@ class VirgilClientParams
 
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getCardsServiceAddress()
     {
@@ -65,7 +65,7 @@ class VirgilClientParams
 
 
     /**
-     * @param string $cardsServiceAddress
+     * @inheritdoc
      */
     public function setCardsServiceAddress($cardsServiceAddress)
     {
@@ -74,11 +74,13 @@ class VirgilClientParams
         }
 
         $this->cardsServiceAddress = $cardsServiceAddress;
+
+        return $this;
     }
 
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getReadOnlyCardsServiceAddress()
     {
@@ -87,7 +89,7 @@ class VirgilClientParams
 
 
     /**
-     * @param string $readOnlyCardsServiceAddress
+     * @inheritdoc
      */
     public function setReadCardsServiceAddress($readOnlyCardsServiceAddress)
     {
@@ -96,11 +98,13 @@ class VirgilClientParams
         }
 
         $this->readOnlyCardsServiceAddress = $readOnlyCardsServiceAddress;
+
+        return $this;
     }
 
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getIdentityServiceAddress()
     {
@@ -109,7 +113,7 @@ class VirgilClientParams
 
 
     /**
-     * @param string $identityServiceAddress
+     * @inheritdoc
      */
     public function setIdentityServiceAddress($identityServiceAddress)
     {
@@ -118,6 +122,8 @@ class VirgilClientParams
         }
 
         $this->identityServiceAddress = $identityServiceAddress;
+
+        return $this;
     }
 
 

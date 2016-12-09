@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Client\Card\Mapper;
 
 
-use Virgil\Sdk\Client\JsonModelMapperInterface;
-
 interface ModelMappersCollectionInterface
 {
     /**

@@ -5,8 +5,8 @@ namespace Virgil\Tests\Unit\Client;
 use PHPUnit\Framework\TestCase;
 
 use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\RevocationReason;
-use Virgil\SDK\Client\RevokeCardRequest;
+use Virgil\Sdk\Client\Constants\RevocationReason;
+use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
 class RevokeCardRequestTest extends TestCase
 {

@@ -15,10 +15,10 @@ use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\Card\Model\SignedRequestModel;
 use Virgil\Sdk\Client\Card\Model\SignedResponseMetaModel;
 use Virgil\Sdk\Client\Card\Model\SignedResponseModel;
-use Virgil\Sdk\Client\CardScope;
-use Virgil\Sdk\Client\CreateCardRequest;
-use Virgil\Sdk\Client\RevocationReason;
-use Virgil\Sdk\Client\RevokeCardRequest;
+use Virgil\Sdk\Client\Constants\CardScope;
+use Virgil\Sdk\Client\Constants\RevocationReason;
+use Virgil\Sdk\Client\Requests\CreateCardRequest;
+use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\VirgilClientParams;
 

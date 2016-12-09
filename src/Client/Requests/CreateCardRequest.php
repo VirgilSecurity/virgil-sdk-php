@@ -1,33 +1,51 @@
 <?php
-namespace Virgil\Sdk\Client;
+namespace Virgil\Sdk\Client\Requests;
 
 
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\BufferInterface;
+
 use Virgil\Sdk\Client\Card\Mapper\CreateRequestModelMapper;
 use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+
 use Virgil\Sdk\Client\Card\Model\CardContentModel;
 use Virgil\Sdk\Client\Card\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
 
+use Virgil\Sdk\Client\Constants\CardScope;
+
+/**
+ * Class represents request for card creation.
+ */
 class CreateCardRequest extends AbstractCardRequest
 {
+    /** @var string $identity */
     private $identity;
+
+    /** @var string $identityType */
     private $identityType;
+
+    /** @var BufferInterface $publicKey */
     private $publicKey;
+
+    /** @var array $data */
     private $data;
+
+    /** @var DeviceInfoModel $info */
     private $info;
+
+    /** @var string $scope */
     private $scope;
 
 
     /**
-     * CreateCardRequest constructor.
+     * Class constructor.
      *
-     * @param string $identity
-     * @param string $identityType
+     * @param string          $identity
+     * @param string          $identityType
      * @param BufferInterface $publicKey
-     * @param string $scope
-     * @param array $data
+     * @param string          $scope
+     * @param array           $data
      * @param DeviceInfoModel $info
      */
     public function __construct(
@@ -48,7 +66,9 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
-     * @param $exportedRequest
+     * Imports card request from base64 json string.
+     *
+     * @param string $exportedRequest base64 encoded request.
      *
      * @return CreateCardRequest
      */
@@ -79,6 +99,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns create request model mapper.
+     *
      * @return CreateRequestModelMapper
      */
     public static function getRequestModelJsonMapper()
@@ -88,6 +110,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns card identity.
+     *
      * @return string
      */
     public function getIdentity()
@@ -97,6 +121,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns card public key.
+     *
      * @return BufferInterface
      */
     public function getPublicKey()
@@ -106,6 +132,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns card identity type.
+     *
      * @return string
      */
     public function getIdentityType()
@@ -115,6 +143,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns card info.
+     *
      * @return DeviceInfoModel
      */
     public function getInfo()
@@ -124,6 +154,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns card additional data.
+     *
      * @return array
      */
     public function getData()
@@ -133,6 +165,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns card scope.
+     *
      * @return string
      */
     public function getScope()
@@ -142,6 +176,8 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
+     * Exports card to base64 json string.
+     *
      * @return string
      */
     public function export()
@@ -152,17 +188,11 @@ class CreateCardRequest extends AbstractCardRequest
 
     /**
      * @inheritdoc
-     * @return CardContentModel
      */
     protected function getCardContent()
     {
         return new CardContentModel(
-            $this->identity,
-            $this->identityType,
-            $this->publicKey->toBase64(),
-            $this->scope,
-            $this->data,
-            $this->info
+            $this->identity, $this->identityType, $this->publicKey->toBase64(), $this->scope, $this->data, $this->info
         );
     }
 }

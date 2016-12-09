@@ -2,7 +2,6 @@
 namespace Virgil\Sdk\Client\Card\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
 use Virgil\Sdk\Client\Card\Model\CardContentModel;
 use Virgil\Sdk\Client\Card\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\Card\Model\SignedResponseMetaModel;

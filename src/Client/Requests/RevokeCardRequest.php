@@ -1,21 +1,26 @@
 <?php
-namespace Virgil\Sdk\Client;
+namespace Virgil\Sdk\Client\Requests;
 
 
 use Virgil\Sdk\Buffer;
+
 use Virgil\Sdk\Client\Card\Mapper\RevokeRequestModelMapper;
 use Virgil\Sdk\Client\Card\Mapper\SignedRequestModelMapper;
+
 use Virgil\Sdk\Client\Card\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\Card\Model\SignedRequestMetaModel;
 
 class RevokeCardRequest extends AbstractCardRequest
 {
+    /** @var string $id */
     private $id;
+
+    /** @var string $reason */
     private $reason;
 
 
     /**
-     * RevokeCardRequest constructor.
+     * Class constructor.
      *
      * @param string $id
      * @param string $reason
@@ -28,7 +33,7 @@ class RevokeCardRequest extends AbstractCardRequest
 
 
     /**
-     * Imports card from base64 json string.
+     * Imports card request from base64 json string.
      *
      * @param $exportedRequest
      *
@@ -54,6 +59,8 @@ class RevokeCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns revoke request model mapper.
+     *
      * @return RevokeRequestModelMapper
      */
     public static function getRequestModelJsonMapper()
@@ -63,6 +70,8 @@ class RevokeCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns revocation reason.
+     *
      * @return string
      */
     public function getReason()
@@ -72,6 +81,8 @@ class RevokeCardRequest extends AbstractCardRequest
 
 
     /**
+     * Returns card id to revoke.
+     *
      * @return string
      */
     public function getId()
