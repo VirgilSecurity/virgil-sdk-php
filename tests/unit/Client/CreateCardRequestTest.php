@@ -4,8 +4,8 @@ namespace Virgil\Tests\Unit\Client;
 
 use PHPUnit\Framework\TestCase;
 
-use Virgil\SDK\Buffer;
-use Virgil\SDK\Client\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\Constants\CardScope;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 
@@ -19,7 +19,7 @@ class CreateCardRequestTest extends TestCase
             "ab799a2f26333c09af6628496b12702df1a80ad767b73f42b9ab12a8f32b5f31" => Buffer::fromBase64("MIGaMA0GCWCGSAFlAwQCAgUABf7bd1SKVleAkEAplvCmFJ6v3sYQVBXerr8Yb25UllbTDuCw5alWSfBw2j3ueFiXTiyY88bAoKtJgModQTEc9WJPxgq1Obqx5y0dIGIMIGFAkBgwrgZYXu+YAibJd+8Vf0uFce9QrB7yiG2U2zTNVqwsg4etX08YFEWYgPpXdomNIDxlOvyGdI9Q==")
         ];
         $request = new CreateCardRequest(
-            'alice', 'member', new Buffer('public-key'), CardScope::TYPE_APPLICATION, ['customData' => 'qwerty'], new DeviceInfoModel('iPhone6s', 'Space grey one')
+            'alice', 'member', new Buffer('public-key'), CardScope::TYPE_APPLICATION, ['customData' => 'qwerty'], new DeviceInfoModel('iPhone6s')
         );
 
         foreach ($signs as $signKey => $sign) {

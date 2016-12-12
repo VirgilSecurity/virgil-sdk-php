@@ -4,10 +4,10 @@ namespace Virgil\Tests\Unit\Client\Http;
 
 use PHPUnit\Framework\TestCase;
 
-use Virgil\SDK\Client\Http\ClientInterface;
-use Virgil\SDK\Client\Http\CurlRequest;
-use Virgil\SDK\Client\Http\CurlRequestFactory;
-use Virgil\SDK\Client\Http\CurlClient;
+use Virgil\Sdk\Client\Http\ClientInterface;
+use Virgil\Sdk\Client\Http\CurlRequest;
+use Virgil\Sdk\Client\Http\CurlRequestFactory;
+use Virgil\Sdk\Client\Http\CurlClient;
 
 class HttpClientTest extends TestCase
 {

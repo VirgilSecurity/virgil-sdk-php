@@ -11,7 +11,7 @@ class VirgilCryptoCompatibilityTest extends TestCase
 {
     public $sdkCompatibilityData;
 
-    public function __construct($name, $data = [], $dataName)
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
         $fixtures = file_get_contents(VIRGIL_FIXTURE_PATH . DIRECTORY_SEPARATOR . 'sdk_compatibility_data.json');

@@ -26,7 +26,7 @@ class VirgilClientTest extends TestCase
     private $crypto;
     private static $cardsData = [];
 
-    public function __construct($name, $data = [], $dataName)
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -150,7 +150,7 @@ class VirgilClientTest extends TestCase
 
         $revokeRequest = new RevokeCardRequest($card->getId(), RevocationReason::UNSPECIFIED_TYPE);
 
-        $this->requestSigner->selfSign($revokeRequest, $this->crypto->importPrivateKey($privateKey));
+        //$this->requestSigner->selfSign($revokeRequest, $this->crypto->importPrivateKey($privateKey));
         $this->requestSigner->authoritySign($revokeRequest, $this->applicationSettings['id'], $this->crypto->importPrivateKey(
             Buffer::fromBase64($this->applicationSettings['private_key']),
             $this->applicationSettings['password']

@@ -4,7 +4,7 @@ namespace Virgil\Tests\Unit\Client\Http;
 
 use PHPUnit\Framework\TestCase;
 
-use Virgil\SDK\Client\Http\CurlRequestFactory;
+use Virgil\Sdk\Client\Http\CurlRequestFactory;
 
 class CurlRequestFactoryTest extends TestCase
 {

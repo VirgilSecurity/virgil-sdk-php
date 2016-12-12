@@ -2,6 +2,7 @@
 namespace Virgil\Tests\Unit\Client;
 
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Buffer;
@@ -31,7 +32,7 @@ class VirgilClientValidationTest extends TestCase
             'model-id-1',
             'eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwiZGF0YSI6eyJjdXN0b21EYXRhIjoicXdlcnR5In0sInNjb3BlIjoiZ2xvYmFsIiwiaW5mbyI6eyJkZXZpY2UiOiJpUGhvbmU2cyIsImRldmljZV9uYW1lIjoiU3BhY2UgZ3JleSBvbmUifX0=',
             new CardContentModel('alice2', 'member', 'public-key-2', CardScope::TYPE_GLOBAL, ['customData' => 'qwerty'], new DeviceInfoModel('iPhone6s', 'Space grey one')),
-            new SignedResponseMetaModel(['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4'], new \DateTime('2016-11-04T13:16:17+0000'), 'v4', 'bb5db5084dab511135ec24c2fdc5ce2bca8f7bf6b0b83a7fa4c3cbdcdc740a59')
+            new SignedResponseMetaModel(['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4'], new DateTime('2016-11-04T13:16:17+0000'), 'v4')
         );
         $cardsServiceMock = $this->createPartialMock(CardsService::class, ['get']);
         $cardsServiceMock
@@ -58,13 +59,13 @@ class VirgilClientValidationTest extends TestCase
                 'model-id-1',
                 'eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwic2NvcGUiOiJnbG9iYWwifQ==',
                 new CardContentModel('alice2', 'member', 'public-key-2', CardScope::TYPE_GLOBAL),
-                new SignedResponseMetaModel(['sign-id-3' => '_sign3'], new \DateTime('2016-11-04T13:16:17+0000'), 'v4', 'bb5db5084dab511135ec24c2fdc5ce2bca8f7bf6b0b83a7fa4c3cbdcdc740a59')
+                new SignedResponseMetaModel(['sign-id-3' => '_sign3'], new DateTime('2016-11-04T13:16:17+0000'), 'v4')
             ),
             new SignedResponseModel(
                 'model-id-2',
                 'eyJpZGVudGl0eSI6ImFsaWNlMyIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwiZGF0YSI6eyJjdXN0b21EYXRhIjoicXdlcnR5In0sInNjb3BlIjoiYXBwbGljYXRpb24iLCJpbmZvIjp7ImRldmljZSI6ImlQaG9uZTZzIiwiZGV2aWNlX25hbWUiOiJTcGFjZSBncmV5IG9uZSJ9fQ==',
                 new CardContentModel('alice3', 'member', 'public-key-2', CardScope::TYPE_APPLICATION, ['customData' => 'qwerty'], new DeviceInfoModel('iPhone6s', 'Space grey one')),
-                new SignedResponseMetaModel(['sign-id-3' => '_sign3'], new \DateTime('2016-11-04T13:16:17+0000'), 'v4', 'bb5db5084dab511135ec24c2fdc5ce2bca8f7bf6b0b83a7fa4c3cbdcdc740a59')
+                new SignedResponseMetaModel(['sign-id-3' => '_sign3'], new DateTime('2016-11-04T13:16:17+0000'), 'v4')
             ),
         ];
 
@@ -96,7 +97,7 @@ class VirgilClientValidationTest extends TestCase
             'model-id-1',
             'eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwiZGF0YSI6eyJjdXN0b21EYXRhIjoicXdlcnR5In0sInNjb3BlIjoiZ2xvYmFsIiwiaW5mbyI6eyJkZXZpY2UiOiJpUGhvbmU2cyIsImRldmljZV9uYW1lIjoiU3BhY2UgZ3JleSBvbmUifX0=',
             new CardContentModel('alice2', 'member', 'public-key-2', CardScope::TYPE_GLOBAL, ['customData' => 'qwerty'], new DeviceInfoModel('iPhone6s', 'Space grey one')),
-            new SignedResponseMetaModel(['sign-id-3' => 'X3NpZ24z'], new \DateTime('2016-11-04T13:16:17+0000'), 'v4', 'bb5db5084dab511135ec24c2fdc5ce2bca8f7bf6b0b83a7fa4c3cbdcdc740a59')
+            new SignedResponseMetaModel(['sign-id-3' => 'X3NpZ24z'], new DateTime('2016-11-04T13:16:17+0000'), 'v4')
         );
 
         $cardRequest = new CreateCardRequest('alice2', 'member', new Buffer('public-key-2'), CardScope::TYPE_GLOBAL, ['customData' => 'qwerty'], new DeviceInfoModel('iPhone6s', 'Space grey one'));

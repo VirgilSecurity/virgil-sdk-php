@@ -235,7 +235,7 @@ class VirgilCryptoServiceTest extends TestCase
         $this->assertEquals($data, $cipher->decryptWithKey($cipher->createInputOutput(stream_get_contents($sin)), $receiverId, $keys->getPrivateKey()));
 
         rewind($source);
-        $streamCipher->decryptWithKey($streamCipher->createInputOutput($source, $sin), $receiverId, $keys->getPrivateKey());
+        $streamCipher->decryptWithKey($streamCipher->createInputOutput($sin, $source), $receiverId, $keys->getPrivateKey());
 
         rewind($source);
         $this->assertEquals($data, stream_get_contents($source));

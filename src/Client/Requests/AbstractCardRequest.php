@@ -13,6 +13,7 @@ use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
  */
 abstract class AbstractCardRequest
 {
+    /** @var BufferInterface[] $signatures */
     protected $signatures = [];
 
 
@@ -53,7 +54,7 @@ abstract class AbstractCardRequest
     /**
      * Returns card request snapshot.
      *
-     * @return string
+     * @return string base64 encoded snapshot.
      */
     public function snapshot()
     {

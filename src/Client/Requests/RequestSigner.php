@@ -13,6 +13,7 @@ use Virgil\Sdk\Contracts\PrivateKeyInterface;
  */
 class RequestSigner implements RequestSignerInterface
 {
+    /** @var CryptoInterface $crypto */
     private $crypto;
 
 
