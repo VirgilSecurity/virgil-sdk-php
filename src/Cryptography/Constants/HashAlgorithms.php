@@ -7,7 +7,7 @@ use Virgil\Crypto\VirgilHash;
 /**
  * Class keeps list of hash algorithms constants.
  */
-class HashAlgorithm
+class HashAlgorithms
 {
     const MD5 = VirgilHash::Algorithm_MD5;
 

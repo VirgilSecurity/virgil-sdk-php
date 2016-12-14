@@ -2,7 +2,10 @@
 namespace Virgil\Sdk\Client\Http;
 
 
-interface StatusInterface
+/**
+ * Interface represents HTTP status code.
+ */
+interface HttpStatusCodeInterface
 {
     /**
      * Check if status is successful.
@@ -13,9 +16,9 @@ interface StatusInterface
 
 
     /**
-     * Get status value.
+     * Get status code value.
      *
      * @return string
      */
-    public function getStatus();
+    public function getCode();
 }

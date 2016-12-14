@@ -6,7 +6,7 @@ use Virgil\Sdk\BufferInterface;
 
 
 /**
- * Class represents Virgil Cards Service card entity.
+ * Class represents Virgil Cards Service entity.
  */
 class Card
 {

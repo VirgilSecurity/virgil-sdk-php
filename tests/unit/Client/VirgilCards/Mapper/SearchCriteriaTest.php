@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\RuntimeException;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
-use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
-use Virgil\Sdk\Client\Constants\CardScope;
+use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
+use Virgil\Sdk\Client\Constants\CardScopes;
 
 class SearchCriteriaTest extends TestCase
 {
@@ -39,7 +39,7 @@ class SearchCriteriaTest extends TestCase
     {
         return [
             ['{"identities":["user@virgilsecurity.com","another.user@virgilsecurity.com"],"identity_type":"email","scope":"global"}',
-                [['user@virgilsecurity.com', 'another.user@virgilsecurity.com'], 'email', CardScope::TYPE_GLOBAL]
+                [['user@virgilsecurity.com', 'another.user@virgilsecurity.com'], 'email', CardScopes::TYPE_GLOBAL]
             ],
             ['{"identities":["user2@virgilsecurity.com","another.user2@virgilsecurity.com"]}',
                 [['user2@virgilsecurity.com', 'another.user2@virgilsecurity.com']]

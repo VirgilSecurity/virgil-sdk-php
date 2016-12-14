@@ -3,7 +3,7 @@ namespace Virgil\Sdk\Client\VirgilCards;
 
 
 /**
- * Class keeps known Cards Service errors.
+ * Class keeps list of known Cards Service errors.
  */
 class CardsErrorMessages
 {

@@ -5,9 +5,9 @@ namespace Virgil\Sdk\Cryptography\Constants;
 use Virgil\Crypto\VirgilKeyPair;
 
 /**
- * Class keeps list of key pairs type constants.
+ * Class keeps list of key pair types constants.
  */
-class KeyPairType
+class KeyPairTypes
 {
     const RSA256 = VirgilKeyPair::Type_RSA_256;
 

@@ -12,7 +12,7 @@ use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
-use Virgil\Sdk\Client\Constants\CardScope;
+use Virgil\Sdk\Client\Constants\CardScopes;
 
 class SignedRequestModelMapperTest extends TestCase
 {
@@ -91,7 +91,7 @@ class SignedRequestModelMapperTest extends TestCase
         return [
             [
                 '{"content_snapshot":"eyJpZGVudGl0eSI6ImFsaWNlIiwiaWRlbnRpdHlfdHlwZSI6Im1lbWJlciIsInB1YmxpY19rZXkiOiJwdWJsaWMta2V5Iiwic2NvcGUiOiJhcHBsaWNhdGlvbiJ9","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}',
-                ['alice', 'member', 'public-key', CardScope::TYPE_APPLICATION],
+                ['alice', 'member', 'public-key', CardScopes::TYPE_APPLICATION],
                 [['sign-id-1' => '_sign1', 'sign-id-2' => '_sign2']],
             ],
             [
@@ -100,7 +100,7 @@ class SignedRequestModelMapperTest extends TestCase
                     'alice2',
                     'member',
                     'public-key-2',
-                    CardScope::TYPE_GLOBAL,
+                    CardScopes::TYPE_GLOBAL,
                     ['customData' => 'qwerty'],
                     new DeviceInfoModel('iPhone6s', 'Space grey one'),
                 ],

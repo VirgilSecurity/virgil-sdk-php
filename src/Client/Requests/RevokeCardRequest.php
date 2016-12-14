@@ -10,6 +10,9 @@ use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 
+/**
+ * Class represents request for card revoking.
+ */
 class RevokeCardRequest extends AbstractCardRequest
 {
     /** @var string $id */

@@ -1,10 +1,10 @@
 <?php
-namespace Virgil\Tests\Unit\Client\Http;
+namespace Virgil\Tests\Unit\Client\Http\Curl;
 
 
 use PHPUnit\Framework\TestCase;
+use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
 
-use Virgil\Sdk\Client\Http\CurlRequestFactory;
 
 class CurlRequestFactoryTest extends TestCase
 {

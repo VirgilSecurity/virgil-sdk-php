@@ -1,10 +1,10 @@
 <?php
-namespace Virgil\Tests\Unit\Cryptography;
+namespace Virgil\Tests\Unit\Cryptography\Core;
 
 
 use PHPUnit\Framework\TestCase;
 
-use Virgil\Sdk\Cryptography\Constants\KeyPairType;
+use Virgil\Sdk\Cryptography\Constants\KeyPairTypes;
 use Virgil\Sdk\Cryptography\Core\Cipher\VirgilCipher;
 use Virgil\Sdk\Cryptography\Core\Cipher\VirgilStreamCipher;
 use Virgil\Sdk\Cryptography\Core\VirgilCryptoService;
@@ -22,8 +22,8 @@ class VirgilCryptoServiceTest extends TestCase
 
     public function testThisShouldGenerateKeys()
     {
-        $key = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
-        $key2 = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $key = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
+        $key2 = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
 
         $this->assertTrue($this->cryptoService->isKeyPair($key->getPublicKey(), $key->getPrivateKey()));
         $this->assertFalse($this->cryptoService->isKeyPair($key2->getPublicKey(), $key->getPrivateKey()));
@@ -63,8 +63,8 @@ class VirgilCryptoServiceTest extends TestCase
 
     public function testExtractPublicKey()
     {
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
-        $keys2 = $this->cryptoService->generateKeyPair(KeyPairType::EC_BP384R1);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
+        $keys2 = $this->cryptoService->generateKeyPair(KeyPairTypes::EC_BP384R1);
         $extractedPublicKey = $this->cryptoService->extractPublicKey($keys->getPrivateKey(), '');
         $this->assertEquals($keys->getPublicKey(), $extractedPublicKey);
 
@@ -82,14 +82,14 @@ class VirgilCryptoServiceTest extends TestCase
 
     public function testEncryptPrivateKey()
     {
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $encryptedPrivateKey = $this->cryptoService->encryptPrivateKey($keys->getPrivateKey(), 'qwerty');
         $this->assertNotEquals($keys->getPrivateKey(), $encryptedPrivateKey);
     }
 
     public function testDecryptPrivateKey()
     {
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $encryptedPrivateKey = $this->cryptoService->encryptPrivateKey($keys->getPrivateKey(), 'qwerty');
         $this->assertNotEquals($keys->getPrivateKey(), $encryptedPrivateKey);
         $decryptedPrivateKey = $this->cryptoService->decryptPrivateKey($encryptedPrivateKey, 'qwerty');
@@ -120,7 +120,7 @@ class VirgilCryptoServiceTest extends TestCase
     {
         $data = 'data';
         $signature = 'wrong signature';
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $isValid = $this->cryptoService->verify($data, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
     }
@@ -134,7 +134,7 @@ class VirgilCryptoServiceTest extends TestCase
         $data = 'data';
         fwrite($source, $data);
         $signature = 'wrong signature';
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $isValid = $this->cryptoService->verifyStream($source, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
     }
@@ -150,12 +150,12 @@ class VirgilCryptoServiceTest extends TestCase
     public function testDataIsSignedAndVerified()
     {
         $data = 'data';
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $signature = $this->cryptoService->sign($data, $keys->getPrivateKey());
         $isValid = $this->cryptoService->verify($data, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
 
-        $keys2 = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys2 = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $isValid = $this->cryptoService->verify($data, $signature, $keys2->getPublicKey());
         $this->assertFalse($isValid);
     }
@@ -174,12 +174,12 @@ class VirgilCryptoServiceTest extends TestCase
         $source = fopen('php://memory', 'r+');
         $data = 'data';
         fwrite($source, $data);
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $signature = $this->cryptoService->signStream($source, $keys->getPrivateKey());
         $isValid = $this->cryptoService->verifyStream($source, $signature, $keys->getPublicKey());
         $this->assertTrue($isValid);
 
-        $keys2 = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys2 = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         $isValid = $this->cryptoService->verifyStream($source, $signature, $keys2->getPublicKey());
         $this->assertFalse($isValid);
     }
@@ -191,7 +191,7 @@ class VirgilCryptoServiceTest extends TestCase
     {
         $data = 'data';
         $receiverId = 'SALGH&';
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         /** @var VirgilCipher $cipher */
         $cipher = $this->cryptoService->createCipher();
         $encryptedData = $cipher->encrypt($cipher->createInputOutput($data));
@@ -202,7 +202,7 @@ class VirgilCryptoServiceTest extends TestCase
     {
         $data = 'data';
         $receiverId = 'SALGH&';
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
         /** @var VirgilCipher $cipher */
         $cipher = $this->cryptoService->createCipher();
         $cipher->addKeyRecipient($receiverId, $keys->getPublicKey());
@@ -218,7 +218,7 @@ class VirgilCryptoServiceTest extends TestCase
 
         fwrite($source, $data);
         $receiverId = 'fsat3';
-        $keys = $this->cryptoService->generateKeyPair(KeyPairType::FAST_EC_ED25519);
+        $keys = $this->cryptoService->generateKeyPair(KeyPairTypes::FAST_EC_ED25519);
 
         /** @var VirgilStreamCipher $streamCipher */
         $streamCipher = $this->cryptoService->createStreamCipher();

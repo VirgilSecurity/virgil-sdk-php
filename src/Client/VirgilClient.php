@@ -4,21 +4,20 @@ namespace Virgil\Sdk\Client;
 
 use Virgil\Sdk\Buffer;
 
+use Virgil\Sdk\Client\Requests;
+
 use Virgil\Sdk\Client\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilCards\CardsService;
 use Virgil\Sdk\Client\VirgilCards\CardsServiceInterface;
 use Virgil\Sdk\Client\VirgilCards\Mapper;
 
-use Virgil\Sdk\Client\Requests;
-
-use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
-
-use Virgil\Sdk\Client\Http\CurlClient;
-use Virgil\Sdk\Client\Http\CurlRequestFactory;
 
 use Virgil\Sdk\Client\Validator\CardValidationException;
 use Virgil\Sdk\Client\Validator\CardValidatorInterface;
+
+use Virgil\Sdk\Client\Http\Curl\CurlClient;
+use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
 
 /**
  * Before you can use any Virgil services features in your app, you must first initialize VirgilClient class.
@@ -69,13 +68,13 @@ class VirgilClient
     /**
      * Performs the Virgil Cards service searching by criteria.
      *
-     * @param SearchCriteria $criteria
+     * @param Requests\SearchCardRequest $searchCardRequest
      *
      * @return Card[]
      */
-    public function searchCards(SearchCriteria $criteria)
+    public function searchCards(Requests\SearchCardRequest $searchCardRequest)
     {
-        $response = $this->cardsService->search($criteria);
+        $response = $this->cardsService->search($searchCardRequest->getSearchCriteria());
 
         $responseModelToCard = function (SignedResponseModel $responseModel) {
             return $this->buildAndVerifyCard($responseModel);

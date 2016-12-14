@@ -15,6 +15,7 @@ interface RequestSignerInterface
      * @param AbstractCardRequest $request
      * @param PrivateKeyInterface $signerPrivateKey
      *
+     * @return RequestSignerInterface
      */
     public function selfSign(AbstractCardRequest $request, PrivateKeyInterface $signerPrivateKey);
 
@@ -26,6 +27,7 @@ interface RequestSignerInterface
      * @param string              $appId
      * @param PrivateKeyInterface $signerPrivateKey
      *
+     * @return RequestSignerInterface
      */
     public function authoritySign(AbstractCardRequest $request, $appId, PrivateKeyInterface $signerPrivateKey);
 }

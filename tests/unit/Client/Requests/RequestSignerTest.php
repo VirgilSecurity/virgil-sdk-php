@@ -1,11 +1,11 @@
 <?php
-namespace Virgil\Tests\Unit\Client;
+namespace Virgil\Tests\Unit\Client\Requests;
 
 
 use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Buffer;
-use Virgil\Sdk\Client\Constants\CardScope;
+use Virgil\Sdk\Client\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\RequestSigner;
 use Virgil\Sdk\Cryptography\Core\VirgilCryptoService;
@@ -24,7 +24,7 @@ class RequestSignerTest extends TestCase
         $keys = $cryptoMock->generateKeys();
 
         $request = new CreateCardRequest(
-            'user', 'member', $cryptoMock->exportPublicKey($keys->getPublicKey()), CardScope::TYPE_APPLICATION
+            'user', 'member', $cryptoMock->exportPublicKey($keys->getPublicKey()), CardScopes::TYPE_APPLICATION
         );
 
         $fingerprint = $cryptoMock->calculateFingerprint(Buffer::fromBase64($request->snapshot()));
@@ -53,7 +53,7 @@ class RequestSignerTest extends TestCase
         $keys = $cryptoMock->generateKeys();
 
         $request = new CreateCardRequest(
-            'user', 'member', $cryptoMock->exportPublicKey($keys->getPublicKey()), CardScope::TYPE_APPLICATION
+            'user', 'member', $cryptoMock->exportPublicKey($keys->getPublicKey()), CardScopes::TYPE_APPLICATION
         );
 
         $fingerprint = $cryptoMock->calculateFingerprint(Buffer::fromBase64($request->snapshot()));

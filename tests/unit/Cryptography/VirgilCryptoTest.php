@@ -11,8 +11,8 @@ use Virgil\Sdk\Cryptography\VirgilKeyPair;
 use Virgil\Sdk\Cryptography\Core\VirgilKeyPair as CoreVirgilKeyPair;
 use Virgil\Sdk\Cryptography\PrivateKeyReference;
 use Virgil\Sdk\Cryptography\PublicKeyReference;
-use Virgil\Sdk\Cryptography\Constants\HashAlgorithm;
-use Virgil\Sdk\Cryptography\Constants\KeyPairType;
+use Virgil\Sdk\Cryptography\Constants\HashAlgorithms;
+use Virgil\Sdk\Cryptography\Constants\KeyPairTypes;
 
 class VirgilCryptoTest extends TestCase
 {
@@ -37,7 +37,7 @@ class VirgilCryptoTest extends TestCase
 
         $cryptoServiceMock->expects($this->once())
                             ->method('generateKeyPair')
-                            ->with(KeyPairType::FAST_EC_ED25519)
+                            ->with(KeyPairTypes::FAST_EC_ED25519)
                             ->willReturn($virgilKeyPair)
         ;
 
@@ -58,8 +58,8 @@ class VirgilCryptoTest extends TestCase
                             ->will(
                                 $this->returnValueMap(
                                     [
-                                        [$privateKey, HashAlgorithm::SHA256, $privateKeyHash->getData()],
-                                        [$publicKey, HashAlgorithm::SHA256, $publicKeyHash->getData()],
+                                        [$privateKey, HashAlgorithms::SHA256, $privateKeyHash->getData()],
+                                        [$publicKey, HashAlgorithms::SHA256, $publicKeyHash->getData()],
                                     ]
                                 )
                             )
@@ -123,7 +123,7 @@ class VirgilCryptoTest extends TestCase
 
         $cryptoServiceMock->expects($this->once())
                             ->method('computeHash')
-                            ->with($content, HashAlgorithm::SHA256)
+                            ->with($content, HashAlgorithms::SHA256)
                             ->willReturn('fingerprint_content_hash')
         ;
 
@@ -230,7 +230,7 @@ class VirgilCryptoTest extends TestCase
                             ->method('computeHash')
                             ->with(
                                 $this->anything(),
-                                HashAlgorithm::SHA256
+                                HashAlgorithms::SHA256
                             )
                             ->willReturn('fingerprint_content_hash')
         ;
@@ -322,7 +322,7 @@ class VirgilCryptoTest extends TestCase
                             ->method('computeHash')
                             ->with(
                                 $exportedKey->getData(),
-                                HashAlgorithm::SHA256
+                                HashAlgorithms::SHA256
                             )
                             ->willReturn('fingerprint_content_hash')
         ;

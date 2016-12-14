@@ -36,6 +36,8 @@ class RequestSigner implements RequestSignerInterface
         $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()));
         $signature = $this->crypto->sign($fingerprint->getData(), $signerPrivateKey);
         $request->appendSignature($fingerprint->toHex(), $signature);
+
+        return $this;
     }
 
 
@@ -47,5 +49,7 @@ class RequestSigner implements RequestSignerInterface
         $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()));
         $signature = $this->crypto->sign($fingerprint->getData(), $signerPrivateKey);
         $request->appendSignature($appId, $signature);
+
+        return $this;
     }
 }

@@ -2,12 +2,15 @@
 namespace Virgil\Sdk\Client\Http;
 
 
+/**
+ * Interface represents HTTP response.
+ */
 interface ResponseInterface
 {
     /**
      * Get raw response body.
      *
-     * @return mixed
+     * @return string
      */
     public function getBody();
 
@@ -15,7 +18,7 @@ interface ResponseInterface
     /**
      * Get raw response headers.
      *
-     * @return mixed
+     * @return string
      */
     public function getHeaders();
 
@@ -23,7 +26,7 @@ interface ResponseInterface
     /**
      * Get HTTP response status.
      *
-     * @return StatusInterface
+     * @return HttpStatusCodeInterface
      */
-    public function getHttpStatus();
+    public function getHttpStatusCode();
 }

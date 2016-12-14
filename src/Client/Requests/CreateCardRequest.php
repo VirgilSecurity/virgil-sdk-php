@@ -12,7 +12,7 @@ use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 
-use Virgil\Sdk\Client\Constants\CardScope;
+use Virgil\Sdk\Client\Constants\CardScopes;
 
 /**
  * Class represents request for card creation.
@@ -52,7 +52,7 @@ class CreateCardRequest extends AbstractCardRequest
         $identity,
         $identityType,
         BufferInterface $publicKey,
-        $scope = CardScope::TYPE_APPLICATION,
+        $scope = CardScopes::TYPE_APPLICATION,
         $data = [],
         DeviceInfoModel $info = null
     ) {

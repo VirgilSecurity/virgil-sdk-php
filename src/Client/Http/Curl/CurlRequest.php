@@ -1,15 +1,22 @@
 <?php
-namespace Virgil\Sdk\Client\Http;
+namespace Virgil\Sdk\Client\Http\Curl;
 
 
+/**
+ * Class aims initialize cURL session and provides necessary methods to perform configuration, execution and closing
+ * the session.
+ */
 class CurlRequest implements RequestInterface
 {
+    /** @var resource $handle */
     private $handle;
+
+    /** @var $options */
     private $options;
 
 
     /**
-     * CurlRequest constructor.
+     * Class constructor.
      *
      * @param string $url
      */
@@ -20,9 +27,7 @@ class CurlRequest implements RequestInterface
 
 
     /**
-     * Execute curl request.
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function execute()
     {
@@ -33,38 +38,25 @@ class CurlRequest implements RequestInterface
 
 
     /**
-     * Get info from request.
-     *
-     * @param string $name
-     *
-     * @return mixed
+     * @inheritdoc
      */
-    public function getInfo($name = null)
+    public function getInfo($option = null)
     {
-        return $name !== null ? curl_getinfo($this->handle, $name) : curl_getinfo($this->handle);
+        return $option !== null ? curl_getinfo($this->handle, $option) : curl_getinfo($this->handle);
     }
 
 
     /**
-     * Set request option.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return void
+     * @inheritdoc
      */
-    public function setOption($name, $value)
+    public function setOption($name, $option)
     {
-        $this->options[$name] = $value;
+        $this->options[$name] = $option;
     }
 
 
     /**
-     * Set request options.
-     *
-     * @param array $options
-     *
-     * @return void
+     * @inheritdoc
      */
     public function setOptions(array $options)
     {
@@ -73,9 +65,7 @@ class CurlRequest implements RequestInterface
 
 
     /**
-     * Get all request options.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getOptions()
     {
@@ -84,9 +74,7 @@ class CurlRequest implements RequestInterface
 
 
     /**
-     * Close a curl session.
-     *
-     * @return void
+     * @inheritdoc
      */
     public function close()
     {

@@ -1,14 +1,18 @@
 <?php
-namespace Virgil\Sdk\Client\Http;
+namespace Virgil\Sdk\Client\Http\Curl;
 
 
+/**
+ * Class provides factory for creation curl requests.
+ */
 class CurlRequestFactory implements RequestFactoryInterface
 {
+    /** @var array $defaultOptions */
     protected $defaultOptions = [];
 
 
     /**
-     * CurlRequestFactory constructor.
+     * Class constructor.
      *
      * @param array $options
      */

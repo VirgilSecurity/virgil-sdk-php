@@ -6,10 +6,9 @@ use Virgil\Sdk\Client\VirgilCards\Mapper\ModelMappersCollectionInterface;
 
 use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 
-use Virgil\Sdk\Client\Http\ClientInterface;
+use Virgil\Sdk\Client\Http\HttpClientInterface;
 use Virgil\Sdk\Client\Http\ResponseInterface;
 
 /**
@@ -26,7 +25,7 @@ class CardsService implements CardsServiceInterface
         500 => 'Server error',
     ];
 
-    /** @var ClientInterface $httpClient */
+    /** @var HttpClientInterface $httpClient */
     private $httpClient;
 
     /** @var ModelMappersCollectionInterface $mappers */
@@ -40,12 +39,12 @@ class CardsService implements CardsServiceInterface
      * Class constructor.
      *
      * @param CardsServiceParamsInterface     $params
-     * @param ClientInterface                 $httpClient
+     * @param HttpClientInterface             $httpClient
      * @param ModelMappersCollectionInterface $mappers
      */
     public function __construct(
         CardsServiceParamsInterface $params,
-        ClientInterface $httpClient,
+        HttpClientInterface $httpClient,
         ModelMappersCollectionInterface $mappers
     ) {
         $this->httpClient = $httpClient;
@@ -62,13 +61,16 @@ class CardsService implements CardsServiceInterface
         $request = function () use ($model) {
             return $this->httpClient->post(
                 $this->params->getCreateUrl(),
-                $this->mappers->getSignedRequestModelMapper()->toJson($model)
+                $this->mappers->getSignedRequestModelMapper()
+                              ->toJson($model)
             );
         };
 
         $response = $this->makeRequest($request);
 
-        return $this->mappers->getSignedResponseModelMapper()->toModel($response->getBody());
+        return $this->mappers->getSignedResponseModelMapper()
+                             ->toModel($response->getBody())
+            ;
     }
 
 
@@ -83,7 +85,8 @@ class CardsService implements CardsServiceInterface
 
             return $this->httpClient->delete(
                 $this->params->getDeleteUrl($cardContent->getId()),
-                $this->mappers->getSignedRequestModelMapper()->toJson($model)
+                $this->mappers->getSignedRequestModelMapper()
+                              ->toJson($model)
             );
         };
 
@@ -99,13 +102,16 @@ class CardsService implements CardsServiceInterface
         $request = function () use ($model) {
             return $this->httpClient->post(
                 $this->params->getSearchUrl(),
-                $this->mappers->getSearchCriteriaRequestMapper()->toJson($model)
+                $this->mappers->getSearchCriteriaRequestMapper()
+                              ->toJson($model)
             );
         };
 
         $response = $this->makeRequest($request);
 
-        return $this->mappers->getSearchCriteriaResponseMapper()->toModel($response->getBody());
+        return $this->mappers->getSearchCriteriaResponseMapper()
+                             ->toModel($response->getBody())
+            ;
     }
 
 
@@ -120,7 +126,9 @@ class CardsService implements CardsServiceInterface
 
         $response = $this->makeRequest($request);
 
-        return $this->mappers->getSignedResponseModelMapper()->toModel($response->getBody());
+        return $this->mappers->getSignedResponseModelMapper()
+                             ->toModel($response->getBody())
+            ;
     }
 
 
@@ -137,14 +145,20 @@ class CardsService implements CardsServiceInterface
         /** @var ResponseInterface $result */
         $result = call_user_func($request);
 
-        if (!$result->getHttpStatus()->isSuccess()) {
+        if (!$result->getHttpStatusCode()
+                    ->isSuccess()
+        ) {
             /** @var ErrorResponseModel $response */
-            $response = $this->mappers->getErrorResponseModelMapper()->toModel($result->getBody());
+            $response = $this->mappers->getErrorResponseModelMapper()
+                                      ->toModel($result->getBody())
+            ;
 
-            $httpStatus = (int)$result->getHttpStatus()->getStatus();
-            $serviceErrorMessage = $response->getMessageOrDefault(self::DEFAULT_ERROR_MESSAGES[$httpStatus]);
+            $httpStatusCode = $result->getHttpStatusCode()
+                                      ->getCode()
+            ;
+            $serviceErrorMessage = $response->getMessageOrDefault(self::DEFAULT_ERROR_MESSAGES[(int)$httpStatusCode]);
 
-            throw new CardsServiceException($serviceErrorMessage, $httpStatus);
+            throw new CardsServiceException($serviceErrorMessage, $httpStatusCode, $response->getCode());
         }
 
         return $result;

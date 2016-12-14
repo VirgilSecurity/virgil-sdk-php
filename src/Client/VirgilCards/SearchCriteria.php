@@ -1,13 +1,9 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilCards\Model;
+namespace Virgil\Sdk\Client\VirgilCards;
 
 
 /**
  * Class provides search criteria for Virgil Cards Service.
- *
- * TODO: add search criteria builder for convenient usage.
- * SearchQuery::builder().identity('identity1').identity('identity2).identityType('email').scope('global').build()
- * @package Virgil\Sdk\Client\Model
  */
 class SearchCriteria
 {

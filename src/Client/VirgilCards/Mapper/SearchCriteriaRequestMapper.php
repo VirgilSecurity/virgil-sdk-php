@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
+use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
 
 /**
  * Class transforms search criteria request to json.

@@ -1,11 +1,14 @@
 <?php
-namespace Virgil\Sdk\Client\Http;
+namespace Virgil\Sdk\Client\Http\Curl;
 
 
+/**
+ * Interface provides methods for curl request creation and configuration.
+ */
 interface RequestFactoryInterface
 {
     /**
-     * Creates RequestInterface by given options.
+     * Creates curl request by given options.
      *
      * @param array $options
      *
@@ -19,7 +22,7 @@ interface RequestFactoryInterface
      *
      * @param array $options
      *
-     * @return mixed
+     * @return void
      */
     public function setDefaultOptions(array $options);
 }

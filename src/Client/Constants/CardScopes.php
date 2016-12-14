@@ -2,7 +2,10 @@
 namespace Virgil\Sdk\Client\Constants;
 
 
-class CardScope
+/**
+ * Class keeps list of card scope constants.
+ */
+class CardScopes
 {
     const TYPE_APPLICATION = 'application';
 

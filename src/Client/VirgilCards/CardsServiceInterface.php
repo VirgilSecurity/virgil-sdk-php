@@ -2,7 +2,6 @@
 namespace Virgil\Sdk\Client\VirgilCards;
 
 
-use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 

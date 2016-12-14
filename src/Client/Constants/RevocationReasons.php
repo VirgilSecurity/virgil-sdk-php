@@ -2,7 +2,10 @@
 namespace Virgil\Sdk\Client\Constants;
 
 
-class RevocationReason
+/**
+ * Class keeps list of revocation reason constants.
+ */
+class RevocationReasons
 {
     const UNSPECIFIED_TYPE = 'unspecified';
 

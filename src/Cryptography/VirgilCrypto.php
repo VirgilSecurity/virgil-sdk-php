@@ -9,8 +9,8 @@ use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
-use Virgil\Sdk\Cryptography\Constants\HashAlgorithm;
-use Virgil\Sdk\Cryptography\Constants\KeyPairType;
+use Virgil\Sdk\Cryptography\Constants\HashAlgorithms;
+use Virgil\Sdk\Cryptography\Constants\KeyPairTypes;
 
 use Virgil\Sdk\Cryptography\Core\Cipher\InputOutputInterface;
 use Virgil\Sdk\Cryptography\Core\Cipher\CipherInterface;
@@ -62,17 +62,17 @@ class VirgilCrypto implements CryptoInterface
      *
      * @return VirgilKeyPair
      */
-    public function generateKeys($cryptoType = KeyPairType::FAST_EC_ED25519)
+    public function generateKeys($cryptoType = KeyPairTypes::FAST_EC_ED25519)
     {
         $keyPair = $this->cryptoService->generateKeyPair($cryptoType);
         $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($keyPair->getPublicKey());
         $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($keyPair->getPrivateKey());
 
         $publicKeyHash = new Buffer(
-            $this->cryptoService->computeHash($publicKeyDerEncoded, HashAlgorithm::SHA256)
+            $this->cryptoService->computeHash($publicKeyDerEncoded, HashAlgorithms::SHA256)
         );
         $privateKeyHash = new Buffer(
-            $this->cryptoService->computeHash($privateKeyDerEncoded, HashAlgorithm::SHA256)
+            $this->cryptoService->computeHash($privateKeyDerEncoded, HashAlgorithms::SHA256)
         );
 
         $publicKeyReference = new PublicKeyReference($publicKeyHash->toHex());
@@ -183,7 +183,7 @@ class VirgilCrypto implements CryptoInterface
      */
     public function calculateFingerprint(BufferInterface $content)
     {
-        $contentHash = $this->cryptoService->computeHash($content->getData(), HashAlgorithm::SHA256);
+        $contentHash = $this->cryptoService->computeHash($content->getData(), HashAlgorithms::SHA256);
 
         return new Buffer($contentHash);
     }
@@ -255,7 +255,7 @@ class VirgilCrypto implements CryptoInterface
 
         $extractedPublicKey = $this->cryptoService->extractPublicKey($privateKeyEntry->getValue(), '');
         $extractedPublicKeyHash = new Buffer(
-            $this->cryptoService->computeHash($extractedPublicKey, HashAlgorithm::SHA256)
+            $this->cryptoService->computeHash($extractedPublicKey, HashAlgorithms::SHA256)
         );
 
         $publicKeyReference = new PublicKeyReference($extractedPublicKeyHash->toHex());
@@ -307,14 +307,14 @@ class VirgilCrypto implements CryptoInterface
         }
 
         $privateKeyHash = new Buffer(
-            $this->cryptoService->computeHash($privateKeyDerEncoded, HashAlgorithm::SHA256)
+            $this->cryptoService->computeHash($privateKeyDerEncoded, HashAlgorithms::SHA256)
         );
 
         $privateKeyReference = new PrivateKeyReference($privateKeyHash->toHex());
 
         $publicKeyHash = $this->cryptoService->computeHash(
             $this->cryptoService->extractPublicKey($privateKeyDerEncoded, ''),
-            HashAlgorithm::SHA256
+            HashAlgorithms::SHA256
         );
 
         $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($privateKeyDerEncoded);
@@ -333,7 +333,7 @@ class VirgilCrypto implements CryptoInterface
     public function importPublicKey(BufferInterface $exportedPublicKey)
     {
         $publicKeyHash = new Buffer(
-            $this->cryptoService->computeHash($exportedPublicKey->getData(), HashAlgorithm::SHA256)
+            $this->cryptoService->computeHash($exportedPublicKey->getData(), HashAlgorithms::SHA256)
         );
         $publicKeyReference = new PublicKeyReference($publicKeyHash->toHex());
 

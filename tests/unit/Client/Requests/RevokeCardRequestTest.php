@@ -1,11 +1,11 @@
 <?php
-namespace Virgil\Tests\Unit\Client;
+namespace Virgil\Tests\Unit\Client\Requests;
 
 
 use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Buffer;
-use Virgil\Sdk\Client\Constants\RevocationReason;
+use Virgil\Sdk\Client\Constants\RevocationReasons;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
 class RevokeCardRequestTest extends TestCase
@@ -18,7 +18,7 @@ class RevokeCardRequestTest extends TestCase
         ];
 
         $request = new RevokeCardRequest(
-            'card-id', RevocationReason::COMPROMISED_TYPE
+            'card-id', RevocationReasons::COMPROMISED_TYPE
         );
 
         foreach ($signs as $signKey => $sign) {
