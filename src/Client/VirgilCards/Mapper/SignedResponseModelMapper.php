@@ -4,6 +4,8 @@ namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 use DateTime;
 
+use Virgil\Sdk\Client\AbstractJsonModelMapper;
+
 use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseMetaModel;

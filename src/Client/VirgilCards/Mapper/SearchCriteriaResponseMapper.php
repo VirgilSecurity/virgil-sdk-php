@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
+use Virgil\Sdk\Client\AbstractJsonModelMapper;
+
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 
 /**

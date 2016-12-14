@@ -1,6 +1,10 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilCards\Mapper;
+namespace Virgil\Sdk\Client\Requests\Mapper;
 
+
+use Virgil\Sdk\Client\AbstractJsonModelMapper;
+
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;

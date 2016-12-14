@@ -10,7 +10,7 @@ use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
-use Virgil\Sdk\Client\Constants\CardScopes;
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 class SignedResponseModelMapperTest extends TestCase
 {

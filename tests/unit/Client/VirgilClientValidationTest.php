@@ -3,24 +3,30 @@ namespace Virgil\Tests\Unit\Client;
 
 
 use DateTime;
+
 use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Buffer;
+
+use Virgil\Sdk\Cryptography\VirgilCrypto;
+
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
+
 use Virgil\Sdk\Client\VirgilCards\CardsService;
+
 use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SearchCriteria;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
-use Virgil\Sdk\Client\Constants\CardScopes;
+
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
+
 use Virgil\Sdk\Client\Validator\CardValidator;
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\VirgilClientParams;
-use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class VirgilClientValidationTest extends TestCase
 {

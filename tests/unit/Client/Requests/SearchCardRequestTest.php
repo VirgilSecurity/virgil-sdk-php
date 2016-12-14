@@ -3,8 +3,10 @@ namespace Virgil\Tests\Unit\Client\Requests;
 
 
 use PHPUnit\Framework\TestCase;
-use Virgil\Sdk\Client\Constants\CardScopes;
+
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
+
 use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
 
 class SearchCardRequestTest extends TestCase

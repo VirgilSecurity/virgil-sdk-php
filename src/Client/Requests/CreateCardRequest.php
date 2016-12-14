@@ -5,14 +5,16 @@ namespace Virgil\Sdk\Client\Requests;
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\BufferInterface;
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
+use Virgil\Sdk\Client\Requests\Mapper\CreateRequestModelMapper;
+
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 
-use Virgil\Sdk\Client\Constants\CardScopes;
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 /**
  * Class represents request for card creation.
@@ -106,7 +108,7 @@ class CreateCardRequest extends AbstractCardRequest
      */
     public static function getRequestModelJsonMapper()
     {
-        return new CreateRequestModelMapper(new SignedRequestModelMapper());
+        return new CreateRequestModelMapper(new SignedRequestModelMapper(), new SignedResponseModelMapper());
     }
 
 

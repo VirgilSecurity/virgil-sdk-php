@@ -4,15 +4,18 @@ namespace Virgil\Tests\Unit\Client\VirgilCards\Mapper;
 
 use PHPUnit\Framework\TestCase;
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
+
+use Virgil\Sdk\Client\Requests\Mapper\CreateRequestModelMapper;
+use Virgil\Sdk\Client\Requests\Mapper\RevokeRequestModelMapper;
+
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
-use Virgil\Sdk\Client\Constants\CardScopes;
 
 class SignedRequestModelMapperTest extends TestCase
 {
@@ -23,10 +26,12 @@ class SignedRequestModelMapperTest extends TestCase
      * @param $contentData
      * @param $metaData
      */
-    public function testMapSignedCreateRequestModelToJson ($expectedJson, $contentData, $metaData)
+    public function testMapSignedCreateRequestModelToJson($expectedJson, $contentData, $metaData)
     {
         $mapper = new SignedRequestModelMapper();
-        $model = new SignedRequestModel(new CardContentModel(...$contentData), new SignedRequestMetaModel(...$metaData));
+        $model = new SignedRequestModel(
+            new CardContentModel(...$contentData), new SignedRequestMetaModel(...$metaData)
+        );
 
         $this->assertEquals($expectedJson, $mapper->toJson($model));
     }
@@ -39,10 +44,13 @@ class SignedRequestModelMapperTest extends TestCase
      * @param $contentData
      * @param $metaData
      */
-    public function testMapSignedRevokeRequestModelToJson ($expectedJson, $contentData, $metaData)
+    public function testMapSignedRevokeRequestModelToJson($expectedJson, $contentData, $metaData)
     {
         $mapper = new SignedRequestModelMapper();
-        $model = new SignedRequestModel(new RevokeCardContentModel(...$contentData), new SignedRequestMetaModel(...$metaData));
+        $model = new SignedRequestModel(
+            new RevokeCardContentModel(...$contentData),
+            new SignedRequestMetaModel(...$metaData)
+        );
 
         $this->assertEquals($expectedJson, $mapper->toJson($model));
     }
@@ -55,11 +63,14 @@ class SignedRequestModelMapperTest extends TestCase
      * @param $contentData
      * @param $metaData
      */
-    public function testMapSignedCreateRequestJsonToModel ($json, $contentData, $metaData)
+    public function testMapSignedCreateRequestJsonToModel($json, $contentData, $metaData)
     {
-        $mapper = new CreateRequestModelMapper(new SignedRequestModelMapper());
+        $mapper = new CreateRequestModelMapper(new SignedRequestModelMapper(), new SignedResponseModelMapper());
 
-        $expectedModel = new SignedRequestModel(new CardContentModel(...$contentData), new SignedRequestMetaModel(...$metaData));
+        $expectedModel = new SignedRequestModel(
+            new CardContentModel(...$contentData),
+            new SignedRequestMetaModel(...$metaData)
+        );
 
         $model = $mapper->toModel($json);
 
@@ -74,11 +85,14 @@ class SignedRequestModelMapperTest extends TestCase
      * @param $contentData
      * @param $metaData
      */
-    public function testMapSignedRevokeRequestJsonToModel ($json, $contentData, $metaData)
+    public function testMapSignedRevokeRequestJsonToModel($json, $contentData, $metaData)
     {
         $mapper = new RevokeRequestModelMapper(new SignedRequestModelMapper());
 
-        $expectedModel = new SignedRequestModel(new RevokeCardContentModel(...$contentData), new SignedRequestMetaModel(...$metaData));
+        $expectedModel = new SignedRequestModel(
+            new RevokeCardContentModel(...$contentData),
+            new SignedRequestMetaModel(...$metaData)
+        );
 
         $model = $mapper->toModel($json);
 
@@ -86,7 +100,7 @@ class SignedRequestModelMapperTest extends TestCase
     }
 
 
-    public function createCardDataProvider ()
+    public function createCardDataProvider()
     {
         return [
             [
@@ -110,7 +124,7 @@ class SignedRequestModelMapperTest extends TestCase
     }
 
 
-    public function revokeCardDataProvider ()
+    public function revokeCardDataProvider()
     {
         return [
             [

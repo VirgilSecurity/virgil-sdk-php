@@ -27,7 +27,7 @@ use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
-use Virgil\Sdk\Client\Constants\CardScopes;
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Http\Response;
 use Virgil\Sdk\Client\Http\HttpStatusCode;
 

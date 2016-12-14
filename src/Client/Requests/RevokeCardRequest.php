@@ -4,7 +4,8 @@ namespace Virgil\Sdk\Client\Requests;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
+use Virgil\Sdk\Client\Requests\Mapper\RevokeRequestModelMapper;
+
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;

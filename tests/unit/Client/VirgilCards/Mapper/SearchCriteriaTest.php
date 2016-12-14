@@ -7,7 +7,7 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
 use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
-use Virgil\Sdk\Client\Constants\CardScopes;
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 class SearchCriteriaTest extends TestCase
 {

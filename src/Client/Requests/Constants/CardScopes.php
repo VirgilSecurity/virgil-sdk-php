@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk\Client\Constants;
+namespace Virgil\Sdk\Client\Requests\Constants;
 
 
 /**
