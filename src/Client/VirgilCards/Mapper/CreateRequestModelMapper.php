@@ -42,7 +42,7 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
             $cardContentData['identity'],
             $cardContentData['identity_type'],
             $cardContentData['public_key'],
-            $cardContentData['scope']
+            $cardContentData['scope'],
         ];
 
         if (array_key_exists('data', $cardContentData)) {

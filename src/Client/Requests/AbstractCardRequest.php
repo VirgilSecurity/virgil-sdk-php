@@ -58,7 +58,9 @@ abstract class AbstractCardRequest
      */
     public function snapshot()
     {
-        return $this->getRequestModel()->getSnapshot();
+        $requestModel = $this->getRequestModel();
+
+        return $requestModel->getSnapshot();
     }
 
 
@@ -77,12 +79,11 @@ abstract class AbstractCardRequest
      */
     protected function getCardMeta()
     {
-        $signatures = array_map(
-            function (BufferInterface $signature) {
-                return $signature->toBase64();
-            },
-            $this->signatures
-        );
+        $signatureToBase64Encode = function (BufferInterface $signature) {
+            return $signature->toBase64();
+        };
+
+        $signatures = array_map($signatureToBase64Encode, $this->signatures);
 
         return new SignedRequestMetaModel($signatures);
     }

@@ -65,6 +65,7 @@ class VirgilCrypto implements CryptoInterface
     public function generateKeys($cryptoType = KeyPairTypes::FAST_EC_ED25519)
     {
         $keyPair = $this->cryptoService->generateKeyPair($cryptoType);
+
         $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($keyPair->getPublicKey());
         $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($keyPair->getPrivateKey());
 
@@ -195,7 +196,9 @@ class VirgilCrypto implements CryptoInterface
     public function sign($content, PrivateKeyInterface $signerPrivateKey)
     {
         /** @var PrivateKeyReference $signerPrivateKey */
-        $signerPrivateKeyEntryValue = $this->getKeyEntry($signerPrivateKey)->getValue();
+        $signerPrivateKeyEntry = $this->getKeyEntry($signerPrivateKey);
+
+        $signerPrivateKeyEntryValue = $signerPrivateKeyEntry->getValue();
 
         $signature = $this->cryptoService->sign($content, $signerPrivateKeyEntryValue);
 
@@ -209,7 +212,9 @@ class VirgilCrypto implements CryptoInterface
     public function verify($content, BufferInterface $signature, PublicKeyInterface $signerPublicKey)
     {
         /** @var PublicKeyReference $signerPublicKey */
-        $signerPublicKeyEntryValue = $this->getKeyEntry($signerPublicKey)->getValue();
+        $signerPublicKeyEntry = $this->getKeyEntry($signerPublicKey);
+
+        $signerPublicKeyEntryValue = $signerPublicKeyEntry->getValue();
 
         return $this->cryptoService->verify(
             $content,
@@ -225,7 +230,9 @@ class VirgilCrypto implements CryptoInterface
     public function signStream($source, PrivateKeyInterface $signerPrivateKey)
     {
         /** @var PrivateKeyReference $signerPrivateKey */
-        $signerPrivateKeyEntryValue = $this->getKeyEntry($signerPrivateKey)->getValue();
+        $signerPrivateKeyEntry = $this->getKeyEntry($signerPrivateKey);
+
+        $signerPrivateKeyEntryValue = $signerPrivateKeyEntry->getValue();
 
         $signature = $this->cryptoService->signStream($source, $signerPrivateKeyEntryValue);
 
@@ -239,7 +246,9 @@ class VirgilCrypto implements CryptoInterface
     public function verifyStream($source, BufferInterface $signature, PublicKeyInterface $signerPublicKey)
     {
         /** @var PublicKeyReference $signerPublicKey */
-        $signerPublicKeyEntryValue = $this->getKeyEntry($signerPublicKey)->getValue();
+        $signerPublicKeyEntry = $this->getKeyEntry($signerPublicKey);
+
+        $signerPublicKeyEntryValue = $signerPublicKeyEntry->getValue();
 
         return $this->cryptoService->verifyStream($source, $signature->getData(), $signerPublicKeyEntryValue);
     }
@@ -273,7 +282,9 @@ class VirgilCrypto implements CryptoInterface
     public function exportPublicKey(PublicKeyInterface $publicKey)
     {
         /** @var PublicKeyReference $publicKey */
-        $publicKeyEntryValue = $this->getKeyEntry($publicKey)->getValue();
+        $publicKeyEntry = $this->getKeyEntry($publicKey);
+
+        $publicKeyEntryValue = $publicKeyEntry->getValue();
 
         $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($publicKeyEntryValue);
 
@@ -287,7 +298,9 @@ class VirgilCrypto implements CryptoInterface
     public function exportPrivateKey(PrivateKeyInterface $privateKey, $password = '')
     {
         /** @var PrivateKeyReference $privateKey */
-        $privateKeyEntryValue = $this->getKeyEntry($privateKey)->getValue();
+        $privateKeyEntry = $this->getKeyEntry($privateKey);
+
+        $privateKeyEntryValue = $privateKeyEntry->getValue();
 
         $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($privateKeyEntryValue, $password);
 
@@ -335,6 +348,7 @@ class VirgilCrypto implements CryptoInterface
         $publicKeyHash = new Buffer(
             $this->cryptoService->computeHash($exportedPublicKey->getData(), HashAlgorithms::SHA256)
         );
+
         $publicKeyReference = new PublicKeyReference($publicKeyHash->toHex());
 
         $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($exportedPublicKey->getData());

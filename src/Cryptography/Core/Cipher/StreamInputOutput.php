@@ -17,7 +17,7 @@ class StreamInputOutput implements InputOutputInterface
     /**
      * Class constructor.
      *
-     * @param resource $input is stream source.
+     * @param resource $input  is stream source.
      * @param resource $output is stream destination.
      */
     public function __construct($input, $output)

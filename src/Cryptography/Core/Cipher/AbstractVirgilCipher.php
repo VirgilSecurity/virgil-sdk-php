@@ -1,5 +1,4 @@
 <?php
-
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
@@ -53,7 +52,9 @@ abstract class AbstractVirgilCipher implements CipherInterface
      */
     public function getCustomParam($key)
     {
-        return $this->cipher->customParams()->getData($key);
+        $cipherCustomParams = $this->cipher->customParams();
+
+        return $cipherCustomParams->getData($key);
     }
 
 
@@ -62,7 +63,8 @@ abstract class AbstractVirgilCipher implements CipherInterface
      */
     public function setCustomParam($key, $value)
     {
-        $this->cipher->customParams()->setData($key, $value);
+        $cipherCustomParams = $this->cipher->customParams();
+        $cipherCustomParams->setData($key, $value);
 
         return $this;
     }

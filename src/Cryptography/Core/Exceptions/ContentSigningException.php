@@ -1,5 +1,4 @@
 <?php
-
 namespace Virgil\Sdk\Cryptography\Core\Exceptions;
 
 

@@ -186,25 +186,27 @@ class VirgilClient
      */
     private function responseToCard(SignedResponseModel $responseModel)
     {
-        $responseModelSigns = $responseModel->getMeta()->getSigns();
+        $responseCardModelContent = $responseModel->getCardContent();
+        $responseCardModelContentInfo = $responseCardModelContent->getInfo();
+        $responseCardModelMeta = $responseModel->getMeta();
 
         $responseModelSignsToCardSigns = function ($sign) {
             return Buffer::fromBase64($sign);
         };
 
-        $cardSigns = array_map($responseModelSignsToCardSigns, $responseModelSigns);
+        $cardSigns = array_map($responseModelSignsToCardSigns, $responseCardModelMeta->getSigns());
 
         return new Card(
             $responseModel->getId(),
             Buffer::fromBase64($responseModel->getSnapshot()),
-            $responseModel->getCardContent()->getIdentity(),
-            $responseModel->getCardContent()->getIdentityType(),
-            Buffer::fromBase64($responseModel->getCardContent()->getPublicKey()),
-            $responseModel->getCardContent()->getScope(),
-            $responseModel->getCardContent()->getData(),
-            $responseModel->getCardContent()->getInfo()->getDevice(),
-            $responseModel->getCardContent()->getInfo()->getDeviceName(),
-            $responseModel->getMeta()->getCardVersion(),
+            $responseCardModelContent->getIdentity(),
+            $responseCardModelContent->getIdentityType(),
+            Buffer::fromBase64($responseCardModelContent->getPublicKey()),
+            $responseCardModelContent->getScope(),
+            $responseCardModelContent->getData(),
+            $responseCardModelContentInfo->getDevice(),
+            $responseCardModelContentInfo->getDeviceName(),
+            $responseCardModelMeta->getCardVersion(),
             $cardSigns
         );
     }

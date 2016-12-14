@@ -4,7 +4,6 @@ namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 use DateTime;
 
-
 /**
  * Class represents card meta model response.
  */

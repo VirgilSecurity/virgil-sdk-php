@@ -57,9 +57,7 @@ class SignedResponseModelMapper extends AbstractJsonModelMapper
         $cardContentModel = new CardContentModel(...$cardContentModelArguments);
 
         $cardMetaModel = new SignedResponseMetaModel(
-            $cardMetaData['signs'],
-            new DateTime($cardMetaData['created_at']),
-            $cardMetaData['card_version']
+            $cardMetaData['signs'], new DateTime($cardMetaData['created_at']), $cardMetaData['card_version']
         );
 
         return new SignedResponseModel($data['id'], $data['content_snapshot'], $cardContentModel, $cardMetaModel);

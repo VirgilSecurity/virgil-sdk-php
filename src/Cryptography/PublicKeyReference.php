@@ -3,7 +3,6 @@ namespace Virgil\Sdk\Cryptography;
 
 
 use Virgil\Sdk\Contracts\PublicKeyInterface;
-
 use Virgil\Sdk\Cryptography\KeyEntryStorage\KeyReference;
 
 /**

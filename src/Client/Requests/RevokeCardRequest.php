@@ -44,8 +44,9 @@ class RevokeCardRequest extends AbstractCardRequest
      */
     public static function import($exportedRequest)
     {
+        $requestModelJsonMapper = self::getRequestModelJsonMapper();
         $modelJson = base64_decode($exportedRequest);
-        $model = self::getRequestModelJsonMapper()->toModel($modelJson);
+        $model = $requestModelJsonMapper->toModel($modelJson);
 
         /** @var RevokeCardContentModel $cardContent */
         $cardContent = $model->getCardContent();
@@ -101,7 +102,9 @@ class RevokeCardRequest extends AbstractCardRequest
      */
     public function export()
     {
-        return base64_encode(self::getRequestModelJsonMapper()->toJson($this->getRequestModel()));
+        $requestModelJsonMapper = self::getRequestModelJsonMapper();
+
+        return base64_encode($requestModelJsonMapper->toJson($this->getRequestModel()));
     }
 
 

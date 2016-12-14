@@ -38,8 +38,8 @@ class CardsService implements CardsServiceInterface
     /**
      * Class constructor.
      *
-     * @param CardsServiceParamsInterface     $params
-     * @param HttpClientInterface             $httpClient
+     * @param CardsServiceParamsInterface $params
+     * @param HttpClientInterface $httpClient
      * @param ModelMappersCollectionInterface $mappers
      */
     public function __construct(
@@ -58,19 +58,20 @@ class CardsService implements CardsServiceInterface
      */
     public function create(SignedRequestModel $model)
     {
+        $signedResponseModelMapper = $this->mappers->getSignedResponseModelMapper();
+
         $request = function () use ($model) {
+            $signedRequestModelMapper = $this->mappers->getSignedRequestModelMapper();
+
             return $this->httpClient->post(
                 $this->params->getCreateUrl(),
-                $this->mappers->getSignedRequestModelMapper()
-                              ->toJson($model)
+                $signedRequestModelMapper->toJson($model)
             );
         };
 
         $response = $this->makeRequest($request);
 
-        return $this->mappers->getSignedResponseModelMapper()
-                             ->toModel($response->getBody())
-            ;
+        return $signedResponseModelMapper->toModel($response->getBody());
     }
 
 
@@ -80,13 +81,14 @@ class CardsService implements CardsServiceInterface
     public function delete(SignedRequestModel $model)
     {
         $request = function () use ($model) {
+            $signedRequestModelMapper = $this->mappers->getSignedRequestModelMapper();
+
             /** @var RevokeCardContentModel $cardContent */
             $cardContent = $model->getCardContent();
 
             return $this->httpClient->delete(
                 $this->params->getDeleteUrl($cardContent->getId()),
-                $this->mappers->getSignedRequestModelMapper()
-                              ->toJson($model)
+                $signedRequestModelMapper->toJson($model)
             );
         };
 
@@ -99,19 +101,20 @@ class CardsService implements CardsServiceInterface
      */
     public function search(SearchCriteria $model)
     {
+        $searchCriteriaResponseMapper = $this->mappers->getSearchCriteriaResponseMapper();
+
         $request = function () use ($model) {
+            $searchCriteriaRequestMapper = $this->mappers->getSearchCriteriaRequestMapper();
+
             return $this->httpClient->post(
                 $this->params->getSearchUrl(),
-                $this->mappers->getSearchCriteriaRequestMapper()
-                              ->toJson($model)
+                $searchCriteriaRequestMapper->toJson($model)
             );
         };
 
         $response = $this->makeRequest($request);
 
-        return $this->mappers->getSearchCriteriaResponseMapper()
-                             ->toModel($response->getBody())
-            ;
+        return $searchCriteriaResponseMapper->toModel($response->getBody());
     }
 
 
@@ -120,15 +123,15 @@ class CardsService implements CardsServiceInterface
      */
     public function get($id)
     {
+        $signedResponseModelMapper = $this->mappers->getSignedResponseModelMapper();
+
         $request = function () use ($id) {
             return $this->httpClient->get($this->params->getGetUrl($id));
         };
 
         $response = $this->makeRequest($request);
 
-        return $this->mappers->getSignedResponseModelMapper()
-                             ->toModel($response->getBody())
-            ;
+        return $signedResponseModelMapper->toModel($response->getBody());
     }
 
 
@@ -142,25 +145,25 @@ class CardsService implements CardsServiceInterface
      */
     protected function makeRequest($request)
     {
-        /** @var ResponseInterface $result */
-        $result = call_user_func($request);
+        /** @var ResponseInterface $response */
+        $response = call_user_func($request);
+        $responseHttpStatusCode = $response->getHttpStatusCode();
 
-        if (!$result->getHttpStatusCode()
-                    ->isSuccess()
-        ) {
-            /** @var ErrorResponseModel $response */
-            $response = $this->mappers->getErrorResponseModelMapper()
-                                      ->toModel($result->getBody())
-            ;
+        if (!$responseHttpStatusCode->isSuccess()) {
+            $errorResponseModelMapper = $this->mappers->getErrorResponseModelMapper();
 
-            $httpStatusCode = $result->getHttpStatusCode()
-                                      ->getCode()
-            ;
-            $serviceErrorMessage = $response->getMessageOrDefault(self::DEFAULT_ERROR_MESSAGES[(int)$httpStatusCode]);
+            /** @var ErrorResponseModel $errorResponse */
+            $errorResponse = $errorResponseModelMapper->toModel($response->getBody());
 
-            throw new CardsServiceException($serviceErrorMessage, $httpStatusCode, $response->getCode());
+            $httpStatusCode = $responseHttpStatusCode->getCode();
+            $serviceErrorMessage = $errorResponse->getMessageOrDefault(
+                self::DEFAULT_ERROR_MESSAGES[(int)$httpStatusCode]
+            );
+            $serviceErrorCode = $errorResponse->getCode();
+
+            throw new CardsServiceException($serviceErrorMessage, $httpStatusCode, $serviceErrorCode);
         }
 
-        return $result;
+        return $response;
     }
 }
