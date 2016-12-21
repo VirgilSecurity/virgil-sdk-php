@@ -127,6 +127,7 @@ class CreateCardRequest extends AbstractCardRequest
      * Returns card public key.
      *
      * @return BufferInterface
+     * TODO correct naming of method. Somewhere exists not really correct getPublicKeyData method
      */
     public function getPublicKey()
     {

@@ -88,7 +88,7 @@ class Card
 
     /**
      * Returns the public key.
-     *
+     * TODO May be good name for this method will be getPublicKey() to keep consistency with other methods get + property name.
      * @return BufferInterface
      */
     public function getPublicKeyData()

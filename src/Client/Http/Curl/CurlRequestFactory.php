@@ -24,6 +24,7 @@ class CurlRequestFactory implements RequestFactoryInterface
 
     /**
      * @inheritdoc
+     * TODO is it always need to use this method with provided $options array. May be is it possible to to use default $options = [] parameter
      */
     public function create(array $options)
     {
@@ -36,6 +37,7 @@ class CurlRequestFactory implements RequestFactoryInterface
 
     /**
      * @inheritdoc
+     * TODO return $this in case if nothing useful to return
      */
     public function setDefaultOptions(array $options)
     {

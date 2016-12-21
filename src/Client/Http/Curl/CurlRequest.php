@@ -48,6 +48,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * @inheritdoc
+     * TODO better variable name for $name and $options variables will be $option, $value. CHeck please PHPDoc for curl_setopt() function.
      */
     public function setOption($name, $option)
     {
@@ -57,6 +58,7 @@ class CurlRequest implements RequestInterface
 
     /**
      * @inheritdoc
+     * TODO Return $this to use chains call
      */
     public function setOptions(array $options)
     {
@@ -75,6 +77,8 @@ class CurlRequest implements RequestInterface
 
     /**
      * @inheritdoc
+     * TODO Good idea to check if $this->handle has opened resource only in this case close the CURL session
+     * TODO Return $this to use chains call
      */
     public function close()
     {

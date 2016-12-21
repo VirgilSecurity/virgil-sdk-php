@@ -55,6 +55,7 @@ abstract class AbstractCardRequest
      * Returns card request snapshot.
      *
      * @return string base64 encoded snapshot.
+     * TODO missed 'get' prefix
      */
     public function snapshot()
     {
@@ -76,6 +77,7 @@ abstract class AbstractCardRequest
      * Returns the card meta.
      *
      * @return SignedRequestMetaModel
+     * TODO sometimes I see $signature->toBase64() sometimes Buffer::fromBase64 what the difference?
      */
     protected function getCardMeta()
     {

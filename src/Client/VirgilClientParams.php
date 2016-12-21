@@ -66,6 +66,7 @@ class VirgilClientParams implements VirgilClientParamsInterface
 
     /**
      * @inheritdoc
+     * TODO \InvalidArgumentException move this into the namespace and use only InvalidArgumentException class name
      */
     public function setCardsServiceAddress($cardsServiceAddress)
     {
@@ -90,6 +91,7 @@ class VirgilClientParams implements VirgilClientParamsInterface
 
     /**
      * @inheritdoc
+     * TODO \InvalidArgumentException move this into the namespace and use only InvalidArgumentException class name
      */
     public function setReadCardsServiceAddress($readOnlyCardsServiceAddress)
     {
@@ -131,7 +133,7 @@ class VirgilClientParams implements VirgilClientParamsInterface
      * Checks if given url is valid.
      *
      * @param string $serviceUrl
-     *
+     * TODO may be good idea to rename checkServiceUrl($serviceUrl) -> isValidServiceUrl($serviceUrl) in this case boolean value is expected value from this function
      * @return bool
      */
     private function checkServiceUrl($serviceUrl)

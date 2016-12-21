@@ -67,7 +67,7 @@ class VirgilClient
 
     /**
      * Performs the Virgil Cards service searching by criteria.
-     *
+     * TODO Good idea to move Requests\SearchCardRequest to the namespace section and stay only SearchCardRequest. What the point to use Requests\SearchCardRequest?
      * @param Requests\SearchCardRequest $searchCardRequest
      *
      * @return Card[]
@@ -86,7 +86,7 @@ class VirgilClient
 
     /**
      * Performs the Virgil Cards service card creation by request.
-     *
+     * TODO Good idea to move Requests\SearchCardRequest to the namespace section and stay only CreateCardRequest. What the point to use Requests\CreateCardRequest?
      * @param Requests\CreateCardRequest $request
      *
      * @return Card
@@ -101,7 +101,7 @@ class VirgilClient
 
     /**
      * Performs the Virgil Cards service card revoking by request.
-     *
+     * TODO Good idea to move Requests\SearchCardRequest to the namespace section and stay only RevokeCardRequest. What the point to use Requests\RevokeCardRequest?
      * @param Requests\RevokeCardRequest $request
      *
      * @return void

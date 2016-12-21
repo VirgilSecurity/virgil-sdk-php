@@ -49,6 +49,7 @@ trait KeyEntryStorageTrait
      * @param KeyReference $keyReference
      * @param KeyEntry     $keyEntry
      *
+     * TODO Not sure that we need there return true|false statement
      * @return bool
      */
     protected function persistKeyEntry(KeyReference $keyReference, KeyEntry $keyEntry)

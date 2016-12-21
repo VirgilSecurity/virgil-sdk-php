@@ -67,6 +67,7 @@ class VirgilCryptoService implements CryptoServiceInterface
         try {
             return VirgilCrypto\VirgilKeyPair::publicKeyToDER($publicKey);
         } catch (Exception $exception) {
+            // TODO use short exception name PublicKeyToDerConvertingException
             throw new Exceptions\PublicKeyToDerConvertingException($exception->getMessage(), $exception->getCode());
         }
     }

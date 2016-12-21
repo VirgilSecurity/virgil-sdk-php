@@ -27,6 +27,7 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
      *
      * @param SignedRequestModelMapper  $signedRequestModelMapper
      * @param SignedResponseModelMapper $signedResponseModelMapper
+     * TODO sometimes I see online line declaration sometimes 2 lines even if the number of parameters is the same
      */
     public function __construct(
         SignedRequestModelMapper $signedRequestModelMapper,

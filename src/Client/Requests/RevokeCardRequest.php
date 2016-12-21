@@ -54,6 +54,7 @@ class RevokeCardRequest extends AbstractCardRequest
         $request = new self($cardContent->getId(), $cardContent->getRevocationReason());
 
         /** @var SignedRequestMetaModel $meta */
+        // TODO I think you can move that into helper method to prevent repeating there and inside the CreateCardRequest.php
         $meta = $model->getMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
             $request->appendSignature($signKey, Buffer::fromBase64($sign));
@@ -109,6 +110,7 @@ class RevokeCardRequest extends AbstractCardRequest
     }
 
 
+    // TODO PHPDoc here!
     protected function getCardContent()
     {
         return new RevokeCardContentModel($this->id, $this->reason);

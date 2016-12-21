@@ -40,6 +40,7 @@ abstract class AbstractVirgilCipher implements CipherInterface
     public function addKeyRecipient($recipientId, $publicKey)
     {
         try {
+            // TODO nothing return from addKeyRecipient method
             return $this->cipher->addKeyRecipient($recipientId, $publicKey);
         } catch (\Exception $e) {
             throw new CipherException($e->getMessage(), $e->getCode());
