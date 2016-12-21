@@ -313,10 +313,12 @@ class VirgilCrypto implements CryptoInterface
      */
     public function importPrivateKey(BufferInterface $exportedPrivateKey, $password = '')
     {
+        $exportedPrivateKeyData = $exportedPrivateKey->getData();
+
         if (strlen($password) === 0) {
-            $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($exportedPrivateKey->getData());
+            $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($exportedPrivateKeyData);
         } else {
-            $privateKeyDerEncoded = $this->cryptoService->decryptPrivateKey($exportedPrivateKey->getData(), $password);
+            $privateKeyDerEncoded = $this->cryptoService->decryptPrivateKey($exportedPrivateKeyData, $password);
         }
 
         $privateKeyHash = new Buffer(

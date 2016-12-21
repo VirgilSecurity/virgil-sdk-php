@@ -15,7 +15,7 @@ use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Validator\CardValidationException;
 use Virgil\Sdk\Client\Validator\CardValidator;
 
-class VirgilCardValidationTest extends TestCase
+class CardValidatorTest extends TestCase
 {
     public function testPredefinedCardGivenValidationShouldReturnTrue()
     {

@@ -45,7 +45,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Virgil\\Sdk\\Tests\\": "tests/"
+            "Virgil\\Sdk\\Tests\\Integration\\": "tests/integration/src/",
+            "Virgil\\Sdk\\Tests\\Functional\\": "tests/functional/src/",
+            "Virgil\\Sdk\\Tests\\Unit\\": "tests/unit/src/"
         }
     }
 }

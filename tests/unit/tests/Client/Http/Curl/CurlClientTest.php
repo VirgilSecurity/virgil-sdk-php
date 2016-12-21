@@ -5,7 +5,9 @@ namespace Virgil\Tests\Unit\Client\Http\Curl;
 use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Client\Http\HttpClientInterface;
+
 use Virgil\Sdk\Client\Http\Constants\RequestMethods;
+
 use Virgil\Sdk\Client\Http\Curl\CurlRequest;
 use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
 use Virgil\Sdk\Client\Http\Curl\CurlClient;
@@ -14,6 +16,7 @@ class CurlClientTest extends TestCase
 {
     /**
      * @dataProvider requestOptionsDataProvider
+     *
      * @param $defaultOptions
      * @param $expectedOptions
      * @param $request
