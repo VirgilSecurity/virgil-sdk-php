@@ -19,7 +19,7 @@ class RevokeCardRequestTest extends TestCase
         ];
 
         $request = new RevokeCardRequest(
-            'card-id', RevocationReasons::COMPROMISED_TYPE
+            'card-id', RevocationReasons::TYPE_COMPROMISED
         );
 
         foreach ($signs as $signKey => $sign) {

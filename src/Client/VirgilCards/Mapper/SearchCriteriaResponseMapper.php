@@ -45,10 +45,9 @@ class SearchCriteriaResponseMapper extends AbstractJsonModelMapper
 
     /**
      * @inheritdoc
-     * TODO return $this
      */
     public function toJson($model)
     {
-        $this->signedResponseModelMapper->toJson($model);
+        return $this->signedResponseModelMapper->toJson($model);
     }
 }

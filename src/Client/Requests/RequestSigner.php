@@ -33,7 +33,7 @@ class RequestSigner implements RequestSignerInterface
      */
     public function selfSign(AbstractCardRequest $request, PrivateKeyInterface $signerPrivateKey)
     {
-        $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()));
+        $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()));
         $signature = $this->crypto->sign($fingerprint->getData(), $signerPrivateKey);
         $request->appendSignature($fingerprint->toHex(), $signature);
 
@@ -46,7 +46,7 @@ class RequestSigner implements RequestSignerInterface
      */
     public function authoritySign(AbstractCardRequest $request, $appId, PrivateKeyInterface $signerPrivateKey)
     {
-        $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()));
+        $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()));
         $signature = $this->crypto->sign($fingerprint->getData(), $signerPrivateKey);
         $request->appendSignature($appId, $signature);
 

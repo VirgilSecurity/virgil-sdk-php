@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client;
 
 
+use InvalidArgumentException;
+
 /**
  * Class provides params for virgil services.
  * TODO:decide to move constants to config.
@@ -66,12 +68,11 @@ class VirgilClientParams implements VirgilClientParamsInterface
 
     /**
      * @inheritdoc
-     * TODO \InvalidArgumentException move this into the namespace and use only InvalidArgumentException class name
      */
     public function setCardsServiceAddress($cardsServiceAddress)
     {
-        if (!$this->checkServiceUrl($cardsServiceAddress)) {
-            throw new \InvalidArgumentException(__METHOD__);
+        if (!$this->isServiceUrlValid($cardsServiceAddress)) {
+            throw new InvalidArgumentException(__METHOD__);
         }
 
         $this->cardsServiceAddress = $cardsServiceAddress;
@@ -91,12 +92,11 @@ class VirgilClientParams implements VirgilClientParamsInterface
 
     /**
      * @inheritdoc
-     * TODO \InvalidArgumentException move this into the namespace and use only InvalidArgumentException class name
      */
     public function setReadCardsServiceAddress($readOnlyCardsServiceAddress)
     {
-        if (!$this->checkServiceUrl($readOnlyCardsServiceAddress)) {
-            throw new \InvalidArgumentException(__METHOD__);
+        if (!$this->isServiceUrlValid($readOnlyCardsServiceAddress)) {
+            throw new InvalidArgumentException(__METHOD__);
         }
 
         $this->readOnlyCardsServiceAddress = $readOnlyCardsServiceAddress;
@@ -119,8 +119,8 @@ class VirgilClientParams implements VirgilClientParamsInterface
      */
     public function setIdentityServiceAddress($identityServiceAddress)
     {
-        if (!$this->checkServiceUrl($identityServiceAddress)) {
-            throw new \InvalidArgumentException(__METHOD__);
+        if (!$this->isServiceUrlValid($identityServiceAddress)) {
+            throw new InvalidArgumentException(__METHOD__);
         }
 
         $this->identityServiceAddress = $identityServiceAddress;
@@ -133,10 +133,10 @@ class VirgilClientParams implements VirgilClientParamsInterface
      * Checks if given url is valid.
      *
      * @param string $serviceUrl
-     * TODO may be good idea to rename checkServiceUrl($serviceUrl) -> isValidServiceUrl($serviceUrl) in this case boolean value is expected value from this function
+     *
      * @return bool
      */
-    private function checkServiceUrl($serviceUrl)
+    private function isServiceUrlValid($serviceUrl)
     {
         return (bool)filter_var($serviceUrl, FILTER_VALIDATE_URL);
     }

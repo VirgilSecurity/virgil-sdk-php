@@ -31,7 +31,7 @@ interface RequestInterface
      * @param string $name
      * @param mixed  $option
      *
-     * @return void
+     * @return $this
      */
     public function setOption($name, $option);
 
@@ -41,7 +41,7 @@ interface RequestInterface
      *
      * @param array $options
      *
-     * @return void
+     * @return $this
      */
     public function setOptions(array $options);
 
@@ -57,7 +57,7 @@ interface RequestInterface
     /**
      * Close a curl session.
      *
-     * @return void
+     * @return $this
      */
     public function close();
 

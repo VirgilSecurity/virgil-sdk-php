@@ -5,8 +5,7 @@ namespace Virgil\Sdk\Client\Requests;
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\BufferInterface;
 
-use Virgil\Sdk\Client\Requests\Mapper\CreateRequestModelMapper;
-
+use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
@@ -27,8 +26,8 @@ class CreateCardRequest extends AbstractCardRequest
     /** @var string $identityType */
     private $identityType;
 
-    /** @var BufferInterface $publicKey */
-    private $publicKey;
+    /** @var BufferInterface $publicKeyData */
+    private $publicKeyData;
 
     /** @var array $data */
     private $data;
@@ -45,7 +44,7 @@ class CreateCardRequest extends AbstractCardRequest
      *
      * @param string          $identity
      * @param string          $identityType
-     * @param BufferInterface $publicKey
+     * @param BufferInterface $publicKeyData
      * @param string          $scope
      * @param array           $data
      * @param DeviceInfoModel $info
@@ -53,14 +52,14 @@ class CreateCardRequest extends AbstractCardRequest
     public function __construct(
         $identity,
         $identityType,
-        BufferInterface $publicKey,
+        BufferInterface $publicKeyData,
         $scope = CardScopes::TYPE_APPLICATION,
         $data = [],
         DeviceInfoModel $info = null
     ) {
         $this->identity = $identity;
         $this->identityType = $identityType;
-        $this->publicKey = $publicKey;
+        $this->publicKeyData = $publicKeyData;
         $this->data = $data;
         $this->info = $info;
         $this->scope = $scope;
@@ -124,14 +123,13 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
-     * Returns card public key.
+     * Returns card public key raw data.
      *
      * @return BufferInterface
-     * TODO correct naming of method. Somewhere exists not really correct getPublicKeyData method
      */
-    public function getPublicKey()
+    public function getPublicKeyData()
     {
-        return $this->publicKey;
+        return $this->publicKeyData;
     }
 
 
@@ -198,7 +196,7 @@ class CreateCardRequest extends AbstractCardRequest
     protected function getCardContent()
     {
         return new CardContentModel(
-            $this->identity, $this->identityType, $this->publicKey->toBase64(), $this->scope, $this->data, $this->info
+            $this->identity, $this->identityType, $this->publicKeyData->toBase64(), $this->scope, $this->data, $this->info
         );
     }
 }

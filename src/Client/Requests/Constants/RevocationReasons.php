@@ -7,8 +7,7 @@ namespace Virgil\Sdk\Client\Requests\Constants;
  */
 class RevocationReasons
 {
-    // TODO to be consistent with declaration inside the CardScopes.php use TYPE_UNSPECIFIED and TYPE_COMPROMISED instead
-    const UNSPECIFIED_TYPE = 'unspecified';
+    const TYPE_UNSPECIFIED = 'unspecified';
 
-    const COMPROMISED_TYPE = 'compromised';
+    const TYPE_COMPROMISED = 'compromised';
 }

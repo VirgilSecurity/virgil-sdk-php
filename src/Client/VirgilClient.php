@@ -4,7 +4,9 @@ namespace Virgil\Sdk\Client;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\Client\Requests;
+use Virgil\Sdk\Client\Requests\SearchCardRequest;
+use Virgil\Sdk\Client\Requests\CreateCardRequest;
+use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
 use Virgil\Sdk\Client\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilCards\CardsService;
@@ -67,12 +69,12 @@ class VirgilClient
 
     /**
      * Performs the Virgil Cards service searching by criteria.
-     * TODO Good idea to move Requests\SearchCardRequest to the namespace section and stay only SearchCardRequest. What the point to use Requests\SearchCardRequest?
-     * @param Requests\SearchCardRequest $searchCardRequest
+     *
+     * @param SearchCardRequest $searchCardRequest
      *
      * @return Card[]
      */
-    public function searchCards(Requests\SearchCardRequest $searchCardRequest)
+    public function searchCards(SearchCardRequest $searchCardRequest)
     {
         $response = $this->cardsService->search($searchCardRequest->getSearchCriteria());
 
@@ -86,12 +88,12 @@ class VirgilClient
 
     /**
      * Performs the Virgil Cards service card creation by request.
-     * TODO Good idea to move Requests\SearchCardRequest to the namespace section and stay only CreateCardRequest. What the point to use Requests\CreateCardRequest?
-     * @param Requests\CreateCardRequest $request
+     *
+     * @param CreateCardRequest $request
      *
      * @return Card
      */
-    public function createCard(Requests\CreateCardRequest $request)
+    public function createCard(CreateCardRequest $request)
     {
         $response = $this->cardsService->create($request->getRequestModel());
 
@@ -101,14 +103,16 @@ class VirgilClient
 
     /**
      * Performs the Virgil Cards service card revoking by request.
-     * TODO Good idea to move Requests\SearchCardRequest to the namespace section and stay only RevokeCardRequest. What the point to use Requests\RevokeCardRequest?
-     * @param Requests\RevokeCardRequest $request
      *
-     * @return void
+     * @param RevokeCardRequest $request
+     *
+     * @return $this
      */
-    public function revokeCard(Requests\RevokeCardRequest $request)
+    public function revokeCard(RevokeCardRequest $request)
     {
         $this->cardsService->delete($request->getRequestModel());
+
+        return $this;
     }
 
 
@@ -132,11 +136,13 @@ class VirgilClient
      *
      * @param CardValidatorInterface $validator
      *
-     * @return void
+     * @return $this
      */
     public function setCardValidator(CardValidatorInterface $validator)
     {
         $this->cardValidator = $validator;
+
+        return $this;
     }
 
 
@@ -217,17 +223,17 @@ class VirgilClient
      *
      * @param Card $card
      *
-     * @return void
+     * @return $this
      *
      * @throws CardValidationException
      */
     private function validateCard(Card $card)
     {
-        if ($this->cardValidator == null) {
-            return;
+        if ($this->cardValidator != null) {
+            $this->cardValidator->validate($card);
         }
 
-        $this->cardValidator->validate($card);
+        return $this;
     }
 
 

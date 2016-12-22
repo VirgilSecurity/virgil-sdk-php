@@ -12,6 +12,17 @@ use Virgil\Sdk\Cryptography\Core\Cipher\VirgilCipher;
 use Virgil\Sdk\Cryptography\Core\Cipher\VirgilStreamCipher;
 use Virgil\Sdk\Cryptography\Core\Cipher\VirgilStreamDataSource;
 
+use Virgil\Sdk\Cryptography\Core\Exceptions\ContentSigningException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\ContentVerificationException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\InvalidKeyPairException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\KeyPairGenerationException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\PrivateKeyDecryptionException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\PrivateKeyEncryptionException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\PrivateKeyToDerConvertingException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\PublicKeyExtractionException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\PublicKeyHashComputationException;
+use Virgil\Sdk\Cryptography\Core\Exceptions\PublicKeyToDerConvertingException;
+
 /**
  * Class aims to wrap native crypto library and provides cryptographic operations.
  */
@@ -21,7 +32,7 @@ class VirgilCryptoService implements CryptoServiceInterface
      * @inheritdoc
      *
      * @return VirgilKeyPair
-     * @throws Exceptions\KeyPairGenerationException
+     * @throws KeyPairGenerationException
      */
     public function generateKeyPair($keyPairType)
     {
@@ -30,7 +41,7 @@ class VirgilCryptoService implements CryptoServiceInterface
 
             return new VirgilKeyPair($keyPair->publicKey(), $keyPair->privateKey());
         } catch (Exception $exception) {
-            throw new Exceptions\KeyPairGenerationException($exception->getMessage(), $exception->getCode());
+            throw new KeyPairGenerationException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -38,7 +49,7 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\PrivateKeyToDerConvertingException
+     * @throws PrivateKeyToDerConvertingException
      */
     public function privateKeyToDer($privateKey, $privateKyePassword = '')
     {
@@ -52,7 +63,7 @@ class VirgilCryptoService implements CryptoServiceInterface
                 $privateKyePassword
             );
         } catch (Exception $exception) {
-            throw new Exceptions\PrivateKeyToDerConvertingException($exception->getMessage(), $exception->getCode());
+            throw new PrivateKeyToDerConvertingException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -60,15 +71,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\PublicKeyToDerConvertingException
+     * @throws PublicKeyToDerConvertingException
      */
     public function publicKeyToDer($publicKey)
     {
         try {
             return VirgilCrypto\VirgilKeyPair::publicKeyToDER($publicKey);
         } catch (Exception $exception) {
-            // TODO use short exception name PublicKeyToDerConvertingException
-            throw new Exceptions\PublicKeyToDerConvertingException($exception->getMessage(), $exception->getCode());
+            throw new PublicKeyToDerConvertingException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -76,14 +86,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\InvalidKeyPairException
+     * @throws InvalidKeyPairException
      */
     public function isKeyPair($publicKey, $privateKey)
     {
         try {
             return VirgilCrypto\VirgilKeyPair::isKeyPairMatch($publicKey, $privateKey);
         } catch (Exception $exception) {
-            throw new Exceptions\InvalidKeyPairException($exception->getMessage(), $exception->getCode());
+            throw new InvalidKeyPairException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -91,14 +101,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\PublicKeyHashComputationException
+     * @throws PublicKeyHashComputationException
      */
     public function computeHash($publicKeyDER, $hashAlgorithm)
     {
         try {
             return (new VirgilCrypto\VirgilHash($hashAlgorithm))->hash($publicKeyDER);
         } catch (Exception $exception) {
-            throw new Exceptions\PublicKeyHashComputationException($exception->getMessage(), $exception->getCode());
+            throw new PublicKeyHashComputationException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -106,14 +116,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\PublicKeyExtractionException
+     * @throws PublicKeyExtractionException
      */
     public function extractPublicKey($privateKey, $privateKeyPassword)
     {
         try {
             return VirgilCrypto\VirgilKeyPair::extractPublicKey($privateKey, $privateKeyPassword);
         } catch (Exception $exception) {
-            throw new Exceptions\PublicKeyExtractionException($exception->getMessage(), $exception->getCode());
+            throw new PublicKeyExtractionException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -121,14 +131,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\PrivateKeyEncryptionException
+     * @throws PrivateKeyEncryptionException
      */
     public function encryptPrivateKey($privateKey, $password)
     {
         try {
             return VirgilCrypto\VirgilKeyPair::encryptPrivateKey($privateKey, $password);
         } catch (Exception $exception) {
-            throw new Exceptions\PrivateKeyEncryptionException($exception->getMessage(), $exception->getCode());
+            throw new PrivateKeyEncryptionException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -136,14 +146,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\PrivateKeyDecryptionException
+     * @throws PrivateKeyDecryptionException
      */
     public function decryptPrivateKey($privateKey, $privateKeyPassword)
     {
         try {
             return VirgilCrypto\VirgilKeyPair::decryptPrivateKey($privateKey, $privateKeyPassword);
         } catch (Exception $exception) {
-            throw new Exceptions\PrivateKeyDecryptionException($exception->getMessage(), $exception->getCode());
+            throw new PrivateKeyDecryptionException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -151,14 +161,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\ContentSigningException
+     * @throws ContentSigningException
      */
     public function sign($content, $privateKey)
     {
         try {
             return (new VirgilCrypto\VirgilSigner())->sign($content, $privateKey);
         } catch (Exception $exception) {
-            throw new Exceptions\ContentSigningException($exception->getMessage(), $exception->getCode());
+            throw new ContentSigningException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -166,14 +176,14 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\ContentVerificationException
+     * @throws ContentVerificationException
      */
     public function verify($content, $signature, $publicKey)
     {
         try {
             return (new VirgilCrypto\VirgilSigner())->verify($content, $signature, $publicKey);
         } catch (Exception $exception) {
-            throw new Exceptions\ContentVerificationException($exception->getMessage(), $exception->getCode());
+            throw new ContentVerificationException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -203,7 +213,7 @@ class VirgilCryptoService implements CryptoServiceInterface
     /**
      * @inheritdoc
      *
-     * @throws Exceptions\ContentSigningException
+     * @throws ContentSigningException
      */
     public function signStream($stream, $privateKey)
     {
@@ -213,7 +223,7 @@ class VirgilCryptoService implements CryptoServiceInterface
 
             return (new VirgilCrypto\VirgilStreamSigner())->sign($virgilSourceStream, $privateKey);
         } catch (Exception $exception) {
-            throw new Exceptions\ContentSigningException($exception->getMessage(), $exception->getCode());
+            throw new ContentSigningException($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -230,7 +240,7 @@ class VirgilCryptoService implements CryptoServiceInterface
 
             return (new VirgilCrypto\VirgilStreamSigner())->verify($virgilSourceStream, $signature, $publicKey);
         } catch (Exception $exception) {
-            throw new Exceptions\ContentVerificationException($exception->getMessage(), $exception->getCode());
+            throw new ContentVerificationException($exception->getMessage(), $exception->getCode());
         }
     }
 }

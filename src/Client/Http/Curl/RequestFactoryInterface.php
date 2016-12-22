@@ -22,7 +22,7 @@ interface RequestFactoryInterface
      *
      * @param array $options
      *
-     * @return void
+     * @return $this
      */
     public function setDefaultOptions(array $options);
 }

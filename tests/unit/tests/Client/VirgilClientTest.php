@@ -148,17 +148,17 @@ class VirgilClientTest extends TestCase
         return [
             [
                 new SignedRequestModel(
-                    new RevokeCardContentModel('model-id-1', RevocationReasons::UNSPECIFIED_TYPE),
+                    new RevokeCardContentModel('model-id-1', RevocationReasons::TYPE_UNSPECIFIED),
                     new SignedRequestMetaModel(['sign-id-3' => 'X3NpZ24z', 'sign-id-4' => 'X3NpZ240'])
                 ),
-                new RevokeCardRequest('model-id-1', RevocationReasons::UNSPECIFIED_TYPE),
+                new RevokeCardRequest('model-id-1', RevocationReasons::TYPE_UNSPECIFIED),
             ],
             [
                 new SignedRequestModel(
-                    new RevokeCardContentModel('model-id-2', RevocationReasons::COMPROMISED_TYPE),
+                    new RevokeCardContentModel('model-id-2', RevocationReasons::TYPE_COMPROMISED),
                     new SignedRequestMetaModel(['sign-id-4' => 'X3NpZ240'])
                 ),
-                new RevokeCardRequest('model-id-2', RevocationReasons::COMPROMISED_TYPE),
+                new RevokeCardRequest('model-id-2', RevocationReasons::TYPE_COMPROMISED),
             ],
         ];
     }

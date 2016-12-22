@@ -1,11 +1,8 @@
 <?php
-namespace Virgil\Sdk\Client\Requests\Mapper;
+namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
 use Virgil\Sdk\Client\AbstractJsonModelMapper;
-
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
@@ -27,7 +24,6 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
      *
      * @param SignedRequestModelMapper  $signedRequestModelMapper
      * @param SignedResponseModelMapper $signedResponseModelMapper
-     * TODO sometimes I see online line declaration sometimes 2 lines even if the number of parameters is the same
      */
     public function __construct(
         SignedRequestModelMapper $signedRequestModelMapper,

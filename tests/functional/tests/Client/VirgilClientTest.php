@@ -62,7 +62,7 @@ class VirgilClientTest extends TestCase
         BufferInterface $privateKey
     ) {
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
-        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()))
+        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()))
                                    ->toHex()
         ;
 
@@ -164,7 +164,7 @@ class VirgilClientTest extends TestCase
         BufferInterface $privateKey
     ) {
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
-        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()))
+        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()))
                                    ->toHex()
         ;
         $card = $this->virgilClient->getCard($expectedId);
@@ -190,7 +190,7 @@ class VirgilClientTest extends TestCase
         BufferInterface $privateKey
     ) {
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
-        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->snapshot()))
+        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()))
                                    ->toHex()
         ;
 
@@ -199,7 +199,7 @@ class VirgilClientTest extends TestCase
         $this->assertInstanceOf(Card::class, $card);
         $this->assertEquals($expectedId, $card->getId());
 
-        $revokeRequest = new RevokeCardRequest($card->getId(), RevocationReasons::UNSPECIFIED_TYPE);
+        $revokeRequest = new RevokeCardRequest($card->getId(), RevocationReasons::TYPE_UNSPECIFIED);
 
         //$this->requestSigner->selfSign($revokeRequest, $this->crypto->importPrivateKey($privateKey));
         $this->requestSigner->authoritySign(

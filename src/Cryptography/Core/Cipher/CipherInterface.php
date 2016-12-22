@@ -43,8 +43,7 @@ interface CipherInterface
      * @param string $recipientId
      * @param string $publicKey
      *
-     * @return mixed
-     *
+     * @return $this
      */
     public function addKeyRecipient($recipientId, $publicKey);
 
@@ -54,7 +53,7 @@ interface CipherInterface
      *
      * @param string $key
      *
-     * @return mixed
+     * @return string
      */
     public function getCustomParam($key);
 
@@ -65,7 +64,7 @@ interface CipherInterface
      * @param string $key
      * @param string $value
      *
-     * @return CipherInterface
+     * @return $this
      */
     public function setCustomParam($key, $value);
 

@@ -4,8 +4,7 @@ namespace Virgil\Sdk\Client\Requests;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\Client\Requests\Mapper\RevokeRequestModelMapper;
-
+use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
@@ -110,7 +109,9 @@ class RevokeCardRequest extends AbstractCardRequest
     }
 
 
-    // TODO PHPDoc here!
+    /**
+     * @inheritdoc
+     */
     protected function getCardContent()
     {
         return new RevokeCardContentModel($this->id, $this->reason);

@@ -73,6 +73,8 @@ class CardValidator implements CardValidatorInterface
                 throw $cardValidationException;
             }
         }
+
+        return $this;
     }
 
 

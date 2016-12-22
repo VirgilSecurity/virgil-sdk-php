@@ -2,8 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
+use InvalidArgumentException;
 use Virgil\Sdk\Client\AbstractJsonModelMapper;
-
 use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
 
 /**
@@ -18,7 +18,7 @@ class SearchCriteriaRequestMapper extends AbstractJsonModelMapper
     {
         /** @var SearchCriteria $model */
         if (!$model instanceof SearchCriteria) {
-            throw new \InvalidArgumentException('Invalid model passed. Instance of SearchCriteria accept only.');
+            throw new InvalidArgumentException('Invalid model passed. Instance of SearchCriteria accept only.');
         }
 
         return json_encode(

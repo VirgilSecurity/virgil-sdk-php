@@ -19,8 +19,8 @@ class Card
     /** @var string $identityType */
     private $identityType;
 
-    /** @var BufferInterface $publicKey */
-    private $publicKey;
+    /** @var BufferInterface $publicKeyData */
+    private $publicKeyData;
 
     /** @var string $scope */
     private $scope;
@@ -51,7 +51,7 @@ class Card
      * @param BufferInterface   $snapshot
      * @param string            $identity
      * @param string            $identityType
-     * @param BufferInterface   $publicKey
+     * @param BufferInterface   $publicKeyData
      * @param string            $scope
      * @param array             $data
      * @param string            $device
@@ -64,7 +64,7 @@ class Card
         BufferInterface $snapshot,
         $identity,
         $identityType,
-        BufferInterface $publicKey,
+        BufferInterface $publicKeyData,
         $scope,
         array $data = [],
         $device = null,
@@ -76,7 +76,7 @@ class Card
         $this->snapshot = $snapshot;
         $this->identity = $identity;
         $this->identityType = $identityType;
-        $this->publicKey = $publicKey;
+        $this->publicKeyData = $publicKeyData;
         $this->scope = $scope;
         $this->data = $data;
         $this->device = $device;
@@ -88,12 +88,12 @@ class Card
 
     /**
      * Returns the public key.
-     * TODO May be good name for this method will be getPublicKey() to keep consistency with other methods get + property name.
+     *
      * @return BufferInterface
      */
     public function getPublicKeyData()
     {
-        return $this->publicKey;
+        return $this->publicKeyData;
     }
 
 

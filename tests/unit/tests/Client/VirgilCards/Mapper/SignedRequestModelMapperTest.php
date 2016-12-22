@@ -6,11 +6,11 @@ use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
-use Virgil\Sdk\Client\Requests\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\Requests\Mapper\RevokeRequestModelMapper;
-
+use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
+
 use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;

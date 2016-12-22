@@ -2,6 +2,7 @@
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
+use Exception;
 use Virgil\Crypto\VirgilCipherBase;
 use Virgil\Sdk\Cryptography\Core\Exceptions\CipherException;
 
@@ -40,9 +41,10 @@ abstract class AbstractVirgilCipher implements CipherInterface
     public function addKeyRecipient($recipientId, $publicKey)
     {
         try {
-            // TODO nothing return from addKeyRecipient method
-            return $this->cipher->addKeyRecipient($recipientId, $publicKey);
-        } catch (\Exception $e) {
+            $this->cipher->addKeyRecipient($recipientId, $publicKey);
+
+            return $this;
+        } catch (Exception $e) {
             throw new CipherException($e->getMessage(), $e->getCode());
         }
     }

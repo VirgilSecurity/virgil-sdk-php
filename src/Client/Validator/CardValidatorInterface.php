@@ -16,7 +16,7 @@ interface CardValidatorInterface
      *
      * @throws CardValidationException
      *
-     * @return void
+     * @return $this
      */
     public function validate(Card $card);
 }

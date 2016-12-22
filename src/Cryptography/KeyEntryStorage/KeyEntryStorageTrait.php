@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Cryptography\KeyEntryStorage;
 
 
+use InvalidArgumentException;
+
 /**
  * Crypto keys storage trait aims to solve problem of keeping keys entry by its reference in restricted field of memory.
  */
@@ -23,7 +25,7 @@ trait KeyEntryStorageTrait
         $id = $keyReference->getId();
 
         if (!$this->hasKeyEntry($keyReference)) {
-            throw new \InvalidArgumentException('Key is not valid: key id - ' . $id);
+            throw new InvalidArgumentException('Key is not valid: key id - ' . $id);
         }
 
         return $this->keysStorage[$id];
@@ -49,8 +51,7 @@ trait KeyEntryStorageTrait
      * @param KeyReference $keyReference
      * @param KeyEntry     $keyEntry
      *
-     * TODO Not sure that we need there return true|false statement
-     * @return bool
+     * @return $this
      */
     protected function persistKeyEntry(KeyReference $keyReference, KeyEntry $keyEntry)
     {
@@ -58,10 +59,8 @@ trait KeyEntryStorageTrait
 
         if (!$this->hasKeyEntry($keyReference)) {
             $this->keysStorage[$id] = $keyEntry;
-
-            return true;
         }
 
-        return false;
+        return $this;
     }
 }
