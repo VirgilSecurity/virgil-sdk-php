@@ -7,7 +7,7 @@ use Virgil\Sdk\Client\AbstractJsonModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
 
 /**
- * Class transforms error response message string to model.
+ * Class transforms error response message json string to model.
  */
 class ErrorResponseModelMapper extends AbstractJsonModelMapper
 {

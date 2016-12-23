@@ -57,7 +57,7 @@ class VirgilClientTest extends TestCase
     public function testRevokeCard(SignedRequestModel $requestModel, RevokeCardRequest $revokeCardRequest)
     {
         /** @var SignedRequestMetaModel $meta */
-        $meta = $requestModel->getMeta();
+        $meta = $requestModel->getRequestMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
             $revokeCardRequest->appendSignature($signKey, Buffer::fromBase64($sign));
         }
@@ -90,7 +90,7 @@ class VirgilClientTest extends TestCase
         Card $expectedCard
     ) {
         /** @var SignedRequestMetaModel $meta */
-        $meta = $requestModel->getMeta();
+        $meta = $requestModel->getRequestMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
             $createCardRequest->appendSignature($signKey, Buffer::fromBase64($sign));
         }

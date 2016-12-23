@@ -8,38 +8,78 @@ use Virgil\Sdk\Client\VirgilClientParams;
 
 class VirgilClientParamsTest extends TestCase
 {
-    public function testParams()
+    /**
+     * @test
+     */
+    public function getParams__withDefaultValues__returnRealServicesUrls()
     {
-        $params = new VirgilClientParams('S&OAhi');
-        $this->assertEquals('https://cards.virgilsecurity.com', $params->getCardsServiceAddress());
-        $this->assertEquals('https://identity.virgilsecurity.com', $params->getIdentityServiceAddress());
-        $this->assertEquals('https://cards-ro.virgilsecurity.com', $params->getReadOnlyCardsServiceAddress());
+        $params = $this->createVirgilClientParams('S&OAhi');
+
+
+        $cardsServiceAddress = $params->getCardsServiceAddress();
+        $identityServiceAddress = $params->getIdentityServiceAddress();
+        $readOnlyCardsServiceAddress = $params->getReadOnlyCardsServiceAddress();
+
+
+        $this->assertEquals('https://cards.virgilsecurity.com', $cardsServiceAddress);
+        $this->assertEquals('https://identity.virgilsecurity.com', $identityServiceAddress);
+        $this->assertEquals('https://cards-ro.virgilsecurity.com', $readOnlyCardsServiceAddress);
     }
+
 
     /**
      * @expectedException \InvalidArgumentException
+     *
+     * @test
      */
-    public function testSetCardsServiceAddress()
+    public function setCardsServiceAddress__withWrongUrl__throwsException()
     {
-        $params = new VirgilClientParams('S&OAhi');
+        $params = $this->createVirgilClientParams('S&OAhi');
+
+
         $params->setCardsServiceAddress('wrong-url');
+
+
+        //throws exception
     }
+
 
     /**
      * @expectedException \InvalidArgumentException
+     *
+     * @test
      */
-    public function testSetReadOnlyCardsServiceAddress()
+    public function setReadCardsServiceAddress__withWrongUrl__throwsException()
     {
-        $params = new VirgilClientParams('S&OAhi');
+        $params = $this->createVirgilClientParams('S&OAhi');
+
+
         $params->setReadCardsServiceAddress('wrong-url');
+
+
+        //throws exception
     }
+
 
     /**
      * @expectedException \InvalidArgumentException
+     *
+     * @test
      */
-    public function testSetIdentityServiceAddress()
+    public function setIdentityServiceAddress__withWrongUrl__throwsException()
     {
-        $params = new VirgilClientParams('S&OAhi');
+        $params = $this->createVirgilClientParams('S&OAhi');
+
+
         $params->setIdentityServiceAddress('192.168.0.1');
+
+
+        //throws exception
+    }
+
+
+    protected function createVirgilClientParams(...$params)
+    {
+        return new VirgilClientParams(...$params);
     }
 }

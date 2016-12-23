@@ -2,141 +2,103 @@
 namespace Virgil\Tests\Unit\Client\VirgilCards\Mapper;
 
 
-use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
-use Virgil\Sdk\Client\Requests\Constants\CardScopes;
-
-use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 
-class SignedRequestModelMapperTest extends TestCase
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper\AbstractMapperTest;
+
+class SignedRequestModelMapperTest extends AbstractMapperTest
 {
-    /**
-     * @dataProvider createCardDataProvider
-     *
-     * @param $expectedJson
-     * @param $contentData
-     * @param $metaData
-     */
-    public function testMapSignedCreateRequestModelToJson($expectedJson, $contentData, $metaData)
-    {
-        $mapper = new SignedRequestModelMapper();
-        $model = new SignedRequestModel(
-            new CardContentModel(...$contentData), new SignedRequestMetaModel(...$metaData)
-        );
 
-        $this->assertEquals($expectedJson, $mapper->toJson($model));
+    /**
+     * @dataProvider signedRequestDataProvider
+     *
+     * @param array $signedRequestJsonData
+     * @param array $signedRequestData
+     *
+     * @test
+     *
+     */
+    public function toJson__fromSignedRequestModel__returnsValidSignedRequestJsonString(
+        array $signedRequestJsonData,
+        array $signedRequestData
+    ) {
+        $expectedSignedRequestJson = $this->createSignedCardRequestJson(...$signedRequestJsonData);
+
+        $signedRequestModel = $this->createSignedRequestModel(...$signedRequestData);
+
+
+        $signedRequestJson = $this->mapper->toJson($signedRequestModel);
+
+
+        $this->assertEquals($expectedSignedRequestJson, $signedRequestJson);
     }
 
 
     /**
-     * @dataProvider revokeCardDataProvider
+     * @expectedException RuntimeException
      *
-     * @param $expectedJson
-     * @param $contentData
-     * @param $metaData
+     * @test
+     *
      */
-    public function testMapSignedRevokeRequestModelToJson($expectedJson, $contentData, $metaData)
+    public function toModel__fromSignedRequestModelJsonString__throwsException()
     {
-        $mapper = new SignedRequestModelMapper();
-        $model = new SignedRequestModel(
-            new RevokeCardContentModel(...$contentData),
-            new SignedRequestMetaModel(...$metaData)
-        );
+        $signedRequestJson = '{"content_snapshot":"eyJkZXZpY2UiOiJzYW0iLCJkZXZpY2VfbmFtZSI6Im5vdGUifQ==","meta":{"signs":{"sign-id-3":"_sign3"}}}';
 
-        $this->assertEquals($expectedJson, $mapper->toJson($model));
+
+        $this->mapper->toModel($signedRequestJson);
+
+
+        //expected exception
     }
 
 
-    /**
-     * @dataProvider createCardDataProvider
-     *
-     * @param $json
-     * @param $contentData
-     * @param $metaData
-     */
-    public function testMapSignedCreateRequestJsonToModel($json, $contentData, $metaData)
-    {
-        $mapper = new CreateRequestModelMapper(new SignedRequestModelMapper(), new SignedResponseModelMapper());
-
-        $expectedModel = new SignedRequestModel(
-            new CardContentModel(...$contentData),
-            new SignedRequestMetaModel(...$metaData)
-        );
-
-        $model = $mapper->toModel($json);
-
-        $this->assertEquals($expectedModel, $model);
-    }
-
-
-    /**
-     * @dataProvider revokeCardDataProvider
-     *
-     * @param $json
-     * @param $contentData
-     * @param $metaData
-     */
-    public function testMapSignedRevokeRequestJsonToModel($json, $contentData, $metaData)
-    {
-        $mapper = new RevokeRequestModelMapper(new SignedRequestModelMapper());
-
-        $expectedModel = new SignedRequestModel(
-            new RevokeCardContentModel(...$contentData),
-            new SignedRequestMetaModel(...$metaData)
-        );
-
-        $model = $mapper->toModel($json);
-
-        $this->assertEquals($expectedModel, $model);
-    }
-
-
-    public function createCardDataProvider()
+    public function signedRequestDataProvider()
     {
         return [
             [
-                '{"content_snapshot":"eyJpZGVudGl0eSI6ImFsaWNlIiwiaWRlbnRpdHlfdHlwZSI6Im1lbWJlciIsInB1YmxpY19rZXkiOiJwdWJsaWMta2V5Iiwic2NvcGUiOiJhcHBsaWNhdGlvbiJ9","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}',
-                ['alice', 'member', 'public-key', CardScopes::TYPE_APPLICATION],
-                [['sign-id-1' => '_sign1', 'sign-id-2' => '_sign2']],
-            ],
-            [
-                '{"content_snapshot":"eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwiZGF0YSI6eyJjdXN0b21EYXRhIjoicXdlcnR5In0sInNjb3BlIjoiZ2xvYmFsIiwiaW5mbyI6eyJkZXZpY2UiOiJpUGhvbmU2cyIsImRldmljZV9uYW1lIjoiU3BhY2UgZ3JleSBvbmUifX0=","meta":{"signs":{"sign-id-3":"_sign3","sign-id-4":"_sign4"}}}',
+                [self::CARD_SIGNED_REQUEST_JSON_FORMAT, '[]', '{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}'],
                 [
-                    'alice2',
-                    'member',
-                    'public-key-2',
-                    CardScopes::TYPE_GLOBAL,
-                    ['customData' => 'qwerty'],
-                    new DeviceInfoModel('iPhone6s', 'Space grey one'),
+                    [],
+                    ['sign-id-1' => '_sign1', 'sign-id-2' => '_sign2'],
                 ],
-                [['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4']],
+            ],
+            [
+                [
+                    self::CARD_SIGNED_REQUEST_JSON_FORMAT,
+                    '{"device":"sam","device_name":"note"}',
+                    '{"signs":{"sign-id-3":"_sign3"}}',
+                ],
+                [
+                    ["sam", "note"],
+                    ['sign-id-3' => '_sign3'],
+                ],
             ],
         ];
     }
 
 
-    public function revokeCardDataProvider()
+    protected function getMapper()
     {
-        return [
-            [
-                '{"content_snapshot":"eyJjYXJkX2lkIjoiYWxpY2UtZmluZ2VycHJpbnQtaWQtMSIsInJldm9jYXRpb25fcmVhc29uIjoiY29tcHJvbWlzZWQifQ==","meta":{"signs":{"sign-id-1":"_sign1","sign-id-2":"_sign2"}}}',
-                ['alice-fingerprint-id-1', 'compromised'],
-                [['sign-id-1' => '_sign1', 'sign-id-2' => '_sign2']],
-            ],
-            [
-                '{"content_snapshot":"eyJjYXJkX2lkIjoiYWxpY2UtZmluZ2VycHJpbnQtaWQtMiIsInJldm9jYXRpb25fcmVhc29uIjoidW5zcGVjaWZpZWQifQ==","meta":{"signs":{"sign-id-3":"_sign3","sign-id-4":"_sign4"}}}',
-                ['alice-fingerprint-id-2', 'unspecified'],
-                [['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4']],
-            ],
-        ];
+        return $this->createSignedRequestModelMapper();
+    }
+
+
+    private function createSignedRequestModelMapper()
+    {
+        return new SignedRequestModelMapper();
+    }
+
+
+    private function createSignedRequestModel($cardContentData, $cardSigns)
+    {
+        return new SignedRequestModel(
+            new DeviceInfoModel(...$cardContentData), new SignedRequestMetaModel($cardSigns)
+        );
     }
 }

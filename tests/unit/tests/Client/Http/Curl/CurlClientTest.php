@@ -17,31 +17,44 @@ class CurlClientTest extends TestCase
     /**
      * @dataProvider requestOptionsDataProvider
      *
-     * @param $defaultOptions
-     * @param $expectedOptions
+     * @param $factoryDefaultOptions
+     * @param $requestExpectedOptions
      * @param $request
+     *
+     * @test
      */
-    public function testRequestOptions($defaultOptions, $expectedOptions, $request)
-    {
+    public function doRequest__whenCallAvailableRequestMethods__receivesCurlRequestWithValidOptions(
+        $factoryDefaultOptions,
+        $requestExpectedOptions,
+        $request
+    ) {
         $curlFactory = new CurlRequestFactory();
-        $curlFactory->setDefaultOptions($defaultOptions);
-
-        $expectedRequest = new CurlRequest();
-        $expectedRequest->setOptions($expectedOptions);
+        $curlFactory->setDefaultOptions($factoryDefaultOptions);
 
         $httpClientMock = $this->getMockBuilder(CurlClient::class)
-            ->setConstructorArgs([$curlFactory, ['Authorization' => 'VIRGIL { YOUR_APPLICATION_TOKEN }']])
-            ->setMethods(['doRequest'])
-            ->getMock();
+                               ->setConstructorArgs(
+                                   [$curlFactory, ['Authorization' => 'VIRGIL { YOUR_APPLICATION_TOKEN }']]
+                               )
+                               ->setMethods(['doRequest'])
+                               ->getMock()
+        ;
+
 
         $httpClientMock->expects($this->once())
-            ->method('doRequest')
-            ->with($this->callback(function (CurlRequest $actualRequest) use ($expectedRequest) {
-                return $expectedRequest->getOptions() == $actualRequest->getOptions();
-            }));
+                       ->method('doRequest')
+                       ->with(
+                           $this->callback(
+                               function (CurlRequest $actualRequest) use ($requestExpectedOptions) {
+                                   return $requestExpectedOptions == $actualRequest->getOptions();
+                               }
+                           )
+                       )
+        ;
+
 
         $request($httpClientMock);
     }
+
 
     public function requestOptionsDataProvider()
     {
@@ -49,59 +62,81 @@ class CurlClientTest extends TestCase
             [
                 [CURLOPT_RETURNTRANSFER => 1],
                 [
-                    CURLOPT_URL => '/test/cards?id=card_id_1',
-                    CURLOPT_HTTPHEADER => ['Accept: text/plain; q=0.5,text/html,text/x-c', 'Accept-Charset: iso-8859-5,unicode-1-1;q=0.8', 'Content-Length: 123', 'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }'],
-                    CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_GET,
-                    CURLOPT_HTTPGET => true,
-                    CURLOPT_RETURNTRANSFER => 1
+                    CURLOPT_URL            => '/test/cards?id=card_id_1',
+                    CURLOPT_HTTPHEADER     => [
+                        'Accept: text/plain; q=0.5,text/html,text/x-c',
+                        'Accept-Charset: iso-8859-5,unicode-1-1;q=0.8',
+                        'Content-Length: 123',
+                        'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
+                    ],
+                    CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_GET,
+                    CURLOPT_HTTPGET        => true,
+                    CURLOPT_RETURNTRANSFER => 1,
                 ],
                 function (HttpClientInterface $httpClientMock) {
-                    $httpClientMock->get('/test/cards', ['id' => 'card_id_1'],
+                    $httpClientMock->get(
+                        '/test/cards',
+                        ['id' => 'card_id_1'],
                         [
-                            'Accept' => ['text/plain; q=0.5', 'text/html', 'text/x-c'],
+                            'Accept'         => ['text/plain; q=0.5', 'text/html', 'text/x-c'],
                             'Accept-Charset' => ['iso-8859-5', 'unicode-1-1;q=0.8'],
-                            'Content-Length' => '123'
-                        ]);
-                }
+                            'Content-Length' => '123',
+                        ]
+                    );
+                },
             ],
             [
                 [CURLOPT_RETURNTRANSFER => 1, CURLOPT_SAFE_UPLOAD => false],
                 [
-                    CURLOPT_URL => '/test/card',
-                    CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Content-Length: ' . strlen('{"alice":"bob"}'), 'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }'],
-                    CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_POST,
-                    CURLOPT_POST => true,
-                    CURLOPT_POSTFIELDS => '{"alice":"bob"}',
+                    CURLOPT_URL            => '/test/card',
+                    CURLOPT_HTTPHEADER     => [
+                        'Content-Type: application/json',
+                        'Content-Length: ' . strlen('{"alice":"bob"}'),
+                        'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
+                    ],
+                    CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_POST,
+                    CURLOPT_POST           => true,
+                    CURLOPT_POSTFIELDS     => '{"alice":"bob"}',
                     CURLOPT_RETURNTRANSFER => 1,
-                    CURLOPT_SAFE_UPLOAD => false
+                    CURLOPT_SAFE_UPLOAD    => false,
                 ],
                 function (HttpClientInterface $httpClientMock) {
-                    $httpClientMock->post('/test/card', '{"alice":"bob"}',
+                    $httpClientMock->post(
+                        '/test/card',
+                        '{"alice":"bob"}',
                         [
-                            'Content-Type' => ['application/json'],
-                            'Content-Length' => strlen('{"alice":"bob"}')
-                        ]);
-                }
+                            'Content-Type'   => ['application/json'],
+                            'Content-Length' => strlen('{"alice":"bob"}'),
+                        ]
+                    );
+                },
             ],
             [
                 [CURLOPT_RETURNTRANSFER => 1],
                 [
-                    CURLOPT_URL => '/test/card',
-                    CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Content-Length: ' . strlen('{"alice":"bob"}'), 'Authorization: VIRGIL { MY_TOKEN }'],
-                    CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_DELETE,
-                    CURLOPT_POST => true,
-                    CURLOPT_POSTFIELDS => '{"alice":"bob"}',
-                    CURLOPT_RETURNTRANSFER => 1
+                    CURLOPT_URL            => '/test/card',
+                    CURLOPT_HTTPHEADER     => [
+                        'Content-Type: application/json',
+                        'Content-Length: ' . strlen('{"alice":"bob"}'),
+                        'Authorization: VIRGIL { MY_TOKEN }',
+                    ],
+                    CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_DELETE,
+                    CURLOPT_POST           => true,
+                    CURLOPT_POSTFIELDS     => '{"alice":"bob"}',
+                    CURLOPT_RETURNTRANSFER => 1,
                 ],
                 function (HttpClientInterface $httpClientMock) {
-                    $httpClientMock->delete('/test/card', '{"alice":"bob"}',
+                    $httpClientMock->delete(
+                        '/test/card',
+                        '{"alice":"bob"}',
                         [
-                            'Content-Type' => ['application/json'],
+                            'Content-Type'   => ['application/json'],
                             'Content-Length' => strlen('{"alice":"bob"}'),
-                            'Authorization' => 'VIRGIL { MY_TOKEN }'
-                        ]);
-                }
-            ]
+                            'Authorization'  => 'VIRGIL { MY_TOKEN }',
+                        ]
+                    );
+                },
+            ],
         ];
     }
 }

@@ -2,48 +2,46 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
-use JsonSerializable;
-
 /**
  * Class keeps content and meta information for any singable request to Virgil Cards Service.
  */
 class SignedRequestModel
 {
-    /** @var JsonSerializable $cardContent */
-    protected $cardContent;
+    /** @var AbstractModel $requestContent */
+    protected $requestContent;
 
-    /** @var JsonSerializable $meta */
-    protected $meta;
+    /** @var SignedRequestMetaModel $requestMeta */
+    protected $requestMeta;
 
 
     /**
      * Class constructor.
      *
-     * @param JsonSerializable $cardContent
-     * @param JsonSerializable $meta
+     * @param AbstractModel          $requestContent
+     * @param SignedRequestMetaModel $requestMeta
      */
-    public function __construct(JsonSerializable $cardContent, JsonSerializable $meta)
+    public function __construct(AbstractModel $requestContent, SignedRequestMetaModel $requestMeta)
     {
-        $this->cardContent = $cardContent;
-        $this->meta = $meta;
+        $this->requestContent = $requestContent;
+        $this->requestMeta = $requestMeta;
     }
 
 
     /**
-     * @return JsonSerializable
+     * @return AbstractModel
      */
-    public function getCardContent()
+    public function getRequestContent()
     {
-        return $this->cardContent;
+        return $this->requestContent;
     }
 
 
     /**
-     * @return JsonSerializable
+     * @return SignedRequestMetaModel
      */
-    public function getMeta()
+    public function getRequestMeta()
     {
-        return $this->meta;
+        return $this->requestMeta;
     }
 
 
@@ -54,7 +52,7 @@ class SignedRequestModel
      */
     public function getSnapshot()
     {
-        return base64_encode(json_encode($this->cardContent));
+        return base64_encode(json_encode($this->requestContent));
     }
 }
 

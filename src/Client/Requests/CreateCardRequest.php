@@ -80,7 +80,7 @@ class CreateCardRequest extends AbstractCardRequest
         $model = $requestModelJsonMapper->toModel($modelJson);
 
         /** @var CardContentModel $cardContent */
-        $cardContent = $model->getCardContent();
+        $cardContent = $model->getRequestContent();
         $request = new self(
             $cardContent->getIdentity(),
             $cardContent->getIdentityType(),
@@ -91,7 +91,7 @@ class CreateCardRequest extends AbstractCardRequest
         );
 
         /** @var SignedRequestMetaModel $meta */
-        $meta = $model->getMeta();
+        $meta = $model->getRequestMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
             $request->appendSignature($signKey, Buffer::fromBase64($sign));
         }

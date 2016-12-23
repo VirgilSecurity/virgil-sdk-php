@@ -84,7 +84,7 @@ class CardsService implements CardsServiceInterface
             $signedRequestModelMapper = $this->mappers->getSignedRequestModelMapper();
 
             /** @var RevokeCardContentModel $cardContent */
-            $cardContent = $model->getCardContent();
+            $cardContent = $model->getRequestContent();
 
             return $this->httpClient->delete(
                 $this->params->getDeleteUrl($cardContent->getId()),

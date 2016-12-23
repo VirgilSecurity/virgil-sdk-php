@@ -12,7 +12,7 @@ use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 
 /**
- * Class transforms signed response model to model.
+ * Class transforms signed response json to model.
  */
 class SignedResponseModelMapper extends AbstractJsonModelMapper
 {
@@ -49,6 +49,7 @@ class SignedResponseModelMapper extends AbstractJsonModelMapper
                 $deviceInfoModelArguments[] = $cardInfo['device'];
             }
 
+            //TODO:move attributes name to constants
             if (array_key_exists('device_name', $cardInfo)) {
                 $deviceInfoModelArguments[] = $cardInfo['device_name'];
             }

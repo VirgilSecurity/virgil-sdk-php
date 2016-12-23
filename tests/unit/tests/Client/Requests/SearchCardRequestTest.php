@@ -3,10 +3,8 @@ namespace Virgil\Tests\Unit\Client\Requests;
 
 
 use PHPUnit\Framework\TestCase;
-
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
-
 use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
 
 class SearchCardRequestTest extends TestCase
@@ -14,46 +12,55 @@ class SearchCardRequestTest extends TestCase
     /**
      * @test
      */
-    public function getSearchCriteria_WithAppendedIdentities_ReturnsSearchCriteria()
+    public function getSearchCriteria__withAppendedIdentities__returnsValidSearchCriteria()
     {
         $expectedSearchCriteria = new SearchCriteria(['qwe', 'rty'], 'email', CardScopes::TYPE_APPLICATION);
-
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest->appendIdentity('qwe')
                           ->appendIdentity('rty')
         ;
 
-        $this->assertEquals($expectedSearchCriteria, $searchCardRequest->getSearchCriteria());
+
+        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+
+
+        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
     }
 
 
     /**
      * @test
      */
-    public function getSearchCriteria_WithNoIdentityTypeAndScope_ReturnsSearchCriteria()
+    public function getSearchCriteria__withNoIdentityTypeAndScope__returnsValidSearchCriteria()
     {
         $expectedSearchCriteria = new SearchCriteria(['qwe']);
-
         $searchCardRequest = new SearchCardRequest();
         $searchCardRequest->appendIdentity('qwe');
 
-        $this->assertEquals($expectedSearchCriteria, $searchCardRequest->getSearchCriteria());
+
+        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+
+
+        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
     }
 
 
     /**
      * @test
      */
-    public function getSearchCriteria_WithDuplicatedAppendedIdentities_ReturnsSearchCriteriaWithNoDuplicateIdentity()
+    public function getSearchCriteria__withDuplicatedAppendedIdentities__returnsSearchCriteriaWithNoDuplicateIdentity()
     {
         $expectedSearchCriteria = new SearchCriteria(['qwe'], 'email', CardScopes::TYPE_APPLICATION);
-
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest->appendIdentity('qwe')
                           ->appendIdentity('qwe')
         ;
 
-        $this->assertEquals($expectedSearchCriteria, $searchCardRequest->getSearchCriteria());
+
+        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+
+
+        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
     }
 
 
@@ -62,27 +69,33 @@ class SearchCardRequestTest extends TestCase
      *
      * @expectedException \Virgil\Sdk\Client\Requests\SearchCardRequestException
      */
-    public function getSearchCriteria_WithDidNotAppendIdentities_ThrowsException()
+    public function getSearchCriteria__withDidNotAppendIdentities__throwsException()
     {
-        //expected exception on empty identities
-
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
 
+
         $searchCardRequest->getSearchCriteria();
+
+
+        //expected exception on empty identities
+
     }
 
 
     /**
      * @test
      */
-    public function getSearchCriteria_WithSetAllIdentities_ReturnsSearchCriteria()
+    public function getSearchCriteria__withSetAllIdentities__returnsSearchCriteria()
     {
         $expectedSearchCriteria = new SearchCriteria(['qwe', 'rty'], 'email', CardScopes::TYPE_APPLICATION);
-
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest->setIdentities(['qwe', 'rty']);
 
-        $this->assertEquals($expectedSearchCriteria, $searchCardRequest->getSearchCriteria());
+
+        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+
+
+        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
     }
 
 }

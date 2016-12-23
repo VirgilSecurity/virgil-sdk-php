@@ -3,9 +3,7 @@ namespace Virgil\Sdk\Tests\Integration\Cryptography;
 
 
 use PHPUnit\Framework\TestCase;
-
 use Virgil\Sdk\Buffer;
-
 use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class VirgilCryptoCompatibilityTest extends TestCase
@@ -22,7 +20,7 @@ class VirgilCryptoCompatibilityTest extends TestCase
      *
      * @test
      */
-    public function decrypt_withValidRecipientPrivateKey_returnsOriginalData(
+    public function decrypt__withValidRecipientPrivateKey__returnsOriginalData(
         $private_key,
         $original_data,
         $cipher_data
@@ -49,7 +47,7 @@ class VirgilCryptoCompatibilityTest extends TestCase
      *
      * @test
      */
-    public function decryptThenVerify_withValidArguments_returnsVerifiedOriginalData(
+    public function decryptThenVerify__withValidArguments__returnsVerifiedOriginalData(
         $private_key,
         $original_data,
         $cipher_data,
@@ -82,7 +80,7 @@ class VirgilCryptoCompatibilityTest extends TestCase
      *
      * @test
      */
-    public function sign_withValidSignerPrivateKey_returnsCorrectSignature($private_key, $original_data, $signature)
+    public function sign__withValidSignerPrivateKey__returnsCorrectSignature($private_key, $original_data, $signature)
     {
         $virgilCrypto = $this->createVirgilCrypto();
         $signerPrivateKey = $virgilCrypto->importPrivateKey(Buffer::fromBase64($private_key));

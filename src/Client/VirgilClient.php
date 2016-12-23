@@ -11,7 +11,13 @@ use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 use Virgil\Sdk\Client\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilCards\CardsService;
 use Virgil\Sdk\Client\VirgilCards\CardsServiceInterface;
-use Virgil\Sdk\Client\VirgilCards\Mapper;
+
+use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\ModelMappersCollection;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaResponseMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 
@@ -169,14 +175,14 @@ class VirgilClient
 
         $curlClient = new CurlClient($curlRequestFactory, $httpHeaders);
 
-        $signedResponseModelMapper = new Mapper\SignedResponseModelMapper();
+        $signedResponseModelMapper = new SignedResponseModelMapper();
 
-        $jsonMappers = new Mapper\ModelMappersCollection(
+        $jsonMappers = new ModelMappersCollection(
             $signedResponseModelMapper,
-            new Mapper\SignedRequestModelMapper(),
-            new Mapper\SearchCriteriaResponseMapper($signedResponseModelMapper),
-            new Mapper\SearchCriteriaRequestMapper(),
-            new Mapper\ErrorResponseModelMapper()
+            new SignedRequestModelMapper(),
+            new SearchCriteriaResponseMapper($signedResponseModelMapper),
+            new SearchCriteriaRequestMapper(),
+            new ErrorResponseModelMapper()
         );
 
         return new CardsService($cardsServiceParams, $curlClient, $jsonMappers);
