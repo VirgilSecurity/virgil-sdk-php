@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Tests\Unit\Client\Requests;
+namespace Virgil\Sdk\Tests\Unit\Client\Requests;
 
 
 use PHPUnit\Framework\TestCase;

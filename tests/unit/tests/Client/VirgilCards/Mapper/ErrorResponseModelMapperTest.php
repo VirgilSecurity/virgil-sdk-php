@@ -1,11 +1,9 @@
 <?php
-namespace Virgil\Tests\Unit\Client\VirgilCards\Mapper;
+namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
-
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper\AbstractMapperTest;
 
 class ErrorResponseModelMapperTest extends AbstractMapperTest
 {

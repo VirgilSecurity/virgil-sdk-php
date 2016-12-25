@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Tests\Unit\Client\VirgilCards\Mapper;
+namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
@@ -12,8 +12,6 @@ use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
-
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper\AbstractMapperTest;
 
 class CreateRequestModelMapperTest extends AbstractMapperTest
 {

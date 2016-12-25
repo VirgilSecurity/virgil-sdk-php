@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Tests\Unit\Cryptography\Core;
+namespace Virgil\Sdk\Tests\Unit\Cryptography\Core;
 
 
 use PHPUnit\Framework\TestCase;

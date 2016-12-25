@@ -1,6 +1,6 @@
 <?php
 
-namespace Virgil\Tests\Unit\Client\VirgilCards;
+namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards;
 
 
 use PHPUnit\Framework\TestCase;

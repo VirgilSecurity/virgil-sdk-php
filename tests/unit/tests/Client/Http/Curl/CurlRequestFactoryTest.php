@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Tests\Unit\Client\Http\Curl;
+namespace Virgil\Sdk\Tests\Unit\Client\Http\Curl;
 
 
 use PHPUnit\Framework\TestCase;

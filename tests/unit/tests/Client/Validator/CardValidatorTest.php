@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Tests\Unit\Client\Validator;
+namespace Virgil\Sdk\Tests\Unit\Client\Validator;
 
 
 use PHPUnit\Framework\TestCase;

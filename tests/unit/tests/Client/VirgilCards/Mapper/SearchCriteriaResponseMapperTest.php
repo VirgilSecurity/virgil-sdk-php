@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Tests\Unit\Client\VirgilCards\Mapper;
+namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
 use DateTime;

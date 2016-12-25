@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Tests\Unit\Client\VirgilCards\Mapper;
+namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
 use RuntimeException;
@@ -9,8 +9,6 @@ use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
-
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper\AbstractMapperTest;
 
 class SignedRequestModelMapperTest extends AbstractMapperTest
 {
