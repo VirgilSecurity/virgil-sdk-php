@@ -3,7 +3,7 @@ namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
 /**
- * Class keeps content and meta information for any singable request to Virgil Cards Service.
+ * Class keeps content and meta information of any signed request to Virgil Cards Service.
  */
 class SignedRequestModel
 {

@@ -3,7 +3,7 @@ namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
 /**
- * Class keeps information for any singable response from Virgil Cards Service.
+ * Class keeps information of any signed response from Virgil Cards Service.
  */
 class SignedResponseModel
 {

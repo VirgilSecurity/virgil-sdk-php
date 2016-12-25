@@ -9,7 +9,7 @@ use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 /**
  * Class provides methods for signing card requests. There a two ways how card can be signed:
- * just sing by card owner signature and by any authority signatures like card service signature.
+ * just sign by card owner signature and by any authority signatures like card service signature.
  */
 class RequestSigner implements RequestSignerInterface
 {

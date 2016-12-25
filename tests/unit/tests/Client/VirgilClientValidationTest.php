@@ -33,7 +33,7 @@ class VirgilClientValidationTest extends TestCase
     /**
      * @expectedException \Virgil\Sdk\Client\Validator\CardValidationException
      */
-    public function testGetCardValidationFailBecauseOfInvalidSing()
+    public function testGetCardValidationFailBecauseOfInvalidSign()
     {
         $cardsServiceResponse = new SignedResponseModel(
             'model-id-1',
@@ -70,7 +70,7 @@ class VirgilClientValidationTest extends TestCase
     /**
      * @expectedException \Virgil\Sdk\Client\Validator\CardValidationException
      */
-    public function testSearchCardValidationFailBecauseOfInvalidSing()
+    public function testSearchCardValidationFailBecauseOfInvalidSign()
     {
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_GLOBAL);
 
@@ -118,7 +118,7 @@ class VirgilClientValidationTest extends TestCase
     /**
      * @expectedException \Virgil\Sdk\Client\Validator\CardValidationException
      */
-    public function testCreateCardValidationFailBecauseOfInvalidSing()
+    public function testCreateCardValidationFailBecauseOfInvalidSign()
     {
         $request = new SignedRequestModel(
             new CardContentModel(
