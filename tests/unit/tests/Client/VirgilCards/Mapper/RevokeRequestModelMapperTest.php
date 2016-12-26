@@ -5,9 +5,7 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
 
 class RevokeRequestModelMapperTest extends AbstractMapperTest
 {
@@ -25,7 +23,7 @@ class RevokeRequestModelMapperTest extends AbstractMapperTest
     ) {
         $expectedRevokeCardRequestJson = $this->createRevokeCardRequestJson(...$revokeCardRequestJsonData);
 
-        $revokeCardRequestModel = $this->createRevokeCardRequestModel(...$revokeCardRequestData);
+        $revokeCardRequestModel = RequestModel::createRevokeCardRequestModel(...$revokeCardRequestData);
 
 
         $revokeCardRequestJson = $this->mapper->toJson($revokeCardRequestModel);
@@ -49,7 +47,7 @@ class RevokeRequestModelMapperTest extends AbstractMapperTest
     ) {
         $revokeCardRequestModelJson = $this->createRevokeCardRequestJson(...$revokeCardRequestJsonData);
 
-        $expectedRevokeCardRequestModel = $this->createRevokeCardRequestModel(...$revokeCardRequestData);
+        $expectedRevokeCardRequestModel = RequestModel::createRevokeCardRequestModel(...$revokeCardRequestData);
 
 
         $revokeCardRequestModel = $this->mapper->toModel($revokeCardRequestModelJson);
@@ -99,13 +97,6 @@ class RevokeRequestModelMapperTest extends AbstractMapperTest
         return new RevokeRequestModelMapper(new SignedRequestModelMapper());
     }
 
-
-    private function createRevokeCardRequestModel($contentData, $cardSigns)
-    {
-        return new SignedRequestModel(
-            new RevokeCardContentModel(...$contentData), new SignedRequestMetaModel($cardSigns)
-        );
-    }
 
     private function createRevokeCardRequestJson($format, $cardContentJson, $cardMetaJson)
     {

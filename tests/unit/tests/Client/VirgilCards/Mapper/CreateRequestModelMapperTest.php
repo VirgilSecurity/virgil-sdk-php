@@ -8,10 +8,9 @@ use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
+
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
 
 class CreateRequestModelMapperTest extends AbstractMapperTest
 {
@@ -29,7 +28,7 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
     ) {
         $expectedCreateCardRequestJson = $this->createCreateCardRequestJson(...$createCardRequestJsonData);
 
-        $createCardRequestModel = $this->createCreateCardRequestModel(...$createCardRequestData);
+        $createCardRequestModel = RequestModel::createCreateCardRequestModel(...$createCardRequestData);
 
 
         $createCardRequestJson = $this->mapper->toJson($createCardRequestModel);
@@ -53,7 +52,7 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
     ) {
         $createCardRequestModelJson = $this->createCreateCardRequestJson(...$createCardRequestJsonData);
 
-        $expectedCreateCardRequestModel = $this->createCreateCardRequestModel(...$createCardRequestData);
+        $expectedCreateCardRequestModel = RequestModel::createCreateCardRequestModel(...$createCardRequestData);
 
 
         $createCardRequestModel = $this->mapper->toModel($createCardRequestModelJson);
@@ -108,14 +107,6 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
     private function createCreateCardRequestModelMapper()
     {
         return new CreateRequestModelMapper(new SignedRequestModelMapper(), new SignedResponseModelMapper());
-    }
-
-
-    private function createCreateCardRequestModel($contentData, $cardSigns)
-    {
-        return new SignedRequestModel(
-            new CardContentModel(...$contentData), new SignedRequestMetaModel($cardSigns)
-        );
     }
 
 

@@ -6,9 +6,7 @@ use RuntimeException;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
 
 class SignedRequestModelMapperTest extends AbstractMapperTest
 {
@@ -28,7 +26,7 @@ class SignedRequestModelMapperTest extends AbstractMapperTest
     ) {
         $expectedSignedRequestJson = $this->createSignedCardRequestJson(...$signedRequestJsonData);
 
-        $signedRequestModel = $this->createSignedRequestModel(...$signedRequestData);
+        $signedRequestModel = RequestModel::createDeviceInfoContentRequestModel(...$signedRequestData);
 
 
         $signedRequestJson = $this->mapper->toJson($signedRequestModel);
@@ -90,13 +88,5 @@ class SignedRequestModelMapperTest extends AbstractMapperTest
     private function createSignedRequestModelMapper()
     {
         return new SignedRequestModelMapper();
-    }
-
-
-    private function createSignedRequestModel($cardContentData, $cardSigns)
-    {
-        return new SignedRequestModel(
-            new DeviceInfoModel(...$cardContentData), new SignedRequestMetaModel($cardSigns)
-        );
     }
 }

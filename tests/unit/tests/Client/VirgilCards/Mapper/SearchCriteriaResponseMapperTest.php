@@ -11,12 +11,9 @@ use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaResponseMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseMetaModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper\AbstractMapperTest;
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
 
 class SearchCriteriaResponseMapperTest extends AbstractMapperTest
 {
@@ -34,7 +31,7 @@ class SearchCriteriaResponseMapperTest extends AbstractMapperTest
         $searchCriteriaResponseDataSet,
         $searchCriteriaResponseJsonDataSet
     ) {
-        $searchCriteriaResponse = $this->createSearchCriteriaResponse($searchCriteriaResponseDataSet);
+        $searchCriteriaResponse = ResponseModel::createSignedResponseModels($searchCriteriaResponseDataSet);
 
 
         $this->mapper->toJson($searchCriteriaResponse);
@@ -56,7 +53,8 @@ class SearchCriteriaResponseMapperTest extends AbstractMapperTest
         $searchCriteriaResponseDataSet,
         $searchCriteriaResponseJsonDataSet
     ) {
-        $expectedSearchCriteriaResponse = $this->createSearchCriteriaResponse($searchCriteriaResponseDataSet);
+        $expectedSearchCriteriaResponse = ResponseModel::createSignedResponseModels($searchCriteriaResponseDataSet);
+
         $searchCriteriaResponseJson = $this->createSearchCriteriaResponseJson(...$searchCriteriaResponseJsonDataSet);
 
 
@@ -125,24 +123,6 @@ class SearchCriteriaResponseMapperTest extends AbstractMapperTest
     protected function getMapper()
     {
         return new SearchCriteriaResponseMapper(new SignedResponseModelMapper());
-    }
-
-
-    private function createSearchCriteriaResponse($searchCriteriaDataSet)
-    {
-        $searchCriteriaDataToSignedResponseModel = function ($id, $contentSnapshot, $contentData, $metaData) {
-            return new SignedResponseModel(
-                $id, $contentSnapshot, new CardContentModel(...$contentData), new SignedResponseMetaModel(...$metaData)
-            );
-        };
-
-        $result = [];
-
-        foreach ($searchCriteriaDataSet as $searchCriteriaData) {
-            $result[] = call_user_func_array($searchCriteriaDataToSignedResponseModel, $searchCriteriaData);
-        }
-
-        return $result;
     }
 
 

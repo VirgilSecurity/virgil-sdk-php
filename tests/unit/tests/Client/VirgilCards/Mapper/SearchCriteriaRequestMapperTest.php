@@ -4,8 +4,8 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 use RuntimeException;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
-use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
 
 class SearchCriteriaRequestMapperTest extends AbstractMapperTest
 {
@@ -19,7 +19,7 @@ class SearchCriteriaRequestMapperTest extends AbstractMapperTest
      */
     public function toJson__fromSearchCriteria__returnsValidJson($expectedJson, $args)
     {
-        $searchCriteria = $this->createSearchCriteria(...$args);
+        $searchCriteria = RequestModel::createSearchCriteria(...$args);
 
 
         $actualJson = $this->mapper->toJson($searchCriteria);
@@ -70,12 +70,6 @@ class SearchCriteriaRequestMapperTest extends AbstractMapperTest
     protected function createSearchCriteriaRequestMapper()
     {
         return new SearchCriteriaRequestMapper();
-    }
-
-
-    protected function createSearchCriteria($identities, $identityType = null, $scope = null)
-    {
-        return new SearchCriteria($identities, $identityType, $scope);
     }
 
 

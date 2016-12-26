@@ -3,7 +3,7 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
 
 class ErrorResponseModelMapperTest extends AbstractMapperTest
 {
@@ -14,7 +14,7 @@ class ErrorResponseModelMapperTest extends AbstractMapperTest
      */
     public function toJson__fromErrorResponseModel__throwsException()
     {
-        $errorResponseModel = $this->createErrorResponseModel('30142');
+        $errorResponseModel = ResponseModel::createErrorResponseModel('30142');
 
 
         $this->mapper->toJson($errorResponseModel);
@@ -30,7 +30,7 @@ class ErrorResponseModelMapperTest extends AbstractMapperTest
     public function toModel__fromErrorResponseJsonString__returnsValidErrorResponseModel()
     {
         $errorResponseJsonString = '{"code":"30142"}';
-        $expectedErrorResponseModel = $this->createErrorResponseModel('30142');
+        $expectedErrorResponseModel = ResponseModel::createErrorResponseModel('30142');
 
 
         $errorResponseModel = $this->mapper->toModel($errorResponseJsonString);
@@ -43,11 +43,5 @@ class ErrorResponseModelMapperTest extends AbstractMapperTest
     protected function getMapper()
     {
         return new ErrorResponseModelMapper();
-    }
-
-
-    private function createErrorResponseModel($code)
-    {
-        return new ErrorResponseModel($code);
     }
 }

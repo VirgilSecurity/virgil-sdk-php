@@ -5,13 +5,9 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 use DateTime;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
-
-use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseMetaModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
-
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
+use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
 
 class SignedResponseModelMapperTest extends AbstractMapperTest
 {
@@ -27,7 +23,7 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
         array $signedResponseData,
         array $signedResponseJsonData
     ) {
-        $expectedSignedResponseModel = $this->createSignedResponseModel(...$signedResponseData);
+        $expectedSignedResponseModel = ResponseModel::createSignedResponseModel(...$signedResponseData);
         $signedResponseJson = $this->createSignedCardResponseJson(...$signedResponseJsonData);
 
 
@@ -52,7 +48,7 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
         array $signedResponseData,
         array $signedResponseJsonData
     ) {
-        $signedResponseModel = $this->createSignedResponseModel(...$signedResponseData);
+        $signedResponseModel = ResponseModel::createSignedResponseModel(...$signedResponseData);
 
 
         $this->mapper->toJson($signedResponseModel);
@@ -115,14 +111,6 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
     protected function createSignedResponseModelMapper()
     {
         return new SignedResponseModelMapper();
-    }
-
-
-    protected function createSignedResponseModel($id, $contentSnapshot, $contentData, $metaData)
-    {
-        return new SignedResponseModel(
-            $id, $contentSnapshot, new CardContentModel(...$contentData), new SignedResponseMetaModel(...$metaData)
-        );
     }
 
 

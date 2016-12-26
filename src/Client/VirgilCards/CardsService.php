@@ -38,8 +38,8 @@ class CardsService implements CardsServiceInterface
     /**
      * Class constructor.
      *
-     * @param CardsServiceParamsInterface $params
-     * @param HttpClientInterface $httpClient
+     * @param CardsServiceParamsInterface     $params
+     * @param HttpClientInterface             $httpClient
      * @param ModelMappersCollectionInterface $mappers
      */
     public function __construct(
@@ -93,6 +93,8 @@ class CardsService implements CardsServiceInterface
         };
 
         $this->makeRequest($request);
+
+        return $this;
     }
 
 
@@ -156,9 +158,11 @@ class CardsService implements CardsServiceInterface
             $errorResponse = $errorResponseModelMapper->toModel($response->getBody());
 
             $httpStatusCode = $responseHttpStatusCode->getCode();
+
             $serviceErrorMessage = $errorResponse->getMessageOrDefault(
                 self::DEFAULT_ERROR_MESSAGES[(int)$httpStatusCode]
             );
+
             $serviceErrorCode = $errorResponse->getCode();
 
             throw new CardsServiceException($serviceErrorMessage, $httpStatusCode, $serviceErrorCode);
