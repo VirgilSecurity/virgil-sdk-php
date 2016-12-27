@@ -1,0 +1,8 @@
+{
+  "application_settings": {
+    "private_key": "base64 encoded private key",
+    "id": "application id",
+    "access_token": "token",
+    "password": "password for private key"
+  }
+}
