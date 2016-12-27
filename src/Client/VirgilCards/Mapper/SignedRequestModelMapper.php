@@ -25,8 +25,8 @@ class SignedRequestModelMapper extends AbstractJsonModelMapper
 
         return json_encode(
             [
-                'content_snapshot' => $model->getSnapshot(),
-                'meta'             => $model->getRequestMeta(),
+                self::CONTENT_SNAPSHOT_ATTRIBUTE_NAME => $model->getSnapshot(),
+                self::META_ATTRIBUTE_NAME             => $model->getRequestMeta(),
             ]
         );
     }

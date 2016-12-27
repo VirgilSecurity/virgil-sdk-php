@@ -11,6 +11,9 @@ use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
  */
 class SearchCriteriaRequestMapper extends AbstractJsonModelMapper
 {
+    const IDENTITIES_ATTRIBUTE_NAME = 'identities';
+
+
     /**
      * @inheritdoc
      */
@@ -24,9 +27,9 @@ class SearchCriteriaRequestMapper extends AbstractJsonModelMapper
         return json_encode(
             array_filter(
                 [
-                    'identities'    => $model->getIdentities(),
-                    'identity_type' => $model->getIdentityType(),
-                    'scope'         => $model->getScope(),
+                    self::IDENTITIES_ATTRIBUTE_NAME    => $model->getIdentities(),
+                    self::IDENTITY_TYPE_ATTRIBUTE_NAME => $model->getIdentityType(),
+                    self::SCOPE_ATTRIBUTE_NAME         => $model->getScope(),
                 ],
                 function ($value) {
                     return count($value) !== 0;

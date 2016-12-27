@@ -2,7 +2,10 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
+use Virgil\Sdk\Buffer;
 use Virgil\Sdk\BufferInterface;
+
+use Virgil\Sdk\Client\AbstractJsonModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\AbstractModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
@@ -15,6 +18,35 @@ abstract class AbstractCardRequest
 {
     /** @var BufferInterface[] $signatures */
     protected $signatures = [];
+
+
+    /**
+     * Imports card request from base64 json string.
+     *
+     * @param string $exportedSignedRequestModel base64 encoded request.
+     *
+     * @return AbstractCardRequest
+     */
+    public static function import($exportedSignedRequestModel)
+    {
+        /** @var AbstractJsonModelMapper $requestModelJsonMapper */
+        $requestModelJsonMapper = static::getRequestModelJsonMapper();
+        $modelJson = base64_decode($exportedSignedRequestModel);
+        $model = $requestModelJsonMapper->toModel($modelJson);
+
+        $cardContent = $model->getRequestContent();
+
+        /** @var AbstractCardRequest $request */
+        $request = static::buildRequestFromCardContent($cardContent);
+
+        /** @var SignedRequestMetaModel $meta */
+        $meta = $model->getRequestMeta();
+        foreach ($meta->getSigns() as $signKey => $sign) {
+            $request->appendSignature($signKey, Buffer::fromBase64($sign));
+        }
+
+        return $request;
+    }
 
 
     /**

@@ -6,7 +6,6 @@ use InvalidArgumentException;
 
 /**
  * Class provides params for virgil services.
- * TODO:decide to move constants to config.
  */
 class VirgilClientParams implements VirgilClientParamsInterface
 {

@@ -168,7 +168,6 @@ class VirgilClient
 
         $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
 
-        //TODO: decide to send additional headers like Content-Type (need negotiate).
         $httpHeaders = [
             'Authorization' => sprintf(self::AUTH_HEADER_FORMAT, $virgilClientParams->getAccessToken()),
         ];

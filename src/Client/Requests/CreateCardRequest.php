@@ -11,7 +11,6 @@ use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
@@ -67,21 +66,26 @@ class CreateCardRequest extends AbstractCardRequest
 
 
     /**
-     * Imports card request from base64 json string.
+     * Returns create request model mapper.
      *
-     * @param string $exportedRequest base64 encoded request.
+     * @return CreateRequestModelMapper
+     */
+    protected static function getRequestModelJsonMapper()
+    {
+        return new CreateRequestModelMapper(new SignedRequestModelMapper(), new SignedResponseModelMapper());
+    }
+
+
+    /**
+     * Builds self from card content model.
+     *
+     * @param CardContentModel $cardContent
      *
      * @return CreateCardRequest
      */
-    public static function import($exportedRequest)
+    protected static function buildRequestFromCardContent(CardContentModel $cardContent)
     {
-        $requestModelJsonMapper = self::getRequestModelJsonMapper();
-        $modelJson = base64_decode($exportedRequest);
-        $model = $requestModelJsonMapper->toModel($modelJson);
-
-        /** @var CardContentModel $cardContent */
-        $cardContent = $model->getRequestContent();
-        $request = new self(
+        return new self(
             $cardContent->getIdentity(),
             $cardContent->getIdentityType(),
             Buffer::fromBase64($cardContent->getPublicKey()),
@@ -89,25 +93,6 @@ class CreateCardRequest extends AbstractCardRequest
             $cardContent->getData(),
             $cardContent->getInfo()
         );
-
-        /** @var SignedRequestMetaModel $meta */
-        $meta = $model->getRequestMeta();
-        foreach ($meta->getSigns() as $signKey => $sign) {
-            $request->appendSignature($signKey, Buffer::fromBase64($sign));
-        }
-
-        return $request;
-    }
-
-
-    /**
-     * Returns create request model mapper.
-     *
-     * @return CreateRequestModelMapper
-     */
-    public static function getRequestModelJsonMapper()
-    {
-        return new CreateRequestModelMapper(new SignedRequestModelMapper(), new SignedResponseModelMapper());
     }
 
 
@@ -196,7 +181,12 @@ class CreateCardRequest extends AbstractCardRequest
     protected function getCardContent()
     {
         return new CardContentModel(
-            $this->identity, $this->identityType, $this->publicKeyData->toBase64(), $this->scope, $this->data, $this->info
+            $this->identity,
+            $this->identityType,
+            $this->publicKeyData->toBase64(),
+            $this->scope,
+            $this->data,
+            $this->info
         );
     }
 }

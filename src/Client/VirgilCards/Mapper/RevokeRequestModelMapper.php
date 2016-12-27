@@ -13,6 +13,9 @@ use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
  */
 class RevokeRequestModelMapper extends AbstractJsonModelMapper
 {
+    const ID_ATTRIBUTE_NAME = 'card_id';
+    const REVOCATION_REASON_ATTRIBUTE_NAME = 'revocation_reason';
+
     /** @var SignedRequestModelMapper $signedRequestModelMapper */
     private $signedRequestModelMapper;
 
@@ -36,14 +39,14 @@ class RevokeRequestModelMapper extends AbstractJsonModelMapper
     public function toModel($json)
     {
         $data = json_decode($json, true);
-        $cardContentData = json_decode(base64_decode($data['content_snapshot']), true);
-        $cardMetaData = $data['meta'];
+        $cardContentData = json_decode(base64_decode($data[self::CONTENT_SNAPSHOT_ATTRIBUTE_NAME]), true);
+        $cardMetaData = $data[self::META_ATTRIBUTE_NAME];
 
         $cardContentModel = new RevokeCardContentModel(
-            $cardContentData['card_id'], $cardContentData['revocation_reason']
+            $cardContentData[self::ID_ATTRIBUTE_NAME], $cardContentData[self::REVOCATION_REASON_ATTRIBUTE_NAME]
         );
 
-        $cardMetaModel = new SignedRequestMetaModel($cardMetaData['signs']);
+        $cardMetaModel = new SignedRequestMetaModel($cardMetaData[self::SIGNS_ATTRIBUTE_NAME]);
 
         return new SignedRequestModel($cardContentModel, $cardMetaModel);
     }

@@ -11,6 +11,9 @@ use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
  */
 class ErrorResponseModelMapper extends AbstractJsonModelMapper
 {
+    const CODE_ATTRIBUTE_NAME = 'code';
+
+
     /**
      * @inheritdoc
      *
@@ -20,6 +23,6 @@ class ErrorResponseModelMapper extends AbstractJsonModelMapper
     {
         $data = json_decode($json, true);
 
-        return new ErrorResponseModel($data['code']);
+        return new ErrorResponseModel($data[self::CODE_ATTRIBUTE_NAME]);
     }
 }

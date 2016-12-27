@@ -4,7 +4,6 @@ namespace Virgil\Sdk\Client\VirgilCards;
 
 /**
  * Class provides Cards Service params.
- * TODO:decide to move constants to config.
  */
 class CardsServiceParams implements CardsServiceParamsInterface
 {

@@ -2,13 +2,10 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
-use Virgil\Sdk\Buffer;
-
 use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 
 /**
  * Class represents request for card revoking.
@@ -36,41 +33,26 @@ class RevokeCardRequest extends AbstractCardRequest
 
 
     /**
-     * Imports card request from base64 json string.
-     *
-     * @param $exportedRequest
-     *
-     * @return RevokeCardRequest
-     */
-    public static function import($exportedRequest)
-    {
-        $requestModelJsonMapper = self::getRequestModelJsonMapper();
-        $modelJson = base64_decode($exportedRequest);
-        $model = $requestModelJsonMapper->toModel($modelJson);
-
-        /** @var RevokeCardContentModel $cardContent */
-        $cardContent = $model->getRequestContent();
-        $request = new self($cardContent->getId(), $cardContent->getRevocationReason());
-
-        /** @var SignedRequestMetaModel $meta */
-        // TODO I think you can move that into helper method to prevent repeating there and inside the CreateCardRequest.php
-        $meta = $model->getRequestMeta();
-        foreach ($meta->getSigns() as $signKey => $sign) {
-            $request->appendSignature($signKey, Buffer::fromBase64($sign));
-        }
-
-        return $request;
-    }
-
-
-    /**
      * Returns revoke request model mapper.
      *
      * @return RevokeRequestModelMapper
      */
-    public static function getRequestModelJsonMapper()
+    protected static function getRequestModelJsonMapper()
     {
         return new RevokeRequestModelMapper(new SignedRequestModelMapper());
+    }
+
+
+    /**
+     * Builds self from revoke card content model.
+     *
+     * @param RevokeCardContentModel $cardContent
+     *
+     * @return RevokeCardRequest
+     */
+    protected static function buildRequestFromCardContent(RevokeCardContentModel $cardContent)
+    {
+        return new self($cardContent->getId(), $cardContent->getRevocationReason());
     }
 
 
