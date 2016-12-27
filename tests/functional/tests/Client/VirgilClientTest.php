@@ -4,18 +4,26 @@ namespace Virgil\Tests\Functional\Client;
 
 
 use PHPUnit\Framework\TestCase;
+
 use Virgil\Sdk\Buffer;
+
 use Virgil\Sdk\BufferInterface;
-use Virgil\Sdk\Client\Card;
+
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
+
 use Virgil\Sdk\Client\VirgilCards\CardsServiceException;
+
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
+
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\RequestSigner;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
+
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\VirgilClientParams;
+use Virgil\Sdk\Client\Card;
+
 use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 class VirgilClientTest extends TestCase
@@ -27,10 +35,8 @@ class VirgilClientTest extends TestCase
     private $crypto;
 
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function setUp()
     {
-        parent::__construct($name, $data, $dataName);
-
         $settings = json_decode(file_get_contents(VIRGIL_TEST_CONFIG_PATH), true);
         $this->applicationSettings = $settings['application_settings'];
 
@@ -38,10 +44,10 @@ class VirgilClientTest extends TestCase
         $params->setCardsServiceAddress('https://cards-stg.virgilsecurity.com');
         $params->setReadCardsServiceAddress('https://cards-ro-stg.virgilsecurity.com');
         $params->setIdentityServiceAddress('https://identity-stg.virgilsecurity.com');
-        $this->virgilClient = new VirgilClient($params);
 
-        $this->crypto = $crypto = new VirgilCrypto();
-        $this->requestSigner = new RequestSigner($crypto);
+        $this->virgilClient = new VirgilClient($params);
+        $this->crypto = new VirgilCrypto();
+        $this->requestSigner = new RequestSigner($this->crypto);
     }
 
 
@@ -53,8 +59,10 @@ class VirgilClientTest extends TestCase
      * @param                 $scope
      * @param BufferInterface $publicKey
      * @param BufferInterface $privateKey
+     *
+     * @test
      */
-    public function testCreateCard(
+    public function createCard__withCreateCardRequest__returnsValidCard(
         $identity,
         $identityType,
         $scope,
@@ -77,7 +85,9 @@ class VirgilClientTest extends TestCase
                             )
         ;
 
+
         $card = $this->virgilClient->createCard($request);
+
 
         $this->assertEquals($expectedId, $card->getId());
         $this->assertInstanceOf(Card::class, $card);
@@ -92,8 +102,10 @@ class VirgilClientTest extends TestCase
      * @param                 $scope
      * @param BufferInterface $publicKey
      * @param BufferInterface $privateKey
+     *
+     * @test
      */
-    public function testCreateCardFailOnBadSelfSign(
+    public function createCard__createCardRequestWithBadSelfSign__throwsException(
         $identity,
         $identityType,
         $scope,
@@ -115,8 +127,11 @@ class VirgilClientTest extends TestCase
                             )
         ;
 
+
         try {
             $this->virgilClient->createCard($request);
+
+
         } catch (CardsServiceException $exception) {
             $this->assertEquals('400', $exception->getCode());
             $this->assertContains('SCR sign validation failed', $exception->getMessage());
@@ -125,7 +140,10 @@ class VirgilClientTest extends TestCase
     }
 
 
-    public function testSearchCard()
+    /**
+     * @test
+     */
+    public function searchCards__withSearchCardRequest__returnsValidCards()
     {
         $searchIdentities = array_map(
             function ($card) {
@@ -138,9 +156,12 @@ class VirgilClientTest extends TestCase
 
         $searchCardRequest->setIdentities($searchIdentities);
 
+
         $cards = $this->virgilClient->searchCards($searchCardRequest);
 
+
         $this->assertEquals(count($searchIdentities), count($cards));
+
         foreach ($cards as $card) {
             $this->assertInstanceOf(Card::class, $card);
         }
@@ -155,8 +176,10 @@ class VirgilClientTest extends TestCase
      * @param                 $scope
      * @param BufferInterface $publicKey
      * @param BufferInterface $privateKey
+     *
+     * @test
      */
-    public function testGetCard(
+    public function getCard__withExistsCardId__returnsValidCard(
         $identity,
         $identityType,
         $scope,
@@ -167,7 +190,11 @@ class VirgilClientTest extends TestCase
         $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()))
                                    ->toHex()
         ;
+
+
         $card = $this->virgilClient->getCard($expectedId);
+
+
         $this->assertEquals($expectedId, $card->getId());
         $this->assertInstanceOf(Card::class, $card);
     }
@@ -181,8 +208,10 @@ class VirgilClientTest extends TestCase
      * @param                 $scope
      * @param BufferInterface $publicKey
      * @param BufferInterface $privateKey
+     *
+     * @test
      */
-    public function testRevokeCard(
+    public function revokeCard__withRevokeCardRequest__removesCards(
         $identity,
         $identityType,
         $scope,
@@ -211,7 +240,9 @@ class VirgilClientTest extends TestCase
             )
         );
 
+
         $this->virgilClient->revokeCard($revokeRequest);
+
 
         try {
             $this->virgilClient->getCard($expectedId);

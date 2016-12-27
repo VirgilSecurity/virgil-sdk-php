@@ -21,7 +21,6 @@ class VirgilClientRevokeCardTest extends AbstractVirgilClientTest
     ) {
         $this->configureCardsServiceResponse($revokeCardRequestArgs, []);
 
-
         $revokeCardRequest = CardRequest::createRevokeCardRequest(...$revokeCardRequestArgs);
 
 
