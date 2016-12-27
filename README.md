@@ -57,7 +57,7 @@ To create an instance of *VirgilClient* class, just call its static method with 
 ```php
 <?php
 
-use Virgil\SDK\Client\VirgilClient;
+use Virgil\Sdk\Client\VirgilClient;
 
 $client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
 ```
