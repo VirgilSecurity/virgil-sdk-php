@@ -154,6 +154,7 @@ Performs the `Virgil Card's` search by criteria request:
 <?php
 
 use Virgil\SDK\Client\VirgilClient;
+
 use Virgil\SDK\Client\Requests\SearchCardRequest;
 
 $client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
@@ -253,11 +254,11 @@ Prepare revocation request
 <?php
 
 use Virgil\SDK\Client\Requests\RevokeCardRequest;
-use Virgil\SDK\Client\Constants\RevocationReasons;
+use Virgil\SDK\Client\Requests\Constants\RevocationReasons;
 
 $cardId = "[YOUR_CARD_ID_HERE]";
 
-$revokeRequest = new RevokeCardRequest($cardId, RevocationReasons::UNSPECIFIED_TYPE);
+$revokeRequest = new RevokeCardRequest($cardId, RevocationReasons::TYPE_UNSPECIFIED);
 $requestSigner->authoritySign($revokeRequest, $appID, $appPrivateKey);
 
 $client->revokeCard($revokeRequest);
@@ -329,7 +330,7 @@ $encryptedData = $crypto->encrypt($plaintext, [$aliceKeys->getPublicKey()]);
 $source = fopen('php://memory', 'r+');
 $sin = fopen('php://memory', 'r+');
 
-$crypto->streamEncrypt($source, $sin, [$aliceKeys->getPublicKey()]);
+$crypto->encryptStream($source, $sin, [$aliceKeys->getPublicKey()]);
 ```
 
 ### Decrypt Data
@@ -349,7 +350,7 @@ $crypto->decrypt($encryptedData, $aliceKeys->getPrivateKey());
 $source = fopen('php://memory', 'r+');
 $sin = fopen('php://memory', 'r+');
   
-$crypto->streamDecrypt($source, $sin, $aliceKeys->getPrivateKey());
+$crypto->decryptStream($source, $sin, $aliceKeys->getPrivateKey());
 ```
 
 ## Generating and Verifying Signatures
@@ -385,7 +386,7 @@ $signature = $crypto->sign($data, $aliceKeys->getPrivateKey());
 
 $source = fopen('file://[YOUR_FILE_PATH_HERE]', 'r+');
 
-$crypto->streamSign($source, $aliceKeys->getPrivateKey());
+$crypto->signStream($source, $aliceKeys->getPrivateKey());
 ```
 ### Verifying a Signature
 
@@ -405,7 +406,7 @@ $isValid = $crypto->verify($data, $signature, $aliceKeys->getPublicKey());
 <?php
 
 $source = fopen('file://[YOUR_FILE_PATH_HERE]', 'r+');
-$isValid = $crypto->streamVerify($source, $signature, $aliceKeys->getPublicKey());
+$isValid = $crypto->verifyStream($source, $signature, $aliceKeys->getPublicKey());
 ```
 ## Authenticated Encryption
 Authenticated Encryption provides both data confidentiality and data integrity assurances to the information being protected.
@@ -444,6 +445,7 @@ The default Fingerprint algorithm is SHA-256.
 <?php
 
 use Virgil\SDK\Cryptography\VirgilCrypto;
+
 use Virgil\SDK\Buffer;
 
 $crypto = new VirgilCrypto();
