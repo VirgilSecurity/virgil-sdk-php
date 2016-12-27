@@ -1,103 +1,141 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
 
+use InvalidArgumentException;
 
-class VirgilClientParams
+/**
+ * Class provides params for virgil services.
+ */
+class VirgilClientParams implements VirgilClientParamsInterface
 {
+    const CARDS_SERVICE_UR = 'https://cards.virgilsecurity.com';
+    const CARDS_RO_SERVICE_UR = 'https://cards-ro.virgilsecurity.com';
+    const IDENTITY_SERVICE_URL = 'https://identity.virgilsecurity.com';
+
+    /** @var string string $accessToken */
     private $accessToken;
+
+    /** @var string $cardsServiceAddress */
     private $cardsServiceAddress;
+
+    /** @var string $readOnlyCardsServiceAddress */
     private $readOnlyCardsServiceAddress;
+
+    /** @var string $identityServiceAddress */
     private $identityServiceAddress;
 
-    /**
-     * VirgilClientParams constructor.
-     *
-     * @param string $accessToken
-     */
-    public function __construct($accessToken)
-    {
-        $this->accessToken = $accessToken;
-        $this->setCardsServiceAddress('https://cards.virgilsecurity.com');
-        $this->setReadCardsServiceAddress('https://cards-ro.virgilsecurity.com');
-        $this->setIdentityServiceAddress('https://identity.virgilsecurity.com');
-    }
 
     /**
-     * @return string
+     * Class constructor.
+     *
+     * @param string $accessToken
+     * @param string $cardsServiceAddress
+     * @param string $readOnlyCardsServiceAddress
+     * @param string $identityServiceAddress
+     */
+    public function __construct(
+        $accessToken,
+        $cardsServiceAddress = self::CARDS_SERVICE_UR,
+        $readOnlyCardsServiceAddress = self::CARDS_RO_SERVICE_UR,
+        $identityServiceAddress = self::IDENTITY_SERVICE_URL
+    ) {
+        $this->accessToken = $accessToken;
+        $this->setCardsServiceAddress($cardsServiceAddress);
+        $this->setReadCardsServiceAddress($readOnlyCardsServiceAddress);
+        $this->setIdentityServiceAddress($identityServiceAddress);
+    }
+
+
+    /**
+     * @inheritdoc
      */
     public function getAccessToken()
     {
         return $this->accessToken;
     }
 
+
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getCardsServiceAddress()
     {
         return $this->cardsServiceAddress;
     }
 
+
     /**
-     * @param string $cardsServiceAddress
+     * @inheritdoc
      */
     public function setCardsServiceAddress($cardsServiceAddress)
     {
-        if (!$this->checkServiceUrl($cardsServiceAddress)) {
-            throw new \InvalidArgumentException(__METHOD__);
+        if (!$this->isServiceUrlValid($cardsServiceAddress)) {
+            throw new InvalidArgumentException(__METHOD__);
         }
 
         $this->cardsServiceAddress = $cardsServiceAddress;
+
+        return $this;
     }
 
+
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getReadOnlyCardsServiceAddress()
     {
         return $this->readOnlyCardsServiceAddress;
     }
 
+
     /**
-     * @param string $readOnlyCardsServiceAddress
+     * @inheritdoc
      */
     public function setReadCardsServiceAddress($readOnlyCardsServiceAddress)
     {
-        if (!$this->checkServiceUrl($readOnlyCardsServiceAddress)) {
-            throw new \InvalidArgumentException(__METHOD__);
+        if (!$this->isServiceUrlValid($readOnlyCardsServiceAddress)) {
+            throw new InvalidArgumentException(__METHOD__);
         }
 
         $this->readOnlyCardsServiceAddress = $readOnlyCardsServiceAddress;
+
+        return $this;
     }
 
+
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getIdentityServiceAddress()
     {
         return $this->identityServiceAddress;
     }
 
+
     /**
-     * @param string $identityServiceAddress
+     * @inheritdoc
      */
     public function setIdentityServiceAddress($identityServiceAddress)
     {
-        if (!$this->checkServiceUrl($identityServiceAddress)) {
-            throw new \InvalidArgumentException(__METHOD__);
+        if (!$this->isServiceUrlValid($identityServiceAddress)) {
+            throw new InvalidArgumentException(__METHOD__);
         }
 
         $this->identityServiceAddress = $identityServiceAddress;
+
+        return $this;
     }
+
 
     /**
      * Checks if given url is valid.
      *
      * @param string $serviceUrl
+     *
      * @return bool
      */
-    private function checkServiceUrl($serviceUrl)
+    private function isServiceUrlValid($serviceUrl)
     {
         return (bool)filter_var($serviceUrl, FILTER_VALIDATE_URL);
     }

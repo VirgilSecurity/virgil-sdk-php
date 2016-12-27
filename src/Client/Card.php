@@ -1,46 +1,82 @@
 <?php
+namespace Virgil\Sdk\Client;
 
-namespace Virgil\SDK\Client;
+
+use Virgil\Sdk\BufferInterface;
 
 
-use Virgil\SDK\BufferInterface;
-
+/**
+ * Class represents Virgil Cards Service entity.
+ */
 class Card
 {
+    /** @var string $id */
     private $id;
+
+    /** @var string $identity */
     private $identity;
+
+    /** @var string $identityType */
     private $identityType;
-    private $publicKey;
+
+    /** @var BufferInterface $publicKeyData */
+    private $publicKeyData;
+
+    /** @var string $scope */
     private $scope;
+
+    /** @var array $data */
     private $data;
+
+    /** @var null|string $device */
     private $device;
+
+    /** @var null|string $deviceName */
     private $deviceName;
+
+    /** @var BufferInterface[] $signatures */
     private $signatures;
+
+    /** @var string $version */
     private $version;
+
+    /** @var BufferInterface $snapshot */
     private $snapshot;
 
+
     /**
-     * Card constructor.
+     * Class constructor.
      *
-     * @param string $id
-     * @param BufferInterface $snapshot
-     * @param string $identity
-     * @param string $identityType
-     * @param BufferInterface $publicKey
-     * @param string $scope
-     * @param array $data
-     * @param string $device
-     * @param string $deviceName
-     * @param string $version
+     * @param string            $id
+     * @param BufferInterface   $snapshot
+     * @param string            $identity
+     * @param string            $identityType
+     * @param BufferInterface   $publicKeyData
+     * @param string            $scope
+     * @param array             $data
+     * @param string            $device
+     * @param string            $deviceName
+     * @param string            $version
      * @param BufferInterface[] $signatures
      */
-    public function __construct($id, BufferInterface $snapshot, $identity, $identityType, BufferInterface $publicKey, $scope, array $data = [], $device = null, $deviceName = null, $version, array $signatures)
-    {
+    public function __construct(
+        $id,
+        BufferInterface $snapshot,
+        $identity,
+        $identityType,
+        BufferInterface $publicKeyData,
+        $scope,
+        array $data = [],
+        $device = null,
+        $deviceName = null,
+        $version,
+        array $signatures
+    ) {
         $this->id = $id;
         $this->snapshot = $snapshot;
         $this->identity = $identity;
         $this->identityType = $identityType;
-        $this->publicKey = $publicKey;
+        $this->publicKeyData = $publicKeyData;
         $this->scope = $scope;
         $this->data = $data;
         $this->device = $device;
@@ -49,18 +85,20 @@ class Card
         $this->version = $version;
     }
 
+
     /**
-     * Gets the public key.
+     * Returns the public key.
      *
      * @return BufferInterface
      */
     public function getPublicKeyData()
     {
-        return $this->publicKey;
+        return $this->publicKeyData;
     }
 
+
     /**
-     * Gets the type of the identity.
+     * Returns the type of the identity.
      *
      * @return string
      */
@@ -69,8 +107,9 @@ class Card
         return $this->identityType;
     }
 
+
     /**
-     * Gets the identity.
+     * Returns the identity.
      *
      * @return string
      */
@@ -79,8 +118,9 @@ class Card
         return $this->identity;
     }
 
+
     /**
-     * Gets the Virgil Card fingerprint.
+     * Returns the Virgil Card fingerprint.
      *
      * @return string
      */
@@ -89,8 +129,9 @@ class Card
         return $this->id;
     }
 
+
     /**
-     * Gets the scope.
+     * Returns the scope.
      *
      * @return string
      */
@@ -99,8 +140,9 @@ class Card
         return $this->scope;
     }
 
+
     /**
-     * Gets the data.
+     * Returns the data.
      *
      * @return array
      */
@@ -109,10 +151,12 @@ class Card
         return $this->data;
     }
 
+
     /**
-     * Get sign by signid.
+     * Returns sign by signid.
      *
      * @param string $signatureId
+     *
      * @return BufferInterface
      */
     public function getSignature($signatureId)
@@ -120,8 +164,9 @@ class Card
         return $this->signatures[$signatureId];
     }
 
+
     /**
-     * Gets the signs.
+     * Returns the signs.
      *
      * @return BufferInterface[]
      */
@@ -130,8 +175,9 @@ class Card
         return $this->signatures;
     }
 
+
     /**
-     * Gets the name of the device.
+     * Returns the name of the device.
      *
      * @return string
      */
@@ -140,8 +186,9 @@ class Card
         return $this->deviceName;
     }
 
+
     /**
-     * Gets the device.
+     * Returns the device.
      *
      * @return string
      */
@@ -150,8 +197,9 @@ class Card
         return $this->device;
     }
 
+
     /**
-     * Gets the version.
+     * Returns the version.
      *
      * @return string
      */
@@ -160,8 +208,9 @@ class Card
         return $this->version;
     }
 
+
     /**
-     * Gets the Virgil Card snapshot.
+     * Returns the Virgil Card snapshot.
      *
      * @return BufferInterface
      */

@@ -119,7 +119,7 @@ Prepare request
 ```php
 <?php
 
-use Virgil\SDK\Client\CreateCardRequest;
+use Virgil\SDK\Client\Requests\CreateCardRequest;
 
 $exportedPublicKey = $crypto->exportPublicKey($aliceKeys->getPublicKey());
 $createCardRequest = new CreateCardRequest("alice", "username", $exportedPublicKey);
@@ -130,12 +130,13 @@ then, use *RequestSigner* class to sign request with owner and app keys.
 ```php
 <?php
 
-use Virgil\SDK\Client\RequestSigner;
+use Virgil\SDK\Client\Requests\RequestSigner;
 
 $requestSigner = new RequestSigner($crypto);
 
-$requestSigner->selfSign($createCardRequest, $aliceKeys->getPrivateKey());
-$requestSigner->authoritySign($createCardRequest, $appID, $appKey);
+$requestSigner->selfSign($createCardRequest, $aliceKeys->getPrivateKey())
+              ->authoritySign($createCardRequest, $appID, $appKey)
+;
 ```
 Publish a Virgil Card
 ```php
@@ -145,21 +146,23 @@ $aliceCard = $client->createCard($createCardRequest);
 ```
 
 ## Search for Virgil Cards
-Performs the `Virgil Card`s search by criteria:
-- the *Identities* request parameter is mandatory;
-- the *IdentityType* is optional and specifies the *IdentityType* of a `Virgil Card`s to be found;
+Performs the `Virgil Card's` search by criteria request:
+- the *IdentityType* is optional and specifies the *IdentityType* of a `Virgil Cards` to be found;
 - the *Scope* optional request parameter specifies the scope to perform search on. Either 'global' or 'application'. The default value is 'application';
-
+- There is need append one *Identity* at least or set all of them.
 ```php
 <?php
 
 use Virgil\SDK\Client\VirgilClient;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
+use Virgil\SDK\Client\Requests\SearchCardRequest;
 
 $client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
  
-$criteria = new SearchCriteria(["alice", "bob"]);
-$cards = $client->searchCards($criteria);
+$searchCardRequest = new SearchCardRequest();
+$searchCardRequest->appendIdentity("alice")
+                  ->appendIdentity("bob");
+
+$cards = $client->searchCards($searchCardRequest);
 ```
 
 ## Getting a Virgil Card
@@ -180,13 +183,16 @@ This sample uses *built-in* ```CardValidator``` to validate cards. By default ``
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
-use Virgil\SDK\Client\CardValidator;
-use Virgil\SDK\Cryptography\PublicKey;
 use Virgil\SDK\Buffer;
+
+use Virgil\SDK\Cryptography\VirgilCrypto;
+
 use Virgil\SDK\Client\VirgilClient;
-use Virgil\SDK\Client\Card\Model\SearchCriteria;
-use Virgil\SDK\Client\CardValidationException;
+
+use Virgil\SDK\Client\Requests\SearchCardRequest;
+
+use Virgil\SDK\Client\Validator\CardValidator;
+use Virgil\SDK\Client\Validator\CardValidationException;
 
 // Initialize crypto API
 $crypto = new VirgilCrypto();
@@ -203,8 +209,10 @@ $client->setCardValidator($validator);
 
 try
 {
-    $criteria = new SearchCriteria(["alice", "bob"]);
-    $cards = $client->searchCards($criteria);
+    $searchCardRequest = new SearchCardRequest();
+    $searchCardRequest->setIdentities(["alice", "bob"]);
+    
+    $cards = $client->searchCards($searchCardRequest);
 }
 catch (CardValidationException $exception)
 {
@@ -217,9 +225,9 @@ Initialize required components.
 ```php
 <?php
 
-use Virgil\SDK\Client\VirgilClient;
 use Virgil\SDK\Cryptography\VirgilCrypto;
-use Virgil\SDK\Client\RequestSigner;
+use Virgil\SDK\Client\VirgilClient;
+use Virgil\SDK\Client\Requests\RequestSigner;
 
 $client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
 $crypto = new VirgilCrypto();
@@ -234,23 +242,23 @@ Collect *App* credentials
 use Virgil\SDK\Buffer;
 
 $appID = "[YOUR_APP_ID_HERE]";
-$appKeyPassword = "[YOUR_APP_KEY_PASSWORD_HERE]";
-$appKeyData = new Buffer(file_get_contents("[YOUR_APP_KEY_PATH_HERE]"));
+$appPrivateKeyPassword = "[YOUR_APP_KEY_PASSWORD_HERE]";
+$appPrivateKeyData = new Buffer(file_get_contents("[YOUR_APP_KEY_PATH_HERE]"));
 
-$appKey = $crypto->importPrivateKey($appKeyData, $appKeyPassword);
+$appPrivateKey = $crypto->importPrivateKey($appPrivateKeyData, $appPrivateKeyPassword);
 ```
 
 Prepare revocation request
 ```php
 <?php
 
-use Virgil\SDK\Client\RevokeCardRequest;
-use Virgil\SDK\Client\RevocationReason;
+use Virgil\SDK\Client\Requests\RevokeCardRequest;
+use Virgil\SDK\Client\Constants\RevocationReasons;
 
 $cardId = "[YOUR_CARD_ID_HERE]";
 
-$revokeRequest = new RevokeCardRequest($cardId, RevocationReason::UNSPECIFIED_TYPE);
-$requestSigner->authoritySign($revokeRequest, $appID, $appKey);
+$revokeRequest = new RevokeCardRequest($cardId, RevocationReasons::UNSPECIFIED_TYPE);
+$requestSigner->authoritySign($revokeRequest, $appID, $appPrivateKey);
 
 $client->revokeCard($revokeRequest);
 ```
@@ -311,7 +319,7 @@ There also can be more than one recipient
 <?php
 
 $plaintext = "Hello Bob!";
-$cipherData = $crypto->encrypt($plaintext, [$aliceKeys->getPublicKey()]);
+$encryptedData = $crypto->encrypt($plaintext, [$aliceKeys->getPublicKey()]);
 ```
 
  *Stream*
@@ -331,7 +339,7 @@ You can decrypt either stream or a data string using your private key
 ```php
 <?php
 
-$crypto->decrypt($cipherData, $aliceKeys->getPrivateKey());
+$crypto->decrypt($encryptedData, $aliceKeys->getPrivateKey());
 ```
 
  *Stream*
@@ -420,14 +428,14 @@ $data = "Hello Bob, How are you?";
 ```php
 <?php
 
-$cipherData = $crypto->signThenEncrypt($data, $alice->getPrivateKey(), [$bob->getPublicKey()]);
+$encryptedData = $crypto->signThenEncrypt($data, $alice->getPrivateKey(), [$bob->getPublicKey()]);
 ```
 
 ### Decrypt then Verify
 ```php
 <?php
 
-$decryptedData = $crypto->decryptThenVerify($cipherData, $bob->getPrivateKey(), $alice->getPublicKey());
+$decryptedData = $crypto->decryptThenVerify($encryptedData, $bob->getPrivateKey(), $alice->getPublicKey());
 ```
 
 ## Fingerprint Generation

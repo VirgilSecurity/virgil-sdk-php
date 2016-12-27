@@ -1,11 +1,12 @@
 <?php
+namespace Virgil\Sdk\Cryptography;
 
-namespace Virgil\SDK\Cryptography;
 
+use Virgil\Sdk\VirgilException;
 
-use Virgil\SDK\VirgilException;
-
+/**
+ * Base exception class for cryptographic operations.
+ */
 class VirgilCryptoException extends VirgilException
 {
-
 }

@@ -1,11 +1,10 @@
 <?php
+namespace Virgil\Sdk\Cryptography;
 
-namespace Virgil\SDK\Cryptography;
 
-
-use Virgil\SDK\VirgilException;
-
-class SignatureIsNotValidException extends VirgilException
+/**
+ * Invalid signature exception.
+ */
+class SignatureIsNotValidException extends VirgilCryptoException
 {
-
 }

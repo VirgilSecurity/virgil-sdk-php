@@ -1,39 +1,59 @@
 <?php
+namespace Virgil\Sdk\Client\Http;
 
-namespace Virgil\SDK\Client\Http;
 
-
+/**
+ * Class represents HTTP response.
+ */
 class Response implements ResponseInterface
 {
+    /** @var string $body */
     private $body;
+
+    /** @var string $headers */
     private $headers;
+
+    /** @var HttpStatusCodeInterface $status */
     private $status;
 
+
     /**
-     * Response constructor.
+     * Class constructor.
      *
-     * @param StatusInterface $status
-     * @param $headers
-     * @param $body
+     * @param HttpStatusCodeInterface $status
+     * @param string                  $headers
+     * @param string                  $body
      */
-    public function __construct(StatusInterface $status, $headers, $body)
+    public function __construct(HttpStatusCodeInterface $status, $headers, $body)
     {
         $this->body = $body;
         $this->headers = $headers;
         $this->status = $status;
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function getBody()
     {
         return $this->body;
     }
 
+
+    /**
+     * @inheritdoc
+     */
     public function getHeaders()
     {
         return $this->headers;
     }
 
-    public function getHttpStatus()
+
+    /**
+     * @inheritdoc
+     */
+    public function getHttpStatusCode()
     {
         return $this->status;
     }

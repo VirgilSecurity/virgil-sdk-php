@@ -1,28 +1,32 @@
 <?php
+namespace Virgil\Sdk\Client\Http;
 
-namespace Virgil\SDK\Client\Http;
 
-
+/**
+ * Interface represents HTTP response.
+ */
 interface ResponseInterface
 {
     /**
      * Get raw response body.
      *
-     * @return mixed
+     * @return string
      */
     public function getBody();
+
 
     /**
      * Get raw response headers.
      *
-     * @return mixed
+     * @return string
      */
     public function getHeaders();
+
 
     /**
      * Get HTTP response status.
      *
-     * @return StatusInterface
+     * @return HttpStatusCodeInterface
      */
-    public function getHttpStatus();
+    public function getHttpStatusCode();
 }

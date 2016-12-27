@@ -1,9 +1,12 @@
 <?php
+namespace Virgil\Sdk;
 
-namespace Virgil\SDK;
 
+use Exception;
 
-class VirgilException extends \Exception
+/**
+ * Base exception class.
+ */
+class VirgilException extends Exception
 {
-
 }

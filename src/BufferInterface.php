@@ -1,33 +1,38 @@
 <?php
+namespace Virgil\Sdk;
 
-namespace Virgil\SDK;
 
-
+/**
+ * Interface for manipulate with raw data.
+ */
 interface BufferInterface
 {
     /**
-     * Gets raw data into base64 string
+     * Returns raw data base64 string
      *
      * @return string
      */
     public function toBase64();
 
+
     /**
-     * Gets raw data into hex string
+     * Returns raw data hex string
      *
      * @return string
      */
     public function toHex();
 
+
     /**
-     * Gets raw data into UTF8 string
+     * Returns raw data UTF-8 representation
      *
      * @return string
      */
     public function toString();
 
+
     /**
-     * Gets raw data
+     * Returns raw data
      *
      * @return string
      */

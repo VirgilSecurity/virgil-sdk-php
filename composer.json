@@ -10,7 +10,6 @@
         "Verification",
         "Cryptography",
         "Elliptic",
-        "Cross",
         "Platform",
         "Cross",
         "Passwordless",
@@ -22,8 +21,8 @@
         "PKI",
         "Keyring"
     ],
-    "homepage": "http://virgilsecurity.com",
-    "license" : "BSD",
+    "homepage": "https://virgilsecurity.com",
+    "license": "BSD",
     "authors": [
         {
             "name": "Virgil Security, Inc",
@@ -36,14 +35,19 @@
         "virgil/crypto": "2.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.6"
+        "phpunit/phpunit": "^5.6",
+        "spryker/code-sniffer": "^0.6.9"
     },
     "autoload": {
         "psr-4": {
-            "Virgil\\SDK\\": "src/"
+            "Virgil\\Sdk\\": "src/"
         }
     },
     "autoload-dev": {
-        "psr-4": { "Virgil\\Tests\\": "tests/" }
+        "psr-4": {
+            "Virgil\\Sdk\\Tests\\Integration\\": "tests/integration/src/",
+            "Virgil\\Sdk\\Tests\\Functional\\": "tests/functional/src/",
+            "Virgil\\Sdk\\Tests\\Unit\\": "tests/unit/src/"
+        }
     }
 }
