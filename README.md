@@ -67,8 +67,8 @@ you can also customize initialization using your own parameters
 ```php
 <?php
 
-use Virgil\SDK\Client\VirgilClient;
-use Virgil\SDK\Client\VirgilClientParams;
+use Virgil\Sdk\Client\VirgilClient;
+use Virgil\Sdk\Client\VirgilClientParams;
 
 $parameters = new VirgilClientParams("[YOUR_ACCESS_TOKEN_HERE]");
 
@@ -86,7 +86,7 @@ The *VirgilCrypto* class provides cryptographic operations in applications, such
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 $crypto = new VirgilCrypto();
 ```
@@ -100,7 +100,7 @@ Collect an *appID* and *appKey* for your app. These parameters are required to c
 ```php
 <?php
 
-use Virgil\SDK\Buffer;
+use Virgil\Sdk\Buffer;
 
 $appID = "[YOUR_APP_ID_HERE]";
 $appKeyPassword = "[YOUR_APP_KEY_PASSWORD_HERE]";
@@ -119,7 +119,7 @@ Prepare request
 ```php
 <?php
 
-use Virgil\SDK\Client\Requests\CreateCardRequest;
+use Virgil\Sdk\Client\Requests\CreateCardRequest;
 
 $exportedPublicKey = $crypto->exportPublicKey($aliceKeys->getPublicKey());
 $createCardRequest = new CreateCardRequest("alice", "username", $exportedPublicKey);
@@ -130,13 +130,12 @@ then, use *RequestSigner* class to sign request with owner and app keys.
 ```php
 <?php
 
-use Virgil\SDK\Client\Requests\RequestSigner;
+use Virgil\Sdk\Client\Requests\RequestSigner;
 
 $requestSigner = new RequestSigner($crypto);
 
 $requestSigner->selfSign($createCardRequest, $aliceKeys->getPrivateKey())
-              ->authoritySign($createCardRequest, $appID, $appKey)
-;
+              ->authoritySign($createCardRequest, $appID, $appKey);
 ```
 Publish a Virgil Card
 ```php
@@ -153,9 +152,9 @@ Performs the `Virgil Card's` search by criteria request:
 ```php
 <?php
 
-use Virgil\SDK\Client\VirgilClient;
+use Virgil\Sdk\Client\VirgilClient;
 
-use Virgil\SDK\Client\Requests\SearchCardRequest;
+use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
 $client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
  
@@ -172,7 +171,7 @@ Gets a `Virgil Card` by ID.
 ```php
 <?php
 
-use Virgil\SDK\Client\VirgilClient;
+use Virgil\Sdk\Client\VirgilClient;
 
 $client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]"); 
 $card = $client->getCard("[YOUR_CARD_ID_HERE]");
@@ -184,16 +183,16 @@ This sample uses *built-in* ```CardValidator``` to validate cards. By default ``
 ```php
 <?php
 
-use Virgil\SDK\Buffer;
+use Virgil\Sdk\Buffer;
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
-use Virgil\SDK\Client\VirgilClient;
+use Virgil\Sdk\Client\VirgilClient;
 
-use Virgil\SDK\Client\Requests\SearchCardRequest;
+use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
-use Virgil\SDK\Client\Validator\CardValidator;
-use Virgil\SDK\Client\Validator\CardValidationException;
+use Virgil\Sdk\Client\Validator\CardValidator;
+use Virgil\Sdk\Client\Validator\CardValidationException;
 
 // Initialize crypto API
 $crypto = new VirgilCrypto();
@@ -226,9 +225,9 @@ Initialize required components.
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
-use Virgil\SDK\Client\VirgilClient;
-use Virgil\SDK\Client\Requests\RequestSigner;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Client\VirgilClient;
+use Virgil\Sdk\Client\Requests\RequestSigner;
 
 $client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
 $crypto = new VirgilCrypto();
@@ -240,7 +239,7 @@ Collect *App* credentials
 ```php
 <?php
 
-use Virgil\SDK\Buffer;
+use Virgil\Sdk\Buffer;
 
 $appID = "[YOUR_APP_ID_HERE]";
 $appPrivateKeyPassword = "[YOUR_APP_KEY_PASSWORD_HERE]";
@@ -253,8 +252,8 @@ Prepare revocation request
 ```php
 <?php
 
-use Virgil\SDK\Client\Requests\RevokeCardRequest;
-use Virgil\SDK\Client\Requests\Constants\RevocationReasons;
+use Virgil\Sdk\Client\Requests\RevokeCardRequest;
+use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
 
 $cardId = "[YOUR_CARD_ID_HERE]";
 
@@ -272,7 +271,7 @@ The following code sample illustrates keypair generation. The default algorithm 
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 $crypto = new VirgilCrypto();
 $aliceKeys = $crypto->generateKeys();
@@ -305,7 +304,7 @@ Initialize Crypto API and generate keypair.
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 $crypto = new VirgilCrypto();
 $aliceKeys = $crypto->generateKeys();
@@ -361,7 +360,7 @@ Generate a new Public/Private keypair and *data* to be signed.
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 $crypto = new VirgilCrypto();
 $aliceKeys = $crypto->generateKeys();
@@ -414,7 +413,7 @@ Authenticated Encryption provides both data confidentiality and data integrity a
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 $crypto = new VirgilCrypto();
  
@@ -444,9 +443,9 @@ The default Fingerprint algorithm is SHA-256.
 ```php
 <?php
 
-use Virgil\SDK\Cryptography\VirgilCrypto;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
-use Virgil\SDK\Buffer;
+use Virgil\Sdk\Buffer;
 
 $crypto = new VirgilCrypto();
 $content = new Buffer('content_string');
