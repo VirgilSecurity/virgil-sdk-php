@@ -36,9 +36,10 @@ In general to install virgil crypto extension follow next steps:
 All necessary information about where **php.ini** or **extension_dir** are you can get from **php_info()** in case run php on server or
 call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI. 
 
-### Target platforms
+### Requirements
 
 * PHP 5.6.*
+* virgil_crypto_php.so
 
 ### Installing the package
 
