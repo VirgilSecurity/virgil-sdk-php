@@ -38,7 +38,7 @@ call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI.
 
 ### Target platforms
 
-* PHP 5.6+.
+* PHP 5.6.*
 
 ### Installing the package
 
