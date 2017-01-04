@@ -458,10 +458,8 @@ The default Fingerprint algorithm is SHA-256.
 
 use Virgil\Sdk\Cryptography\VirgilCrypto;
 
-use Virgil\Sdk\Buffer;
-
 $crypto = new VirgilCrypto();
-$content = new Buffer('content_string');
+$content = 'content_string';
 $fingerprint = $crypto->calculateFingerprint($content);
 ```
 

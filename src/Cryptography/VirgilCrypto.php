@@ -58,13 +58,13 @@ class VirgilCrypto implements CryptoInterface
     /**
      * Generates the public\private key pair by specific crypto type.
      *
-     * @param int $cryptoType is one of key pair type constant
+     * @param int $keyPairType is one of key pair type constant
      *
      * @return VirgilKeyPair
      */
-    public function generateKeys($cryptoType = KeyPairTypes::FAST_EC_ED25519)
+    public function generateKeys($keyPairType = KeyPairTypes::FAST_EC_ED25519)
     {
-        $keyPair = $this->cryptoService->generateKeyPair($cryptoType);
+        $keyPair = $this->cryptoService->generateKeyPair($keyPairType);
 
         $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($keyPair->getPublicKey());
         $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($keyPair->getPrivateKey());
@@ -182,9 +182,9 @@ class VirgilCrypto implements CryptoInterface
     /**
      * @inheritdoc
      */
-    public function calculateFingerprint(BufferInterface $content)
+    public function calculateFingerprint($content)
     {
-        $contentHash = $this->cryptoService->computeHash($content->getData(), HashAlgorithms::SHA256);
+        $contentHash = $this->cryptoService->computeHash($content, HashAlgorithms::SHA256);
 
         return new Buffer($contentHash);
     }

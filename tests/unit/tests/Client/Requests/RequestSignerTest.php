@@ -36,7 +36,7 @@ class RequestSignerTest extends TestCase
             'user', 'member', $cryptoMock->exportPublicKey($keys->getPublicKey()), CardScopes::TYPE_APPLICATION
         );
 
-        $fingerprint = $cryptoMock->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()));
+        $fingerprint = $cryptoMock->calculateFingerprint(base64_decode($request->getSnapshot()));
 
         $cryptoMock->expects($this->once())
                    ->method('sign')
@@ -55,7 +55,6 @@ class RequestSignerTest extends TestCase
 
 
     /**
-     *
      * @test
      */
     public function authoritySign__requestWithAuthorityPrivateKeyAndAppId__correctAuthoritySignatureAndSignatureIdAppendsToRequestSignatures(
@@ -74,7 +73,7 @@ class RequestSignerTest extends TestCase
             'user', 'member', $cryptoMock->exportPublicKey($keys->getPublicKey()), CardScopes::TYPE_APPLICATION
         );
 
-        $fingerprint = $cryptoMock->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()));
+        $fingerprint = $cryptoMock->calculateFingerprint(base64_decode($request->getSnapshot()));
 
         $cryptoMock->expects($this->once())
                    ->method('sign')

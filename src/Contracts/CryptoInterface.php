@@ -63,17 +63,17 @@ interface CryptoInterface
     /**
      * Calculates the fingerprint from given content.
      *
-     * @param BufferInterface $content
+     * @param mixed $content
      *
      * @return BufferInterface
      */
-    public function calculateFingerprint(BufferInterface $content);
+    public function calculateFingerprint($content);
 
 
     /**
      * Signs the content by given signer private key.
      *
-     * @param string              $content
+     * @param mixed               $content
      * @param PrivateKeyInterface $signerPrivateKey is a signer private key
      *
      * @return BufferInterface returns signature
@@ -84,7 +84,7 @@ interface CryptoInterface
     /**
      * Verifies signed content by given signature and signer public key.
      *
-     * @param string             $content
+     * @param mixed              $content
      * @param BufferInterface    $signature
      * @param PublicKeyInterface $signerPublicKey is a signer public key
      *
@@ -171,7 +171,7 @@ interface CryptoInterface
     /**
      * Signs then encrypt content with a list of recipients public keys.
      *
-     * @param string               $content
+     * @param mixed                $content
      * @param PrivateKeyInterface  $signerPrivateKey     is a signer private key
      * @param PublicKeyInterface[] $recipientsPublicKeys is a list of recipients public keys
      *
