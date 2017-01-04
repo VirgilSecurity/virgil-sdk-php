@@ -85,4 +85,10 @@ class Buffer implements BufferInterface
     {
         return mb_convert_encoding($this->rawData, 'UTF-8');
     }
+
+
+    public function __toString()
+    {
+        return $this->rawData;
+    }
 }
