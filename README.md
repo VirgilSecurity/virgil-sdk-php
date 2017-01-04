@@ -29,12 +29,12 @@ The Virgil SDK is provided as a package named *virgil/sdk*. The package is distr
 You need to install php virgil crypto extension *ext-virgil_crypto_php* as one of dependency otherwise you will get ```the requested PHP extension virgil_crypto_php is missing from your system``` error during composer install.
 
 In general to install virgil crypto extension follow next steps:
- * Download proper extension package for you platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/) like **virgil-crypto-2.0.3-php-5.6-linux-x86_64.tgz**.
+ * Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/) like **virgil-crypto-2.0.3-php-5.6-linux-x86_64.tgz**.
  * Place unpacked **virgil_crypto_php.so** under php extension path.
  * Add virgil extension to your **php.ini** configuration file like **extension = virgil_crypto_php.so**.
 
 All necessary information about where **php.ini** or **extension_dir** are you can get from **php_info()** in case run php on server or
-call **php -i |grep php\.ini** or **php -i | grep extension_dir** from CLI. 
+call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI. 
 
 ### Target platforms
 
@@ -69,7 +69,7 @@ To create an instance of *VirgilClient* class, just call its static method with 
 
 use Virgil\Sdk\Client\VirgilClient;
 
-$client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
+$client = VirgilClient::create("[ACCESS_TOKEN_HERE]");
 ```
 
 you can also customize initialization using your own parameters
@@ -80,7 +80,7 @@ you can also customize initialization using your own parameters
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\VirgilClientParams;
 
-$parameters = new VirgilClientParams("[YOUR_ACCESS_TOKEN_HERE]");
+$parameters = new VirgilClientParams("[ACCESS_TOKEN_HERE]");
 
 $parameters->setCardsServiceAddress("https://cards.virgilsecurity.com");
 $parameters->setReadCardsServiceAddress("https://cards-ro.virgilsecurity.com");
@@ -112,9 +112,9 @@ Collect an *appID* and *appKey* for your app. These parameters are required to c
 
 use Virgil\Sdk\Buffer;
 
-$appID = "[YOUR_APP_ID_HERE]";
-$appKeyPassword = "[YOUR_APP_KEY_PASSWORD_HERE]";
-$appKeyData = new Buffer(file_get_contents("[YOUR_APP_KEY_PATH_HERE]"));
+$appID = "[APP_ID_HERE]";
+$appKeyPassword = "[APP_KEY_PASSWORD_HERE]";
+$appKeyData = new Buffer(file_get_contents("[APP_KEY_PATH_HERE]"));
 
 $appKey = $crypto->importPrivateKey($appKeyData, $appKeyPassword);
 ```
@@ -155,8 +155,8 @@ $aliceCard = $client->createCard($createCardRequest);
 ```
 
 ## Search for Virgil Cards
-Performs the `Virgil Card's` search by criteria request:
-- the *IdentityType* is optional and specifies the *IdentityType* of a `Virgil Cards` to be found;
+Performs the `Virgil Card` search by criteria request:
+- the *IdentityType* is optional and specifies the *IdentityType* of a `Virgil Cards` to be found. Supports any value to describe identity type e.g. `email` etc;
 - the *Scope* optional request parameter specifies the scope to perform search on. Either 'global' or 'application'. The default value is 'application';
 - There is need append one *Identity* at least or set all of them.
 ```php
@@ -166,7 +166,7 @@ use Virgil\Sdk\Client\VirgilClient;
 
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
-$client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
+$client = VirgilClient::create("[ACCESS_TOKEN_HERE]");
  
 $searchCardRequest = new SearchCardRequest();
 $searchCardRequest->appendIdentity("alice")
@@ -183,12 +183,12 @@ Gets a `Virgil Card` by ID.
 
 use Virgil\Sdk\Client\VirgilClient;
 
-$client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]"); 
-$card = $client->getCard("[YOUR_CARD_ID_HERE]");
+$client = VirgilClient::create("[ACCESS_TOKEN_HERE]"); 
+$card = $client->getCard("CARD_ID_HERE]");
 ```
 
 ## Validating Virgil Cards
-This sample uses *built-in* ```CardValidator``` to validate cards. By default ```CardValidator``` validates only *Cards Service* signature. 
+This sample uses *built-in* `CardValidator` to validate cards. By default `CardValidator` validates only *Cards Service* signature. 
 
 ```php
 <?php
@@ -214,7 +214,7 @@ $validator = new CardValidator($crypto);
 //$validator->addVerifier("[HERE_VERIFIER_CARD_ID]", $publicKey);
 
 // Initialize service client
-$client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
+$client = VirgilClient::create("[ACCESS_TOKEN_HERE]");
 $client->setCardValidator($validator);
 
 try
@@ -239,7 +239,7 @@ use Virgil\Sdk\Cryptography\VirgilCrypto;
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\Requests\RequestSigner;
 
-$client = VirgilClient::create("[YOUR_ACCESS_TOKEN_HERE]");
+$client = VirgilClient::create("[ACCESS_TOKEN_HERE]");
 $crypto = new VirgilCrypto();
 
 $requestSigner = new RequestSigner($crypto);
@@ -251,9 +251,9 @@ Collect *App* credentials
 
 use Virgil\Sdk\Buffer;
 
-$appID = "[YOUR_APP_ID_HERE]";
-$appPrivateKeyPassword = "[YOUR_APP_KEY_PASSWORD_HERE]";
-$appPrivateKeyData = new Buffer(file_get_contents("[YOUR_APP_KEY_PATH_HERE]"));
+$appID = "[APP_ID_HERE]";
+$appPrivateKeyPassword = "[APP_KEY_PASSWORD_HERE]";
+$appPrivateKeyData = new Buffer(file_get_contents("[APP_KEY_PATH_HERE]"));
 
 $appPrivateKey = $crypto->importPrivateKey($appPrivateKeyData, $appPrivateKeyPassword);
 ```
@@ -265,7 +265,7 @@ Prepare revocation request
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
 
-$cardId = "[YOUR_CARD_ID_HERE]";
+$cardId = "[CARD_ID_HERE]";
 
 $revokeRequest = new RevokeCardRequest($cardId, RevocationReasons::TYPE_UNSPECIFIED);
 $requestSigner->authoritySign($revokeRequest, $appID, $appPrivateKey);
@@ -328,7 +328,7 @@ There also can be more than one recipient
 ```php
 <?php
 
-$plaintext = "Hello Bob!";
+$plaintext = "Hello Alice!";
 $encryptedData = $crypto->encrypt($plaintext, [$aliceKeys->getPublicKey()]);
 ```
 
@@ -336,10 +336,13 @@ $encryptedData = $crypto->encrypt($plaintext, [$aliceKeys->getPublicKey()]);
 ```php
 <?php
  
-$source = fopen('php://memory', 'r+');
-$sin = fopen('php://memory', 'r+');
+$sourceStream = fopen('php://memory', 'r+');
+$sinStream = fopen('php://memory', 'r+');
 
-$crypto->encryptStream($source, $sin, [$aliceKeys->getPublicKey()]);
+//put a message to source stream
+fwrite($sourceStream, $plaintext);
+ 
+$crypto->encryptStream($sourceStream, $sinStream, [$aliceKeys->getPublicKey()]);
 ```
 
 ### Decrypt Data
@@ -356,10 +359,10 @@ $crypto->decrypt($encryptedData, $aliceKeys->getPrivateKey());
 ```php
 <?php
 
-$source = fopen('php://memory', 'r+');
-$sin = fopen('php://memory', 'r+');
+$encryptedSourceStream = fopen('php://memory', 'r+');
+$sinStream = fopen('php://memory', 'r+');
   
-$crypto->decryptStream($source, $sin, $aliceKeys->getPrivateKey());
+$crypto->decryptStream($encryptedSourceStream, $sinStream, $aliceKeys->getPrivateKey());
 ```
 
 ## Generating and Verifying Signatures
@@ -393,9 +396,9 @@ $signature = $crypto->sign($data, $aliceKeys->getPrivateKey());
 ```php
 <?php
 
-$source = fopen('file://[YOUR_FILE_PATH_HERE]', 'r+');
+$sourceStream = fopen('file://[FILE_PATH_HERE]', 'r+');
 
-$crypto->signStream($source, $aliceKeys->getPrivateKey());
+$crypto->signStream($sourceStream, $aliceKeys->getPrivateKey());
 ```
 ### Verifying a Signature
 
@@ -414,8 +417,8 @@ $isValid = $crypto->verify($data, $signature, $aliceKeys->getPublicKey());
  ```php
 <?php
 
-$source = fopen('file://[YOUR_FILE_PATH_HERE]', 'r+');
-$isValid = $crypto->verifyStream($source, $signature, $aliceKeys->getPublicKey());
+$sourceStream = fopen('file://[FILE_PATH_HERE]', 'r+');
+$isValid = $crypto->verifyStream($sourceStream, $signature, $aliceKeys->getPublicKey());
 ```
 ## Authenticated Encryption
 Authenticated Encryption provides both data confidentiality and data integrity assurances to the information being protected.
@@ -427,8 +430,8 @@ use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 $crypto = new VirgilCrypto();
  
-$alice = $crypto->generateKeys();
-$bob = $crypto->generateKeys();
+$aliceKeyPair = $crypto->generateKeys();
+$bobKeyPair = $crypto->generateKeys();
 
 // The data to be signed with alice's Private key
 $data = "Hello Bob, How are you?";
@@ -438,14 +441,14 @@ $data = "Hello Bob, How are you?";
 ```php
 <?php
 
-$encryptedData = $crypto->signThenEncrypt($data, $alice->getPrivateKey(), [$bob->getPublicKey()]);
+$encryptedData = $crypto->signThenEncrypt($data, $aliceKeyPair->getPrivateKey(), [$bobKeyPair->getPublicKey()]);
 ```
 
 ### Decrypt then Verify
 ```php
 <?php
 
-$decryptedData = $crypto->decryptThenVerify($encryptedData, $bob->getPrivateKey(), $alice->getPublicKey());
+$decryptedData = $crypto->decryptThenVerify($encryptedData, $bobKeyPair->getPrivateKey(), $aliceKeyPair->getPublicKey());
 ```
 
 ## Fingerprint Generation
