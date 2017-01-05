@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\BufferInterface;
+use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 

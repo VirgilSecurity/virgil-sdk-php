@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Contracts;
 
 
-use Virgil\Sdk\BufferInterface;
-
 /**
  * Cryptographic interface provides a set of methods for
  * dealing with low-level cryptographic primitives and algorithms.

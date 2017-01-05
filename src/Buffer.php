@@ -2,6 +2,8 @@
 namespace Virgil\Sdk;
 
 
+use Virgil\Sdk\Contracts\BufferInterface;
+
 /**
  * Class provides ability to represent raw data in different formats.
  *

@@ -3,7 +3,8 @@ namespace Virgil\Sdk\Cryptography;
 
 
 use Virgil\Sdk\Buffer;
-use Virgil\Sdk\BufferInterface;
+
+use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
