@@ -45,7 +45,7 @@ class CardValidator implements CardValidatorInterface
      */
     public function validate(Card $card)
     {
-        $fingerprint = $this->crypto->calculateFingerprint($card->getSnapshot());
+        $fingerprint = $this->crypto->calculateFingerprint($card->getSnapshot()->getData());
         $fingerprintHex = $fingerprint->toHex();
         $exceptionMessage = 'Card signs with id ' . $card->getId() . ' are invalid.';
 

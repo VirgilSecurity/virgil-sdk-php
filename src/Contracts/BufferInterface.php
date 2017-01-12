@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk;
+namespace Virgil\Sdk\Contracts;
 
 
 /**

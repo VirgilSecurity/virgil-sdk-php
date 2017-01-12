@@ -2,6 +2,8 @@
 namespace Virgil\Sdk;
 
 
+use Virgil\Sdk\Contracts\BufferInterface;
+
 /**
  * Class provides ability to represent raw data in different formats.
  *
@@ -84,5 +86,11 @@ class Buffer implements BufferInterface
     public function toString()
     {
         return mb_convert_encoding($this->rawData, 'UTF-8');
+    }
+
+
+    public function __toString()
+    {
+        return $this->rawData;
     }
 }

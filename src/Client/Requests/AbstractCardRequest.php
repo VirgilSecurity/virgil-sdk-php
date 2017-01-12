@@ -3,7 +3,8 @@ namespace Virgil\Sdk\Client\Requests;
 
 
 use Virgil\Sdk\Buffer;
-use Virgil\Sdk\BufferInterface;
+
+use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\AbstractJsonModelMapper;
 

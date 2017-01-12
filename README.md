@@ -26,19 +26,24 @@ In this guide you will find code for every task you need to implement in order t
 
 The Virgil SDK is provided as a package named *virgil/sdk*. The package is distributed via **composer** package management system.
 
-You need to install php virgil crypto extension *ext-virgil_crypto_php* as one of dependency otherwise you will get ```the requested PHP extension virgil_crypto_php is missing from your system``` error during composer install.
+You need to install php virgil crypto extension *ext-virgil_crypto_php* as one of dependency otherwise you will get `the requested PHP extension virgil_crypto_php is missing from your system` error during composer install.
 
 In general to install virgil crypto extension follow next steps:
  * Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/) like **virgil-crypto-2.0.3-php-5.6-linux-x86_64.tgz**.
  * Place unpacked **virgil_crypto_php.so** under php extension path.
  * Add virgil extension to your **php.ini** configuration file like **extension = virgil_crypto_php.so**.
+ 
+ ```
+ $ echo "extension=virgil_crypto_php.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` 
+ ```
 
 All necessary information about where **php.ini** or **extension_dir** are you can get from **php_info()** in case run php on server or
 call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI. 
 
-### Target platforms
+### Requirements
 
-* PHP 5.6+.
+* PHP 5.6.*
+* virgil_crypto_php.so
 
 ### Installing the package
 
@@ -458,10 +463,8 @@ The default Fingerprint algorithm is SHA-256.
 
 use Virgil\Sdk\Cryptography\VirgilCrypto;
 
-use Virgil\Sdk\Buffer;
-
 $crypto = new VirgilCrypto();
-$content = new Buffer('content_string');
+$content = 'content_string';
 $fingerprint = $crypto->calculateFingerprint($content);
 ```
 

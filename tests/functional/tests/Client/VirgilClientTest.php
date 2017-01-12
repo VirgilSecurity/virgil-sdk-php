@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\BufferInterface;
+use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
@@ -70,7 +70,7 @@ class VirgilClientTest extends TestCase
         BufferInterface $privateKey
     ) {
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
-        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()))
+        $expectedId = $this->crypto->calculateFingerprint(base64_decode($request->getSnapshot()))
                                    ->toHex()
         ;
 
@@ -187,7 +187,7 @@ class VirgilClientTest extends TestCase
         BufferInterface $privateKey
     ) {
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
-        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()))
+        $expectedId = $this->crypto->calculateFingerprint(base64_decode($request->getSnapshot()))
                                    ->toHex()
         ;
 
@@ -219,7 +219,7 @@ class VirgilClientTest extends TestCase
         BufferInterface $privateKey
     ) {
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
-        $expectedId = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()))
+        $expectedId = $this->crypto->calculateFingerprint(base64_decode($request->getSnapshot()))
                                    ->toHex()
         ;
 

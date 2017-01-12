@@ -2,8 +2,7 @@
 namespace Virgil\Sdk\Client;
 
 
-use Virgil\Sdk\BufferInterface;
-
+use Virgil\Sdk\Contracts\BufferInterface;
 
 /**
  * Class represents Virgil Cards Service entity.

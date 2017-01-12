@@ -159,7 +159,7 @@ class VirgilCryptoTest extends TestCase
         $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
 
 
-        $fingerprint = $virgilCrypto->calculateFingerprint(new Buffer($content));
+        $fingerprint = $virgilCrypto->calculateFingerprint($content);
 
 
         $this->assertEquals($expectedFingerprint, $fingerprint);

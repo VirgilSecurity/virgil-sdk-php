@@ -8,6 +8,7 @@ use RuntimeException;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
+use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaResponseMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
@@ -122,7 +123,7 @@ class SearchCriteriaResponseMapperTest extends AbstractMapperTest
 
     protected function getMapper()
     {
-        return new SearchCriteriaResponseMapper(new SignedResponseModelMapper());
+        return new SearchCriteriaResponseMapper(new SignedResponseModelMapper(new CardContentModelMapper()));
     }
 
 

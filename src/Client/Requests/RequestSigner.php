@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
-use Virgil\Sdk\Buffer;
-
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
@@ -33,7 +31,7 @@ class RequestSigner implements RequestSignerInterface
      */
     public function selfSign(AbstractCardRequest $request, PrivateKeyInterface $signerPrivateKey)
     {
-        $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()));
+        $fingerprint = $this->crypto->calculateFingerprint(base64_decode($request->getSnapshot()));
         $signature = $this->crypto->sign($fingerprint->getData(), $signerPrivateKey);
         $request->appendSignature($fingerprint->toHex(), $signature);
 
@@ -46,7 +44,7 @@ class RequestSigner implements RequestSignerInterface
      */
     public function authoritySign(AbstractCardRequest $request, $appId, PrivateKeyInterface $signerPrivateKey)
     {
-        $fingerprint = $this->crypto->calculateFingerprint(Buffer::fromBase64($request->getSnapshot()));
+        $fingerprint = $this->crypto->calculateFingerprint(base64_decode($request->getSnapshot()));
         $signature = $this->crypto->sign($fingerprint->getData(), $signerPrivateKey);
         $request->appendSignature($appId, $signature);
 
