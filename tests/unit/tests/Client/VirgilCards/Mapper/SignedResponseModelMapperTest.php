@@ -4,9 +4,13 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 use DateTime;
 
+use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
+
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
+
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
+
 use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
 
 class SignedResponseModelMapperTest extends AbstractMapperTest
@@ -110,7 +114,7 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
 
     protected function createSignedResponseModelMapper()
     {
-        return new SignedResponseModelMapper();
+        return new SignedResponseModelMapper(new CardContentModelMapper());
     }
 
 

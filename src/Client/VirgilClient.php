@@ -12,6 +12,7 @@ use Virgil\Sdk\Client\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilCards\CardsService;
 use Virgil\Sdk\Client\VirgilCards\CardsServiceInterface;
 
+use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\ModelMappersCollection;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
@@ -174,7 +175,7 @@ class VirgilClient
 
         $curlClient = new CurlClient($curlRequestFactory, $httpHeaders);
 
-        $signedResponseModelMapper = new SignedResponseModelMapper();
+        $signedResponseModelMapper = new SignedResponseModelMapper(new CardContentModelMapper());
 
         $jsonMappers = new ModelMappersCollection(
             $signedResponseModelMapper,

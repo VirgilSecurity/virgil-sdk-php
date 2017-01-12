@@ -15,22 +15,22 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
     /** @var SignedRequestModelMapper $signedRequestModelMapper */
     private $signedRequestModelMapper;
 
-    /** @var SignedResponseModelMapper $signedResponseModelMapper */
-    private $signedResponseModelMapper;
+    /** @var CardContentModelMapper $cardContentModelMapper */
+    private $cardContentModelMapper;
 
 
     /**
      * Class constructor.
      *
      * @param SignedRequestModelMapper  $signedRequestModelMapper
-     * @param SignedResponseModelMapper $signedResponseModelMapper
+     * @param CardContentModelMapper $cardContentModelMapper
      */
     public function __construct(
         SignedRequestModelMapper $signedRequestModelMapper,
-        SignedResponseModelMapper $signedResponseModelMapper
+        CardContentModelMapper $cardContentModelMapper
     ) {
         $this->signedRequestModelMapper = $signedRequestModelMapper;
-        $this->signedResponseModelMapper = $signedResponseModelMapper;
+        $this->cardContentModelMapper = $cardContentModelMapper;
     }
 
 
@@ -41,13 +41,13 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
      */
     public function toModel($json)
     {
-        $signedResponseModel = $this->signedResponseModelMapper->toModel($json);
+        $data = json_decode($json, true);
+        $cardContentJson = base64_decode($data[self::CONTENT_SNAPSHOT_ATTRIBUTE_NAME]);
+        $cardMetaData = $data[self::META_ATTRIBUTE_NAME];
 
-        $signedResponseModelMeta = $signedResponseModel->getMeta();
+        $cardContentModel = $this->cardContentModelMapper->toModel($cardContentJson);
 
-        $cardContentModel = $signedResponseModel->getCardContent();
-
-        $cardMetaModel = new SignedRequestMetaModel($signedResponseModelMeta->getSigns());
+        $cardMetaModel = new SignedRequestMetaModel($cardMetaData[self::SIGNS_ATTRIBUTE_NAME]);
 
         return new SignedRequestModel($cardContentModel, $cardMetaModel);
     }
