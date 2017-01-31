@@ -6,6 +6,8 @@ use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 use Virgil\Sdk\Api\Storage\KeyEntry;
 
 use Virgil\Sdk\Contracts\BufferInterface;
+use Virgil\Sdk\Contracts\CryptoInterface;
+use Virgil\Sdk\Contracts\KeyStorageInterface;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 /**
@@ -14,6 +16,12 @@ use Virgil\Sdk\Contracts\PrivateKeyInterface;
  */
 class VirgilKey implements VirgilKeyInterface
 {
+    /** @var CryptoInterface */
+    private $crypto;
+
+    /** @var KeyStorageInterface */
+    private $keyStorage;
+
     /** @var VirgilApiContextInterface */
     private $context;
 
@@ -30,6 +38,8 @@ class VirgilKey implements VirgilKeyInterface
     public function __construct(VirgilApiContextInterface $context, PrivateKeyInterface $privateKey)
     {
         $this->context = $context;
+        $this->crypto = $context->getCrypto();
+        $this->keyStorage = $context->getKeyStorage();
         $this->privateKey = $privateKey;
     }
 
@@ -37,9 +47,9 @@ class VirgilKey implements VirgilKeyInterface
     /**
      * @inheritdoc
      */
-    public function export($password)
+    public function export($password = '')
     {
-        // TODO: Implement export() method.
+        return $this->crypto->exportPrivateKey($this->privateKey, $password);
     }
 
 
@@ -48,7 +58,9 @@ class VirgilKey implements VirgilKeyInterface
      */
     public function exportPublicKey()
     {
-        // TODO: Implement exportPublicKey() method.
+        $extractedPublicKey = $this->crypto->extractPublicKey($this->privateKey);
+
+        return $this->crypto->exportPublicKey($extractedPublicKey);
     }
 
 
@@ -57,7 +69,7 @@ class VirgilKey implements VirgilKeyInterface
      */
     public function sign($content)
     {
-        // TODO: Implement sign() method.
+        return $this->crypto->sign($content, $this->privateKey);
     }
 
 
@@ -66,7 +78,7 @@ class VirgilKey implements VirgilKeyInterface
      */
     public function decrypt(BufferInterface $encryptedContent)
     {
-        // TODO: Implement decrypt() method.
+        return $this->crypto->decrypt($encryptedContent, $this->privateKey);
     }
 
 
@@ -75,7 +87,13 @@ class VirgilKey implements VirgilKeyInterface
      */
     public function signThenEncrypt($content, array $recipientsVirgilCard)
     {
-        // TODO: Implement signThenEncrypt() method.
+        $virgilCardToPublicKey = function (VirgilCardInterface $virgilCard) {
+            return $virgilCard->getPublicKey();
+        };
+
+        $recipientsPublicKeys = array_map($virgilCardToPublicKey, $recipientsVirgilCard);
+
+        return $this->crypto->signThenEncrypt($content, $this->privateKey, $recipientsPublicKeys);
     }
 
 
@@ -84,7 +102,11 @@ class VirgilKey implements VirgilKeyInterface
      */
     public function decryptThenVerify(BufferInterface $encryptedAndSignedContent, VirgilCardInterface $signerPublicKey)
     {
-        // TODO: Implement decryptThenVerify() method.
+        return $this->crypto->decryptThenVerify(
+            $encryptedAndSignedContent,
+            $this->privateKey,
+            $signerPublicKey->getPublicKey()
+        );
     }
 
 
@@ -97,14 +119,11 @@ class VirgilKey implements VirgilKeyInterface
             throw new InvalidKeyNameException('Only alphanumeric names are allowed to save private key');
         }
 
-        $crypto = $this->context->getCrypto();
-        $keyStorage = $this->context->getKeyStorage();
-
-        $exportedPrivetKeyBuffer = $crypto->exportPrivateKey($this->privateKey, $password);
+        $exportedPrivetKeyBuffer = $this->crypto->exportPrivateKey($this->privateKey, $password);
 
         $keyEntry = new KeyEntry($keyName, $exportedPrivetKeyBuffer->getData());
 
-        $keyStorage->store($keyEntry);
+        $this->keyStorage->store($keyEntry);
 
         return $this;
     }

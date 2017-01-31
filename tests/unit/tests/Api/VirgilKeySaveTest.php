@@ -2,42 +2,12 @@
 namespace Virgil\Sdk\Tests\Unit\Api;
 
 
-use PHPUnit\Framework\TestCase;
-
 use Virgil\Sdk\Buffer;
-
-use Virgil\Sdk\Api\VirgilKey;
-use Virgil\Sdk\Api\VirgilApiContext;
-use Virgil\Sdk\Api\VirgilApiContextInterface;
-
+use Virgil\Sdk\Contracts\PrivateKeyInterface;
 use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 
-use Virgil\Sdk\Contracts\CryptoInterface;
-use Virgil\Sdk\Contracts\KeyStorageInterface;
-use Virgil\Sdk\Contracts\PrivateKeyInterface;
-
-use Virgil\Sdk\Tests\Unit\Api\Storage\MemoryKeyStorage;
-
-class VirgilKeySaveTest extends TestCase
+class VirgilKeySaveTest extends AbstractVirgilKeyTest
 {
-    /** @var MemoryKeyStorage */
-    protected $keyStorage;
-
-    /** @var CryptoInterface */
-    protected $crypto;
-
-    /** @var VirgilApiContextInterface */
-    protected $virgilApiContext;
-
-
-    public function setUp()
-    {
-        $this->keyStorage = new MemoryKeyStorage();
-        $this->crypto = $this->createMock(CryptoInterface::class);
-        $this->virgilApiContext = $this->createVirgilApiContext($this->keyStorage, $this->crypto);
-    }
-
-
     /**
      * @param $validPrivateKeyName
      *
@@ -113,18 +83,6 @@ class VirgilKeySaveTest extends TestCase
             ['invalid.name'], //  . - invalid char
             ['invalidname*'] //   * - invalid char
         ];
-    }
-
-
-    protected function createVirgilApiContext(KeyStorageInterface $keyStorage, CryptoInterface $crypto)
-    {
-        return new VirgilApiContext($keyStorage, $crypto);
-    }
-
-
-    protected function createVirgilKey(PrivateKeyInterface $privateKey)
-    {
-        return new VirgilKey($this->virgilApiContext, $privateKey);
     }
 
 
