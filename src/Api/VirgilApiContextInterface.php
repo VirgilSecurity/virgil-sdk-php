@@ -24,4 +24,24 @@ interface VirgilApiContextInterface
      * @return CryptoInterface
      */
     public function getCrypto();
+
+
+    /**
+     * Sets the custom cryptographic keys storage.
+     *
+     * @param KeyStorageInterface $keyStorage
+     *
+     * @return $this
+     */
+    public function setKeyStorage(KeyStorageInterface $keyStorage);
+
+
+    /**
+     * Sets the custom crypto API that represents a set of methods for dealing with low-level.
+     *
+     * @param CryptoInterface $crypto
+     *
+     * @return $this
+     */
+    public function setCrypto(CryptoInterface $crypto);
 }

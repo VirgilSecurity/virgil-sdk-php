@@ -50,7 +50,11 @@ abstract class AbstractVirgilKeyTest extends TestCase
 
     protected function createVirgilApiContext(KeyStorageInterface $keyStorage, CryptoInterface $crypto)
     {
-        return new VirgilApiContext($keyStorage, $crypto);
+        $virgilApiContext = new VirgilApiContext();
+        $virgilApiContext->setKeyStorage($keyStorage);
+        $virgilApiContext->setCrypto($crypto);
+
+        return $virgilApiContext;
     }
 
 

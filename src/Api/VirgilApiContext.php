@@ -2,8 +2,10 @@
 namespace Virgil\Sdk\Api;
 
 
+use Virgil\Sdk\Api\Storage\StubKeyStorage;
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
+use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 /**
  * Class manages the virgil api dependencies during run time.
@@ -20,14 +22,11 @@ class VirgilApiContext implements VirgilApiContextInterface
 
     /**
      * Class constructor.
-     *
-     * @param KeyStorageInterface $keyStorage
-     * @param CryptoInterface     $crypto
      */
-    public function __construct(KeyStorageInterface $keyStorage, CryptoInterface $crypto)
+    public function __construct()
     {
-        $this->keyStorage = $keyStorage;
-        $this->crypto = $crypto;
+        $this->keyStorage = new StubKeyStorage();
+        $this->crypto = new VirgilCrypto();
     }
 
 
@@ -46,5 +45,23 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function getCrypto()
     {
         return $this->crypto;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setKeyStorage(KeyStorageInterface $keyStorage)
+    {
+        $this->keyStorage = $keyStorage;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setCrypto(CryptoInterface $crypto)
+    {
+        $this->crypto = $crypto;
     }
 }

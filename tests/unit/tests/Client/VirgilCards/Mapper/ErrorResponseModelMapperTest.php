@@ -8,7 +8,7 @@ use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
 class ErrorResponseModelMapperTest extends AbstractMapperTest
 {
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
      *
      * @test
      */
