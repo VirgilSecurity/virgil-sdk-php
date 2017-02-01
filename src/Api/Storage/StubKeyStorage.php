@@ -6,6 +6,10 @@ use Virgil\Sdk\Contracts\KeyStorageInterface;
 
 use Virgil\Sdk\Exceptions\MethodIsDisabledException;
 
+/**
+ * Class is designed to stub public methods for key storage.
+ * This class should use as default interface implementation.
+ */
 class StubKeyStorage implements KeyStorageInterface
 {
     /**

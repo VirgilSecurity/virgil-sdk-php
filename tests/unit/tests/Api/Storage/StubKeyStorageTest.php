@@ -4,8 +4,6 @@ namespace Virgil\Sdk\Tests\Unit\Api\Storage;
 
 use PHPUnit\Framework\TestCase;
 
-use \Virgil\Sdk\Exceptions\MethodIsDisabledException;
-
 use Virgil\Sdk\Api\Storage\KeyEntry;
 use Virgil\Sdk\Api\Storage\StubKeyStorage;
 
@@ -13,6 +11,8 @@ class StubKeyStorageTest extends TestCase
 {
 
     /**
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
+     *
      * @test
      */
     public function store__withKeyEntry__throwsException()
@@ -21,17 +21,16 @@ class StubKeyStorageTest extends TestCase
         $keyEntry = $this->createMock(KeyEntry::class);
 
 
-        try {
-            $stubKeyStorage->store($keyEntry);
-        } catch (MethodIsDisabledException $exception) {
+        $stubKeyStorage->store($keyEntry);
 
 
-            $this->assertNotEmpty($exception->getMessage());
-        }
+        //expected exception
     }
 
 
     /**
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
+     *
      * @test
      */
     public function load__byKeyName__throwsException()
@@ -40,17 +39,16 @@ class StubKeyStorageTest extends TestCase
         $keyName = "key_name";
 
 
-        try {
-            $stubKeyStorage->load($keyName);
-        } catch (MethodIsDisabledException $exception) {
+        $stubKeyStorage->load($keyName);
 
 
-            $this->assertNotEmpty($exception->getMessage());
-        }
+        //expected exception
     }
 
 
     /**
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
+     *
      * @test
      */
     public function exists__byKeyName__throwsException()
@@ -59,17 +57,16 @@ class StubKeyStorageTest extends TestCase
         $keyName = "key_name";
 
 
-        try {
-            $stubKeyStorage->exists($keyName);
-        } catch (MethodIsDisabledException $exception) {
+        $stubKeyStorage->exists($keyName);
 
 
-            $this->assertNotEmpty($exception->getMessage());
-        }
+        //expected exception
     }
 
 
     /**
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
+     *
      * @test
      */
     public function delete__byKeyName__throwsException()
@@ -78,13 +75,10 @@ class StubKeyStorageTest extends TestCase
         $keyName = "key_name";
 
 
-        try {
-            $stubKeyStorage->delete($keyName);
-        } catch (MethodIsDisabledException $exception) {
+        $stubKeyStorage->delete($keyName);
 
 
-            $this->assertNotEmpty($exception->getMessage());
-        }
+        //expected exception
     }
 
 

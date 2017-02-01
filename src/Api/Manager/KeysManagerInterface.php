@@ -25,7 +25,7 @@ interface KeysManagerInterface
      *
      * @return VirgilKeyInterface
      */
-    public function load($keyName, $keyPassword);
+    public function load($keyName, $keyPassword = '');
 
 
     /**

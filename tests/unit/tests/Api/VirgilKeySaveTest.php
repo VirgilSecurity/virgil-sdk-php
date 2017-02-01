@@ -4,7 +4,6 @@ namespace Virgil\Sdk\Tests\Unit\Api;
 
 use Virgil\Sdk\Buffer;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
-use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 
 class VirgilKeySaveTest extends AbstractVirgilKeyTest
 {
@@ -39,6 +38,8 @@ class VirgilKeySaveTest extends AbstractVirgilKeyTest
 
 
     /**
+     * @expectedException \Virgil\Sdk\Api\Storage\InvalidKeyNameException
+     *
      * @param $invalidPrivateKeyName
      *
      * @dataProvider invalidPrivateKeyNamesDataProvider
@@ -53,14 +54,10 @@ class VirgilKeySaveTest extends AbstractVirgilKeyTest
         $virgilKey = $this->createVirgilKey($privateKeyMock);
 
 
-        try {
-            $virgilKey->save($invalidPrivateKeyName, $privateKeyPassword);
-        } catch (InvalidKeyNameException $exception) {
+        $virgilKey->save($invalidPrivateKeyName, $privateKeyPassword);
 
 
-            $this->assertKeyInStorage($invalidPrivateKeyName, false);
-        }
-
+        //expected exception
     }
 
 
@@ -83,11 +80,5 @@ class VirgilKeySaveTest extends AbstractVirgilKeyTest
             ['invalid.name'], //  . - invalid char
             ['invalidname*'] //   * - invalid char
         ];
-    }
-
-
-    protected function assertKeyInStorage($privateKeyName, $isMatches = true)
-    {
-        $this->assertEquals($isMatches, $this->keyStorage->exists($privateKeyName));
     }
 }
