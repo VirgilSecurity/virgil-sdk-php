@@ -51,21 +51,24 @@ class CardsServiceGetCardTest extends AbstractCardsServiceTest
         $expectedCurlRequestOptions,
         $expectedHttpClientResponseArgs
     ) {
+        $expectedException = CardsServiceException::class;
         //clear http headers
         $this->httpCurlClientMock->setRequestHeaders([]);
 
         $this->configureHttpCurlClientResponse($expectedCurlRequestOptions, $expectedHttpClientResponseArgs);
 
 
-        try {
+        $testCode = function () {
             $this->cardsService->get('card-id');
+        };
 
 
-        } catch (CardsServiceException $exception) {
-            $this->assertEquals('401', $exception->getCode());
-            $this->assertEquals('The Virgil access token was not specified or is invalid', $exception->getMessage());
-            $this->assertEquals('20300', $exception->getServiceErrorCode());
-        }
+        /** @var CardsServiceException $exception */
+        $exception = $this->catchException($expectedException, $testCode);
+
+        $this->assertEquals('401', $exception->getCode());
+        $this->assertContains('The Virgil access token was not specified or is invalid', $exception->getMessage());
+        $this->assertEquals('20300', $exception->getServiceErrorCode());
     }
 
 

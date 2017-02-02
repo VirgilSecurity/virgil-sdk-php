@@ -2,6 +2,7 @@
 namespace Virgil\Sdk\Tests\Unit\Cryptography;
 
 
+use InvalidArgumentException;
 use Virgil\Sdk\Tests\BaseTestCase;
 
 use Virgil\Sdk\Buffer;
@@ -437,15 +438,16 @@ class VirgilCryptoTest extends BaseTestCase
      */
     public function sign__withNotImportedKey__throwsException()
     {
+        $expectedException = InvalidArgumentException::class;
         $virgilCrypto = new VirgilCrypto();
 
 
-        try {
+        $testCode = function () use ($virgilCrypto) {
             $virgilCrypto->sign('data_to_sign', new PrivateKeyReference('not_existed_key_hash'));
+        };
 
 
-        } catch (\InvalidArgumentException $exception) {
-            $this->assertContains('not_existed_key_hash', $exception->getMessage());
-        }
+        $exception = $this->catchException($expectedException, $testCode);
+        $this->assertContains('not_existed_key_hash', $exception->getMessage());
     }
 }

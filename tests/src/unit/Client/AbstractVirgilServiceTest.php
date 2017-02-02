@@ -2,12 +2,14 @@
 namespace Virgil\Sdk\Tests\Unit\Client;
 
 
-use PHPUnit\Framework\TestCase;
-use Virgil\Sdk\Client\Http\Curl\CurlClient;
-use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
+use Virgil\Sdk\Tests\BaseTestCase;
+
 use Virgil\Sdk\Client\Http\HttpClientInterface;
 
-abstract class AbstractVirgilServiceTest extends TestCase
+use Virgil\Sdk\Client\Http\Curl\CurlClient;
+use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
+
+abstract class AbstractVirgilServiceTest extends BaseTestCase
 {
     /** @var HttpClientInterface */
     protected $httpCurlClientMock;

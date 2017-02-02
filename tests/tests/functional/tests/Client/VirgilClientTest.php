@@ -112,6 +112,7 @@ class VirgilClientTest extends BaseTestCase
         BufferInterface $publicKey,
         BufferInterface $privateKey
     ) {
+        $expectedException = CardsServiceException::class;
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
 
         $keys = $this->crypto->generateKeys();
@@ -128,15 +129,17 @@ class VirgilClientTest extends BaseTestCase
         ;
 
 
-        try {
+        $testCode = function () use ($request) {
             $this->virgilClient->createCard($request);
+        };
 
 
-        } catch (CardsServiceException $exception) {
-            $this->assertEquals('400', $exception->getCode());
-            $this->assertContains('SCR sign validation failed', $exception->getMessage());
-            $this->assertEquals('30140', $exception->getServiceErrorCode());
-        }
+        /** @var CardsServiceException $exception */
+        $exception = $this->catchException($expectedException, $testCode);
+
+        $this->assertEquals('400', $exception->getCode());
+        $this->assertContains('SCR sign validation failed', $exception->getMessage());
+        $this->assertEquals('30140', $exception->getServiceErrorCode());
     }
 
 
@@ -218,6 +221,7 @@ class VirgilClientTest extends BaseTestCase
         BufferInterface $publicKey,
         BufferInterface $privateKey
     ) {
+        $expectedException = CardsServiceException::class;
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
         $expectedId = $this->crypto->calculateFingerprint(base64_decode($request->getSnapshot()))
                                    ->toHex()
@@ -243,13 +247,15 @@ class VirgilClientTest extends BaseTestCase
 
         $this->virgilClient->revokeCard($revokeRequest);
 
-
-        try {
+        $testCode = function () use ($expectedId) {
             $this->virgilClient->getCard($expectedId);
-        } catch (CardsServiceException $exception) {
-            $this->assertEquals('404', $exception->getCode());
-            $this->assertContains('Entity not found', $exception->getMessage());
-        }
+        };
+
+
+        $exception = $this->catchException($expectedException, $testCode);
+
+        $this->assertEquals('404', $exception->getCode());
+        $this->assertContains('Entity not found', $exception->getMessage());
 
         $searchCardRequest = new SearchCardRequest($identityType, $scope);
 
