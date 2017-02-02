@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client\Validator;
 
 
-use Virgil\Sdk\VirgilException;
+use Virgil\Sdk\Exceptions\VirgilException;
 
 /**
  * Class specifies exception during card signatures validation.

@@ -3,7 +3,8 @@ namespace Virgil\Sdk\Client\VirgilCards;
 
 
 use Exception;
-use Virgil\Sdk\VirgilException;
+
+use Virgil\Sdk\Exceptions\VirgilException;
 
 /**
  * Class specifies exception if Virgil Cards Service returns any error codes.

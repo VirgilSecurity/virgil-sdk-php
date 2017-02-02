@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
-use RuntimeException;
-
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
@@ -37,7 +35,7 @@ class SignedRequestModelMapperTest extends AbstractMapperTest
 
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
      *
      * @test
      *

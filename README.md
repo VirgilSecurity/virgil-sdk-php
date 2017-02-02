@@ -160,7 +160,7 @@ $aliceCard = $client->createCard($createCardRequest);
 ```
 
 ## Search for Virgil Cards
-Performs the `Virgil Card` search by criteria request:
+Perform the `Virgil Card` search by criteria request:
 - the *IdentityType* is optional and specifies the *IdentityType* of a `Virgil Cards` to be found. Supports any value to describe identity type e.g. `email` etc;
 - the *Scope* optional request parameter specifies the scope to perform search on. Either 'global' or 'application'. The default value is 'application';
 - There is need append one *Identity* at least or set all of them.

@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client;
 
 
-use RuntimeException;
+use Virgil\Sdk\Exceptions\MethodIsDisabledException;
 
 /**
  * Base class for model mappers with disabled methods.
@@ -22,7 +22,7 @@ abstract class AbstractJsonModelMapper implements JsonModelMapperInterface
      */
     public function toModel($json)
     {
-        throw new RuntimeException('Method ' . __METHOD__ . ' is disabled for this mapper');
+        throw new MethodIsDisabledException(__METHOD__);
     }
 
 
@@ -31,6 +31,6 @@ abstract class AbstractJsonModelMapper implements JsonModelMapperInterface
      */
     public function toJson($model)
     {
-        throw new RuntimeException('Method ' . __METHOD__ . ' is disabled for this mapper');
+        throw new MethodIsDisabledException(__METHOD__);
     }
 }

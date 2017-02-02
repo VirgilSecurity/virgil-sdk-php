@@ -4,8 +4,6 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 use DateTime;
 
-use RuntimeException;
-
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
@@ -21,7 +19,7 @@ class SearchCriteriaResponseMapperTest extends AbstractMapperTest
     /**
      * @dataProvider searchCriteriaResponseDataProvider
      *
-     * @expectedException RuntimeException
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
      *
      * @param $searchCriteriaResponseDataSet
      * @param $searchCriteriaResponseJsonDataSet

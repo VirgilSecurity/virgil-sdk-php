@@ -41,7 +41,7 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
     /**
      * @dataProvider signedResponseDataProvider
      *
-     * @expectedException \RuntimeException
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
      *
      * @param array $signedResponseData
      * @param array $signedResponseJsonData

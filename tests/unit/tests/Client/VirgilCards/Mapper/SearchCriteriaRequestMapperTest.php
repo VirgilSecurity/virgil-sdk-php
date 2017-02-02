@@ -2,7 +2,6 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
-use RuntimeException;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
@@ -30,7 +29,7 @@ class SearchCriteriaRequestMapperTest extends AbstractMapperTest
 
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
      *
      * @test
      */
