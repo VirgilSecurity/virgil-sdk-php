@@ -13,6 +13,8 @@ use Virgil\Sdk\Client\VirgilIdentity\Model\VerifyRequestModel;
 use Virgil\Sdk\Client\VirgilIdentity\Model\VerifyResponseModel;
 
 /**
+ * TODO: move to VirgilServices namespaces.
+ *
  * Virgil Identity service is responsible for validation of user's identities like email, application, etc.
  */
 class IdentityService implements IdentityServiceInterface

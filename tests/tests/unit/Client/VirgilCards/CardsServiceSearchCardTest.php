@@ -39,7 +39,7 @@ class CardsServiceSearchCardTest extends AbstractCardsServiceTest
         $expectedCardsServiceResponse = ResponseModel::createSignedResponseModels($expectedCardsServiceResponseArgs);
 
 
-        $cardsServiceResponse = $this->cardsService->search($searchCriteria);
+        $cardsServiceResponse = $this->virgilService->search($searchCriteria);
 
 
         $this->assertEquals($expectedCardsServiceResponse, $cardsServiceResponse);

@@ -9,6 +9,7 @@ use Virgil\Sdk\Exceptions\MethodIsDisabledException;
  */
 abstract class AbstractJsonModelMapper implements JsonModelMapperInterface
 {
+    //TODO:Move constants to more specific and appropriate place (VirgilCard scope)
     const CONTENT_SNAPSHOT_ATTRIBUTE_NAME = 'content_snapshot';
     const META_ATTRIBUTE_NAME = 'meta';
     const IDENTITY_ATTRIBUTE_NAME = 'identity';

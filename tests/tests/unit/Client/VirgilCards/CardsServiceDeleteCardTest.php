@@ -27,10 +27,10 @@ class CardsServiceDeleteCardTest extends AbstractCardsServiceTest
         $revokeCardRequestModel = RequestModel::createRevokeCardRequestModel(...$cardServiceRequestModelArgs);
 
 
-        $cardsService = $this->cardsService->delete($revokeCardRequestModel);
+        $cardsService = $this->virgilService->delete($revokeCardRequestModel);
 
 
-        $this->assertEquals($this->cardsService, $cardsService);
+        $this->assertEquals($this->virgilService, $cardsService);
     }
 
 

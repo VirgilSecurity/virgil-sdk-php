@@ -32,7 +32,7 @@ class CardsServiceGetCardTest extends AbstractCardsServiceTest
         $expectedCardsServiceResponse = ResponseModel::createSignedResponseModel(...$expectedCardsServiceResponseArgs);
 
 
-        $cardsServiceResponse = $this->cardsService->get($requestId);
+        $cardsServiceResponse = $this->virgilService->get($requestId);
 
 
         $this->assertEquals($expectedCardsServiceResponse, $cardsServiceResponse);
@@ -59,7 +59,7 @@ class CardsServiceGetCardTest extends AbstractCardsServiceTest
 
 
         $testCode = function () {
-            $this->cardsService->get('card-id');
+            $this->virgilService->get('card-id');
         };
 
 

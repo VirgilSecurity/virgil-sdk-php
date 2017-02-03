@@ -3,29 +3,23 @@ namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
 /**
- * Class keeps mappers collection.
+ * Class keeps mappers model collection for Virgil Cards Service.
  */
 class ModelMappersCollection implements ModelMappersCollectionInterface
 {
-    /**
-     * @var SignedResponseModelMapper
-     */
+    /** @var SignedResponseModelMapper */
     private $responseModelMapper;
-    /**
-     * @var SignedRequestModelMapper
-     */
+
+    /** @var SignedRequestModelMapper */
     private $requestModelMapper;
-    /**
-     * @var SearchCriteriaResponseMapper
-     */
+
+    /** @var SearchCriteriaResponseMapper */
     private $criteriaResponseMapper;
-    /**
-     * @var SearchCriteriaRequestMapper
-     */
+
+    /** @var SearchCriteriaRequestMapper */
     private $criteriaRequestMapper;
-    /**
-     * @var ErrorResponseModelMapper
-     */
+
+    /** @var ErrorResponseModelMapper */
     private $errorResponseModelMapper;
 
 

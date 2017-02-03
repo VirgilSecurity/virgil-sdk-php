@@ -18,7 +18,25 @@ interface ModelMappersCollectionInterface
     /**
      * @return JsonModelMapperInterface
      */
+    public function getVerifyRequestModelMapper();
+
+
+    /**
+     * @return JsonModelMapperInterface
+     */
     public function getConfirmResponseModelMapper();
+
+
+    /**
+     * @return JsonModelMapperInterface
+     */
+    public function getConfirmRequestModelMapper();
+
+
+    /**
+     * @return JsonModelMapperInterface
+     */
+    public function getValidateRequestModelMapper();
 
 
     /**

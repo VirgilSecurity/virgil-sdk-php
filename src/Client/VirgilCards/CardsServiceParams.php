@@ -2,10 +2,12 @@
 namespace Virgil\Sdk\Client\VirgilCards;
 
 
+use Virgil\Sdk\Client\VirgilServices\AbstractServiceParams;
+
 /**
  * Class provides Cards Service params.
  */
-class CardsServiceParams implements CardsServiceParamsInterface
+class CardsServiceParams extends AbstractServiceParams implements CardsServiceParamsInterface
 {
     const GET_ENDPOINT = '/v4/card';
     const SEARCH_ENDPOINT = '/v4/card/actions/search';
@@ -91,25 +93,5 @@ class CardsServiceParams implements CardsServiceParamsInterface
     public function getGetUrl($id)
     {
         return $this->buildUrl($this->immutableHost, $this->getEndpoint, $id);
-    }
-
-
-    /**
-     * Build url from given host, uri and $id if specified.
-     *
-     * @param string      $host
-     * @param string      $uri
-     * @param string|null $id
-     *
-     * @return string
-     */
-    protected function buildUrl($host, $uri, $id = null)
-    {
-        $params = null;
-        if ($id !== null) {
-            $params = '/' . $id;
-        }
-
-        return rtrim($host, '/') . '/' . trim($uri, '/') . $params;
     }
 }

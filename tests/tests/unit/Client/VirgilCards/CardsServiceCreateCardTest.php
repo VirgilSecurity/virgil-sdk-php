@@ -36,7 +36,7 @@ class CardsServiceCreateCardTest extends AbstractCardsServiceTest
         $cardServiceRequestModel = RequestModel::createCreateCardRequestModel(...$cardServiceRequestModelArgs);
 
 
-        $cardsServiceResponse = $this->cardsService->create($cardServiceRequestModel);
+        $cardsServiceResponse = $this->virgilService->create($cardServiceRequestModel);
 
 
         $this->assertEquals($expectedCardsServiceResponse, $cardsServiceResponse);
