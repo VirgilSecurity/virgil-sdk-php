@@ -36,7 +36,7 @@ class SignedRequestMetaModel extends AbstractModel
     /**
      * @inheritdoc
      */
-    function jsonSerialize()
+    protected function jsonSerializeData()
     {
         return ['signs' => $this->signs];
     }

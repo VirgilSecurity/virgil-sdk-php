@@ -122,20 +122,15 @@ class CardContentModel extends AbstractModel
     /**
      * @inheritdoc
      */
-    function jsonSerialize()
+    protected function jsonSerializeData()
     {
-        return array_filter(
-            [
-                'identity'      => $this->identity,
-                'identity_type' => $this->identityType,
-                'public_key'    => $this->publicKey,
-                'data'          => $this->data,
-                'scope'         => $this->scope,
-                'info'          => $this->info,
-            ],
-            function ($value) {
-                return count($value) !== 0;
-            }
-        );
+        return [
+            'identity'      => $this->identity,
+            'identity_type' => $this->identityType,
+            'public_key'    => $this->publicKey,
+            'data'          => $this->data,
+            'scope'         => $this->scope,
+            'info'          => $this->info,
+        ];
     }
 }

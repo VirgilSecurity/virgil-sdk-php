@@ -28,18 +28,6 @@ class RevokeCardContentModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
-     */
-    function jsonSerialize()
-    {
-        return [
-            'card_id'           => $this->id,
-            'revocation_reason' => $this->revocationReason,
-        ];
-    }
-
-
-    /**
      * Returns card id.
      *
      * @return string
@@ -58,5 +46,17 @@ class RevokeCardContentModel extends AbstractModel
     public function getRevocationReason()
     {
         return $this->revocationReason;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function jsonSerializeData()
+    {
+        return [
+            'card_id'           => $this->id,
+            'revocation_reason' => $this->revocationReason,
+        ];
     }
 }

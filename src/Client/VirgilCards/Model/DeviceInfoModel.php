@@ -52,16 +52,11 @@ class DeviceInfoModel extends AbstractModel
     /**
      * @inheritdoc
      */
-    function jsonSerialize()
+    protected function jsonSerializeData()
     {
-        return array_filter(
-            [
-                'device'      => $this->device,
-                'device_name' => $this->deviceName,
-            ],
-            function ($value) {
-                return count($value) !== 0;
-            }
-        );
+        return [
+            'device'      => $this->device,
+            'device_name' => $this->deviceName,
+        ];
     }
 }

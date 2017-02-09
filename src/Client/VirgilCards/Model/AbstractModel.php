@@ -11,11 +11,19 @@ use JsonSerializable;
 abstract class AbstractModel implements JsonSerializable, Countable
 {
     /**
-     * Specifies model properties comprised of json key and its value for further json serialization.
+     * Specify data which should be serialized to JSON.
      *
-     * @return mixed
+     * @return array
      */
-    abstract function jsonSerialize();
+    public function jsonSerialize()
+    {
+        return array_filter(
+            $this->jsonSerializeData(),
+            function ($value) {
+                return count($value) !== 0;
+            }
+        );
+    }
 
 
     /**
@@ -36,4 +44,12 @@ abstract class AbstractModel implements JsonSerializable, Countable
     {
         return json_encode($this);
     }
+
+
+    /**
+     * Specifies model properties comprised of json key and its value for further json serialization.
+     *
+     * @return mixed
+     */
+    abstract protected function jsonSerializeData();
 }
