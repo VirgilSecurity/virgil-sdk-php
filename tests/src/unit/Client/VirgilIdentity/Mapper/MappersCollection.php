@@ -2,10 +2,9 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilIdentity\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
-
 use Virgil\Sdk\Client\VirgilIdentity\Mapper\ConfirmRequestModelMapper;
 use Virgil\Sdk\Client\VirgilIdentity\Mapper\ConfirmResponseModelMapper;
+use Virgil\Sdk\Client\VirgilIdentity\Mapper\ErrorResponseModelMapper;
 use Virgil\Sdk\Client\VirgilIdentity\Mapper\ModelMappersCollection;
 use Virgil\Sdk\Client\VirgilIdentity\Mapper\ValidateRequestModelMapper;
 use Virgil\Sdk\Client\VirgilIdentity\Mapper\VerifyRequestModelMapper;

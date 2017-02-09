@@ -4,6 +4,8 @@ namespace Virgil\Sdk\Client\VirgilIdentity;
 
 use Virgil\Sdk\Client\Http\HttpClientInterface;
 
+use Virgil\Sdk\Client\VirgilServices\AbstractService;
+
 use Virgil\Sdk\Client\VirgilIdentity\Mapper\ModelMappersCollectionInterface;
 
 use Virgil\Sdk\Client\VirgilIdentity\Model\ConfirmRequestModel;
@@ -13,11 +15,11 @@ use Virgil\Sdk\Client\VirgilIdentity\Model\VerifyRequestModel;
 use Virgil\Sdk\Client\VirgilIdentity\Model\VerifyResponseModel;
 
 /**
- * TODO: move to VirgilServices namespaces.
+ * TODO: move to VirgilServices namespaces on major version.
  *
  * Virgil Identity service is responsible for validation of user's identities like email, application, etc.
  */
-class IdentityService implements IdentityServiceInterface
+class IdentityService extends AbstractService implements IdentityServiceInterface
 {
     /** @var IdentityServiceParamsInterface */
     private $identityServiceParams;
@@ -26,7 +28,7 @@ class IdentityService implements IdentityServiceInterface
     private $httpClient;
 
     /** @var ModelMappersCollectionInterface */
-    private $modelMappersCollection;
+    private $mappers;
 
 
     /**
@@ -43,16 +45,29 @@ class IdentityService implements IdentityServiceInterface
     ) {
         $this->identityServiceParams = $identityServiceParams;
         $this->httpClient = $httpClient;
-        $this->modelMappersCollection = $modelMappersCollection;
+        $this->mappers = $modelMappersCollection;
     }
 
 
     /**
      * @inheritdoc
      */
-    public function verify(VerifyRequestModel $verifyIdentityRequest)
+    public function verify(VerifyRequestModel $verifyIdentityRequestModel)
     {
-        // TODO: Implement verify() method.
+        $verifyResponseModelMapper = $this->mappers->getVerifyResponseModelMapper();
+
+        $request = function () use ($verifyIdentityRequestModel) {
+            $verifyRequestModelMapper = $this->mappers->getVerifyRequestModelMapper();
+
+            return $this->httpClient->post(
+                $this->identityServiceParams->getVerifyUrl(),
+                $verifyRequestModelMapper->toJson($verifyIdentityRequestModel)
+            );
+        };
+
+        $response = $this->makeRequest($request);
+
+        return $verifyResponseModelMapper->toModel($response->getBody());
     }
 
 

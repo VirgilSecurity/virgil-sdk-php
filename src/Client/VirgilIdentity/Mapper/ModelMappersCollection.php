@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Client\VirgilIdentity\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
-
 /**
  * Class keeps mappers model collection for Virgil Identity Service.
  */

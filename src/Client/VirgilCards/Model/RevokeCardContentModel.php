@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
+use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+
 /**
  * Class represents json serializable revoke card content model.
  */

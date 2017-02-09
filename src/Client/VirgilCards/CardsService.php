@@ -4,35 +4,30 @@ namespace Virgil\Sdk\Client\VirgilCards;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\ModelMappersCollectionInterface;
 
-use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 
 use Virgil\Sdk\Client\Http\HttpClientInterface;
 use Virgil\Sdk\Client\Http\ResponseInterface;
 
+use Virgil\Sdk\Client\VirgilServices\AbstractService;
+use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
+
 /**
+ * TODO: move to VirgilServices namespaces on major version.
+ *
  * Class responsible for retrieving, revocation or creation Virgil cards.
  */
-class CardsService implements CardsServiceInterface
+class CardsService extends AbstractService implements CardsServiceInterface
 {
-    const DEFAULT_ERROR_MESSAGES = [
-        400 => 'Request error',
-        401 => 'Authentication error',
-        403 => 'Forbidden',
-        404 => 'Entity not found',
-        405 => 'Method not allowed',
-        500 => 'Server error',
-    ];
-
     /** @var HttpClientInterface $httpClient */
-    private $httpClient;
+    protected $httpClient;
 
     /** @var ModelMappersCollectionInterface $mappers */
-    private $mappers;
+    protected $mappers;
 
     /** @var CardsServiceParamsInterface $params */
-    private $params;
+    protected $params;
 
 
     /**
@@ -138,36 +133,20 @@ class CardsService implements CardsServiceInterface
 
 
     /**
-     * Makes request to http client and gets response object.
-     *
      * @param callable $request
      *
-     * @throws CardsServiceException
      * @return ResponseInterface
+     *
+     * @throws CardsServiceException
      */
     protected function makeRequest($request)
     {
-        /** @var ResponseInterface $response */
-        $response = call_user_func($request);
-        $responseHttpStatusCode = $response->getHttpStatusCode();
-
-        if (!$responseHttpStatusCode->isSuccess()) {
-            $errorResponseModelMapper = $this->mappers->getErrorResponseModelMapper();
-
-            /** @var ErrorResponseModel $errorResponse */
-            $errorResponse = $errorResponseModelMapper->toModel($response->getBody());
-
-            $httpStatusCode = $responseHttpStatusCode->getCode();
-
-            $serviceErrorMessage = $errorResponse->getMessageOrDefault(
-                self::DEFAULT_ERROR_MESSAGES[(int)$httpStatusCode]
+        try {
+            return parent::makeRequest($request);
+        } catch (UnsuccessfulResponseException $exception) {
+            throw new CardsServiceException(
+                $exception->getMessage(), $exception->getHttpStatusCode(), $exception->getServiceErrorCode()
             );
-
-            $serviceErrorCode = $errorResponse->getCode();
-
-            throw new CardsServiceException($serviceErrorMessage, $httpStatusCode, $serviceErrorCode);
         }
-
-        return $response;
     }
 }

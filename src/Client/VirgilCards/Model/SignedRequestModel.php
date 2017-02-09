@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
+use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+
 /**
  * Class keeps content and meta information of any signed request to Virgil Cards Service.
  */

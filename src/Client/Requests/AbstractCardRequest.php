@@ -8,7 +8,8 @@ use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\AbstractJsonModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\AbstractModel;
+use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 

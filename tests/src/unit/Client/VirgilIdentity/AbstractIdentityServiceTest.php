@@ -8,7 +8,7 @@ use Virgil\Sdk\Client\VirgilIdentity\IdentityServiceParams;
 use Virgil\Sdk\Tests\Unit\Client\AbstractVirgilServiceTest;
 use Virgil\Sdk\Tests\Unit\Client\VirgilIdentity\Mapper\MappersCollection;
 
-class AbstractIdentityServiceTest extends AbstractVirgilServiceTest
+abstract class AbstractIdentityServiceTest extends AbstractVirgilServiceTest
 {
     /** @var IdentityService */
     protected $virgilService;

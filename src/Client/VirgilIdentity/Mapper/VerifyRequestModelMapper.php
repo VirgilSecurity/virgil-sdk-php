@@ -2,12 +2,27 @@
 namespace Virgil\Sdk\Client\VirgilIdentity\Mapper;
 
 
+use InvalidArgumentException;
+
 use Virgil\Sdk\Client\AbstractJsonModelMapper;
 
+use Virgil\Sdk\Client\VirgilIdentity\Model\VerifyRequestModel;
+
 /**
- * Class transforms verify request model to json and vise versa.
+ * Class transforms verify request model to json.
  */
 class VerifyRequestModelMapper extends AbstractJsonModelMapper
 {
+    /**
+     * @inheritdoc
+     */
+    public function toJson($model)
+    {
+        /** @var VerifyRequestModel $model */
+        if (!$model instanceof VerifyRequestModel) {
+            throw new InvalidArgumentException('Invalid model passed. Instance of VerifyRequestModel accept only.');
+        }
 
+        return json_encode($model);
+    }
 }

@@ -16,11 +16,11 @@ interface IdentityServiceInterface
     /**
      * Initiates a process to verify an Identity.
      *
-     * @param VerifyRequestModel $verifyIdentityRequest
+     * @param VerifyRequestModel $verifyIdentityRequestModel
      *
      * @return VerifyResponseModel
      */
-    public function verify(VerifyRequestModel $verifyIdentityRequest);
+    public function verify(VerifyRequestModel $verifyIdentityRequestModel);
 
 
     /**
