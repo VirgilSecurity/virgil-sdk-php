@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
+use Virgil\Sdk\Client\VirgilCards\Constants\JsonProperties;
+
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 /**
@@ -40,6 +42,6 @@ class SignedRequestMetaModel extends AbstractModel
      */
     protected function jsonSerializeData()
     {
-        return ['signs' => $this->signs];
+        return [JsonProperties::SIGNS_ATTRIBUTE_NAME => $this->signs];
     }
 }

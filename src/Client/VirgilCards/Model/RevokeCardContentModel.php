@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
+use Virgil\Sdk\Client\VirgilCards\Constants\JsonProperties;
+
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 /**
@@ -57,8 +59,8 @@ class RevokeCardContentModel extends AbstractModel
     protected function jsonSerializeData()
     {
         return [
-            'card_id'           => $this->id,
-            'revocation_reason' => $this->revocationReason,
+            JsonProperties::CARD_ID_ATTRIBUTE_NAME           => $this->id,
+            JsonProperties::REVOCATION_REASON_ATTRIBUTE_NAME => $this->revocationReason,
         ];
     }
 }

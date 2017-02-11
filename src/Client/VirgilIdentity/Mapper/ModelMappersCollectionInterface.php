@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client\VirgilIdentity\Mapper;
 
 
-use Virgil\Sdk\Client\JsonModelMapperInterface;
+use Virgil\Sdk\Client\VirgilServices\Mapper\JsonModelMapperInterface;
 
 /**
  * Interface provides methods for getting mappers.

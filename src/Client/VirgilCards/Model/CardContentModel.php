@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
+use Virgil\Sdk\Client\VirgilCards\Constants\JsonProperties;
+
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 /**
@@ -127,12 +129,12 @@ class CardContentModel extends AbstractModel
     protected function jsonSerializeData()
     {
         return [
-            'identity'      => $this->identity,
-            'identity_type' => $this->identityType,
-            'public_key'    => $this->publicKey,
-            'data'          => $this->data,
-            'scope'         => $this->scope,
-            'info'          => $this->info,
+            JsonProperties::IDENTITY_ATTRIBUTE_NAME      => $this->identity,
+            JsonProperties::IDENTITY_TYPE_ATTRIBUTE_NAME => $this->identityType,
+            JsonProperties::PUBLIC_KEY_ATTRIBUTE_NAME    => $this->publicKey,
+            JsonProperties::DATA_ATTRIBUTE_NAME          => $this->data,
+            JsonProperties::SCOPE_ATTRIBUTE_NAME         => $this->scope,
+            JsonProperties::INFO_ATTRIBUTE_NAME          => $this->info,
         ];
     }
 }

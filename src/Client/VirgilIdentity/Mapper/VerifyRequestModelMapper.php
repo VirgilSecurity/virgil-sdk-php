@@ -4,9 +4,9 @@ namespace Virgil\Sdk\Client\VirgilIdentity\Mapper;
 
 use InvalidArgumentException;
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
-
 use Virgil\Sdk\Client\VirgilIdentity\Model\VerifyRequestModel;
+
+use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
 
 /**
  * Class transforms verify request model to json.

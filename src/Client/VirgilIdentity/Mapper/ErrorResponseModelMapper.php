@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client\VirgilIdentity\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
 
 /**
  * Class transforms error response message json string to model.

@@ -2,9 +2,9 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
-
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
+
+use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
 
 /**
  * Class transforms many signed responses to models and vise versa.

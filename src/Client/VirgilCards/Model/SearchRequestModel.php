@@ -2,8 +2,9 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+use Virgil\Sdk\Client\VirgilCards\Constants\JsonProperties;
 
+use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 /**
  * Class provides search request model for Virgil Cards Service.
@@ -74,9 +75,9 @@ class SearchRequestModel extends AbstractModel
     protected function jsonSerializeData()
     {
         return [
-            'identities'    => $this->identities,
-            'identity_type' => $this->identityType,
-            'scope'         => $this->scope,
+            JsonProperties::IDENTITIES_ATTRIBUTE_NAME    => $this->identities,
+            JsonProperties::IDENTITY_TYPE_ATTRIBUTE_NAME => $this->identityType,
+            JsonProperties::SCOPE_ATTRIBUTE_NAME         => $this->scope,
         ];
     }
 }

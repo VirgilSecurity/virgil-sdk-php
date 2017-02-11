@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
+use Virgil\Sdk\Client\VirgilCards\Constants\JsonProperties;
+
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 /**
@@ -57,8 +59,8 @@ class DeviceInfoModel extends AbstractModel
     protected function jsonSerializeData()
     {
         return [
-            'device'      => $this->device,
-            'device_name' => $this->deviceName,
+            JsonProperties::INFO_DEVICE_ATTRIBUTE_NAME      => $this->device,
+            JsonProperties::INFO_DEVICE_NAME_ATTRIBUTE_NAME => $this->deviceName,
         ];
     }
 }

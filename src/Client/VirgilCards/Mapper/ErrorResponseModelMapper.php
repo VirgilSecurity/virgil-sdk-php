@@ -2,18 +2,17 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Constants\JsonProperties;
 
 use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
+
+use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
 
 /**
  * Class transforms error response message json string to model.
  */
 class ErrorResponseModelMapper extends AbstractJsonModelMapper
 {
-    const CODE_ATTRIBUTE_NAME = 'code';
-
-
     /**
      * @inheritdoc
      *
@@ -23,6 +22,6 @@ class ErrorResponseModelMapper extends AbstractJsonModelMapper
     {
         $data = json_decode($json, true);
 
-        return new ErrorResponseModel($data[self::CODE_ATTRIBUTE_NAME]);
+        return new ErrorResponseModel($data[JsonProperties::CODE_ATTRIBUTE_NAME]);
     }
 }

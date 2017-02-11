@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilCards\Model;
 
 
+use Virgil\Sdk\Client\VirgilCards\Constants\JsonProperties;
+
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 /**
@@ -9,9 +11,6 @@ use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
  */
 class SignedRequestModel extends AbstractModel
 {
-    const CONTENT_SNAPSHOT_ATTRIBUTE_NAME = 'content_snapshot';
-    const META_ATTRIBUTE_NAME = 'meta';
-
     /** @var AbstractModel $requestContent */
     protected $requestContent;
 
@@ -67,8 +66,8 @@ class SignedRequestModel extends AbstractModel
     protected function jsonSerializeData()
     {
         return [
-            'content_snapshot' => $this->getSnapshot(),
-            'meta'             => $this->requestMeta,
+            JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME => $this->getSnapshot(),
+            JsonProperties::META_ATTRIBUTE_NAME             => $this->requestMeta,
         ];
     }
 }

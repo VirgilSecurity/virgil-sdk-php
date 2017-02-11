@@ -2,9 +2,9 @@
 namespace Virgil\Sdk\Client\VirgilIdentity\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
-
 use Virgil\Sdk\Client\VirgilIdentity\Model\VerifyResponseModel;
+
+use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
 
 /**
  * Class transforms verify response model to model.
