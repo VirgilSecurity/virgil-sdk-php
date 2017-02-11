@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
-use Virgil\Sdk\Client\VirgilCards\Model\SearchRequestModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
 
 /**
  * TODO: add import/export

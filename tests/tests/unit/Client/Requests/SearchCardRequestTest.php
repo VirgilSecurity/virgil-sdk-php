@@ -8,7 +8,7 @@ use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
-use Virgil\Sdk\Client\VirgilCards\Model\SearchRequestModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
 
 class SearchCardRequestTest extends BaseTestCase
 {

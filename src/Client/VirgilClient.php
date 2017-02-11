@@ -8,19 +8,19 @@ use Virgil\Sdk\Client\Requests\SearchCardRequest;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
-use Virgil\Sdk\Client\VirgilCards\CardsServiceParams;
-use Virgil\Sdk\Client\VirgilCards\CardsService;
-use Virgil\Sdk\Client\VirgilCards\CardsServiceInterface;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceParams;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\ModelMappersCollection;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SearchRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelsMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CardContentModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollection;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SearchRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedResponseModelsMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedResponseModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
 
 use Virgil\Sdk\Client\Validator\CardValidationException;
 use Virgil\Sdk\Client\Validator\CardValidatorInterface;

@@ -4,7 +4,7 @@ namespace Virgil\Sdk\Client\VirgilServices;
 
 use Virgil\Sdk\Client\Http\ResponseInterface;
 
-use Virgil\Sdk\Client\VirgilCards\Model\ErrorResponseModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\ErrorResponseModel;
 
 /**
  * Class is a base class for any Virgil Services.

@@ -6,11 +6,11 @@ use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Contracts\BufferInterface;
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CreateRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CardContentModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 

@@ -6,7 +6,7 @@ use Virgil\Sdk\Tests\BaseTestCase;
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 

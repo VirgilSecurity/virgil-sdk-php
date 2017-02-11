@@ -3,9 +3,12 @@ namespace Virgil\Sdk\Tests\Unit\Client;
 
 
 use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
+
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
+
 use Virgil\Sdk\Tests\Unit\Client\Requests\CardRequest;
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
+
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 
 class VirgilClientRevokeCardTest extends AbstractVirgilClientTest
 {

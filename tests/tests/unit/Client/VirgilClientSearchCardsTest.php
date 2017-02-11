@@ -8,14 +8,14 @@ use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
-use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Card as VirgilClientCard;
 
 use Virgil\Sdk\Tests\Unit\Client\Requests\CardRequest;
 
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
 
 class VirgilClientSearchCardsTest extends AbstractVirgilClientTest
 {

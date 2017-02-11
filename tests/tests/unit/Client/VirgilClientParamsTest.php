@@ -3,6 +3,7 @@ namespace Virgil\Sdk\Tests\Unit\Client;
 
 
 use Virgil\Sdk\Tests\BaseTestCase;
+
 use Virgil\Sdk\Client\VirgilClientParams;
 
 class VirgilClientParamsTest extends BaseTestCase

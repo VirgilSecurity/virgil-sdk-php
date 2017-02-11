@@ -11,14 +11,14 @@ use Virgil\Sdk\Client\Card;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 
-use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
-use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
 
 use Virgil\Sdk\Tests\Unit\Client\Requests\CardRequest;
 
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
 
 use Virgil\Sdk\Tests\Unit\Card as VirgilClientCard;
 

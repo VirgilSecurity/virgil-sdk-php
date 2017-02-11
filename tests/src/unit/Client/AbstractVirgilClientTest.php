@@ -7,7 +7,7 @@ use Virgil\Sdk\Tests\BaseTestCase;
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\VirgilClientParams;
 
-use Virgil\Sdk\Client\VirgilCards\CardsService;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
 
 abstract class AbstractVirgilClientTest extends BaseTestCase
 {

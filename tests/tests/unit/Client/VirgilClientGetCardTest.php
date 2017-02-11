@@ -3,10 +3,15 @@ namespace Virgil\Sdk\Tests\Unit\Client;
 
 
 use DateTime;
+
 use Virgil\Sdk\Buffer;
-use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
+
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
-use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
+
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
+
 use Virgil\Sdk\Tests\Unit\Card as VirgilClientCard;
 
 class VirgilClientGetCardTest extends AbstractVirgilClientTest

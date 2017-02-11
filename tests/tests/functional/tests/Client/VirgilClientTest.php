@@ -11,7 +11,7 @@ use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
-use Virgil\Sdk\Client\VirgilCards\CardsServiceException;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceException;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
