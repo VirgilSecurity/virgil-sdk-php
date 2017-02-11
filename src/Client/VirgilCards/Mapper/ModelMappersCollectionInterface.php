@@ -24,13 +24,13 @@ interface ModelMappersCollectionInterface
     /**
      * @return JsonModelMapperInterface
      */
-    public function getSearchCriteriaResponseMapper();
+    public function getSignedResponseModelsMapper();
 
 
     /**
      * @return JsonModelMapperInterface
      */
-    public function getSearchCriteriaRequestMapper();
+    public function getSearchRequestModelMapper();
 
 
     /**

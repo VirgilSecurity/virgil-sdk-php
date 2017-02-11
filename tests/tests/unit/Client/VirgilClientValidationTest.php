@@ -111,7 +111,7 @@ class VirgilClientValidationTest extends BaseTestCase
         $cardsServiceMock = $this->createPartialMock(CardsService::class, ['search']);
         $cardsServiceMock->expects($this->once())
                          ->method('search')
-                         ->with($searchCardRequest->getSearchCriteria())
+                         ->with($searchCardRequest->getRequestModel())
                          ->willReturn($searchCardResponse)
         ;
 

@@ -5,7 +5,6 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
@@ -107,7 +106,6 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
     private function createCreateCardRequestModelMapper()
     {
         return new CreateRequestModelMapper(
-            new SignedRequestModelMapper(),
             new CardContentModelMapper()
         );
     }

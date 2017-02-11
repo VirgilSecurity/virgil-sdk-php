@@ -38,30 +38,6 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
     }
 
 
-    /**
-     * @dataProvider signedResponseDataProvider
-     *
-     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
-     *
-     * @param array $signedResponseData
-     * @param array $signedResponseJsonData
-     *
-     * @test
-     */
-    public function toJson__fromSignedResponseModel__throwsException(
-        array $signedResponseData,
-        array $signedResponseJsonData
-    ) {
-        $signedResponseModel = ResponseModel::createSignedResponseModel(...$signedResponseData);
-
-
-        $this->mapper->toJson($signedResponseModel);
-
-
-        //expected exception
-    }
-
-
     public function signedResponseDataProvider()
     {
         return [

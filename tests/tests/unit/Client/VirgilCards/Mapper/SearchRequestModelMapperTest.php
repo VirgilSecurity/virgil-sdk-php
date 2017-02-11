@@ -2,11 +2,11 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SearchRequestModelMapper;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
 
-class SearchCriteriaRequestMapperTest extends AbstractMapperTest
+class SearchRequestModelMapperTest extends AbstractMapperTest
 {
     /**
      * @dataProvider searchCardDataProvider
@@ -16,12 +16,12 @@ class SearchCriteriaRequestMapperTest extends AbstractMapperTest
      *
      * @test
      */
-    public function toJson__fromSearchCriteria__returnsValidJson($expectedJson, $args)
+    public function toJson__fromSearchRequestModel__returnsValidJson($expectedJson, $args)
     {
-        $searchCriteria = RequestModel::createSearchCriteria(...$args);
+        $searchRequestModel = RequestModel::createSearchRequestModel(...$args);
 
 
-        $actualJson = $this->mapper->toJson($searchCriteria);
+        $actualJson = $this->mapper->toJson($searchRequestModel);
 
 
         $this->assertEquals($expectedJson, $actualJson);
@@ -33,12 +33,12 @@ class SearchCriteriaRequestMapperTest extends AbstractMapperTest
      *
      * @test
      */
-    public function toModel__fromSearchCriteriaRequestJsonString__throwsException()
+    public function toModel__fromSearchRequestModelJsonString__throwsException()
     {
-        $searchCriteriaJson = '{"identities":["user2@virgilsecurity.com","another.user2@virgilsecurity.com"]}';
+        $searchRequestModelJson = '{"identities":["user2@virgilsecurity.com","another.user2@virgilsecurity.com"]}';
 
 
-        $this->mapper->toModel($searchCriteriaJson);
+        $this->mapper->toModel($searchRequestModelJson);
 
 
         //expected exception
@@ -66,14 +66,14 @@ class SearchCriteriaRequestMapperTest extends AbstractMapperTest
     }
 
 
-    protected function createSearchCriteriaRequestMapper()
+    protected function createSearchRequestModelMapper()
     {
-        return new SearchCriteriaRequestMapper();
+        return new SearchRequestModelMapper();
     }
 
 
     protected function getMapper()
     {
-        return $this->createSearchCriteriaRequestMapper();
+        return $this->createSearchRequestModelMapper();
     }
 }

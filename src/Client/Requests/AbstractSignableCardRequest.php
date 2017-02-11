@@ -16,7 +16,7 @@ use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 /**
  * Class is a base class for request which requires signatures.
  */
-abstract class AbstractCardRequest
+abstract class AbstractSignableCardRequest implements CardRequestInterface
 {
     /** @var BufferInterface[] $signatures */
     protected $signatures = [];
@@ -27,7 +27,7 @@ abstract class AbstractCardRequest
      *
      * @param string $exportedSignedRequestModel base64 encoded request.
      *
-     * @return AbstractCardRequest
+     * @return AbstractSignableCardRequest
      */
     public static function import($exportedSignedRequestModel)
     {
@@ -38,7 +38,7 @@ abstract class AbstractCardRequest
 
         $cardContent = $model->getRequestContent();
 
-        /** @var AbstractCardRequest $request */
+        /** @var AbstractSignableCardRequest $request */
         $request = static::buildRequestFromCardContent($cardContent);
 
         /** @var SignedRequestMetaModel $meta */
@@ -52,7 +52,20 @@ abstract class AbstractCardRequest
 
 
     /**
-     * Returns the request model.
+     * Exports card to base64 json string.
+     *
+     * @return string
+     */
+    public function export()
+    {
+        $requestModelJsonMapper = static::getRequestModelJsonMapper();
+
+        return base64_encode($requestModelJsonMapper->toJson($this->getRequestModel()));
+    }
+
+
+    /**
+     * @inheritdoc
      *
      * @return SignedRequestModel
      */

@@ -7,9 +7,9 @@ use Virgil\Sdk\Client\AbstractJsonModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 
 /**
- * Class transforms search criteria response to model and vise versa.
+ * Class transforms many signed responses to models and vise versa.
  */
-class SearchCriteriaResponseMapper extends AbstractJsonModelMapper
+class SignedResponseModelsMapper extends AbstractJsonModelMapper
 {
     /** @var SignedResponseModelMapper $signedResponseModelMapper */
     private $signedResponseModelMapper;

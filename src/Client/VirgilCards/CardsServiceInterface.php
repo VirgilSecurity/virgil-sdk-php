@@ -2,6 +2,7 @@
 namespace Virgil\Sdk\Client\VirgilCards;
 
 
+use Virgil\Sdk\Client\VirgilCards\Model\SearchRequestModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedResponseModel;
 
@@ -31,13 +32,13 @@ interface CardsServiceInterface
 
 
     /**
-     * Search cards by given search criteria.
+     * Search cards by given search request model.
      *
-     * @param SearchCriteria $model
+     * @param SearchRequestModel $model
      *
      * @return SignedResponseModel[]
      */
-    public function search(SearchCriteria $model);
+    public function search(SearchRequestModel $model);
 
 
     /**

@@ -7,64 +7,40 @@ use DateTime;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaResponseMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelsMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
 
-class SearchCriteriaResponseMapperTest extends AbstractMapperTest
+class SignedResponseModelsMapperTest extends AbstractMapperTest
 {
     /**
-     * @dataProvider searchCriteriaResponseDataProvider
+     * @dataProvider signedResponseModelsDataProvider
      *
-     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
-     *
-     * @param $searchCriteriaResponseDataSet
-     * @param $searchCriteriaResponseJsonDataSet
+     * @param $signedResponseModelsDataSet
+     * @param $signedResponseModelsJsonDataSet
      *
      * @test
      */
-    public function toJson__fromSearchCriteriaResponseModel__throwsException(
-        $searchCriteriaResponseDataSet,
-        $searchCriteriaResponseJsonDataSet
+    public function toModel__fromSignedResponseModelsJsonString__returnsValidSignedResponseModels(
+        $signedResponseModelsDataSet,
+        $signedResponseModelsJsonDataSet
     ) {
-        $searchCriteriaResponse = ResponseModel::createSignedResponseModels($searchCriteriaResponseDataSet);
+        $expectedSignedResponseModels = ResponseModel::createSignedResponseModels($signedResponseModelsDataSet);
+
+        $signedResponseModelsJson = $this->createSignedResponseModelsJson(...$signedResponseModelsJsonDataSet);
 
 
-        $this->mapper->toJson($searchCriteriaResponse);
+        $signedResponseModels = $this->mapper->toModel($signedResponseModelsJson);
 
 
-        //expected exception
+        $this->assertEquals($expectedSignedResponseModels, $signedResponseModels);
     }
 
 
-    /**
-     * @dataProvider searchCriteriaResponseDataProvider
-     *
-     * @param $searchCriteriaResponseDataSet
-     * @param $searchCriteriaResponseJsonDataSet
-     *
-     * @test
-     */
-    public function toModel__fromSearchCriteriaResponseModelJsonString__returnsValidSearchCriteriaResponseModel(
-        $searchCriteriaResponseDataSet,
-        $searchCriteriaResponseJsonDataSet
-    ) {
-        $expectedSearchCriteriaResponse = ResponseModel::createSignedResponseModels($searchCriteriaResponseDataSet);
-
-        $searchCriteriaResponseJson = $this->createSearchCriteriaResponseJson(...$searchCriteriaResponseJsonDataSet);
-
-
-        $searchCriteriaResponse = $this->mapper->toModel($searchCriteriaResponseJson);
-
-
-        $this->assertEquals($expectedSearchCriteriaResponse, $searchCriteriaResponse);
-    }
-
-
-    public function searchCriteriaResponseDataProvider()
+    public function signedResponseModelsDataProvider()
     {
         return [
             [
@@ -121,20 +97,20 @@ class SearchCriteriaResponseMapperTest extends AbstractMapperTest
 
     protected function getMapper()
     {
-        return new SearchCriteriaResponseMapper(new SignedResponseModelMapper(new CardContentModelMapper()));
+        return new SignedResponseModelsMapper(new SignedResponseModelMapper(new CardContentModelMapper()));
     }
 
 
-    private function createSearchCriteriaResponseJson($format, $searchCriteriaResponseJsonDataSet)
+    private function createSignedResponseModelsJson($format, $signedResponseModelsJsonDataSet)
     {
-        $searchCriteriaJsonDataSetToString = function ($searchCriteriaResponseJsonData) {
-            return $this->createSignedCardResponseJson(...$searchCriteriaResponseJsonData);
+        $signedResponseModelJsonDataSetToString = function ($signedResponseModelJsonData) {
+            return $this->createSignedCardResponseJson(...$signedResponseModelJsonData);
         };
 
         $result = [];
 
-        foreach ($searchCriteriaResponseJsonDataSet as $searchCriteriaResponseJsonData) {
-            $result[] = call_user_func($searchCriteriaJsonDataSetToString, $searchCriteriaResponseJsonData);
+        foreach ($signedResponseModelsJsonDataSet as $signedResponseModelJsonData) {
+            $result[] = call_user_func($signedResponseModelJsonDataSetToString, $signedResponseModelJsonData);
         }
 
 

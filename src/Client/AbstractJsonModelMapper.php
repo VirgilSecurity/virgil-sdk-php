@@ -32,6 +32,6 @@ abstract class AbstractJsonModelMapper implements JsonModelMapperInterface
      */
     public function toJson($model)
     {
-        throw new MethodIsDisabledException(__METHOD__);
+        return json_encode($model);
     }
 }

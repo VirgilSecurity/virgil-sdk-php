@@ -2,19 +2,14 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
-
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 
 /**
  * Class transforms create request model to json and vise versa.
  */
-class CreateRequestModelMapper extends AbstractJsonModelMapper
+class CreateRequestModelMapper extends SignedRequestModelMapper
 {
-    /** @var SignedRequestModelMapper $signedRequestModelMapper */
-    private $signedRequestModelMapper;
-
     /** @var CardContentModelMapper $cardContentModelMapper */
     private $cardContentModelMapper;
 
@@ -22,14 +17,10 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
     /**
      * Class constructor.
      *
-     * @param SignedRequestModelMapper  $signedRequestModelMapper
      * @param CardContentModelMapper $cardContentModelMapper
      */
-    public function __construct(
-        SignedRequestModelMapper $signedRequestModelMapper,
-        CardContentModelMapper $cardContentModelMapper
-    ) {
-        $this->signedRequestModelMapper = $signedRequestModelMapper;
+    public function __construct(CardContentModelMapper $cardContentModelMapper)
+    {
         $this->cardContentModelMapper = $cardContentModelMapper;
     }
 
@@ -50,14 +41,5 @@ class CreateRequestModelMapper extends AbstractJsonModelMapper
         $cardMetaModel = new SignedRequestMetaModel($cardMetaData[self::SIGNS_ATTRIBUTE_NAME]);
 
         return new SignedRequestModel($cardContentModel, $cardMetaModel);
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function toJson($model)
-    {
-        return $this->signedRequestModelMapper->toJson($model);
     }
 }

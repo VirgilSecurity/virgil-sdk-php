@@ -1,11 +1,14 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilCards;
+namespace Virgil\Sdk\Client\VirgilCards\Model;
+
+
+use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 
 /**
- * Class provides search criteria for Virgil Cards Service.
+ * Class provides search request model for Virgil Cards Service.
  */
-class SearchCriteria
+class SearchRequestModel extends AbstractModel
 {
     /** @var array $identities */
     private $identities;
@@ -62,5 +65,18 @@ class SearchCriteria
     public function getScope()
     {
         return $this->scope;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function jsonSerializeData()
+    {
+        return [
+            'identities'    => $this->identities,
+            'identity_type' => $this->identityType,
+            'scope'         => $this->scope,
+        ];
     }
 }

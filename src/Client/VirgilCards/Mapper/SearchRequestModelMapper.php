@@ -5,9 +5,9 @@ namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 use Virgil\Sdk\Client\AbstractJsonModelMapper;
 
 /**
- * Class transforms signed request model to json.
+ * Class transforms search request model to json.
  */
-class SignedRequestModelMapper extends AbstractJsonModelMapper
+class SearchRequestModelMapper extends AbstractJsonModelMapper
 {
 
 }

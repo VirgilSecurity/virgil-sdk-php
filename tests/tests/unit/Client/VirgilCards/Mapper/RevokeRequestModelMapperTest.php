@@ -3,7 +3,6 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilCards\Mapper;
 
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\RevokeRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\RequestModel;
 
@@ -94,7 +93,7 @@ class RevokeRequestModelMapperTest extends AbstractMapperTest
 
     private function createRevokeRequestModelMapper()
     {
-        return new RevokeRequestModelMapper(new SignedRequestModelMapper());
+        return new RevokeRequestModelMapper();
     }
 
 

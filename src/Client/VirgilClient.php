@@ -15,8 +15,8 @@ use Virgil\Sdk\Client\VirgilCards\CardsServiceInterface;
 use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\ErrorResponseModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\ModelMappersCollection;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaRequestMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SearchCriteriaResponseMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SearchRequestModelMapper;
+use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelsMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilCards\Mapper\SignedResponseModelMapper;
 
@@ -75,7 +75,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service searching by criteria.
+     * Performs the Virgil Cards service searching by search request.
      *
      * @param SearchCardRequest $searchCardRequest
      *
@@ -83,7 +83,7 @@ class VirgilClient
      */
     public function searchCards(SearchCardRequest $searchCardRequest)
     {
-        $response = $this->cardsService->search($searchCardRequest->getSearchCriteria());
+        $response = $this->cardsService->search($searchCardRequest->getRequestModel());
 
         $responseModelToCard = function (SignedResponseModel $responseModel) {
             return $this->buildAndVerifyCard($responseModel);
@@ -96,13 +96,13 @@ class VirgilClient
     /**
      * Performs the Virgil Cards service card creation by request.
      *
-     * @param CreateCardRequest $request
+     * @param CreateCardRequest $createCardRequest
      *
      * @return Card
      */
-    public function createCard(CreateCardRequest $request)
+    public function createCard(CreateCardRequest $createCardRequest)
     {
-        $response = $this->cardsService->create($request->getRequestModel());
+        $response = $this->cardsService->create($createCardRequest->getRequestModel());
 
         return $this->buildAndVerifyCard($response);
     }
@@ -111,13 +111,13 @@ class VirgilClient
     /**
      * Performs the Virgil Cards service card revoking by request.
      *
-     * @param RevokeCardRequest $request
+     * @param RevokeCardRequest $revokeCardRequest
      *
      * @return $this
      */
-    public function revokeCard(RevokeCardRequest $request)
+    public function revokeCard(RevokeCardRequest $revokeCardRequest)
     {
-        $this->cardsService->delete($request->getRequestModel());
+        $this->cardsService->delete($revokeCardRequest->getRequestModel());
 
         return $this;
     }
@@ -180,8 +180,8 @@ class VirgilClient
         $jsonMappers = new ModelMappersCollection(
             $signedResponseModelMapper,
             new SignedRequestModelMapper(),
-            new SearchCriteriaResponseMapper($signedResponseModelMapper),
-            new SearchCriteriaRequestMapper(),
+            new SignedResponseModelsMapper($signedResponseModelMapper),
+            new SearchRequestModelMapper(),
             new ErrorResponseModelMapper()
         );
 

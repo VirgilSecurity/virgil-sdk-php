@@ -2,12 +2,14 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
-use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
+use Virgil\Sdk\Client\VirgilCards\Model\SearchRequestModel;
 
 /**
- * Class aims to build search criteria.
+ * TODO: add import/export
+ *
+ * Class aims to build search request model conveniently.
  */
-class SearchCardRequest
+class SearchCardRequest implements CardRequestInterface
 {
     /** @var null|string */
     private $identityType;
@@ -33,7 +35,7 @@ class SearchCardRequest
 
 
     /**
-     * Sets search criteria identities.
+     * Sets search request model identities.
      *
      * @param array $identities
      */
@@ -44,7 +46,7 @@ class SearchCardRequest
 
 
     /**
-     * Appends search criteria identity.
+     * Appends search request model identity.
      *
      * @param $identity
      *
@@ -59,21 +61,20 @@ class SearchCardRequest
 
 
     /**
-     * Returns search criteria.
+     * @inheritdoc
      *
-     * @return SearchCriteria
+     * @return SearchRequestModel
      *
      * @throws SearchCardRequestException
      */
-    public function getSearchCriteria()
+    public function getRequestModel()
     {
         if (count($this->identities) === 0) {
             throw new SearchCardRequestException(
-                'Cant build search criteria with empty identities. Identities are mandatory attribute.'
+                'Cant build search request model with empty identities. Identities are mandatory attribute.'
             );
         }
 
-        return new SearchCriteria(array_unique($this->identities), $this->identityType, $this->scope);
+        return new SearchRequestModel(array_unique($this->identities), $this->identityType, $this->scope);
     }
-
 }

@@ -24,7 +24,7 @@ class VirgilClientSearchCardsTest extends AbstractVirgilClientTest
      *
      * @param array $searchCardRequestArgs
      * @param array $expectedCardsArgs
-     * @param array $searchCriteriaArgs
+     * @param array $searchRequestArgs
      * @param array $responseModelsArgs
      *
      * @test
@@ -32,10 +32,10 @@ class VirgilClientSearchCardsTest extends AbstractVirgilClientTest
     public function searchCards__withSearchCardRequest__returnsCards(
         array $searchCardRequestArgs,
         array $expectedCardsArgs,
-        array $searchCriteriaArgs,
+        array $searchRequestArgs,
         array $responseModelsArgs
     ) {
-        $this->configureCardsServiceResponse($searchCriteriaArgs, $responseModelsArgs);
+        $this->configureCardsServiceResponse($searchRequestArgs, $responseModelsArgs);
 
         $searchCardRequest = CardRequest::createSearchCardRequest(...$searchCardRequestArgs);
 
@@ -120,15 +120,15 @@ class VirgilClientSearchCardsTest extends AbstractVirgilClientTest
     }
 
 
-    protected function configureCardsServiceResponse($searchCriteriaArgs, $responseModelsArgs)
+    protected function configureCardsServiceResponse($searchRequestArgs, $responseModelsArgs)
     {
-        $searchCriteria = RequestModel::createSearchCriteria(...$searchCriteriaArgs);
+        $searchRequestModel = RequestModel::createSearchRequestModel(...$searchRequestArgs);
 
         $responseModels = ResponseModel::createSignedResponseModels($responseModelsArgs);
 
         $this->cardsServiceMock->expects($this->once())
                                ->method('search')
-                               ->with($searchCriteria)
+                               ->with($searchRequestModel)
                                ->willReturn($responseModels)
         ;
     }

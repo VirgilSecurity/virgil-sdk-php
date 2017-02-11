@@ -4,6 +4,7 @@ namespace Virgil\Sdk\Client\VirgilCards;
 
 use Virgil\Sdk\Client\VirgilCards\Mapper\ModelMappersCollectionInterface;
 
+use Virgil\Sdk\Client\VirgilCards\Model\SearchRequestModel;
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 
@@ -96,22 +97,22 @@ class CardsService extends AbstractService implements CardsServiceInterface
     /**
      * @inheritdoc
      */
-    public function search(SearchCriteria $model)
+    public function search(SearchRequestModel $model)
     {
-        $searchCriteriaResponseMapper = $this->mappers->getSearchCriteriaResponseMapper();
+        $signedResponseModelsMapper = $this->mappers->getSignedResponseModelsMapper();
 
         $request = function () use ($model) {
-            $searchCriteriaRequestMapper = $this->mappers->getSearchCriteriaRequestMapper();
+            $searchRequestModelMapper = $this->mappers->getSearchRequestModelMapper();
 
             return $this->httpClient->post(
                 $this->params->getSearchUrl(),
-                $searchCriteriaRequestMapper->toJson($model)
+                $searchRequestModelMapper->toJson($model)
             );
         };
 
         $response = $this->makeRequest($request);
 
-        return $searchCriteriaResponseMapper->toModel($response->getBody());
+        return $signedResponseModelsMapper->toModel($response->getBody());
     }
 
 

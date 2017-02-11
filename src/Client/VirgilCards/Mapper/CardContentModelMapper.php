@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
-use InvalidArgumentException;
-
 use Virgil\Sdk\Client\AbstractJsonModelMapper;
 
 use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
@@ -60,19 +58,5 @@ class CardContentModelMapper extends AbstractJsonModelMapper
         }
 
         return new CardContentModel(...$cardContentModelArguments);
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function toJson($model)
-    {
-        /** @var CardContentModel $model */
-        if (!$model instanceof CardContentModel) {
-            throw new InvalidArgumentException('Invalid model passed. Instance of CardContentModel accept only.');
-        }
-
-        return json_encode($model);
     }
 }

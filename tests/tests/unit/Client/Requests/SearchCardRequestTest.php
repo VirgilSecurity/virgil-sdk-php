@@ -8,62 +8,62 @@ use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
-use Virgil\Sdk\Client\VirgilCards\SearchCriteria;
+use Virgil\Sdk\Client\VirgilCards\Model\SearchRequestModel;
 
 class SearchCardRequestTest extends BaseTestCase
 {
     /**
      * @test
      */
-    public function getSearchCriteria__withAppendedIdentities__returnsValidSearchCriteria()
+    public function getSearchModel__withAppendedIdentities__returnsValidSearchModel()
     {
-        $expectedSearchCriteria = new SearchCriteria(['qwe', 'rty'], 'email', CardScopes::TYPE_APPLICATION);
+        $expectedSearchModel = new SearchRequestModel(['qwe', 'rty'], 'email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest->appendIdentity('qwe')
                           ->appendIdentity('rty')
         ;
 
 
-        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+        $actualSearchModel = $searchCardRequest->getRequestModel();
 
 
-        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
+        $this->assertEquals($expectedSearchModel, $actualSearchModel);
     }
 
 
     /**
      * @test
      */
-    public function getSearchCriteria__withNoIdentityTypeAndScope__returnsValidSearchCriteria()
+    public function getSearchModel__withNoIdentityTypeAndScope__returnsValidSearchModel()
     {
-        $expectedSearchCriteria = new SearchCriteria(['qwe']);
+        $expectedSearchModel = new SearchRequestModel(['qwe']);
         $searchCardRequest = new SearchCardRequest();
         $searchCardRequest->appendIdentity('qwe');
 
 
-        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+        $actualSearchModel = $searchCardRequest->getRequestModel();
 
 
-        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
+        $this->assertEquals($expectedSearchModel, $actualSearchModel);
     }
 
 
     /**
      * @test
      */
-    public function getSearchCriteria__withDuplicatedAppendedIdentities__returnsSearchCriteriaWithNoDuplicateIdentity()
+    public function getSearchModel__withDuplicatedAppendedIdentities__returnsSearchModelWithNoDuplicateIdentity()
     {
-        $expectedSearchCriteria = new SearchCriteria(['qwe'], 'email', CardScopes::TYPE_APPLICATION);
+        $expectedSearchModel = new SearchRequestModel(['qwe'], 'email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest->appendIdentity('qwe')
                           ->appendIdentity('qwe')
         ;
 
 
-        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+        $actualSearchModel = $searchCardRequest->getRequestModel();
 
 
-        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
+        $this->assertEquals($expectedSearchModel, $actualSearchModel);
     }
 
 
@@ -72,12 +72,12 @@ class SearchCardRequestTest extends BaseTestCase
      *
      * @expectedException \Virgil\Sdk\Client\Requests\SearchCardRequestException
      */
-    public function getSearchCriteria__withDidNotAppendIdentities__throwsException()
+    public function getSearchModel__withDidNotAppendIdentities__throwsException()
     {
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
 
 
-        $searchCardRequest->getSearchCriteria();
+        $searchCardRequest->getRequestModel();
 
 
         //expected exception on empty identities
@@ -88,17 +88,17 @@ class SearchCardRequestTest extends BaseTestCase
     /**
      * @test
      */
-    public function getSearchCriteria__withSetAllIdentities__returnsSearchCriteria()
+    public function getSearchModel__withSetAllIdentities__returnsSearchModel()
     {
-        $expectedSearchCriteria = new SearchCriteria(['qwe', 'rty'], 'email', CardScopes::TYPE_APPLICATION);
+        $expectedSearchModel = new SearchRequestModel(['qwe', 'rty'], 'email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest = new SearchCardRequest('email', CardScopes::TYPE_APPLICATION);
         $searchCardRequest->setIdentities(['qwe', 'rty']);
 
 
-        $actualSearchCriteria = $searchCardRequest->getSearchCriteria();
+        $actualSearchModel = $searchCardRequest->getRequestModel();
 
 
-        $this->assertEquals($expectedSearchCriteria, $actualSearchCriteria);
+        $this->assertEquals($expectedSearchModel, $actualSearchModel);
     }
 
 }

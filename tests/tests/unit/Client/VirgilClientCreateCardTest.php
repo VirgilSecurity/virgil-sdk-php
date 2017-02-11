@@ -148,9 +148,9 @@ class VirgilClientCreateCardTest extends AbstractVirgilClientTest
     }
 
 
-    protected function configureCardsServiceResponse($createCardRequestModelArgs, $signedResponseModelArgs)
+    protected function configureCardsServiceResponse($createCardRequestModelRequestArgs, $signedResponseModelArgs)
     {
-        $createRequestModel = RequestModel::createCreateCardRequestModel(...$createCardRequestModelArgs);
+        $createRequestModel = RequestModel::createCreateCardRequestModel(...$createCardRequestModelRequestArgs);
 
         $signedResponseModel = ResponseModel::createSignedResponseModel(...$signedResponseModelArgs);
 

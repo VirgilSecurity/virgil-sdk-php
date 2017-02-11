@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\AbstractJsonModelMapper;
-
 use Virgil\Sdk\Client\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
@@ -11,24 +9,10 @@ use Virgil\Sdk\Client\VirgilCards\Model\SignedRequestModel;
 /**
  * Class transforms revocation request model to json and vise versa.
  */
-class RevokeRequestModelMapper extends AbstractJsonModelMapper
+class RevokeRequestModelMapper extends SignedRequestModelMapper
 {
     const ID_ATTRIBUTE_NAME = 'card_id';
     const REVOCATION_REASON_ATTRIBUTE_NAME = 'revocation_reason';
-
-    /** @var SignedRequestModelMapper $signedRequestModelMapper */
-    private $signedRequestModelMapper;
-
-
-    /**
-     * Class constructor.
-     *
-     * @param SignedRequestModelMapper $signedRequestModelMapper
-     */
-    public function __construct(SignedRequestModelMapper $signedRequestModelMapper)
-    {
-        $this->signedRequestModelMapper = $signedRequestModelMapper;
-    }
 
 
     /**
@@ -49,14 +33,5 @@ class RevokeRequestModelMapper extends AbstractJsonModelMapper
         $cardMetaModel = new SignedRequestMetaModel($cardMetaData[self::SIGNS_ATTRIBUTE_NAME]);
 
         return new SignedRequestModel($cardContentModel, $cardMetaModel);
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function toJson($model)
-    {
-        return $this->signedRequestModelMapper->toJson($model);
     }
 }

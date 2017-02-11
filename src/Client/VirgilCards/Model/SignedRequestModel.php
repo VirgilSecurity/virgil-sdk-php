@@ -7,8 +7,11 @@ use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 /**
  * Class keeps content and meta information of any signed request to Virgil Cards Service.
  */
-class SignedRequestModel
+class SignedRequestModel extends AbstractModel
 {
+    const CONTENT_SNAPSHOT_ATTRIBUTE_NAME = 'content_snapshot';
+    const META_ATTRIBUTE_NAME = 'meta';
+
     /** @var AbstractModel $requestContent */
     protected $requestContent;
 
@@ -55,6 +58,18 @@ class SignedRequestModel
     public function getSnapshot()
     {
         return base64_encode(json_encode($this->requestContent));
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function jsonSerializeData()
+    {
+        return [
+            'content_snapshot' => $this->getSnapshot(),
+            'meta'             => $this->requestMeta,
+        ];
     }
 }
 

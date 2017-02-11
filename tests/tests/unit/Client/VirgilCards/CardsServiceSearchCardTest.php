@@ -19,27 +19,27 @@ class CardsServiceSearchCardTest extends AbstractCardsServiceTest
     /**
      * @dataProvider searchCardsDataProvider
      *
-     * @param $cardServiceSearchCriteriaArgs
+     * @param $cardServiceSearchRequestArgs
      * @param $expectedCardsServiceResponseArgs
      * @param $expectedCurlRequestOptions
      * @param $expectedHttpClientResponseArgs
      *
      * @test
      */
-    public function searchCards__withSearchCriteria__returnsValidResponse(
-        $cardServiceSearchCriteriaArgs,
+    public function searchCards__withSearchRequestModel__returnsValidResponse(
+        $cardServiceSearchRequestArgs,
         $expectedCardsServiceResponseArgs,
         $expectedCurlRequestOptions,
         $expectedHttpClientResponseArgs
     ) {
         $this->configureHttpCurlClientResponse($expectedCurlRequestOptions, $expectedHttpClientResponseArgs);
 
-        $searchCriteria = RequestModel::createSearchCriteria(...$cardServiceSearchCriteriaArgs);
+        $searchRequestModel = RequestModel::createSearchRequestModel(...$cardServiceSearchRequestArgs);
 
         $expectedCardsServiceResponse = ResponseModel::createSignedResponseModels($expectedCardsServiceResponseArgs);
 
 
-        $cardsServiceResponse = $this->virgilService->search($searchCriteria);
+        $cardsServiceResponse = $this->virgilService->search($searchRequestModel);
 
 
         $this->assertEquals($expectedCardsServiceResponse, $cardsServiceResponse);

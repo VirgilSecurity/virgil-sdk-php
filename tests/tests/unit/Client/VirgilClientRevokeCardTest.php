@@ -50,9 +50,9 @@ class VirgilClientRevokeCardTest extends AbstractVirgilClientTest
     }
 
 
-    protected function configureCardsServiceResponse($revokeCardRequestModelArgs, $response)
+    protected function configureCardsServiceResponse($revokeCardRequestModelRequestArgs, $response)
     {
-        $revokeCardRequestModel = RequestModel::createRevokeCardRequestModel(...$revokeCardRequestModelArgs);
+        $revokeCardRequestModel = RequestModel::createRevokeCardRequestModel(...$revokeCardRequestModelRequestArgs);
 
         $this->cardsServiceMock->expects($this->once())
                                ->method('delete')

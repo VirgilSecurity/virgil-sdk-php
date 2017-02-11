@@ -12,22 +12,22 @@ interface RequestSignerInterface
     /**
      * Signs the request with owner's Private key.
      *
-     * @param AbstractCardRequest $request
-     * @param PrivateKeyInterface $signerPrivateKey
+     * @param AbstractSignableCardRequest $request
+     * @param PrivateKeyInterface         $signerPrivateKey
      *
      * @return RequestSignerInterface
      */
-    public function selfSign(AbstractCardRequest $request, PrivateKeyInterface $signerPrivateKey);
+    public function selfSign(AbstractSignableCardRequest $request, PrivateKeyInterface $signerPrivateKey);
 
 
     /**
      * Sign the request with authority sign.
      *
-     * @param AbstractCardRequest $request
-     * @param string              $appId
-     * @param PrivateKeyInterface $signerPrivateKey
+     * @param AbstractSignableCardRequest $request
+     * @param string                      $appId
+     * @param PrivateKeyInterface         $signerPrivateKey
      *
      * @return RequestSignerInterface
      */
-    public function authoritySign(AbstractCardRequest $request, $appId, PrivateKeyInterface $signerPrivateKey);
+    public function authoritySign(AbstractSignableCardRequest $request, $appId, PrivateKeyInterface $signerPrivateKey);
 }

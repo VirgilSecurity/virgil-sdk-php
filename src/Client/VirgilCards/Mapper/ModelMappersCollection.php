@@ -8,16 +8,16 @@ namespace Virgil\Sdk\Client\VirgilCards\Mapper;
 class ModelMappersCollection implements ModelMappersCollectionInterface
 {
     /** @var SignedResponseModelMapper */
-    private $responseModelMapper;
+    private $signedResponseModelMapper;
 
     /** @var SignedRequestModelMapper */
-    private $requestModelMapper;
+    private $signedRequestModelMapper;
 
-    /** @var SearchCriteriaResponseMapper */
-    private $criteriaResponseMapper;
+    /** @var SignedResponseModelsMapper */
+    private $signedResponseModelsMapper;
 
-    /** @var SearchCriteriaRequestMapper */
-    private $criteriaRequestMapper;
+    /** @var SearchRequestModelMapper */
+    private $searchRequestModelMapper;
 
     /** @var ErrorResponseModelMapper */
     private $errorResponseModelMapper;
@@ -26,23 +26,23 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
     /**
      * Class constructor.
      *
-     * @param SignedResponseModelMapper    $responseModelMapper
-     * @param SignedRequestModelMapper     $requestModelMapper
-     * @param SearchCriteriaResponseMapper $criteriaResponseMapper
-     * @param SearchCriteriaRequestMapper  $criteriaRequestMapper
-     * @param ErrorResponseModelMapper     $errorResponseModelMapper
+     * @param SignedResponseModelMapper  $signedResponseModelMapper
+     * @param SignedRequestModelMapper   $signedRequestModelMapper
+     * @param SignedResponseModelsMapper $signedResponseModelsMapper
+     * @param SearchRequestModelMapper   $searchRequestModelMapper
+     * @param ErrorResponseModelMapper   $errorResponseModelMapper
      */
     public function __construct(
-        SignedResponseModelMapper $responseModelMapper,
-        SignedRequestModelMapper $requestModelMapper,
-        SearchCriteriaResponseMapper $criteriaResponseMapper,
-        SearchCriteriaRequestMapper $criteriaRequestMapper,
+        SignedResponseModelMapper $signedResponseModelMapper,
+        SignedRequestModelMapper $signedRequestModelMapper,
+        SignedResponseModelsMapper $signedResponseModelsMapper,
+        SearchRequestModelMapper $searchRequestModelMapper,
         ErrorResponseModelMapper $errorResponseModelMapper
     ) {
-        $this->responseModelMapper = $responseModelMapper;
-        $this->requestModelMapper = $requestModelMapper;
-        $this->criteriaResponseMapper = $criteriaResponseMapper;
-        $this->criteriaRequestMapper = $criteriaRequestMapper;
+        $this->signedResponseModelMapper = $signedResponseModelMapper;
+        $this->signedRequestModelMapper = $signedRequestModelMapper;
+        $this->signedResponseModelsMapper = $signedResponseModelsMapper;
+        $this->searchRequestModelMapper = $searchRequestModelMapper;
         $this->errorResponseModelMapper = $errorResponseModelMapper;
     }
 
@@ -52,7 +52,7 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      */
     public function getSignedRequestModelMapper()
     {
-        return $this->requestModelMapper;
+        return $this->signedRequestModelMapper;
     }
 
 
@@ -61,25 +61,25 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      */
     public function getSignedResponseModelMapper()
     {
-        return $this->responseModelMapper;
+        return $this->signedResponseModelMapper;
     }
 
 
     /**
-     * @return SearchCriteriaResponseMapper
+     * @return SignedResponseModelsMapper
      */
-    public function getSearchCriteriaResponseMapper()
+    public function getSignedResponseModelsMapper()
     {
-        return $this->criteriaResponseMapper;
+        return $this->signedResponseModelsMapper;
     }
 
 
     /**
-     * @return SearchCriteriaRequestMapper
+     * @return SearchRequestModelMapper
      */
-    public function getSearchCriteriaRequestMapper()
+    public function getSearchRequestModelMapper()
     {
-        return $this->criteriaRequestMapper;
+        return $this->searchRequestModelMapper;
     }
 
 

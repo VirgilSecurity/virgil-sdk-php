@@ -8,23 +8,6 @@ use Virgil\Sdk\Tests\Unit\Client\VirgilCards\Model\ResponseModel;
 class ErrorResponseModelMapperTest extends AbstractMapperTest
 {
     /**
-     * @expectedException \Virgil\Sdk\Exceptions\MethodIsDisabledException
-     *
-     * @test
-     */
-    public function toJson__fromErrorResponseModel__throwsException()
-    {
-        $errorResponseModel = ResponseModel::createErrorResponseModel('30142');
-
-
-        $this->mapper->toJson($errorResponseModel);
-
-
-        //expected exception
-    }
-
-
-    /**
      * @test
      */
     public function toModel__fromErrorResponseJsonString__returnsValidErrorResponseModel()
