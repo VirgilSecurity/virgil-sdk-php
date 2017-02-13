@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper;
 
 
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Constants\JsonProperties;
+
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyResponseModel;
 
 use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
@@ -11,9 +13,6 @@ use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
  */
 class VerifyResponseModelMapper extends AbstractJsonModelMapper
 {
-    const ACTION_ID_ATTRIBUTE_NAME = 'action_id';
-
-
     /**
      * @inheritdoc
      *
@@ -23,6 +22,6 @@ class VerifyResponseModelMapper extends AbstractJsonModelMapper
     {
         $data = json_decode($json, true);
 
-        return new VerifyResponseModel($data[self::ACTION_ID_ATTRIBUTE_NAME]);
+        return new VerifyResponseModel($data[JsonProperties::ACTION_ID_ATTRIBUTE_NAME]);
     }
 }

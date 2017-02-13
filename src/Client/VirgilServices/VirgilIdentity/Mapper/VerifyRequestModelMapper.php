@@ -13,16 +13,5 @@ use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
  */
 class VerifyRequestModelMapper extends AbstractJsonModelMapper
 {
-    /**
-     * @inheritdoc
-     */
-    public function toJson($model)
-    {
-        /** @var VerifyRequestModel $model */
-        if (!$model instanceof VerifyRequestModel) {
-            throw new InvalidArgumentException('Invalid model passed. Instance of VerifyRequestModel accept only.');
-        }
 
-        return json_encode($model);
-    }
 }
