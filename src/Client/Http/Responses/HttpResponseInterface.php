@@ -1,11 +1,11 @@
 <?php
-namespace Virgil\Sdk\Client\Http;
+namespace Virgil\Sdk\Client\Http\Responses;
 
 
 /**
  * Interface represents HTTP response.
  */
-interface ResponseInterface
+interface HttpResponseInterface
 {
     /**
      * Get raw response body.

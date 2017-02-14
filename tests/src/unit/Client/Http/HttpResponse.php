@@ -2,14 +2,14 @@
 namespace Virgil\Sdk\Tests\Unit\Client\Http;
 
 
-use Virgil\Sdk\Client\Http\HttpStatusCode;
-use Virgil\Sdk\Client\Http\Response;
+use Virgil\Sdk\Client\Http\Responses\HttpResponse as HttpClientResponse;
+use Virgil\Sdk\Client\Http\Responses\HttpStatusCode;
 
 class HttpResponse
 {
     public static function createHttpClientResponse($httpStatusCode, $headers, $body)
     {
-        return new Response(
+        return new HttpClientResponse(
             new HttpStatusCode($httpStatusCode), $headers, $body
         );
     }

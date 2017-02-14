@@ -1,12 +1,13 @@
 <?php
-namespace Virgil\Sdk\Client\Http;
+namespace Virgil\Sdk\Client\Http\Responses;
 
 
 /**
  * Class represents HTTP response.
  */
-class Response implements ResponseInterface
+class HttpResponse implements HttpResponseInterface
 {
+
     /** @var string $body */
     private $body;
 

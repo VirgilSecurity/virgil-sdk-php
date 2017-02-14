@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client\VirgilServices;
 
 
-use Virgil\Sdk\Client\Http\ResponseInterface;
+use Virgil\Sdk\Client\Http\Responses\HttpResponseInterface;
 
 use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractErrorResponseModelMapper;
 
@@ -26,12 +26,13 @@ abstract class AbstractVirgilServices
      *
      * @throws UnsuccessfulResponseException
      *
-     * @return ResponseInterface
+     * @return HttpResponseInterface
      */
     protected function makeRequest($request)
     {
-        /** @var ResponseInterface $response */
+        /** @var HttpResponseInterface $response */
         $response = call_user_func($request);
+
         $responseHttpStatusCode = $response->getHttpStatusCode();
 
         if (!$responseHttpStatusCode->isSuccess()) {

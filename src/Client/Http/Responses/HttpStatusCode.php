@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk\Client\Http;
+namespace Virgil\Sdk\Client\Http\Responses;
 
 
 /**
