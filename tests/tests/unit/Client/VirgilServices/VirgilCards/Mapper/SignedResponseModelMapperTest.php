@@ -13,7 +13,7 @@ use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
 
-class SignedResponseModelMapperTest extends AbstractMapperTest
+class SignedResponseModelMapperTest extends AbstractVirgilCardsMapperTest
 {
     /**
      * @dataProvider signedResponseDataProvider

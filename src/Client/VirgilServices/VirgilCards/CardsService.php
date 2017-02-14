@@ -2,22 +2,22 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilCards;
 
 
+use Virgil\Sdk\Client\Http\HttpClientInterface;
+use Virgil\Sdk\Client\Http\ResponseInterface;
+
+use Virgil\Sdk\Client\VirgilServices\AbstractVirgilServices;
+use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
+
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollectionInterface;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
 
-use Virgil\Sdk\Client\Http\HttpClientInterface;
-use Virgil\Sdk\Client\Http\ResponseInterface;
-
-use Virgil\Sdk\Client\VirgilServices\AbstractService;
-use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
-
 /**
  * Class responsible for retrieving, revocation or creation Virgil cards.
  */
-class CardsService extends AbstractService implements CardsServiceInterface
+class CardsService extends AbstractVirgilServices implements CardsServiceInterface
 {
     /** @var HttpClientInterface $httpClient */
     protected $httpClient;
@@ -128,6 +128,15 @@ class CardsService extends AbstractService implements CardsServiceInterface
         $response = $this->makeRequest($request);
 
         return $signedResponseModelMapper->toModel($response->getBody());
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getErrorResponseModelMapper()
+    {
+        return $this->mappers->getErrorResponseModelMapper();
     }
 
 

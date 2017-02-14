@@ -2,26 +2,20 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Constants\JsonProperties;
+use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractErrorResponseModelMapper;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\ErrorResponseModel;
-
-use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsErrorMessages;
 
 /**
- * Class transforms error response message json string to model.
+ * Class transforms virgil cards service error response message from json string to model representation and vise versa.
  */
-class ErrorResponseModelMapper extends AbstractJsonModelMapper
+class ErrorResponseModelMapper extends AbstractErrorResponseModelMapper
 {
     /**
      * @inheritdoc
-     *
-     * @return ErrorResponseModel
      */
-    public function toModel($json)
+    protected function getErrorMessageByCode($errorCode)
     {
-        $data = json_decode($json, true);
-
-        return new ErrorResponseModel($data[JsonProperties::CODE_ATTRIBUTE_NAME]);
+        return CardsErrorMessages::getMessage($errorCode);
     }
 }

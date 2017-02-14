@@ -3,7 +3,6 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model;
 
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\ErrorResponseModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseMetaModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
 
@@ -27,11 +26,5 @@ class ResponseModel
             $expectedCardsServiceResponseArgsToModels,
             $signedResponseModelsArgs
         );
-    }
-
-
-    public static function createErrorResponseModel($code)
-    {
-        return new ErrorResponseModel($code);
     }
 }

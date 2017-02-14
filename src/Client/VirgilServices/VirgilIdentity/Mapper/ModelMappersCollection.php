@@ -14,7 +14,7 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
     private $verifyResponseModelMapper;
 
     /** @var ConfirmRequestModelMapper */
-    private $confirmRequestModelMappe;
+    private $confirmRequestModelMapper;
 
     /** @var ConfirmResponseModelMapper */
     private $confirmResponseModelMapper;
@@ -31,7 +31,7 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      *
      * @param VerifyRequestModelMapper   $verifyRequestModelMapper
      * @param VerifyResponseModelMapper  $verifyResponseModelMapper
-     * @param ConfirmRequestModelMapper  $confirmRequestModelMappe
+     * @param ConfirmRequestModelMapper  $confirmRequestModelMapper
      * @param ConfirmResponseModelMapper $confirmResponseModelMapper
      * @param ValidateRequestModelMapper $validateRequestModelMapper
      * @param ErrorResponseModelMapper   $errorResponseModelMapper
@@ -39,14 +39,14 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
     public function __construct(
         VerifyRequestModelMapper $verifyRequestModelMapper,
         VerifyResponseModelMapper $verifyResponseModelMapper,
-        ConfirmRequestModelMapper $confirmRequestModelMappe,
+        ConfirmRequestModelMapper $confirmRequestModelMapper,
         ConfirmResponseModelMapper $confirmResponseModelMapper,
         ValidateRequestModelMapper $validateRequestModelMapper,
         ErrorResponseModelMapper $errorResponseModelMapper
     ) {
         $this->verifyRequestModelMapper = $verifyRequestModelMapper;
         $this->verifyResponseModelMapper = $verifyResponseModelMapper;
-        $this->confirmRequestModelMappe = $confirmRequestModelMappe;
+        $this->confirmRequestModelMapper = $confirmRequestModelMapper;
         $this->confirmResponseModelMapper = $confirmResponseModelMapper;
         $this->validateRequestModelMapper = $validateRequestModelMapper;
         $this->errorResponseModelMapper = $errorResponseModelMapper;
@@ -94,7 +94,7 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
      */
     public function getConfirmRequestModelMapper()
     {
-        return $this->confirmRequestModelMappe;
+        return $this->confirmRequestModelMapper;
     }
 
 

@@ -19,7 +19,6 @@ class JsonProperties
     const INFO_ATTRIBUTE_NAME = 'info';
     const INFO_DEVICE_ATTRIBUTE_NAME = 'device';
     const INFO_DEVICE_NAME_ATTRIBUTE_NAME = 'device_name';
-    const CODE_ATTRIBUTE_NAME = 'code';
     const CARD_ID_ATTRIBUTE_NAME = 'card_id';
     const REVOCATION_REASON_ATTRIBUTE_NAME = 'revocation_reason';
     const ID_ATTRIBUTE_NAME = 'id';

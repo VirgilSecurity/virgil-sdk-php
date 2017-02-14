@@ -6,7 +6,7 @@ use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedRequestModelMapper
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 
-class SignedRequestModelMapperTest extends AbstractMapperTest
+class SignedRequestModelMapperTest extends AbstractVirgilCardsMapperTest
 {
 
     /**

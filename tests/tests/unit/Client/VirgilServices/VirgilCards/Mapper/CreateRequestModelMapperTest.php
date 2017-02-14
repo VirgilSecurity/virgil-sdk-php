@@ -11,7 +11,7 @@ use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 
-class CreateRequestModelMapperTest extends AbstractMapperTest
+class CreateRequestModelMapperTest extends AbstractVirgilCardsMapperTest
 {
     /**
      * @dataProvider createCardDataProvider

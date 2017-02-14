@@ -14,7 +14,7 @@ use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
 
-class SignedResponseModelsMapperTest extends AbstractMapperTest
+class SignedResponseModelsMapperTest extends AbstractVirgilCardsMapperTest
 {
     /**
      * @dataProvider signedResponseModelsDataProvider

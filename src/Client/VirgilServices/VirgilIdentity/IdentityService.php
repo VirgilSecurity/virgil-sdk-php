@@ -4,9 +4,9 @@ namespace Virgil\Sdk\Client\VirgilServices\VirgilIdentity;
 
 use Virgil\Sdk\Client\Http\HttpClientInterface;
 
-use Virgil\Sdk\Client\VirgilServices\AbstractService;
+use Virgil\Sdk\Client\VirgilServices\AbstractVirgilServices;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ModelMappersCollectionInterface;
+use Virgil\Sdk\Client\VirgilServices\Mapper\JsonModelMapperInterface;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmResponseModel;
@@ -14,10 +14,12 @@ use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ValidateRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyResponseModel;
 
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ModelMappersCollectionInterface;
+
 /**
  * Virgil Identity service is responsible for validation of user's identities like email, application, etc.
  */
-class IdentityService extends AbstractService implements IdentityServiceInterface
+class IdentityService extends AbstractVirgilServices implements IdentityServiceInterface
 {
     /** @var IdentityServiceParamsInterface */
     private $identityServiceParams;
@@ -84,5 +86,14 @@ class IdentityService extends AbstractService implements IdentityServiceInterfac
     public function validate(ValidateRequestModel $validateRequestModel)
     {
         // TODO: Implement validate() method.
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getErrorResponseModelMapper()
+    {
+        return $this->mappers->getErrorResponseModelMapper();
     }
 }

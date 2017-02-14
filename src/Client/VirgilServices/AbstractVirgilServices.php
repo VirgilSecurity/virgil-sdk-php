@@ -4,21 +4,19 @@ namespace Virgil\Sdk\Client\VirgilServices;
 
 use Virgil\Sdk\Client\Http\ResponseInterface;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\ErrorResponseModel;
+use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractErrorResponseModelMapper;
 
 /**
  * Class is a base class for any Virgil Services.
  */
-abstract class AbstractService
+abstract class AbstractVirgilServices
 {
-    const DEFAULT_ERROR_MESSAGES = [
-        400 => 'Request error',
-        401 => 'Authentication error',
-        403 => 'Forbidden',
-        404 => 'Entity not found',
-        405 => 'Method not allowed',
-        500 => 'Server error',
-    ];
+    /**
+     * Returns proper error response model mapper.
+     *
+     * @return AbstractErrorResponseModelMapper
+     */
+    abstract protected function getErrorResponseModelMapper();
 
 
     /**
@@ -37,18 +35,15 @@ abstract class AbstractService
         $responseHttpStatusCode = $response->getHttpStatusCode();
 
         if (!$responseHttpStatusCode->isSuccess()) {
-            $errorResponseModelMapper = $this->mappers->getErrorResponseModelMapper();
+            $errorResponseModelMapper = $this->getErrorResponseModelMapper();
 
-            /** @var ErrorResponseModel $errorResponse */
-            $errorResponse = $errorResponseModelMapper->toModel($response->getBody());
+            $errorResponseModel = $errorResponseModelMapper->toModel($response->getBody());
 
             $httpStatusCode = $responseHttpStatusCode->getCode();
 
-            $serviceErrorMessage = $errorResponse->getMessageOrDefault(
-                self::DEFAULT_ERROR_MESSAGES[(int)$httpStatusCode]
-            );
+            $serviceErrorMessage = $errorResponseModel->getMessage();
 
-            $serviceErrorCode = $errorResponse->getCode();
+            $serviceErrorCode = $errorResponseModel->getCode();
 
             throw new UnsuccessfulResponseException($serviceErrorMessage, $httpStatusCode, $serviceErrorCode);
         }
