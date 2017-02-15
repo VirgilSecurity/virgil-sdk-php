@@ -4,22 +4,18 @@ namespace Virgil\Sdk\Client\VirgilServices\VirgilIdentity;
 
 use Virgil\Sdk\Client\Http\HttpClientInterface;
 
-use Virgil\Sdk\Client\VirgilServices\AbstractVirgilServices;
-
-use Virgil\Sdk\Client\VirgilServices\Mapper\JsonModelMapperInterface;
+use Virgil\Sdk\Client\Http\Requests\PostHttpRequest;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmRequestModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmResponseModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ValidateRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyRequestModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyResponseModel;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ModelMappersCollectionInterface;
 
 /**
  * Virgil Identity service is responsible for validation of user's identities like email, application, etc.
  */
-class IdentityService extends AbstractVirgilServices implements IdentityServiceInterface
+class IdentityService implements IdentityServiceInterface
 {
     /** @var IdentityServiceParamsInterface */
     private $identityServiceParams;
@@ -55,19 +51,15 @@ class IdentityService extends AbstractVirgilServices implements IdentityServiceI
     public function verify(VerifyRequestModel $verifyIdentityRequestModel)
     {
         $verifyResponseModelMapper = $this->mappers->getVerifyResponseModelMapper();
+        $verifyRequestModelMapper = $this->mappers->getVerifyRequestModelMapper();
 
-        $request = function () use ($verifyIdentityRequestModel) {
-            $verifyRequestModelMapper = $this->mappers->getVerifyRequestModelMapper();
+        $verifyHttpRequest = new PostHttpRequest(
+            $this->identityServiceParams->getVerifyUrl(), $verifyRequestModelMapper->toJson($verifyIdentityRequestModel)
+        );
 
-            return $this->httpClient->post(
-                $this->identityServiceParams->getVerifyUrl(),
-                $verifyRequestModelMapper->toJson($verifyIdentityRequestModel)
-            );
-        };
+        $httpResponse = $this->httpClient->send($verifyHttpRequest);
 
-        $response = $this->makeRequest($request);
-
-        return $verifyResponseModelMapper->toModel($response->getBody());
+        return $verifyResponseModelMapper->toModel($httpResponse->getBody());
     }
 
 
@@ -86,14 +78,5 @@ class IdentityService extends AbstractVirgilServices implements IdentityServiceI
     public function validate(ValidateRequestModel $validateRequestModel)
     {
         // TODO: Implement validate() method.
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    protected function getErrorResponseModelMapper()
-    {
-        return $this->mappers->getErrorResponseModelMapper();
     }
 }

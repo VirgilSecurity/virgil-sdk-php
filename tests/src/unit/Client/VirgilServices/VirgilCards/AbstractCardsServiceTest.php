@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards;
 
 
+use Virgil\Sdk\Client\Http\HttpClientInterface;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper;
 use Virgil\Sdk\Tests\Unit\Client\AbstractVirgilServiceTest;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Mapper\MappersCollection;
@@ -25,15 +27,23 @@ abstract class AbstractCardsServiceTest extends AbstractVirgilServiceTest
     }
 
 
+    function createErrorResponseModelMapper()
+    {
+        return new ErrorResponseModelMapper();
+    }
+
+
     /**
+     * @inheritdoc
+     *
      * @return CardsService
      */
-    protected function getService()
+    protected function getService(HttpClientInterface $httpClient)
     {
         $params = new CardsServiceParams(
             'http://immutable.host', 'http://mutable.host/', '/card/actions/search', '/card/', '/card/', '/card/'
         );
 
-        return new CardsService($params, $this->httpCurlClientMock, MappersCollection::getMappers());
+        return new CardsService($params, $httpClient, MappersCollection::getMappers());
     }
 }

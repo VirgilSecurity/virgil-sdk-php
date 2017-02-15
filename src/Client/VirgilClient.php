@@ -8,6 +8,8 @@ use Virgil\Sdk\Client\Requests\SearchCardRequest;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
+use Virgil\Sdk\Client\VirgilServices\Http\HttpClient;
+
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
@@ -185,7 +187,9 @@ class VirgilClient
             new ErrorResponseModelMapper()
         );
 
-        return new CardsService($cardsServiceParams, $curlClient, $jsonMappers);
+        $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
+
+        return new CardsService($cardsServiceParams, $virgilServicesHttpClient, $jsonMappers);
     }
 
 

@@ -3,9 +3,14 @@ namespace Virgil\Sdk\Client\VirgilServices\VirgilCards;
 
 
 use Virgil\Sdk\Client\Http\HttpClientInterface;
-use Virgil\Sdk\Client\Http\ResponseInterface;
 
-use Virgil\Sdk\Client\VirgilServices\AbstractVirgilServices;
+use Virgil\Sdk\Client\Http\Requests\DeleteHttpRequest;
+use Virgil\Sdk\Client\Http\Requests\GetHttpRequest;
+use Virgil\Sdk\Client\Http\Requests\HttpRequestInterface;
+use Virgil\Sdk\Client\Http\Requests\PostHttpRequest;
+
+use Virgil\Sdk\Client\Http\Responses\HttpResponseInterface;
+
 use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollectionInterface;
@@ -17,7 +22,7 @@ use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
 /**
  * Class responsible for retrieving, revocation or creation Virgil cards.
  */
-class CardsService extends AbstractVirgilServices implements CardsServiceInterface
+class CardsService implements CardsServiceInterface
 {
     /** @var HttpClientInterface $httpClient */
     protected $httpClient;
@@ -53,19 +58,15 @@ class CardsService extends AbstractVirgilServices implements CardsServiceInterfa
     public function create(SignedRequestModel $model)
     {
         $signedResponseModelMapper = $this->mappers->getSignedResponseModelMapper();
+        $signedRequestModelMapper = $this->mappers->getSignedRequestModelMapper();
 
-        $request = function () use ($model) {
-            $signedRequestModelMapper = $this->mappers->getSignedRequestModelMapper();
+        $createCardHttpRequest = new PostHttpRequest(
+            $this->params->getCreateUrl(), $signedRequestModelMapper->toJson($model)
+        );
 
-            return $this->httpClient->post(
-                $this->params->getCreateUrl(),
-                $signedRequestModelMapper->toJson($model)
-            );
-        };
+        $httpResponse = $this->makeRequest($createCardHttpRequest);
 
-        $response = $this->makeRequest($request);
-
-        return $signedResponseModelMapper->toModel($response->getBody());
+        return $signedResponseModelMapper->toModel($httpResponse->getBody());
     }
 
 
@@ -74,19 +75,16 @@ class CardsService extends AbstractVirgilServices implements CardsServiceInterfa
      */
     public function delete(SignedRequestModel $model)
     {
-        $request = function () use ($model) {
-            $signedRequestModelMapper = $this->mappers->getSignedRequestModelMapper();
+        $signedRequestModelMapper = $this->mappers->getSignedRequestModelMapper();
 
-            /** @var RevokeCardContentModel $cardContent */
-            $cardContent = $model->getRequestContent();
+        /** @var RevokeCardContentModel $cardContent */
+        $cardContent = $model->getRequestContent();
 
-            return $this->httpClient->delete(
-                $this->params->getDeleteUrl($cardContent->getId()),
-                $signedRequestModelMapper->toJson($model)
-            );
-        };
+        $deleteCardHttpRequest = new DeleteHttpRequest(
+            $this->params->getDeleteUrl($cardContent->getId()), $signedRequestModelMapper->toJson($model)
+        );
 
-        $this->makeRequest($request);
+        $this->makeRequest($deleteCardHttpRequest);
 
         return $this;
     }
@@ -98,19 +96,15 @@ class CardsService extends AbstractVirgilServices implements CardsServiceInterfa
     public function search(SearchRequestModel $model)
     {
         $signedResponseModelsMapper = $this->mappers->getSignedResponseModelsMapper();
+        $searchRequestModelMapper = $this->mappers->getSearchRequestModelMapper();
 
-        $request = function () use ($model) {
-            $searchRequestModelMapper = $this->mappers->getSearchRequestModelMapper();
+        $searchCardsHttpRequest = new PostHttpRequest(
+            $this->params->getSearchUrl(), $searchRequestModelMapper->toJson($model)
+        );
 
-            return $this->httpClient->post(
-                $this->params->getSearchUrl(),
-                $searchRequestModelMapper->toJson($model)
-            );
-        };
+        $httpResponse = $this->makeRequest($searchCardsHttpRequest);
 
-        $response = $this->makeRequest($request);
-
-        return $signedResponseModelsMapper->toModel($response->getBody());
+        return $signedResponseModelsMapper->toModel($httpResponse->getBody());
     }
 
 
@@ -120,37 +114,25 @@ class CardsService extends AbstractVirgilServices implements CardsServiceInterfa
     public function get($id)
     {
         $signedResponseModelMapper = $this->mappers->getSignedResponseModelMapper();
+        $getCardHttpRequest = new GetHttpRequest($this->params->getGetUrl($id));
 
-        $request = function () use ($id) {
-            return $this->httpClient->get($this->params->getGetUrl($id));
-        };
+        $httpResponse = $this->makeRequest($getCardHttpRequest);
 
-        $response = $this->makeRequest($request);
-
-        return $signedResponseModelMapper->toModel($response->getBody());
+        return $signedResponseModelMapper->toModel($httpResponse->getBody());
     }
 
 
     /**
-     * @inheritdoc
-     */
-    protected function getErrorResponseModelMapper()
-    {
-        return $this->mappers->getErrorResponseModelMapper();
-    }
-
-
-    /**
-     * @param callable $request
+     * @param HttpRequestInterface $request
      *
-     * @return ResponseInterface
+     * @return HttpResponseInterface
      *
      * @throws CardsServiceException
      */
-    protected function makeRequest($request)
+    protected function makeRequest(HttpRequestInterface $request)
     {
         try {
-            return parent::makeRequest($request);
+            return $this->httpClient->send($request);
         } catch (UnsuccessfulResponseException $exception) {
             throw new CardsServiceException(
                 $exception->getMessage(), $exception->getHttpStatusCode(), $exception->getServiceErrorCode()
