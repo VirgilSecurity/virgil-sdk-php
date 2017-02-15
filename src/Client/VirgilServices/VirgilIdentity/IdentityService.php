@@ -86,6 +86,14 @@ class IdentityService implements IdentityServiceInterface
      */
     public function validate(ValidateRequestModel $validateRequestModel)
     {
-        // TODO: Implement validate() method.
+        $validateRequestModelMapper = $this->mappers->getValidateRequestModelMapper();
+
+        $validateHttpRequest = new PostHttpRequest(
+            $this->identityServiceParams->getValidateUrl(), $validateRequestModelMapper->toJson($validateRequestModel)
+        );
+
+        $this->httpClient->send($validateHttpRequest);
+
+        return $this;
     }
 }
