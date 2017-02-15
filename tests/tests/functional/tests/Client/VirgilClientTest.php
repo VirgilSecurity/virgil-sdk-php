@@ -255,7 +255,6 @@ class VirgilClientTest extends BaseTestCase
         $exception = $this->catchException($expectedException, $testCode);
 
         $this->assertEquals('404', $exception->getCode());
-        $this->assertContains('Entity not found', $exception->getMessage());
 
         $searchCardRequest = new SearchCardRequest($identityType, $scope);
 
