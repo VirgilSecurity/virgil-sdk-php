@@ -2,6 +2,9 @@
 namespace Virgil\Sdk\Client\VirgilServices;
 
 
+/**
+ * Base class for Virgil services params.
+ */
 abstract class AbstractServiceParams
 {
     /**
