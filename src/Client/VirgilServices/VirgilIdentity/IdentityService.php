@@ -68,7 +68,16 @@ class IdentityService implements IdentityServiceInterface
      */
     public function confirm(ConfirmRequestModel $confirmRequestModel)
     {
-        // TODO: Implement confirm() method.
+        $confirmResponseModelMapper = $this->mappers->getConfirmResponseModelMapper();
+        $confirmRequestModelMapper = $this->mappers->getConfirmRequestModelMapper();
+
+        $confirmHttpRequest = new PostHttpRequest(
+            $this->identityServiceParams->getConfirmUrl(), $confirmRequestModelMapper->toJson($confirmRequestModel)
+        );
+
+        $httpResponse = $this->httpClient->send($confirmHttpRequest);
+
+        return $confirmResponseModelMapper->toModel($httpResponse->getBody());
     }
 
 

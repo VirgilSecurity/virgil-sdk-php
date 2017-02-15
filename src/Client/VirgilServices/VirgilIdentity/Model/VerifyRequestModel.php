@@ -4,6 +4,8 @@ namespace Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model;
 
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Constants\JsonProperties;
+
 /**
  * Class represents the verify identity request model.
  */
@@ -67,9 +69,9 @@ class VerifyRequestModel extends AbstractModel
     protected function jsonSerializeData()
     {
         return [
-            'type'         => $this->identityType,
-            'value'        => $this->identity,
-            'extra_fields' => $this->extraFields,
+            JsonProperties::TYPE_ATTRIBUTE_NAME         => $this->identityType,
+            JsonProperties::VALUE_ATTRIBUTE_NAME        => $this->identity,
+            JsonProperties::EXTRA_FIELDS_ATTRIBUTE_NAME => $this->extraFields,
         ];
     }
 }
