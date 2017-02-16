@@ -9,9 +9,10 @@ use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
 
 use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\Mapper\AbstractMapperTest;
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 
-class CreateRequestModelMapperTest extends AbstractVirgilCardsMapperTest
+class CreateRequestModelMapperTest extends AbstractMapperTest
 {
     /**
      * @dataProvider createCardDataProvider

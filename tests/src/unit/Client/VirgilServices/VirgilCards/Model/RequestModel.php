@@ -2,42 +2,26 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
-use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\Model\RequestModel as CommonRequestModel;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
 
-class RequestModel
+class RequestModel extends CommonRequestModel
 {
-    public static function createDeviceInfoContentRequestModel($cardContentData, $cardSigns)
+    public static function createSearchRequestModel($identities, $identityType = null, $scope = null)
     {
-        return new SignedRequestModel(
-            new DeviceInfoModel(...$cardContentData), new SignedRequestMetaModel($cardSigns)
-        );
+        return new SearchRequestModel($identities, $identityType, $scope);
     }
 
 
     public static function createCreateCardRequestModel($contentData, $cardSigns)
     {
-        return new SignedRequestModel(
-            new CardContentModel(...$contentData), new SignedRequestMetaModel($cardSigns)
-        );
+        return parent::createCreateCardRequestModel($contentData, [$cardSigns]);
     }
 
 
     public static function createRevokeCardRequestModel($contentData, $cardSigns)
     {
-        return new SignedRequestModel(
-            new RevokeCardContentModel(...$contentData), new SignedRequestMetaModel($cardSigns)
-        );
-    }
-
-
-    public static function createSearchRequestModel($identities, $identityType = null, $scope = null)
-    {
-        return new SearchRequestModel($identities, $identityType, $scope);
+        return parent::createRevokeCardRequestModel($contentData, [$cardSigns]);
     }
 }

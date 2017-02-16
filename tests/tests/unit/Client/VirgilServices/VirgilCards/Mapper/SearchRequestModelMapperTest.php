@@ -6,9 +6,10 @@ use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SearchRequestModelMapper
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\Mapper\AbstractMapperTest;
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 
-class SearchRequestModelMapperTest extends AbstractVirgilCardsMapperTest
+class SearchRequestModelMapperTest extends AbstractMapperTest
 {
     /**
      * @dataProvider searchCardDataProvider

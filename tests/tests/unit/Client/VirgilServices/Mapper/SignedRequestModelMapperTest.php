@@ -1,12 +1,12 @@
 <?php
-namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Mapper;
+namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\Mapper;
 
 
 use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 
-class SignedRequestModelMapperTest extends AbstractVirgilCardsMapperTest
+class SignedRequestModelMapperTest extends AbstractMapperTest
 {
 
     /**

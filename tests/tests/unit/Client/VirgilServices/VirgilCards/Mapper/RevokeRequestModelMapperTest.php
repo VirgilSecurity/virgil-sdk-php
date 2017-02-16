@@ -4,9 +4,10 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Mapper;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\RevokeRequestModelMapper;
 
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\Mapper\AbstractMapperTest;
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 
-class RevokeRequestModelMapperTest extends AbstractVirgilCardsMapperTest
+class RevokeRequestModelMapperTest extends AbstractMapperTest
 {
     /**
      * @dataProvider revokeCardDataProvider

@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Mapper;
+namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\Mapper;
 
 
 use DateTime;
@@ -14,7 +14,7 @@ use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
 
-class SignedResponseModelsMapperTest extends AbstractVirgilCardsMapperTest
+class SignedResponseModelsMapperTest extends AbstractMapperTest
 {
     /**
      * @dataProvider signedResponseModelsDataProvider
