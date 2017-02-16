@@ -2,12 +2,13 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
+
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
 
 class RequestModel
 {

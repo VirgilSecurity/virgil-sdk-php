@@ -1,13 +1,11 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper;
+namespace Virgil\Sdk\Client\VirgilServices\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Constants\JsonProperties;
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
-
-use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 /**
  * Class transforms card content model to json and vise versa.

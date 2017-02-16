@@ -4,7 +4,6 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilIdentity;
 
 use Virgil\Sdk\Client\Http\Constants\RequestMethods;
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilIdentity\Model\RequestModel;
-use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilIdentity\Model\ResponseModel;
 
 class IdentityServiceValidateTest extends AbstractIdentityServiceTest
 {

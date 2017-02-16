@@ -10,7 +10,7 @@ use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceException;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
 

@@ -1,10 +1,8 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Model;
+namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Constants\JsonProperties;
-
-use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class represents json serializable request card meta model.

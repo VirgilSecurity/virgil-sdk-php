@@ -4,10 +4,10 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Mapper;
 
 use DateTime;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CardContentModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelMapper;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 

@@ -16,8 +16,8 @@ use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollectionInterface;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\RevokeCardContentModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 
 /**
  * Class responsible for retrieving, revocation or creation Virgil cards.

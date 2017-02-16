@@ -5,9 +5,9 @@ namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Mapper;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CardContentModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 

@@ -10,8 +10,8 @@ use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
 
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 
 /**
  * Class is a base class for request which requires signatures.

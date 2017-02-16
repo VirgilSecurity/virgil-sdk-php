@@ -1,10 +1,8 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Model;
+namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Constants\JsonProperties;
-
-use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class keeps content and meta information of any signed request to Virgil Cards Service.

@@ -1,14 +1,13 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper;
+namespace Virgil\Sdk\Client\VirgilServices\Mapper;
 
 
 use DateTime;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Constants\JsonProperties;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseMetaModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
-use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
 /**
  * Class transforms signed response json to model.

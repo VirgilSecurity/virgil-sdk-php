@@ -3,7 +3,6 @@ namespace Virgil\Sdk\Tests\Unit\Client;
 
 
 use Virgil\Sdk\Client\VirgilServices\Http\HttpClient;
-use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractErrorResponseModelMapper;
 use Virgil\Sdk\Tests\BaseTestCase;
 
 use Virgil\Sdk\Tests\Unit\Client\Http\HttpResponse;
@@ -13,7 +12,6 @@ use Virgil\Sdk\Client\Http\HttpClientInterface;
 use Virgil\Sdk\Client\Http\Curl\CurlClient;
 use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
 use Virgil\Sdk\Client\Http\Curl\CurlRequest;
-use Virgil\Sdk\Tests\Unit\Client\VirgilServices\Mapper\ErrorResponseModelMapper;
 
 abstract class AbstractVirgilServiceTest extends BaseTestCase
 {

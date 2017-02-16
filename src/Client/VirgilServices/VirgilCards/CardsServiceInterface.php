@@ -3,8 +3,8 @@ namespace Virgil\Sdk\Client\VirgilServices\VirgilCards;
 
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
 /**
  * Interface provides methods for interaction with Virgil Cards Service.

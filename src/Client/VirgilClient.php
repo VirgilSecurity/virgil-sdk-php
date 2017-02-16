@@ -8,27 +8,27 @@ use Virgil\Sdk\Client\Requests\SearchCardRequest;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
-use Virgil\Sdk\Client\VirgilServices\Http\HttpClient;
-
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceParams;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
-
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CardContentModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollection;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SearchRequestModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedResponseModelsMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedRequestModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedResponseModelMapper;
-
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
-
 use Virgil\Sdk\Client\Validator\CardValidationException;
 use Virgil\Sdk\Client\Validator\CardValidatorInterface;
 
 use Virgil\Sdk\Client\Http\Curl\CurlClient;
 use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
+
+use Virgil\Sdk\Client\VirgilServices\Http\HttpClient;
+
+use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelsMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceParams;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollection;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SearchRequestModelMapper;
 
 /**
  * Before you can use any Virgil services features in your app, you must first initialize VirgilClient class.

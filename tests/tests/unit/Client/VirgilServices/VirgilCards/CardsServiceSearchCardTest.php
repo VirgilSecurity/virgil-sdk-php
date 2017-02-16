@@ -8,7 +8,7 @@ use Virgil\Sdk\Client\Http\Constants\RequestMethods;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;

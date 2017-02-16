@@ -2,9 +2,9 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseMetaModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
 class ResponseModel
 {

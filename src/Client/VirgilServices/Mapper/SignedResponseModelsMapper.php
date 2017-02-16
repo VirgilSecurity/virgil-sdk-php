@@ -1,10 +1,8 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper;
+namespace Virgil\Sdk\Client\VirgilServices\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
-
-use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
 /**
  * Class transforms many signed responses to models and vise versa.

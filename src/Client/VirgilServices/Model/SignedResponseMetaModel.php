@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Model;
+namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
 use DateTime;

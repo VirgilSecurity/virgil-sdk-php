@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
 

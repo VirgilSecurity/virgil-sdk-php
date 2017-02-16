@@ -2,6 +2,10 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper;
 
 
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelsMapper;
+
 /**
  * Class keeps mappers model collection for Virgil Cards Service.
  */

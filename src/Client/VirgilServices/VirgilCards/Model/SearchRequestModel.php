@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Constants\JsonProperties;
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 

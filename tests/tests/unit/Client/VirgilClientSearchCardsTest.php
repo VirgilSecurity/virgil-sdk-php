@@ -8,7 +8,7 @@ use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Card as VirgilClientCard;
 

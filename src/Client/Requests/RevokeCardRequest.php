@@ -4,7 +4,7 @@ namespace Virgil\Sdk\Client\Requests;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\RevokeRequestModelMapper;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
 
 /**
  * Class represents request for card revoking.

@@ -11,9 +11,9 @@ use Virgil\Sdk\Client\Card;
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
 use Virgil\Sdk\Tests\Unit\Client\Requests\CardRequest;
 

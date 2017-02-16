@@ -14,10 +14,10 @@ use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\DeviceInfoModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseMetaModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedResponseModel;
+use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;

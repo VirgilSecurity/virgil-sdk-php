@@ -2,11 +2,13 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper;
 
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Constants\JsonProperties;
+use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\RevokeCardContentModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestMetaModel;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
+
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class transforms revocation request model to json and vise versa.
