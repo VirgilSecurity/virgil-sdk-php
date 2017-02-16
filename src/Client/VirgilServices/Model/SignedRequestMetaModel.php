@@ -12,15 +12,20 @@ class SignedRequestMetaModel extends AbstractModel
     /** @var array $signs */
     private $signs;
 
+    /** @var ValidationModel */
+    private $validation;
+
 
     /**
      * Class constructor.
      *
-     * @param array $signs
+     * @param array           $signs
+     * @param ValidationModel $validation
      */
-    public function __construct(array $signs)
+    public function __construct(array $signs, ValidationModel $validation = null)
     {
         $this->signs = $signs;
+        $this->validation = $validation;
     }
 
 
@@ -36,10 +41,22 @@ class SignedRequestMetaModel extends AbstractModel
 
 
     /**
+     * @return ValidationModel
+     */
+    public function getValidation()
+    {
+        return $this->validation;
+    }
+
+
+    /**
      * @inheritdoc
      */
     protected function jsonSerializeData()
     {
-        return [JsonProperties::SIGNS_ATTRIBUTE_NAME => $this->signs];
+        return [
+            JsonProperties::SIGNS_ATTRIBUTE_NAME      => $this->signs,
+            JsonProperties::VALIDATION_ATTRIBUTE_NAME => $this->validation,
+        ];
     }
 }

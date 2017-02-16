@@ -25,4 +25,6 @@ class JsonProperties
     const ID_ATTRIBUTE_NAME = 'id';
     const CARD_VERSION_ATTRIBUTE_NAME = 'card_version';
     const CREATED_AT_ATTRIBUTE_NAME = 'created_at';
+    const VALIDATION_ATTRIBUTE_NAME = 'validation';
+    const TOKEN_ATTRIBUTE_NAME = 'token';
 }
