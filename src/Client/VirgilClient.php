@@ -24,6 +24,7 @@ use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelMapper;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
+use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
@@ -38,6 +39,7 @@ use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceParams;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\TokenModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ValidateRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyRequestModel;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ConfirmRequestModelMapper;
@@ -152,6 +154,21 @@ class VirgilClient
 
 
     /**
+     * Performs the Virgil RA service global card creation by request.
+     *
+     * @param PublishGlobalCardRequest $publishGlobalCardRequest
+     *
+     * @return Card
+     */
+    public function publishGlobalCard(PublishGlobalCardRequest $publishGlobalCardRequest)
+    {
+        $response = $this->registrationAuthorityService->create($publishGlobalCardRequest->getRequestModel());
+
+        return $this->buildAndVerifyCard($response);
+    }
+
+
+    /**
      * Performs the Virgil Cards service card revoking by request.
      *
      * @param RevokeCardRequest $revokeCardRequest
@@ -161,6 +178,21 @@ class VirgilClient
     public function revokeCard(RevokeCardRequest $revokeCardRequest)
     {
         $this->cardsService->delete($revokeCardRequest->getRequestModel());
+
+        return $this;
+    }
+
+
+    /**
+     * Performs the Virgil RA global card revoking by request.
+     *
+     * @param RevokeGlobalCardRequest $revokeGlobalCardRequest
+     *
+     * @return $this
+     */
+    public function revokeGlobalCard(RevokeGlobalCardRequest $revokeGlobalCardRequest)
+    {
+        $this->registrationAuthorityService->delete($revokeGlobalCardRequest->getRequestModel());
 
         return $this;
     }
@@ -178,51 +210,6 @@ class VirgilClient
         $response = $this->cardsService->get($id);
 
         return $this->buildAndVerifyCard($response);
-    }
-
-
-    /**
-     * Sets the card validator.
-     *
-     * @param CardValidatorInterface $validator
-     *
-     * @return $this
-     */
-    public function setCardValidator(CardValidatorInterface $validator)
-    {
-        $this->cardValidator = $validator;
-
-        return $this;
-    }
-
-
-    /**
-     * Performs the Virgil RA service global card creation by request.
-     *
-     * @param PublishGlobalCardRequest $publishGlobalCardRequest
-     *
-     * @return Card
-     */
-    public function publishGlobalCard(PublishGlobalCardRequest $publishGlobalCardRequest)
-    {
-        $response = $this->registrationAuthorityService->create($publishGlobalCardRequest->getRequestModel());
-
-        return $this->buildAndVerifyCard($response);
-    }
-
-
-    /**
-     * Performs the Virgil RA global card revoking by request.
-     *
-     * @param RevokeGlobalCardRequest $revokeGlobalCardRequest
-     *
-     * @return $this
-     */
-    public function revokeGlobalCard(RevokeGlobalCardRequest $revokeGlobalCardRequest)
-    {
-        $this->registrationAuthorityService->delete($revokeGlobalCardRequest->getRequestModel());
-
-        return $this;
     }
 
 
@@ -264,6 +251,50 @@ class VirgilClient
         $confirmResponse = $this->identityService->confirm($confirmRequest);
 
         return $confirmResponse->getValidationToken();
+    }
+
+
+    /**
+     * Checks if validation token is valid
+     *
+     * @param string $identityType
+     * @param string $identity
+     * @param string $validationToken
+     *
+     * @throws UnsuccessfulResponseException
+     *
+     * @return bool
+     */
+    public function isIdentityValid($identityType, $identity, $validationToken)
+    {
+        $validationRequest = new ValidateRequestModel($identityType, $identity, $validationToken);
+
+        try {
+            $this->identityService->validate($validationRequest);
+        } catch (UnsuccessfulResponseException $exception) {
+            if ($exception->getHttpStatusCode() != '400') {
+                throw $exception;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Sets the card validator.
+     *
+     * @param CardValidatorInterface $validator
+     *
+     * @return $this
+     */
+    public function setCardValidator(CardValidatorInterface $validator)
+    {
+        $this->cardValidator = $validator;
+
+        return $this;
     }
 
 
