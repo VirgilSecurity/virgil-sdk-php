@@ -32,6 +32,20 @@ use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollection as VirgilCardsMapperModelMappersCollection;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SearchRequestModelMapper;
 
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityService;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceInterface;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceParams;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyRequestModel;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ConfirmRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ConfirmResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ErrorResponseModelMapper as VirgilIdentityErrorResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ValidateRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\VerifyRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\VerifyResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ModelMappersCollection as IdentityModelMappersCollection;
+
 use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ErrorResponseModelMapper as RegistrationAuthorityErrorResponseModelMapper;
 use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ModelMappersCollection as RegistrationAuthorityModelMappersCollection;
 use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityService;
@@ -62,11 +76,13 @@ class VirgilClient
      * @param VirgilClientParamsInterface           $virgilClientParams
      * @param CardsServiceInterface                 $cardsService
      * @param RegistrationAuthorityServiceInterface $registrationAuthorityService
+     * @param IdentityServiceInterface              $identityService
      */
     public function __construct(
         VirgilClientParamsInterface $virgilClientParams,
         CardsServiceInterface $cardsService = null,
-        RegistrationAuthorityServiceInterface $registrationAuthorityService = null
+        RegistrationAuthorityServiceInterface $registrationAuthorityService = null,
+        IdentityServiceInterface $identityService = null
     ) {
         if ($cardsService === null) {
             $cardsService = $this->initializeCardService($virgilClientParams);
@@ -76,8 +92,13 @@ class VirgilClient
             $registrationAuthorityService = $this->initializeRegistrationAuthorityService($virgilClientParams);
         }
 
+        if ($identityService === null) {
+            $identityService = $this->initializeIdentityService($virgilClientParams);
+        }
+
         $this->cardsService = $cardsService;
         $this->registrationAuthorityService = $registrationAuthorityService;
+        $this->identityService = $identityService;
     }
 
 
@@ -204,6 +225,25 @@ class VirgilClient
 
 
     /**
+     * Sends the request for identity verification, that's will be processed depending of specified type.
+     *
+     * @param string $identity
+     * @param string $identityType
+     * @param array  $extraFields
+     *
+     * @return string
+     */
+    public function verifyIdentity($identity, $identityType, array $extraFields = null)
+    {
+        $verifyRequest = new VerifyRequestModel($identityType, $identity, $extraFields);
+
+        $verifyResponse = $this->identityService->verify($verifyRequest);
+
+        return $verifyResponse->getActionId();
+    }
+
+
+    /**
      * Builds card from response model.
      *
      * @param SignedResponseModel $responseModel
@@ -320,7 +360,7 @@ class VirgilClient
      *
      * @return RegistrationAuthorityServiceInterface
      */
-    private function initializeRegistrationAuthorityService($virgilClientParams)
+    private function initializeRegistrationAuthorityService(VirgilClientParamsInterface $virgilClientParams)
     {
         $registrationAuthorityServiceHost = $virgilClientParams->getRegistrationAuthorityServiceAddress();
 
@@ -341,5 +381,37 @@ class VirgilClient
         return new RegistrationAuthorityService(
             $registrationAuthorityServiceParams, $virgilServicesHttpClient, $jsonMappers
         );
+    }
+
+
+    /**
+     * Initialize default identity service.
+     *
+     * @param VirgilClientParamsInterface $virgilClientParams
+     *
+     * @return IdentityServiceInterface
+     */
+    private function initializeIdentityService(VirgilClientParamsInterface $virgilClientParams)
+    {
+        $identityServiceAddress = $virgilClientParams->getIdentityServiceAddress();
+
+        $identityServiceParams = new IdentityServiceParams($identityServiceAddress);
+
+        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+
+        $curlClient = new CurlClient($curlRequestFactory);
+
+        $jsonMappers = new IdentityModelMappersCollection(
+            new VerifyRequestModelMapper(),
+            new VerifyResponseModelMapper(),
+            new ConfirmRequestModelMapper(),
+            new ConfirmResponseModelMapper(),
+            new ValidateRequestModelMapper(),
+            new VirgilIdentityErrorResponseModelMapper()
+        );
+
+        $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
+
+        return new IdentityService($identityServiceParams, $virgilServicesHttpClient, $jsonMappers);
     }
 }
