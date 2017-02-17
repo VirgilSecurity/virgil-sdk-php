@@ -6,16 +6,12 @@ use Virgil\Sdk\Client\Http\HttpClientInterface;
 
 use Virgil\Sdk\Client\Http\Requests\DeleteHttpRequest;
 use Virgil\Sdk\Client\Http\Requests\GetHttpRequest;
-use Virgil\Sdk\Client\Http\Requests\HttpRequestInterface;
 use Virgil\Sdk\Client\Http\Requests\PostHttpRequest;
-
-use Virgil\Sdk\Client\Http\Responses\HttpResponseInterface;
-
-use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollectionInterface;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Model\SearchRequestModel;
+
 use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 
@@ -64,7 +60,7 @@ class CardsService implements CardsServiceInterface
             $this->params->getCreateUrl(), $signedRequestModelMapper->toJson($model)
         );
 
-        $httpResponse = $this->makeRequest($createCardHttpRequest);
+        $httpResponse = $this->httpClient->send($createCardHttpRequest);
 
         return $signedResponseModelMapper->toModel($httpResponse->getBody());
     }
@@ -84,7 +80,7 @@ class CardsService implements CardsServiceInterface
             $this->params->getDeleteUrl($cardContent->getId()), $signedRequestModelMapper->toJson($model)
         );
 
-        $this->makeRequest($deleteCardHttpRequest);
+        $this->httpClient->send($deleteCardHttpRequest);
 
         return $this;
     }
@@ -102,7 +98,7 @@ class CardsService implements CardsServiceInterface
             $this->params->getSearchUrl(), $searchRequestModelMapper->toJson($model)
         );
 
-        $httpResponse = $this->makeRequest($searchCardsHttpRequest);
+        $httpResponse = $this->httpClient->send($searchCardsHttpRequest);
 
         return $signedResponseModelsMapper->toModel($httpResponse->getBody());
     }
@@ -116,27 +112,8 @@ class CardsService implements CardsServiceInterface
         $signedResponseModelMapper = $this->mappers->getSignedResponseModelMapper();
         $getCardHttpRequest = new GetHttpRequest($this->params->getGetUrl($id));
 
-        $httpResponse = $this->makeRequest($getCardHttpRequest);
+        $httpResponse = $this->httpClient->send($getCardHttpRequest);
 
         return $signedResponseModelMapper->toModel($httpResponse->getBody());
-    }
-
-
-    /**
-     * @param HttpRequestInterface $request
-     *
-     * @return HttpResponseInterface
-     *
-     * @throws CardsServiceException
-     */
-    protected function makeRequest(HttpRequestInterface $request)
-    {
-        try {
-            return $this->httpClient->send($request);
-        } catch (UnsuccessfulResponseException $exception) {
-            throw new CardsServiceException(
-                $exception->getMessage(), $exception->getHttpStatusCode(), $exception->getServiceErrorCode()
-            );
-        }
     }
 }

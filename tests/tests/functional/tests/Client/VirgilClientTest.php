@@ -11,7 +11,7 @@ use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceException;
+use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
@@ -112,7 +112,7 @@ class VirgilClientTest extends BaseTestCase
         BufferInterface $publicKey,
         BufferInterface $privateKey
     ) {
-        $expectedException = CardsServiceException::class;
+        $expectedException = UnsuccessfulResponseException::class;
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
 
         $keys = $this->crypto->generateKeys();
@@ -134,7 +134,7 @@ class VirgilClientTest extends BaseTestCase
         };
 
 
-        /** @var CardsServiceException $exception */
+        /** @var UnsuccessfulResponseException $exception */
         $exception = $this->catchException($expectedException, $testCode);
 
         $this->assertEquals('400', $exception->getCode());
@@ -221,7 +221,7 @@ class VirgilClientTest extends BaseTestCase
         BufferInterface $publicKey,
         BufferInterface $privateKey
     ) {
-        $expectedException = CardsServiceException::class;
+        $expectedException = UnsuccessfulResponseException::class;
         $request = new CreateCardRequest($identity, $identityType, $publicKey, $scope);
         $expectedId = $this->crypto->calculateFingerprint(base64_decode($request->getSnapshot()))
                                    ->toHex()

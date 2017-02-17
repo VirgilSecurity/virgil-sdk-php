@@ -8,8 +8,6 @@ use Virgil\Sdk\Client\Http\Constants\RequestMethods;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceException;
-
 use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
@@ -41,39 +39,6 @@ class CardsServiceGetCardTest extends AbstractCardsServiceTest
 
 
         $this->assertEquals($expectedCardsServiceResponse, $cardsServiceResponse);
-    }
-
-
-    /**
-     * @dataProvider withoutAuthorizationHeaderDataProvider
-     *
-     * @param $expectedCurlRequestOptions
-     * @param $expectedHttpClientResponseArgs
-     *
-     * @test
-     */
-    public function getCard__withoutAuthorizationHeader__throwsException(
-        $expectedCurlRequestOptions,
-        $expectedHttpClientResponseArgs
-    ) {
-        $expectedException = CardsServiceException::class;
-        //clear http headers
-        $this->httpCurlClientMock->setRequestHeaders([]);
-
-        $this->configureHttpCurlClientResponse($expectedCurlRequestOptions, $expectedHttpClientResponseArgs);
-
-
-        $testCode = function () {
-            $this->virgilService->get('card-id');
-        };
-
-
-        /** @var CardsServiceException $exception */
-        $exception = $this->catchException($expectedException, $testCode);
-
-        $this->assertEquals('401', $exception->getCode());
-        $this->assertContains('The Virgil access token was not specified or is invalid', $exception->getMessage());
-        $this->assertEquals('20300', $exception->getServiceErrorCode());
     }
 
 
