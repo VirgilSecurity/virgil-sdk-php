@@ -36,6 +36,8 @@ use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityService;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceInterface;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceParams;
 
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmRequestModel;
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\TokenModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyRequestModel;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ConfirmRequestModelMapper;
@@ -231,7 +233,7 @@ class VirgilClient
      * @param string $identityType
      * @param array  $extraFields
      *
-     * @return string
+     * @return string Returns action id.
      */
     public function verifyIdentity($identity, $identityType, array $extraFields = null)
     {
@@ -240,6 +242,28 @@ class VirgilClient
         $verifyResponse = $this->identityService->verify($verifyRequest);
 
         return $verifyResponse->getActionId();
+    }
+
+
+    /**
+     * Confirms the identity using confirmation code, that has been generated to confirm an identity.
+     *
+     * @param string $actionId
+     * @param string $confirmationCode
+     * @param int    $timeToLive
+     * @param int    $countToLive
+     *
+     * @return string Returns validation token.
+     */
+    public function confirmIdentity($actionId, $confirmationCode, $timeToLive = 3600, $countToLive = 1)
+    {
+        $confirmRequest = new ConfirmRequestModel(
+            $actionId, $confirmationCode, new TokenModel($timeToLive, $countToLive)
+        );
+
+        $confirmResponse = $this->identityService->confirm($confirmRequest);
+
+        return $confirmResponse->getValidationToken();
     }
 
 
