@@ -5,6 +5,7 @@ namespace Virgil\Sdk\Client;
 use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Client\Requests\PublishGlobalCardRequest;
+use Virgil\Sdk\Client\Requests\RevokeGlobalCardRequest;
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
@@ -184,6 +185,21 @@ class VirgilClient
         $response = $this->registrationAuthorityService->create($publishGlobalCardRequest->getRequestModel());
 
         return $this->buildAndVerifyCard($response);
+    }
+
+
+    /**
+     * Performs the Virgil RA global card revoking by request.
+     *
+     * @param RevokeGlobalCardRequest $revokeGlobalCardRequest
+     *
+     * @return $this
+     */
+    public function revokeGlobalCard(RevokeGlobalCardRequest $revokeGlobalCardRequest)
+    {
+        $this->registrationAuthorityService->delete($revokeGlobalCardRequest->getRequestModel());
+
+        return $this;
     }
 
 

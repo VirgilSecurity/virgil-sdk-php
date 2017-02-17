@@ -35,7 +35,7 @@ class VirgilClientPublishGlobalCardTest extends AbstractVirgilClientTest
      *
      * @test
      */
-    public function createCard__withCreateGlobalCardRequest__returnsCard(
+    public function publishGlobalCard__withCreateGlobalCardRequest__returnsCard(
         $createGlobalCardRequestArgs,
         $expectedCardArgs,
         $createCardRequestModelArgs,

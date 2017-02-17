@@ -1,6 +1,8 @@
 <?php
 namespace Virgil\Sdk\Client\Requests;
 
+
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilServices\Model\ValidationModel;
 
 /**
@@ -33,5 +35,16 @@ class RevokeGlobalCardRequest extends RevokeCardRequest
     public function getValidation()
     {
         return $this->validation;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getCardMeta()
+    {
+        $cardMeta = parent::getCardMeta();
+
+        return new SignedRequestMetaModel($cardMeta->getSigns(), $this->validation);
     }
 }
