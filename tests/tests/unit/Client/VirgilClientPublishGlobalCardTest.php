@@ -15,46 +15,47 @@ use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
+use Virgil\Sdk\Client\VirgilServices\Model\ValidationModel;
 use Virgil\Sdk\Tests\Unit\Client\Requests\CardRequest;
 
-use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\RequestModel;
-use Virgil\Sdk\Tests\Unit\Client\VirgilServices\VirgilCards\Model\ResponseModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\Model\RequestModel;
+use Virgil\Sdk\Tests\Unit\Client\VirgilServices\Model\ResponseModel;
 
 use Virgil\Sdk\Tests\Unit\Card as VirgilClientCard;
 
-class VirgilClientCreateCardTest extends AbstractVirgilClientTest
+class VirgilClientPublishGlobalCardTest extends AbstractVirgilClientTest
 {
     /**
-     * @dataProvider getCreateDataProvider
+     * @dataProvider getCreateGlobalCardDataProvider
      *
      * @param SignedRequestModel  $createCardRequestModelArgs
      * @param SignedResponseModel $signedResponseModelArgs
-     * @param CreateCardRequest   $createCardRequestArgs
+     * @param CreateCardRequest   $createGlobalCardRequestArgs
      * @param Card                $expectedCardArgs
      *
      * @test
      */
-    public function createCard__withCreateCardRequest__returnsCard(
-        $createCardRequestArgs,
+    public function createCard__withCreateGlobalCardRequest__returnsCard(
+        $createGlobalCardRequestArgs,
         $expectedCardArgs,
         $createCardRequestModelArgs,
         $signedResponseModelArgs
     ) {
-        $createCardRequest = CardRequest::createCreateCardRequest(...$createCardRequestArgs);
+        $createGlobalCardRequest = CardRequest::createPublishGlobalCardRequest(...$createGlobalCardRequestArgs);
 
         $expectedCard = VirgilClientCard::createCard($expectedCardArgs);
 
         $this->configureVirgilServiceResponse($createCardRequestModelArgs, $signedResponseModelArgs);
 
 
-        $card = $this->virgilClient->createCard($createCardRequest);
+        $card = $this->virgilClient->publishGlobalCard($createGlobalCardRequest);
 
 
         $this->assertEquals($expectedCard, $card);
     }
 
 
-    public function getCreateDataProvider()
+    public function getCreateGlobalCardDataProvider()
     {
         return [
             [
@@ -63,7 +64,9 @@ class VirgilClientCreateCardTest extends AbstractVirgilClientTest
                         'alice2',
                         'member',
                         new Buffer('public-key-2'),
-                        CardScopes::TYPE_GLOBAL,
+                        new ValidationModel(
+                            'MIGZMA0GCWCGSAFlAwQCAgUABIGHMIGEAkB0RVkqJ89UlvsbBDgA2nPNVEhRptbF8ZVFXrZGbzSmLU9OLw2A'
+                        ),
                         ['customData' => 'qwerty'],
                         new DeviceInfoModel('iPhone6s', 'Space grey one'),
                     ],
@@ -93,7 +96,10 @@ class VirgilClientCreateCardTest extends AbstractVirgilClientTest
                         ['customData' => 'qwerty'],
                         new DeviceInfoModel('iPhone6s', 'Space grey one'),
                     ],
-                    ['sign-id-3' => 'X3NpZ24z'],
+                    [
+                        ['sign-id-3' => 'X3NpZ24z'],
+                        'MIGZMA0GCWCGSAFlAwQCAgUABIGHMIGEAkB0RVkqJ89UlvsbBDgA2nPNVEhRptbF8ZVFXrZGbzSmLU9OLw2A',
+                    ],
                 ],
                 [
                     'model-id-1',
@@ -113,37 +119,6 @@ class VirgilClientCreateCardTest extends AbstractVirgilClientTest
                     ],
                 ],
             ],
-            [
-                [
-                    ['alice2', 'member', new Buffer('public-key-2'), CardScopes::TYPE_GLOBAL],
-                    ['sign-id-3' => 'X3NpZ24z'],
-                ],
-                [
-                    'model-id-1',
-                    Buffer::fromBase64(
-                        'eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwic2NvcGUiOiJnbG9iYWwifQ=='
-                    ),
-                    'alice2',
-                    'member',
-                    Buffer::fromBase64('public-key-2'),
-                    CardScopes::TYPE_GLOBAL,
-                    [],
-                    null,
-                    null,
-                    'v4',
-                    ['sign-id-3' => Buffer::fromBase64('X3NpZ24z')],
-                ],
-                [
-                    ['alice2', 'member', base64_encode('public-key-2'), CardScopes::TYPE_GLOBAL],
-                    ['sign-id-3' => 'X3NpZ24z'],
-                ],
-                [
-                    'model-id-1',
-                    'eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwic2NvcGUiOiJnbG9iYWwifQ==',
-                    ['alice2', 'member', 'public-key-2', CardScopes::TYPE_GLOBAL],
-                    [['sign-id-3' => 'X3NpZ24z'], new DateTime('2016-11-04T13:16:17+0000'), 'v4'],
-                ],
-            ],
         ];
     }
 
@@ -154,10 +129,10 @@ class VirgilClientCreateCardTest extends AbstractVirgilClientTest
 
         $signedResponseModel = ResponseModel::createSignedResponseModel(...$signedResponseModelArgs);
 
-        $this->cardsServiceMock->expects($this->once())
-                               ->method('create')
-                               ->with($createRequestModel)
-                               ->willReturn($signedResponseModel)
+        $this->registrationAuthorityServiceMock->expects($this->once())
+                                               ->method('create')
+                                               ->with($createRequestModel)
+                                               ->willReturn($signedResponseModel)
         ;
     }
 }

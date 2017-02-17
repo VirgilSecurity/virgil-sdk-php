@@ -35,7 +35,7 @@ class VirgilClientSearchCardsTest extends AbstractVirgilClientTest
         array $searchRequestArgs,
         array $responseModelsArgs
     ) {
-        $this->configureCardsServiceResponse($searchRequestArgs, $responseModelsArgs);
+        $this->configureVirgilServiceResponse($searchRequestArgs, $responseModelsArgs);
 
         $searchCardRequest = CardRequest::createSearchCardRequest(...$searchCardRequestArgs);
 
@@ -120,7 +120,7 @@ class VirgilClientSearchCardsTest extends AbstractVirgilClientTest
     }
 
 
-    protected function configureCardsServiceResponse($searchRequestArgs, $responseModelsArgs)
+    protected function configureVirgilServiceResponse($searchRequestArgs, $responseModelsArgs)
     {
         $searchRequestModel = RequestModel::createSearchRequestModel(...$searchRequestArgs);
 

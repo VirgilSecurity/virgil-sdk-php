@@ -4,6 +4,7 @@ namespace Virgil\Sdk\Client;
 
 use Virgil\Sdk\Buffer;
 
+use Virgil\Sdk\Client\Requests\PublishGlobalCardRequest;
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
@@ -26,9 +27,15 @@ use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollection;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper as VirgilCardsErrorResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollection as VirgilCardsMapperModelMappersCollection;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SearchRequestModelMapper;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ErrorResponseModelMapper as RegistrationAuthorityErrorResponseModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ModelMappersCollection as RegistrationAuthorityModelMappersCollection;
+use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityService;
+use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityServiceInterface;
+use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityServiceParams;
 
 /**
  * Before you can use any Virgil services features in your app, you must first initialize VirgilClient class.
@@ -38,8 +45,11 @@ class VirgilClient
 {
     const AUTH_HEADER_FORMAT = 'VIRGIL %s';
 
-    /** @var CardsServiceInterface $cardsService */
+    /** @var CardsServiceInterface */
     private $cardsService;
+
+    /** @var RegistrationAuthorityServiceInterface */
+    private $registrationAuthorityService;
 
     /** @var CardValidatorInterface */
     private $cardValidator;
@@ -48,18 +58,25 @@ class VirgilClient
     /**
      * Class constructor.
      *
-     * @param VirgilClientParamsInterface $virgilClientParams
-     * @param CardsServiceInterface       $cardsService
+     * @param VirgilClientParamsInterface           $virgilClientParams
+     * @param CardsServiceInterface                 $cardsService
+     * @param RegistrationAuthorityServiceInterface $registrationAuthorityService
      */
     public function __construct(
         VirgilClientParamsInterface $virgilClientParams,
-        CardsServiceInterface $cardsService = null
+        CardsServiceInterface $cardsService = null,
+        RegistrationAuthorityServiceInterface $registrationAuthorityService = null
     ) {
         if ($cardsService === null) {
             $cardsService = $this->initializeCardService($virgilClientParams);
         }
 
+        if ($registrationAuthorityService === null) {
+            $registrationAuthorityService = $this->initializeRegistrationAuthorityService($virgilClientParams);
+        }
+
         $this->cardsService = $cardsService;
+        $this->registrationAuthorityService = $registrationAuthorityService;
     }
 
 
@@ -156,40 +173,17 @@ class VirgilClient
 
 
     /**
-     * Initialize default card service.
+     * Performs the Virgil RA service global card creation by request.
      *
-     * @param VirgilClientParamsInterface $virgilClientParams
+     * @param PublishGlobalCardRequest $publishGlobalCardRequest
      *
-     * @return CardsService
+     * @return Card
      */
-    private function initializeCardService(VirgilClientParamsInterface $virgilClientParams)
+    public function publishGlobalCard(PublishGlobalCardRequest $publishGlobalCardRequest)
     {
-        $immutableHost = $virgilClientParams->getReadOnlyCardsServiceAddress();
-        $mutableHost = $virgilClientParams->getCardsServiceAddress();
+        $response = $this->registrationAuthorityService->create($publishGlobalCardRequest->getRequestModel());
 
-        $cardsServiceParams = new CardsServiceParams($immutableHost, $mutableHost);
-
-        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
-
-        $httpHeaders = [
-            'Authorization' => sprintf(self::AUTH_HEADER_FORMAT, $virgilClientParams->getAccessToken()),
-        ];
-
-        $curlClient = new CurlClient($curlRequestFactory, $httpHeaders);
-
-        $signedResponseModelMapper = new SignedResponseModelMapper(new CardContentModelMapper());
-
-        $jsonMappers = new ModelMappersCollection(
-            $signedResponseModelMapper,
-            new SignedRequestModelMapper(),
-            new SignedResponseModelsMapper($signedResponseModelMapper),
-            new SearchRequestModelMapper(),
-            new ErrorResponseModelMapper()
-        );
-
-        $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
-
-        return new CardsService($cardsServiceParams, $virgilServicesHttpClient, $jsonMappers);
+        return $this->buildAndVerifyCard($response);
     }
 
 
@@ -262,5 +256,74 @@ class VirgilClient
         $this->validateCard($card);
 
         return $card;
+    }
+
+
+    /**
+     * Initialize default card service.
+     *
+     * @param VirgilClientParamsInterface $virgilClientParams
+     *
+     * @return CardsServiceInterface
+     */
+    private function initializeCardService(VirgilClientParamsInterface $virgilClientParams)
+    {
+        $immutableHost = $virgilClientParams->getReadOnlyCardsServiceAddress();
+        $mutableHost = $virgilClientParams->getCardsServiceAddress();
+
+        $cardsServiceParams = new CardsServiceParams($immutableHost, $mutableHost);
+
+        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+
+        $httpHeaders = [
+            'Authorization' => sprintf(self::AUTH_HEADER_FORMAT, $virgilClientParams->getAccessToken()),
+        ];
+
+        $curlClient = new CurlClient($curlRequestFactory, $httpHeaders);
+
+        $signedResponseModelMapper = new SignedResponseModelMapper(new CardContentModelMapper());
+
+        $jsonMappers = new VirgilCardsMapperModelMappersCollection(
+            $signedResponseModelMapper,
+            new SignedRequestModelMapper(),
+            new SignedResponseModelsMapper($signedResponseModelMapper),
+            new SearchRequestModelMapper(),
+            new VirgilCardsErrorResponseModelMapper()
+        );
+
+        $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
+
+        return new CardsService($cardsServiceParams, $virgilServicesHttpClient, $jsonMappers);
+    }
+
+
+    /**
+     * Initialize default registration authority service.
+     *
+     * @param VirgilClientParamsInterface $virgilClientParams
+     *
+     * @return RegistrationAuthorityServiceInterface
+     */
+    private function initializeRegistrationAuthorityService($virgilClientParams)
+    {
+        $registrationAuthorityServiceHost = $virgilClientParams->getRegistrationAuthorityServiceAddress();
+
+        $registrationAuthorityServiceParams = new RegistrationAuthorityServiceParams($registrationAuthorityServiceHost);
+
+        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+
+        $curlClient = new CurlClient($curlRequestFactory);
+
+        $jsonMappers = new RegistrationAuthorityModelMappersCollection(
+            new SignedResponseModelMapper(new CardContentModelMapper()),
+            new SignedRequestModelMapper(),
+            new RegistrationAuthorityErrorResponseModelMapper()
+        );
+
+        $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
+
+        return new RegistrationAuthorityService(
+            $registrationAuthorityServiceParams, $virgilServicesHttpClient, $jsonMappers
+        );
     }
 }

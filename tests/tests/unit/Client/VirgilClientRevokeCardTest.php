@@ -22,7 +22,7 @@ class VirgilClientRevokeCardTest extends AbstractVirgilClientTest
     public function revokeCard__withRevokeCardRequest__returnsSelfOnSuccess(
         $revokeCardRequestArgs
     ) {
-        $this->configureCardsServiceResponse($revokeCardRequestArgs, []);
+        $this->configureVirgilServiceResponse($revokeCardRequestArgs, []);
 
         $revokeCardRequest = CardRequest::createRevokeCardRequest(...$revokeCardRequestArgs);
 
@@ -53,7 +53,7 @@ class VirgilClientRevokeCardTest extends AbstractVirgilClientTest
     }
 
 
-    protected function configureCardsServiceResponse($revokeCardRequestModelRequestArgs, $response)
+    protected function configureVirgilServiceResponse($revokeCardRequestModelRequestArgs, $response)
     {
         $revokeCardRequestModel = RequestModel::createRevokeCardRequestModel(...$revokeCardRequestModelRequestArgs);
 

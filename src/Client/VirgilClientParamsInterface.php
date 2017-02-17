@@ -68,4 +68,22 @@ interface VirgilClientParamsInterface
      */
     public function getAccessToken();
 
+
+    /**
+     * Returns Registration Authority Service url.
+     *
+     * @return string
+     */
+    public function getRegistrationAuthorityServiceAddress();
+
+
+    /**
+     * Sets up Registration Authority Service url.
+     *
+     * @param string $registrationAuthorityServiceAddress
+     *
+     * @return VirgilClientParamsInterface
+     */
+    public function setRegistrationAuthorityService($registrationAuthorityServiceAddress);
+
 }

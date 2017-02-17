@@ -30,7 +30,7 @@ class VirgilClientGetCardTest extends AbstractVirgilClientTest
         $expectedCardArgs,
         $cardsServiceResponseArgs
     ) {
-        $this->configureCardsServiceResponse($cardId, $cardsServiceResponseArgs);
+        $this->configureVirgilServiceResponse($cardId, $cardsServiceResponseArgs);
 
         $expectedCard = VirgilClientCard::createCard($expectedCardArgs);
 
@@ -118,7 +118,7 @@ class VirgilClientGetCardTest extends AbstractVirgilClientTest
     }
 
 
-    protected function configureCardsServiceResponse($cardId, $signedResponseModelArgs)
+    protected function configureVirgilServiceResponse($cardId, $signedResponseModelArgs)
     {
         $cardsServiceResponse = ResponseModel::createSignedResponseModel(...$signedResponseModelArgs);
 
