@@ -2,6 +2,7 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper;
 
 
+use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
 use Virgil\Sdk\Client\VirgilServices\Mapper\JsonModelMapperInterface;
 use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
 use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelMapper;
@@ -36,6 +37,16 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
         $this->signedResponseModelMapper = $signedResponseModelMapper;
         $this->signedRequestModelMapper = $signedRequestModelMapper;
         $this->errorResponseModelMapper = $errorResponseModelMapper;
+    }
+
+
+    public static function getInstance()
+    {
+        return new self(
+            new SignedResponseModelMapper(new CardContentModelMapper()),
+            new SignedRequestModelMapper(),
+            new ErrorResponseModelMapper()
+        );
     }
 
 

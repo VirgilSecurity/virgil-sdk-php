@@ -40,7 +40,7 @@ class VirgilClientParams implements VirgilClientParamsInterface
      * @param string $registrationAuthorityServiceAddress
      */
     public function __construct(
-        $accessToken,
+        $accessToken = null,
         $cardsServiceAddress = self::CARDS_SERVICE_UR,
         $readOnlyCardsServiceAddress = self::CARDS_RO_SERVICE_UR,
         $identityServiceAddress = self::IDENTITY_SERVICE_URL,

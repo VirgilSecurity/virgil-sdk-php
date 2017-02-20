@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilIdentity;
 
 
+use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
+
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ConfirmResponseModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ValidateRequestModel;
@@ -37,6 +39,8 @@ interface IdentityServiceInterface
      * Validates the passed token from confirm step.
      *
      * @param ValidateRequestModel $validateRequestModel
+     *
+     * @throws UnsuccessfulResponseException
      *
      * @return $this
      */

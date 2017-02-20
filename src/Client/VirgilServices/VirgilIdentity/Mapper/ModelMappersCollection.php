@@ -53,6 +53,19 @@ class ModelMappersCollection implements ModelMappersCollectionInterface
     }
 
 
+    public static function getInstance()
+    {
+        return new self(
+            new VerifyRequestModelMapper(),
+            new VerifyResponseModelMapper(),
+            new ConfirmRequestModelMapper(),
+            new ConfirmResponseModelMapper(),
+            new ValidateRequestModelMapper(),
+            new ErrorResponseModelMapper()
+        );
+    }
+
+
     /**
      * @return VerifyResponseModelMapper
      */

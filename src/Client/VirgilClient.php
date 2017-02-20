@@ -18,20 +18,15 @@ use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
 
 use Virgil\Sdk\Client\VirgilServices\Http\HttpClient;
 
-use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
-use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelsMapper;
-use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
-use Virgil\Sdk\Client\VirgilServices\Mapper\SignedResponseModelMapper;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedResponseModel;
 
 use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
+
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceParams;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsService;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ErrorResponseModelMapper as VirgilCardsErrorResponseModelMapper;
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\ModelMappersCollection as VirgilCardsMapperModelMappersCollection;
-use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\SearchRequestModelMapper;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityService;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceInterface;
@@ -42,19 +37,13 @@ use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\TokenModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\ValidateRequestModel;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model\VerifyRequestModel;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ConfirmRequestModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ConfirmResponseModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ErrorResponseModelMapper as VirgilIdentityErrorResponseModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ValidateRequestModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\VerifyRequestModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\VerifyResponseModelMapper;
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Mapper\ModelMappersCollection as IdentityModelMappersCollection;
 
-use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ErrorResponseModelMapper as RegistrationAuthorityErrorResponseModelMapper;
-use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ModelMappersCollection as RegistrationAuthorityModelMappersCollection;
 use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityService;
 use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityServiceInterface;
 use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityServiceParams;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ModelMappersCollection as RegistrationAuthorityModelMappersCollection;
 
 /**
  * Before you can use any Virgil services features in your app, you must first initialize VirgilClient class.
@@ -64,11 +53,16 @@ class VirgilClient
 {
     const AUTH_HEADER_FORMAT = 'VIRGIL %s';
 
+    const CURL_FACTORY_OPTIONS = [CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true];
+
     /** @var CardsServiceInterface */
     private $cardsService;
 
     /** @var RegistrationAuthorityServiceInterface */
     private $registrationAuthorityService;
+
+    /** @var IdentityServiceInterface */
+    private $identityService;
 
     /** @var CardValidatorInterface */
     private $cardValidator;
@@ -113,7 +107,7 @@ class VirgilClient
      *
      * @return VirgilClient
      */
-    public static function create($accessToken)
+    public static function create($accessToken = null)
     {
         return new self(new VirgilClientParams($accessToken));
     }
@@ -384,7 +378,7 @@ class VirgilClient
 
         $cardsServiceParams = new CardsServiceParams($immutableHost, $mutableHost);
 
-        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+        $curlRequestFactory = new CurlRequestFactory(self::CURL_FACTORY_OPTIONS);
 
         $httpHeaders = [
             'Authorization' => sprintf(self::AUTH_HEADER_FORMAT, $virgilClientParams->getAccessToken()),
@@ -392,15 +386,7 @@ class VirgilClient
 
         $curlClient = new CurlClient($curlRequestFactory, $httpHeaders);
 
-        $signedResponseModelMapper = new SignedResponseModelMapper(new CardContentModelMapper());
-
-        $jsonMappers = new VirgilCardsMapperModelMappersCollection(
-            $signedResponseModelMapper,
-            new SignedRequestModelMapper(),
-            new SignedResponseModelsMapper($signedResponseModelMapper),
-            new SearchRequestModelMapper(),
-            new VirgilCardsErrorResponseModelMapper()
-        );
+        $jsonMappers = VirgilCardsMapperModelMappersCollection::getInstance();
 
         $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
 
@@ -421,15 +407,11 @@ class VirgilClient
 
         $registrationAuthorityServiceParams = new RegistrationAuthorityServiceParams($registrationAuthorityServiceHost);
 
-        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+        $curlRequestFactory = new CurlRequestFactory(self::CURL_FACTORY_OPTIONS);
 
         $curlClient = new CurlClient($curlRequestFactory);
 
-        $jsonMappers = new RegistrationAuthorityModelMappersCollection(
-            new SignedResponseModelMapper(new CardContentModelMapper()),
-            new SignedRequestModelMapper(),
-            new RegistrationAuthorityErrorResponseModelMapper()
-        );
+        $jsonMappers = RegistrationAuthorityModelMappersCollection::getInstance();
 
         $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
 
@@ -452,18 +434,11 @@ class VirgilClient
 
         $identityServiceParams = new IdentityServiceParams($identityServiceAddress);
 
-        $curlRequestFactory = new CurlRequestFactory([CURLOPT_RETURNTRANSFER => 1, CURLOPT_HEADER => true]);
+        $curlRequestFactory = new CurlRequestFactory(self::CURL_FACTORY_OPTIONS);
 
         $curlClient = new CurlClient($curlRequestFactory);
 
-        $jsonMappers = new IdentityModelMappersCollection(
-            new VerifyRequestModelMapper(),
-            new VerifyResponseModelMapper(),
-            new ConfirmRequestModelMapper(),
-            new ConfirmResponseModelMapper(),
-            new ValidateRequestModelMapper(),
-            new VirgilIdentityErrorResponseModelMapper()
-        );
+        $jsonMappers = IdentityModelMappersCollection::getInstance();
 
         $virgilServicesHttpClient = new HttpClient($curlClient, $jsonMappers->getErrorResponseModelMapper());
 
