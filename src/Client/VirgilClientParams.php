@@ -12,7 +12,7 @@ class VirgilClientParams implements VirgilClientParamsInterface
     const CARDS_SERVICE_UR = 'https://cards.virgilsecurity.com';
     const CARDS_RO_SERVICE_UR = 'https://cards-ro.virgilsecurity.com';
     const IDENTITY_SERVICE_URL = 'https://identity.virgilsecurity.com';
-    const REGISTRATION_AUTHORITY_SERVICE_URL = 'https://registration-authority.virgilsecurity.com';
+    const REGISTRATION_AUTHORITY_SERVICE_URL = 'https://ra.virgilsecurity.com';
 
     /** @var string $accessToken */
     private $accessToken;

@@ -15,6 +15,16 @@ use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
  */
 class HttpClient implements HttpClientInterface
 {
+    const HTTP_RESPONSE_CODE_MESSAGES = [
+        200 => 'Success',
+        400 => 'Request error',
+        401 => 'Authentication error',
+        403 => 'Forbidden',
+        404 => 'Entity not found',
+        405 => 'Method not allowed',
+        500 => 'Server error',
+    ];
+
     /** @var JsonModelMapperInterface */
     private $errorResponseModelMapper;
 
@@ -86,6 +96,10 @@ class HttpClient implements HttpClientInterface
             $serviceErrorMessage = $errorResponseModel->getMessage();
 
             $serviceErrorCode = $errorResponseModel->getCode();
+
+            if ($serviceErrorMessage == '') {
+                $serviceErrorMessage = self::HTTP_RESPONSE_CODE_MESSAGES[(int)$httpStatusCode];
+            }
 
             throw new UnsuccessfulResponseException($serviceErrorMessage, $httpStatusCode, $serviceErrorCode);
         }

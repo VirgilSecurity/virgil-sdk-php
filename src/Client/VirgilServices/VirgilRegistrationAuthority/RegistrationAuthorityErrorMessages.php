@@ -51,6 +51,11 @@ class RegistrationAuthorityErrorMessages extends AbstractErrorMessages
             30141 => "SCR one of signers Virgil Cards is not found",
             30142 => "SCR sign item is invalid or missing for the Client",
             30143 => "SCR sign item is invalid or missing for the Virgil Registration Authority service",
+            30300 => "Development Portal sign was not found inside the meta.signs property",
+            30301 => "Development Portal sign is invalid",
+            30302 => "Identity Validation Token is invalid or has expired",
+            30303 => "Provided Virgil Card was not found or invalid",
+            50010 => "Requested route was not found",
         ];
     }
 }

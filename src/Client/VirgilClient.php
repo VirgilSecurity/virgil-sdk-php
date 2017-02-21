@@ -216,7 +216,7 @@ class VirgilClient
      *
      * @return string Returns action id.
      */
-    public function verifyIdentity($identity, $identityType, array $extraFields = null)
+    public function verifyIdentity($identity, $identityType, array $extraFields = [])
     {
         $verifyRequest = new VerifyRequestModel($identityType, $identity, $extraFields);
 
@@ -239,7 +239,7 @@ class VirgilClient
     public function confirmIdentity($actionId, $confirmationCode, $timeToLive = 3600, $countToLive = 1)
     {
         $confirmRequest = new ConfirmRequestModel(
-            $actionId, $confirmationCode, new TokenModel($timeToLive, $countToLive)
+            $confirmationCode, $actionId, new TokenModel($timeToLive, $countToLive)
         );
 
         $confirmResponse = $this->identityService->confirm($confirmRequest);
@@ -409,7 +409,7 @@ class VirgilClient
 
         $curlRequestFactory = new CurlRequestFactory(self::CURL_FACTORY_OPTIONS);
 
-        $curlClient = new CurlClient($curlRequestFactory);
+        $curlClient = new CurlClient($curlRequestFactory, ['Expect'=>'']);
 
         $jsonMappers = RegistrationAuthorityModelMappersCollection::getInstance();
 
