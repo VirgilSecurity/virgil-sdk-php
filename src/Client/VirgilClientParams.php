@@ -12,8 +12,9 @@ class VirgilClientParams implements VirgilClientParamsInterface
     const CARDS_SERVICE_UR = 'https://cards.virgilsecurity.com';
     const CARDS_RO_SERVICE_UR = 'https://cards-ro.virgilsecurity.com';
     const IDENTITY_SERVICE_URL = 'https://identity.virgilsecurity.com';
+    const REGISTRATION_AUTHORITY_SERVICE_URL = 'https://ra.virgilsecurity.com';
 
-    /** @var string string $accessToken */
+    /** @var string $accessToken */
     private $accessToken;
 
     /** @var string $cardsServiceAddress */
@@ -25,6 +26,9 @@ class VirgilClientParams implements VirgilClientParamsInterface
     /** @var string $identityServiceAddress */
     private $identityServiceAddress;
 
+    /** @var string $registrationAuthorityServiceAddress */
+    private $registrationAuthorityServiceAddress;
+
 
     /**
      * Class constructor.
@@ -33,17 +37,21 @@ class VirgilClientParams implements VirgilClientParamsInterface
      * @param string $cardsServiceAddress
      * @param string $readOnlyCardsServiceAddress
      * @param string $identityServiceAddress
+     * @param string $registrationAuthorityServiceAddress
      */
     public function __construct(
-        $accessToken,
+        $accessToken = null,
         $cardsServiceAddress = self::CARDS_SERVICE_UR,
         $readOnlyCardsServiceAddress = self::CARDS_RO_SERVICE_UR,
-        $identityServiceAddress = self::IDENTITY_SERVICE_URL
+        $identityServiceAddress = self::IDENTITY_SERVICE_URL,
+        $registrationAuthorityServiceAddress = self::REGISTRATION_AUTHORITY_SERVICE_URL
     ) {
         $this->accessToken = $accessToken;
+
         $this->setCardsServiceAddress($cardsServiceAddress);
         $this->setReadCardsServiceAddress($readOnlyCardsServiceAddress);
         $this->setIdentityServiceAddress($identityServiceAddress);
+        $this->setRegistrationAuthorityService($registrationAuthorityServiceAddress);
     }
 
 
@@ -123,6 +131,30 @@ class VirgilClientParams implements VirgilClientParamsInterface
         }
 
         $this->identityServiceAddress = $identityServiceAddress;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getRegistrationAuthorityServiceAddress()
+    {
+        return $this->registrationAuthorityServiceAddress;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setRegistrationAuthorityService($registrationAuthorityServiceAddress)
+    {
+        if (!$this->isServiceUrlValid($registrationAuthorityServiceAddress)) {
+            throw new InvalidArgumentException(__METHOD__);
+        }
+
+        $this->registrationAuthorityServiceAddress = $registrationAuthorityServiceAddress;
 
         return $this;
     }

@@ -2,16 +2,17 @@
 namespace Virgil\Sdk\Client\Http\Curl;
 
 
-use Virgil\Sdk\Client\Http\HttpClientInterface;
-use Virgil\Sdk\Client\Http\Response;
-use Virgil\Sdk\Client\Http\HttpStatusCode;
+use Virgil\Sdk\Client\Http\AbstractHttpClient;
 
 use Virgil\Sdk\Client\Http\Constants\RequestMethods;
+
+use Virgil\Sdk\Client\Http\Responses\HttpResponse;
+use Virgil\Sdk\Client\Http\Responses\HttpStatusCode;
 
 /**
  * Class represents curl client for making HTTP requests.
  */
-class CurlClient implements HttpClientInterface
+class CurlClient extends AbstractHttpClient
 {
     /** @var RequestFactoryInterface $curlRequestFactory */
     private $curlRequestFactory;
@@ -111,7 +112,7 @@ class CurlClient implements HttpClientInterface
     /**
      * @inheritdoc
      *
-     * @return Response
+     * @return HttpResponse
      */
     protected function doRequest(RequestInterface $httpRequest)
     {
@@ -129,11 +130,11 @@ class CurlClient implements HttpClientInterface
      * @param string $httpStatusCode HTTP status code
      * @param string $httpResponse   Raw HTTP response body
      *
-     * @return Response
+     * @return HttpResponse
      */
     protected function buildResponse($httpStatusCode, $httpResponse)
     {
-        return new Response(new HttpStatusCode($httpStatusCode), ...explode("\r\n\r\n", $httpResponse, 2));
+        return new HttpResponse(new HttpStatusCode($httpStatusCode), ...explode("\r\n\r\n", $httpResponse, 2));
     }
 
 

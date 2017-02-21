@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Cryptography;
 
 
-use Virgil\Sdk\VirgilException;
+use Virgil\Sdk\Exceptions\VirgilException;
 
 /**
  * Base exception class for cryptographic operations.

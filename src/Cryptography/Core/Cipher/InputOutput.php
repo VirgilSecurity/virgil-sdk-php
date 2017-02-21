@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
-use RuntimeException;
+use Virgil\Sdk\Exceptions\MethodIsDisabledException;
 
 /**
  * Class provides content input for cipher operations.
@@ -36,10 +36,10 @@ class InputOutput implements InputOutputInterface
     /**
      * @inheritdoc
      *
-     * @throws RuntimeException
+     * @throws MethodIsDisabledException
      */
     public function getOutput()
     {
-        throw new RuntimeException('Method ' . __METHOD__ . ' is disabled for this class');
+        throw new MethodIsDisabledException(__METHOD__);
     }
 }

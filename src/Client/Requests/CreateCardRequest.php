@@ -6,19 +6,16 @@ use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Contracts\BufferInterface;
 
-use Virgil\Sdk\Client\VirgilCards\Mapper\CreateRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\SignedRequestModelMapper;
-use Virgil\Sdk\Client\VirgilCards\Mapper\CardContentModelMapper;
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\CreateRequestModelMapper;
+use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
 
-use Virgil\Sdk\Client\VirgilCards\Model\CardContentModel;
-use Virgil\Sdk\Client\VirgilCards\Model\DeviceInfoModel;
-
-use Virgil\Sdk\Client\Requests\Constants\CardScopes;
+use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 
 /**
  * Class represents request for card creation.
  */
-class CreateCardRequest extends AbstractCardRequest
+class CreateCardRequest extends AbstractSignableCardRequest
 {
     /** @var string $identity */
     private $identity;
@@ -53,7 +50,7 @@ class CreateCardRequest extends AbstractCardRequest
         $identity,
         $identityType,
         BufferInterface $publicKeyData,
-        $scope = CardScopes::TYPE_APPLICATION,
+        $scope,
         $data = [],
         DeviceInfoModel $info = null
     ) {
@@ -73,7 +70,7 @@ class CreateCardRequest extends AbstractCardRequest
      */
     protected static function getRequestModelJsonMapper()
     {
-        return new CreateRequestModelMapper(new SignedRequestModelMapper(), new CardContentModelMapper());
+        return new CreateRequestModelMapper(new CardContentModelMapper());
     }
 
 
@@ -160,19 +157,6 @@ class CreateCardRequest extends AbstractCardRequest
     public function getScope()
     {
         return $this->scope;
-    }
-
-
-    /**
-     * Exports card to base64 json string.
-     *
-     * @return string
-     */
-    public function export()
-    {
-        $requestModelJsonMapper = self::getRequestModelJsonMapper();
-
-        return base64_encode($requestModelJsonMapper->toJson($this->getRequestModel()));
     }
 
 

@@ -2,6 +2,9 @@
 namespace Virgil\Sdk\Client\Http;
 
 
+use Virgil\Sdk\Client\Http\Requests\HttpRequestInterface;
+use Virgil\Sdk\Client\Http\Responses\HttpResponseInterface;
+
 /**
  * Interface provides HTTP client request.
  */
@@ -14,7 +17,7 @@ interface HttpClientInterface
      * @param mixed  $requestBody
      * @param array  $requestHeaders
      *
-     * @return ResponseInterface
+     * @return HttpResponseInterface
      */
     public function post($requestUrl, $requestBody, array $requestHeaders = []);
 
@@ -26,7 +29,7 @@ interface HttpClientInterface
      * @param mixed  $requestBody
      * @param array  $requestHeaders
      *
-     * @return ResponseInterface
+     * @return HttpResponseInterface
      */
     public function delete($requestUrl, $requestBody, array $requestHeaders = []);
 
@@ -38,9 +41,19 @@ interface HttpClientInterface
      * @param array  $requestParams
      * @param array  $requestHeaders
      *
-     * @return ResponseInterface
+     * @return HttpResponseInterface
      */
     public function get($requestUrl, array $requestParams = [], array $requestHeaders = []);
+
+
+    /**
+     * Sends http request.
+     *
+     * @param HttpRequestInterface $httpRequest
+     *
+     * @return HttpResponseInterface
+     */
+    public function send(HttpRequestInterface $httpRequest);
 
 
     /**
