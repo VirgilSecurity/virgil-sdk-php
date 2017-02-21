@@ -21,7 +21,7 @@ class VirgilClientConfirmIdentityTest extends AbstractVirgilClientTest
     ) {
         $this->configureVirgilServiceResponse($confirmRequestArgs, $confirmResponseArgs);
 
-        list($actionId, $confirmationCode, $tokenArgs) = $confirmRequestArgs;
+        list($confirmationCode, $actionId, $tokenArgs) = $confirmRequestArgs;
         list(, , $expectedValidationToken) = $confirmResponseArgs;
 
 
@@ -40,7 +40,7 @@ class VirgilClientConfirmIdentityTest extends AbstractVirgilClientTest
     {
         return [
             [
-                ['202b65f1-ee1c-4cc2-941a-9548c9cded1c', 'ffagf3fff3f3', [3600, 1]],
+                ['ffagf3fff3f3', '202b65f1-ee1c-4cc2-941a-9548c9cded1c', [3600, 1]],
                 [
                     'email',
                     'user@virgilsecurity.com',
