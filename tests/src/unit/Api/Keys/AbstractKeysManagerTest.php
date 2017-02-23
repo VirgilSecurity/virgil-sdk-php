@@ -1,12 +1,13 @@
 <?php
-namespace Virgil\Sdk\Tests\Unit\Api\Manager;
+namespace Virgil\Sdk\Tests\Unit\Api\Keys;
 
 
-use Virgil\Sdk\Api\Manager\KeysManager;
-use Virgil\Sdk\Api\Manager\KeysManagerInterface;
+use Virgil\Sdk\Api\Keys\KeysManager;
+use Virgil\Sdk\Api\Keys\KeysManagerInterface;
 
 use Virgil\Sdk\Api\Storage\KeyEntry;
-use Virgil\Sdk\Api\VirgilKey;
+
+use Virgil\Sdk\Api\Keys\VirgilKey;
 
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyPairInterface;

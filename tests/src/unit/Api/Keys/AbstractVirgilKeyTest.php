@@ -1,14 +1,16 @@
 <?php
-namespace Virgil\Sdk\Tests\Unit\Api;
+namespace Virgil\Sdk\Tests\Unit\Api\Keys;
 
 
-use Virgil\Sdk\Api\VirgilCardInterface;
-use Virgil\Sdk\Api\VirgilKey;
+use Virgil\Sdk\Api\Cards\VirgilCardInterface;
+
+use Virgil\Sdk\Api\Keys\VirgilKey;
 
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
+use Virgil\Sdk\Tests\Unit\Api\AbstractVirgilApiContextTest;
 use Virgil\Sdk\Tests\Unit\Api\Storage\MemoryKeyStorage;
 
 abstract class AbstractVirgilKeyTest extends AbstractVirgilApiContextTest

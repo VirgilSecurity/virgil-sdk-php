@@ -1,11 +1,10 @@
 <?php
-namespace Virgil\Sdk\Api\Manager;
+namespace Virgil\Sdk\Api\Keys;
 
 
 use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Api\VirgilApiContextInterface;
-use Virgil\Sdk\Api\VirgilKey;
 
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;

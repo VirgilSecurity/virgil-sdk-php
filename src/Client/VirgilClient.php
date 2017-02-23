@@ -48,8 +48,9 @@ use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ModelMap
 /**
  * Before you can use any Virgil services features in your app, you must first initialize VirgilClient class.
  * You use the VirgilClient object to get access to Create, Revoke and Search for Virgil Cards (Public keys).
+ * Use appropriate methods to verify user identity if needed.
  */
-class VirgilClient
+class VirgilClient implements VirgilClientInterface
 {
     const AUTH_HEADER_FORMAT = 'VIRGIL %s';
 
@@ -114,11 +115,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service searching by search request.
-     *
-     * @param SearchCardRequest $searchCardRequest
-     *
-     * @return Card[]
+     * @inheritdoc
      */
     public function searchCards(SearchCardRequest $searchCardRequest)
     {
@@ -133,11 +130,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service card creation by request.
-     *
-     * @param CreateCardRequest $createCardRequest
-     *
-     * @return Card
+     * @inheritdoc
      */
     public function createCard(CreateCardRequest $createCardRequest)
     {
@@ -148,11 +141,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil RA service global card creation by request.
-     *
-     * @param PublishGlobalCardRequest $publishGlobalCardRequest
-     *
-     * @return Card
+     * @inheritdoc
      */
     public function publishGlobalCard(PublishGlobalCardRequest $publishGlobalCardRequest)
     {
@@ -163,11 +152,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service card revoking by request.
-     *
-     * @param RevokeCardRequest $revokeCardRequest
-     *
-     * @return $this
+     * @inheritdoc
      */
     public function revokeCard(RevokeCardRequest $revokeCardRequest)
     {
@@ -178,11 +163,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil RA global card revoking by request.
-     *
-     * @param RevokeGlobalCardRequest $revokeGlobalCardRequest
-     *
-     * @return $this
+     * @inheritdoc
      */
     public function revokeGlobalCard(RevokeGlobalCardRequest $revokeGlobalCardRequest)
     {
@@ -193,11 +174,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service card searching by ID.
-     *
-     * @param $id
-     *
-     * @return Card
+     * @inheritdoc
      */
     public function getCard($id)
     {
@@ -208,13 +185,7 @@ class VirgilClient
 
 
     /**
-     * Sends the request for identity verification, that's will be processed depending of specified type.
-     *
-     * @param string $identity
-     * @param string $identityType
-     * @param array  $extraFields
-     *
-     * @return string Returns action id.
+     * @inheritdoc
      */
     public function verifyIdentity($identity, $identityType, array $extraFields = [])
     {
@@ -227,14 +198,7 @@ class VirgilClient
 
 
     /**
-     * Confirms the identity using confirmation code, that has been generated to confirm an identity.
-     *
-     * @param string $actionId
-     * @param string $confirmationCode
-     * @param int    $timeToLive
-     * @param int    $countToLive
-     *
-     * @return string Returns validation token.
+     * @inheritdoc
      */
     public function confirmIdentity($actionId, $confirmationCode, $timeToLive = 3600, $countToLive = 1)
     {
@@ -249,15 +213,7 @@ class VirgilClient
 
 
     /**
-     * Checks if validation token is valid
-     *
-     * @param string $identityType
-     * @param string $identity
-     * @param string $validationToken
-     *
-     * @throws UnsuccessfulResponseException
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isIdentityValid($identityType, $identity, $validationToken)
     {
@@ -278,11 +234,7 @@ class VirgilClient
 
 
     /**
-     * Sets the card validator.
-     *
-     * @param CardValidatorInterface $validator
-     *
-     * @return $this
+     * @inheritdoc
      */
     public function setCardValidator(CardValidatorInterface $validator)
     {
@@ -409,7 +361,7 @@ class VirgilClient
 
         $curlRequestFactory = new CurlRequestFactory(self::CURL_FACTORY_OPTIONS);
 
-        $curlClient = new CurlClient($curlRequestFactory, ['Expect'=>'']);
+        $curlClient = new CurlClient($curlRequestFactory, ['Expect' => '']);
 
         $jsonMappers = RegistrationAuthorityModelMappersCollection::getInstance();
 

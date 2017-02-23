@@ -1,8 +1,9 @@
 <?php
-namespace Virgil\Sdk\Tests\Unit\Api;
+namespace Virgil\Sdk\Tests\Unit\Api\Keys;
 
 
 use Virgil\Sdk\Buffer;
+
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 class VirgilKeySaveTest extends AbstractVirgilKeyTest

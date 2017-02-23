@@ -1,6 +1,9 @@
 <?php
-namespace Virgil\Sdk\Api;
+namespace Virgil\Sdk\Api\Keys;
 
+use Virgil\Sdk\Api\Cards\VirgilCardInterface;
+
+use Virgil\Sdk\Api\VirgilApiContextInterface;
 
 use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 use Virgil\Sdk\Api\Storage\KeyEntry;

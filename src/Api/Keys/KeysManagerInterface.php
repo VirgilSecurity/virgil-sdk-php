@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk\Api\Manager;
+namespace Virgil\Sdk\Api\Keys;
 
 
 use Virgil\Sdk\Api\VirgilKeyInterface;
