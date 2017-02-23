@@ -15,7 +15,7 @@ interface IdentityConfirmationInterface
      * @param IdentityVerificationAttemptInterface $identityVerificationAttempt
      * @param VirgilClientInterface                $virgilClient
      *
-     * @return IdentityValidationTokenInterface
+     * @return string
      */
     public function confirmIdentity(
         IdentityVerificationAttemptInterface $identityVerificationAttempt,
