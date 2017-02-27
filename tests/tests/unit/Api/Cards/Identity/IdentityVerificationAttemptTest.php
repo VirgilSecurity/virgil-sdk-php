@@ -8,9 +8,9 @@ use Virgil\Sdk\Client\VirgilClientInterface;
 
 use Virgil\Sdk\Client\Requests\Constants\IdentityTypes;
 
-use Virgil\Sdk\Api\Cards\Identity\EmailConfirmation;
-use Virgil\Sdk\Api\Cards\Identity\IdentityValidationToken;
-use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationAttempt;
+use Virgil\Sdk\Api\Cards\Identity\IdentityConfirmationInterface;
+
+use Virgil\Sdk\Tests\Unit\Api\Cards\Identity;
 
 class IdentityVerificationAttemptTest extends BaseTestCase
 {
@@ -64,7 +64,7 @@ class IdentityVerificationAttemptTest extends BaseTestCase
     ) {
         $virgilClient = $this->createVirgilClient();
 
-        $identityVerificationAttempt = $this->createIdentityVerificationAttempt(
+        $identityVerificationAttempt = Identity::createIdentityVerificationAttempt(
             $virgilClient,
             $actionId,
             $timeToLive,
@@ -79,7 +79,7 @@ class IdentityVerificationAttemptTest extends BaseTestCase
             $identityVerificationAttempt
         );
 
-        $identityValidationToken = $this->createIdentityValidationToken(
+        $identityValidationToken = Identity::createIdentityValidationToken(
             $virgilClient,
             $validationToken,
             $identity,
@@ -94,20 +94,6 @@ class IdentityVerificationAttemptTest extends BaseTestCase
     }
 
 
-    protected function createIdentityVerificationAttempt(
-        $virgilClient,
-        $actionId,
-        $timeToLive,
-        $countToLive,
-        $identityType,
-        $identity
-    ) {
-        return new IdentityVerificationAttempt(
-            $virgilClient, $actionId, $timeToLive, $countToLive, $identityType, $identity
-        );
-    }
-
-
     protected function createVirgilClient()
     {
         return $this->createMock(VirgilClientInterface::class);
@@ -116,7 +102,7 @@ class IdentityVerificationAttemptTest extends BaseTestCase
 
     protected function createEmailConfirmation($virgilClient, $expectedValidationToken, $identityVerificationAttempt)
     {
-        $emailConfirmationMock = $this->createMock(EmailConfirmation::class);
+        $emailConfirmationMock = $this->createMock(IdentityConfirmationInterface::class);
 
         $emailConfirmationMock->expects($this->once())
                               ->method('confirmIdentity')
@@ -126,15 +112,4 @@ class IdentityVerificationAttemptTest extends BaseTestCase
 
         return $emailConfirmationMock;
     }
-
-
-    protected function createIdentityValidationToken(
-        $virgilClient,
-        $token,
-        $identity,
-        $identityType
-    ) {
-        return new IdentityValidationToken($virgilClient, $token, $identity, $identityType);
-    }
-
 }

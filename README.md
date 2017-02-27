@@ -36,25 +36,33 @@ The Virgil SDK is provided as a package named *virgil/sdk*. The package is distr
 You need to install php virgil crypto extension *ext-virgil_crypto_php* as one of dependency otherwise you will get `the requested PHP extension virgil_crypto_php is missing from your system` error during composer install.
 
 In general to install virgil crypto extension follow next steps:
- * Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/) like **virgil-crypto-2.0.3-php-5.6-linux-x86_64.tgz**.
+ * Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/) like **virgil-crypto-2.0.4-php-5.6-linux-x86_64.tgz**.
+ * Type following command to unpack extension in terminal:
+
+ ```
+ $ tar -xvzf virgil-crypto-2.0.4-php-5.6-linux-x86_64.tgz
+ ```
+
  * Place unpacked **virgil_crypto_php.so** under php extension path.
  * Add virgil extension to your **php.ini** configuration file like **extension = virgil_crypto_php.so**.
- 
+
  ```
- $ echo "extension=virgil_crypto_php.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` 
+ $ echo "extension=virgil_crypto_php.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
  ```
 
 All necessary information about where **php.ini** or **extension_dir** are you can get from **php_info()** in case run php on server or
-call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI. 
+call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI.
 
 ### Requirements
 
-* PHP 5.6.*
-* virgil_crypto_php.so
+-  PHP 5.6.*
+-  [Composer](https://getcomposer.org/download)
+-  [virgil_crypto_php.so](https://cdn.virgilsecurity.com/virgil-crypto/php)
 
 ### Installing the package
 
 Install the latest version with
+
 ```
 $ composer require virgil/sdk
 ```
@@ -73,7 +81,7 @@ Before you can use any Virgil services features in your app, you must first init
 
 ### Initializing an API Client
 
-To create an instance of *VirgilClient* class, just call its static method with your application's *accessToken* which you generated on developer's deshboard.
+To create an instance of *VirgilClient* class, just call its static method with your application's *accessToken* which you generated on developer's dashboard.
 
 
 ```php
@@ -84,7 +92,7 @@ use Virgil\Sdk\Client\VirgilClient;
 $client = VirgilClient::create("[ACCESS_TOKEN_HERE]");
 ```
 
-note that application's *AccessToken* is not neccessary parameter if you are going to work only with global cards:
+note that application's *AccessToken* is not necessary parameter if you are going to work only with global cards:
 
 ```php
 <?php

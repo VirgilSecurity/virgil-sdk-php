@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Api;
 
 
+use Virgil\Sdk\Client\VirgilClientInterface;
+
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
 
@@ -27,6 +29,14 @@ interface VirgilApiContextInterface
 
 
     /**
+     * Gets a Virgil Security services client.
+     *
+     * @return VirgilClientInterface
+     */
+    public function getClient();
+
+
+    /**
      * Sets the custom cryptographic keys storage.
      *
      * @param KeyStorageInterface $keyStorage
@@ -44,4 +54,14 @@ interface VirgilApiContextInterface
      * @return $this
      */
     public function setCrypto(CryptoInterface $crypto);
+
+
+    /**
+     * Sets a Virgil Security services client.
+     *
+     * @param VirgilClientInterface $virgilClient
+     *
+     * @return $this
+     */
+    public function setClient(VirgilClientInterface $virgilClient);
 }

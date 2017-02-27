@@ -1,0 +1,85 @@
+<?php
+namespace Virgil\Sdk\Api\Cards;
+
+
+use Virgil\Sdk\Client\Card;
+
+use Virgil\Sdk\Contracts\CryptoInterface;
+
+use Virgil\Sdk\Client\VirgilClientInterface;
+
+use Virgil\Sdk\Api\VirgilApiContextInterface;
+
+use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationAttempt;
+use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationOptions;
+use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationOptionsInterface;
+
+/**
+ * A Virgil Card is the main entity of the Virgil Security services, it includes an information about the user and his
+ * public key. The Virgil Card identifies the user by one of his available types, such as an email, a phone number,
+ * etc.
+ */
+class VirgilCard implements VirgilCardInterface
+{
+    /** @var Card */
+    private $card;
+
+    /** @var CryptoInterface */
+    private $virgilCrypto;
+
+    /** @var VirgilClientInterface */
+    private $virgilClient;
+
+
+    /**
+     * Class constructor.
+     *
+     * @param VirgilApiContextInterface $virgilApiContext
+     * @param Card                      $card
+     */
+    public function __construct(VirgilApiContextInterface $virgilApiContext, Card $card)
+    {
+        $this->virgilCrypto = $virgilApiContext->getCrypto();
+
+        $this->virgilClient = $virgilApiContext->getClient();
+
+        $this->card = $card;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getPublicKey()
+    {
+        $publicKeyData = $this->card->getPublicKeyData();
+
+        return $this->virgilCrypto->importPublicKey($publicKeyData);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function checkIdentity(IdentityVerificationOptionsInterface $identityVerificationOptions = null)
+    {
+        if ($identityVerificationOptions === null) {
+            $identityVerificationOptions = new IdentityVerificationOptions();
+        }
+
+        $actionId = $this->virgilClient->verifyIdentity(
+            $this->card->getIdentity(),
+            $this->card->getIdentityType(),
+            $identityVerificationOptions->getExtraFields()
+        );
+
+        return new IdentityVerificationAttempt(
+            $this->virgilClient,
+            $actionId,
+            $identityVerificationOptions->getTimeToLive(),
+            $identityVerificationOptions->getCountToLive(),
+            $this->card->getIdentityType(),
+            $this->card->getIdentity()
+        );
+    }
+}

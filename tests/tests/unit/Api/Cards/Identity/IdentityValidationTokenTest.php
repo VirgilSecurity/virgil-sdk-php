@@ -8,7 +8,7 @@ use Virgil\Sdk\Client\Requests\Constants\IdentityTypes;
 
 use Virgil\Sdk\Client\VirgilClientInterface;
 
-use Virgil\Sdk\Api\Cards\Identity\IdentityValidationToken;
+use Virgil\Sdk\Tests\Unit\Api\Cards\Identity;
 
 class IdentityValidationTokenTest extends BaseTestCase
 {
@@ -28,7 +28,7 @@ class IdentityValidationTokenTest extends BaseTestCase
     ) {
         $virgilClient = $this->createVirgilClient();
 
-        $identityValidationToken = $this->createIdentityValidationToken(
+        $identityValidationToken = Identity::createIdentityValidationToken(
             $virgilClient,
             $token,
             $identity,
@@ -55,12 +55,6 @@ class IdentityValidationTokenTest extends BaseTestCase
                 IdentityTypes::TYPE_EMAIL,
             ],
         ];
-    }
-
-
-    protected function createIdentityValidationToken($virgilClient, $token, $identity, $identityType)
-    {
-        return new IdentityValidationToken($virgilClient, $token, $identity, $identityType);
     }
 
 

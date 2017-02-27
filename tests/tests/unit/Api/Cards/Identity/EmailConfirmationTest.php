@@ -6,12 +6,12 @@ use Virgil\Sdk\Client\VirgilClientInterface;
 
 use Virgil\Sdk\Tests\BaseTestCase;
 
-use Virgil\Sdk\Api\Cards\Identity\EmailConfirmation;
+use Virgil\Sdk\Tests\Unit\Api\Cards\Identity;
+
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationAttemptInterface;
 
 class EmailConfirmationTest extends BaseTestCase
 {
-
     /**
      * @dataProvider confirmIdentityWithIdentityVerificationAttemptDataProvider
      *
@@ -29,7 +29,7 @@ class EmailConfirmationTest extends BaseTestCase
         $countToLive
     ) {
 
-        $emailConfirmation = $this->createEmailConfirmation($confirmationCode);
+        $emailConfirmation = Identity::createEmailConfirmation($confirmationCode);
 
         $virgilClientMock = $this->createVirgilClient();
 
@@ -60,12 +60,6 @@ class EmailConfirmationTest extends BaseTestCase
                 1,
             ],
         ];
-    }
-
-
-    protected function createEmailConfirmation($confirmationCode)
-    {
-        return new EmailConfirmation($confirmationCode);
     }
 
 
