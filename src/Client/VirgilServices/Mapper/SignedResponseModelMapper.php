@@ -43,7 +43,7 @@ class SignedResponseModelMapper extends AbstractJsonModelMapper
         $cardContentModel = $this->cardContentModelMapper->toModel($cardContentJson);
 
         $cardMetaModel = new SignedResponseMetaModel(
-            $cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME],
+            (array)$cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME],
             new DateTime($cardMetaData[JsonProperties::CREATED_AT_ATTRIBUTE_NAME]),
             $cardMetaData[JsonProperties::CARD_VERSION_ATTRIBUTE_NAME]
         );

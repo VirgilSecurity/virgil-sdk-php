@@ -12,7 +12,7 @@ use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
 class CardContentModelMapperTest extends AbstractMapperTest
 {
     /**
-     * @dataProvider cardContentModelDataProvider
+     * @dataProvider toJsonFromCardContentModelDataProvider
      *
      * @param string $expectedCardContentModelJson
      * @param array  $cardContentModelData
@@ -34,7 +34,7 @@ class CardContentModelMapperTest extends AbstractMapperTest
 
 
     /**
-     * @dataProvider cardContentModelDataProvider
+     * @dataProvider toModelFromCardContentModeDataProvider
      *
      * @param string $cardContentModelJson
      * @param array  $expectedCardContentModelData
@@ -55,12 +55,23 @@ class CardContentModelMapperTest extends AbstractMapperTest
     }
 
 
-    public function cardContentModelDataProvider()
+    public function toJsonFromCardContentModelDataProvider()
     {
         return [
             [
                 '{"identity":"alice","identity_type":"member","public_key":"public-key","scope":"application"}',
-                ['alice', 'member', 'public-key', CardScopes::TYPE_APPLICATION],
+                ['alice', 'member', 'public-key', CardScopes::TYPE_APPLICATION, []],
+            ],
+        ];
+    }
+
+
+    public function toModelFromCardContentModeDataProvider()
+    {
+        return [
+            [
+                '{"identity":"alice","identity_type":"member","public_key":"public-key","scope":"application","data":null}',
+                ['alice', 'member', 'public-key', CardScopes::TYPE_APPLICATION, []],
             ],
             [
                 '{"identity":"alice2","identity_type":"member","public_key":"public-key-2","data":{"customData":"qwerty"},"scope":"global","info":{"device":"iPhone6s","device_name":"Space grey one"}}',

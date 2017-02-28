@@ -72,7 +72,7 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
                     'eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwic2NvcGUiOiJnbG9iYWwifQ==',
                     ['alice2', 'member', 'public-key-2', CardScopes::TYPE_GLOBAL],
                     [
-                        ['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4'],
+                        [],
                         new DateTime('2016-11-04T13:16:17+0000'),
                         'v4',
                     ],
@@ -81,7 +81,7 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
                     self::CARD_SIGNED_RESPONSE_JSON_FORMAT,
                     'model-id-2',
                     '{"identity":"alice2","identity_type":"member","public_key":"public-key-2","scope":"global"}',
-                    '{"created_at":"2016-11-04T13:16:17+0000","card_version":"v4","signs":{"sign-id-3":"_sign3","sign-id-4":"_sign4"}}',
+                    '{"created_at":"2016-11-04T13:16:17+0000","card_version":"v4","signs":null}',
                 ],
             ],
         ];

@@ -29,7 +29,7 @@ class CardContentModelMapper extends AbstractJsonModelMapper
         ];
 
         if (array_key_exists(JsonProperties::DATA_ATTRIBUTE_NAME, $cardContentData)) {
-            $cardContentModelArguments[] = $cardContentData[JsonProperties::DATA_ATTRIBUTE_NAME];
+            $cardContentModelArguments[] = (array)$cardContentData[JsonProperties::DATA_ATTRIBUTE_NAME];
         } else {
             $cardContentModelArguments[] = [];
         }
