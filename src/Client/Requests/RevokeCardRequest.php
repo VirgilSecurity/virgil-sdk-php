@@ -4,6 +4,7 @@ namespace Virgil\Sdk\Client\Requests;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilCards\Mapper\RevokeRequestModelMapper;
 
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
 
 /**
@@ -28,6 +29,8 @@ class RevokeCardRequest extends AbstractSignableCardRequest
     {
         $this->id = $id;
         $this->reason = $reason;
+
+        $this->contentSnapshot = $this->getSnapshot();
     }
 
 
@@ -43,15 +46,18 @@ class RevokeCardRequest extends AbstractSignableCardRequest
 
 
     /**
-     * Builds self from revoke card content model.
+     * Builds a revoke card request from request model.
      *
-     * @param RevokeCardContentModel $cardContent
+     * @param SignedRequestModel $signedRequestModel
      *
      * @return RevokeCardRequest
      */
-    protected static function buildRequestFromCardContent(RevokeCardContentModel $cardContent)
+    protected static function buildRequestFromRequestModel(SignedRequestModel $signedRequestModel)
     {
-        return new self($cardContent->getId(), $cardContent->getRevocationReason());
+        /** @var RevokeCardContentModel $revokeCardContent */
+        $revokeCardContent = $signedRequestModel->getRequestContent();
+
+        return new self($revokeCardContent->getId(), $revokeCardContent->getRevocationReason());
     }
 
 

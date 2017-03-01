@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
+use Virgil\Sdk\Buffer;
+
 use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
@@ -9,6 +11,8 @@ use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilServices\Model\ValidationModel;
 use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 
 /**
  * Class represents request for global card creation.
@@ -40,6 +44,31 @@ class PublishGlobalCardRequest extends CreateCardRequest
         parent::__construct($identity, $identityType, $publicKeyData, CardScopes::TYPE_GLOBAL, $data, $info);
 
         $this->validation = $validation;
+    }
+
+
+    /**
+     * Builds a publish global request from request model.
+     *
+     * @param SignedRequestModel $signedRequestModel
+     *
+     * @return PublishGlobalCardRequest
+     */
+    protected static function buildRequestFromRequestModel(SignedRequestModel $signedRequestModel)
+    {
+        /** @var CardContentModel $requestContentModel */
+        $requestContentModel = $signedRequestModel->getRequestContent();
+
+        $requestMetaModel = $signedRequestModel->getRequestMeta();
+
+        return new self(
+            $requestContentModel->getIdentity(),
+            $requestContentModel->getIdentityType(),
+            Buffer::fromBase64($requestContentModel->getPublicKey()),
+            $requestMetaModel->getValidation(),
+            $requestContentModel->getData(),
+            $requestContentModel->getInfo()
+        );
     }
 
 

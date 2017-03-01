@@ -62,6 +62,48 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
     }
 
 
+    /**
+     * @dataProvider createCardDataProvider
+     *
+     * @param array $createCardRequestJsonData
+     * @param array $createCardRequestData
+     * @param       $exportedContentSnapshot
+     *
+     * @test
+     */
+    public function toModel__fromExportedCreateCardRequestModel__keepsExportedContentSnapshot(
+        array $createCardRequestJsonData,
+        array $createCardRequestData,
+        $exportedContentSnapshot
+    ) {
+        $createCardRequestModelJson = $this->createCreateCardRequestJson(...$createCardRequestJsonData);
+
+        list($createCardRequestContentData, $createCardRequestSignsData) = $createCardRequestData;
+
+        $expectedCreateCardRequestModel = RequestModel::createCreateCardRequestModel(
+            $createCardRequestContentData,
+            $createCardRequestSignsData,
+            $exportedContentSnapshot
+        );
+
+
+        $createCardRequestModel = $this->mapper->toModel($createCardRequestModelJson);
+
+
+        $this->assertEquals(
+            $expectedCreateCardRequestModel->getRequestContent(),
+            $createCardRequestModel->getRequestContent()
+        );
+
+        $this->assertEquals(
+            $expectedCreateCardRequestModel->getRequestMeta(),
+            $createCardRequestModel->getRequestMeta()
+        );
+
+        $this->assertNotEquals($expectedCreateCardRequestModel->getSnapshot(), $createCardRequestModel->getSnapshot());
+    }
+
+
     public function createCardDataProvider()
     {
         return [
@@ -75,6 +117,7 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
                     ['alice', 'member', 'public-key', CardScopes::TYPE_APPLICATION],
                     ['sign-id-1' => '_sign1', 'sign-id-2' => '_sign2'],
                 ],
+                'eyJpZGVudGl0eV90eXBlIjoibWVtYmVyIiwiaWRlbnRpdHkiOiJhbGljZSIsInB1YmxpY19rZXkiOiJwdWJsaWMta2V5Iiwic2NvcGUiOiJhcHBsaWNhdGlvbiJ9',
             ],
             [
                 [
@@ -93,6 +136,7 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
                     ],
                     ['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4'],
                 ],
+                'eyJpZGVudGl0eV90eXBlIjoibWVtYmVyIiwiaWRlbnRpdHkiOiJhbGljZTIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwiZGF0YSI6eyJjdXN0b21EYXRhIjoicXdlcnR5In0sInNjb3BlIjoiZ2xvYmFsIiwiaW5mbyI6eyJkZXZpY2UiOiJpUGhvbmU2cyIsImRldmljZV9uYW1lIjoiU3BhY2UgZ3JleSBvbmUifX0=',
             ],
         ];
     }

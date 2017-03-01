@@ -14,14 +14,14 @@ class RequestModel extends CommonRequestModel
     }
 
 
-    public static function createCreateCardRequestModel($contentData, $cardSigns)
+    public static function createCreateCardRequestModel($contentData, $cardSigns, $contentSnapshot = null)
     {
-        return parent::createCreateCardRequestModel($contentData, [$cardSigns]);
+        return parent::createCreateCardRequestModel($contentData, [$cardSigns], $contentSnapshot);
     }
 
 
-    public static function createRevokeCardRequestModel($contentData, $cardSigns)
+    public static function createRevokeCardRequestModel($contentData, $cardSigns, $contentSnapshot = null)
     {
-        return parent::createRevokeCardRequestModel($contentData, [$cardSigns]);
+        return parent::createRevokeCardRequestModel($contentData, [$cardSigns], $contentSnapshot);
     }
 }
