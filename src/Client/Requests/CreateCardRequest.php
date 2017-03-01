@@ -11,6 +11,7 @@ use Virgil\Sdk\Client\VirgilServices\Mapper\CardContentModelMapper;
 
 use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
 use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 
 /**
  * Class represents request for card creation.
@@ -77,21 +78,24 @@ class CreateCardRequest extends AbstractSignableCardRequest
 
 
     /**
-     * Builds self from card content model.
+     * Builds a create card request from request model.
      *
-     * @param CardContentModel $cardContent
+     * @param SignedRequestModel $signedRequestModel
      *
      * @return CreateCardRequest
      */
-    protected static function buildRequestFromCardContent(CardContentModel $cardContent)
+    protected static function buildRequestFromRequestModel(SignedRequestModel $signedRequestModel)
     {
+        /** @var CardContentModel $requestContentModel */
+        $requestContentModel = $signedRequestModel->getRequestContent();
+
         return new self(
-            $cardContent->getIdentity(),
-            $cardContent->getIdentityType(),
-            Buffer::fromBase64($cardContent->getPublicKey()),
-            $cardContent->getScope(),
-            $cardContent->getData(),
-            $cardContent->getInfo()
+            $requestContentModel->getIdentity(),
+            $requestContentModel->getIdentityType(),
+            Buffer::fromBase64($requestContentModel->getPublicKey()),
+            $requestContentModel->getScope(),
+            $requestContentModel->getData(),
+            $requestContentModel->getInfo()
         );
     }
 

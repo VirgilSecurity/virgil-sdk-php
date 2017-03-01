@@ -7,6 +7,7 @@ use Virgil\Sdk\Client\VirgilServices\Mapper\SignedRequestModelMapper;
 
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
+use Virgil\Sdk\Client\VirgilServices\Model\ValidationModel;
 
 use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
@@ -45,7 +46,17 @@ class CreateRequestModelMapper extends SignedRequestModelMapper
 
         $cardContentModel = $this->cardContentModelMapper->toModel($cardContentJson);
 
-        $cardMetaModel = new SignedRequestMetaModel($cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME]);
+        $requestMeta[] = (array)$cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME];
+
+        if (array_key_exists(JsonProperties::VALIDATION_ATTRIBUTE_NAME, $cardMetaData)) {
+
+            $cardValidationMetaData = $cardMetaData[JsonProperties::VALIDATION_ATTRIBUTE_NAME];
+            if (array_key_exists(JsonProperties::TOKEN_ATTRIBUTE_NAME, $cardValidationMetaData)) {
+                $requestMeta[] = new ValidationModel($cardValidationMetaData[JsonProperties::TOKEN_ATTRIBUTE_NAME]);
+            }
+        }
+
+        $cardMetaModel = new SignedRequestMetaModel(...$requestMeta);
 
         return new SignedRequestModel($cardContentModel, $cardMetaModel, $contentSnapshot);
     }

@@ -2,7 +2,9 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
+use Virgil\Sdk\Client\VirgilServices\Model\RevokeCardContentModel;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilServices\Model\ValidationModel;
 
 /**
@@ -26,6 +28,28 @@ class RevokeGlobalCardRequest extends RevokeCardRequest
         parent::__construct($id, $reason);
 
         $this->validation = $validation;
+    }
+
+
+    /**
+     * Builds a revoke global request from request model.
+     *
+     * @param SignedRequestModel $signedRequestModel
+     *
+     * @return RevokeGlobalCardRequest
+     */
+    protected static function buildRequestFromRequestModel(SignedRequestModel $signedRequestModel)
+    {
+        /** @var RevokeCardContentModel $requestContentModel */
+        $requestContentModel = $signedRequestModel->getRequestContent();
+
+        $requestMetaModel = $signedRequestModel->getRequestMeta();
+
+        return new self(
+            $requestContentModel->getId(),
+            $requestContentModel->getRevocationReason(),
+            $requestMetaModel->getValidation()
+        );
     }
 
 

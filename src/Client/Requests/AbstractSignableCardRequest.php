@@ -40,27 +40,17 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
         $modelJson = base64_decode($exportedSignedRequestModel);
         $model = $requestModelJsonMapper->toModel($modelJson);
 
-        $request = self::buildRequestFromRequestModel($model);
-
-        return $request;
-    }
-
-
-    protected static function buildRequestFromRequestModel(SignedRequestModel $signedRequestModel)
-    {
-        $cardContent = $signedRequestModel->getRequestContent();
-
         /** @var AbstractSignableCardRequest $request */
-        $request = static::buildRequestFromCardContent($cardContent);
+        $request = static::buildRequestFromRequestModel($model);
 
         /** @var SignedRequestMetaModel $meta */
-        $meta = $signedRequestModel->getRequestMeta();
+        $meta = $model->getRequestMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
             $request->appendSignature($signKey, Buffer::fromBase64($sign));
         }
 
         //rewrite content snapshot to received one
-        $request->contentSnapshot = $signedRequestModel->getSnapshot();
+        $request->contentSnapshot = $model->getSnapshot();
 
         return $request;
     }
