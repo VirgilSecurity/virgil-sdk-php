@@ -50,4 +50,23 @@ class CreateCardRequestTest extends BaseTestCase
 
         $this->assertEquals($request, $importedRequest);
     }
+
+
+    /**
+     * @test
+     */
+    public function import__exportedCreateCardRequest__keepsExportedContentSnapshot()
+    {
+        $exportedRequest = 'eyJjb250ZW50X3NuYXBzaG90IjoiZXlKcFpHVnVkR2wwZVNJNkltTnZiUzUyWVdScGJTMTBaWE4wTG1ScGJXRnpJaXdpYVdSbGJuUnBkSGxmZEhsd1pTSTZJbUZ3Y0d4cFkyRjBhVzl1SWl3aWNIVmliR2xqWDJ0bGVTSTZJazFEYjNkQ1VWbEVTekpXZDBGNVJVRTRLMFp0V1N0R1dHeEtOSGxNWVZwTk5ETkdaMUozWjBWVVVWSjJOMkYxVFRKVlFWbEtNVXh1WkVWVlBTSXNJbk5qYjNCbElqb2laMnh2WW1Gc0lpd2laR0YwWVNJNmJuVnNiSDA9IiwibWV0YSI6eyJzaWducyI6eyIyNDIxY2VmY2M1MWRkYmUyZDQ3YzJkMzU1NGFkYzUzYmNlNTlhNWIzODZmMzdjZDIwYWMzMzE5NTkxOGJlODUxIjoiTUZFd0RRWUpZSVpJQVdVREJBSUNCUUFFUURQaENkUnhFU1JhTTJqeU52NnRBTG9UakVlUk9tcDUrMDNkbWdYcld6TVQ3VHVjLzdPa1A5NzFqbmNWWG1kcnBZSnIwcldVRTdvRDI3SnEvOVBObGc4PSJ9fX0=';
+        $expectedContentSnapshot = 'eyJpZGVudGl0eSI6ImNvbS52YWRpbS10ZXN0LmRpbWFzIiwiaWRlbnRpdHlfdHlwZSI6ImFwcGxpY2F0aW9uIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUE4K0ZtWStGWGxKNHlMYVpNNDNGZ1J3Z0VUUVJ2N2F1TTJVQVlKMUxuZEVVPSIsInNjb3BlIjoiZ2xvYmFsIiwiZGF0YSI6bnVsbH0=';
+
+        /** @var CreateCardRequest $createdCardRequest */
+        $createdCardRequest = CreateCardRequest::import($exportedRequest);
+
+
+        $contentSnapshot = $createdCardRequest->getSnapshot();
+
+
+        $this->assertEquals($expectedContentSnapshot, $contentSnapshot);
+    }
 }

@@ -19,18 +19,18 @@ class RequestModel
     }
 
 
-    public static function createCreateCardRequestModel($contentData, $cardMeta)
+    public static function createCreateCardRequestModel($contentData, $cardMeta, $contentSnapshot = null)
     {
         return new SignedRequestModel(
-            new CardContentModel(...$contentData), static::createSignedRequestMetaModel(...$cardMeta)
+            new CardContentModel(...$contentData), static::createSignedRequestMetaModel(...$cardMeta), $contentSnapshot
         );
     }
 
 
-    public static function createRevokeCardRequestModel($contentData, $cardMeta)
+    public static function createRevokeCardRequestModel($contentData, $cardMeta, $contentSnapshot = null)
     {
         return new SignedRequestModel(
-            new RevokeCardContentModel(...$contentData), static::createSignedRequestMetaModel(...$cardMeta)
+            new RevokeCardContentModel(...$contentData), static::createSignedRequestMetaModel(...$cardMeta), $contentSnapshot
         );
     }
 

@@ -23,7 +23,9 @@ class RevokeRequestModelMapper extends SignedRequestModelMapper
     public function toModel($json)
     {
         $data = json_decode($json, true);
-        $cardContentData = json_decode(base64_decode($data[JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME]), true);
+
+        $contentSnapshot = $data[JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME];
+        $cardContentData = json_decode(base64_decode($contentSnapshot), true);
         $cardMetaData = $data[JsonProperties::META_ATTRIBUTE_NAME];
 
         $cardContentModel = new RevokeCardContentModel(
@@ -33,6 +35,6 @@ class RevokeRequestModelMapper extends SignedRequestModelMapper
 
         $cardMetaModel = new SignedRequestMetaModel($cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME]);
 
-        return new SignedRequestModel($cardContentModel, $cardMetaModel);
+        return new SignedRequestModel($cardContentModel, $cardMetaModel, $contentSnapshot);
     }
 }

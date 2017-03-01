@@ -37,4 +37,22 @@ class RevokeCardRequestTest extends BaseTestCase
 
         $this->assertEquals($request, $importedRequest);
     }
+
+    /**
+     * @test
+     */
+    public function import__exportedRevokeCardRequest__keepsExportedContentSnapshot()
+    {
+        $exportedRequest = 'eyJjb250ZW50X3NuYXBzaG90IjoiZXlKeVpYWnZZMkYwYVc5dVgzSmxZWE52YmlJNkltTnZiWEJ5YjIxcGMyVmtJaXdpWTJGeVpGOXBaQ0k2SW1OaGNtUXRhV1FpZlE9PSIsIm1ldGEiOnsic2lnbnMiOnsiYWY2Nzk5YTJmMjYzNzY3MzFhYmI5YWJmMzJiNWYyYWMwOTMzMDEzZjQyNjI4NDk4YWRiNmIxMjcwMmRmMWE4NyI6Ik1JR2FNQTBHQ1dDR1NBRmxBd1FDQWdVQUJJR0lNSUdGQWtBVWtIVHg5dkVYY1VBcTlPNWJSc2ZKMEs1czhCd201NWdFWGZ6YmR0QWZyNmloSk9YQTlNQWRYT0VvY3FLdEg2RHVVN3pKQWRXZ3FmVHJ3ZWloN2pBa0VBZ043Q2VVWHdad1MwbFJzbFd1bGFJR3ZwSzY1Y3pXcGhSd3l1d04rK2hJNmRsSE9kUEFCbWhNU3FpbXdvUnNMTjh4c2l2aFBxUWRMb3c1ckRGaWM3QT0ifX19';
+        $expectedContentSnapshot = 'eyJyZXZvY2F0aW9uX3JlYXNvbiI6ImNvbXByb21pc2VkIiwiY2FyZF9pZCI6ImNhcmQtaWQifQ==';
+
+        /** @var RevokeCardRequest $revokeCardRequest */
+        $revokeCardRequest = RevokeCardRequest::import($exportedRequest);
+
+
+        $contentSnapshot = $revokeCardRequest->getSnapshot();
+
+
+        $this->assertEquals($expectedContentSnapshot, $contentSnapshot);
+    }
 }

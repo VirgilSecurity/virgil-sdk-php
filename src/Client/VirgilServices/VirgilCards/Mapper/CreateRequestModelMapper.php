@@ -38,13 +38,15 @@ class CreateRequestModelMapper extends SignedRequestModelMapper
     public function toModel($json)
     {
         $data = json_decode($json, true);
-        $cardContentJson = base64_decode($data[JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME]);
+
+        $contentSnapshot = $data[JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME];
+        $cardContentJson = base64_decode($contentSnapshot);
         $cardMetaData = $data[JsonProperties::META_ATTRIBUTE_NAME];
 
         $cardContentModel = $this->cardContentModelMapper->toModel($cardContentJson);
 
         $cardMetaModel = new SignedRequestMetaModel($cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME]);
 
-        return new SignedRequestModel($cardContentModel, $cardMetaModel);
+        return new SignedRequestModel($cardContentModel, $cardMetaModel, $contentSnapshot);
     }
 }

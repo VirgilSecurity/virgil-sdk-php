@@ -15,17 +15,30 @@ class SignedRequestModel extends AbstractModel
     /** @var SignedRequestMetaModel $requestMeta */
     protected $requestMeta;
 
+    /** @var string */
+    private $contentSnapshot;
+
 
     /**
      * Class constructor.
      *
      * @param AbstractModel          $requestContent
      * @param SignedRequestMetaModel $requestMeta
+     * @param string                 $contentSnapshot
      */
-    public function __construct(AbstractModel $requestContent, SignedRequestMetaModel $requestMeta)
-    {
+    public function __construct(
+        AbstractModel $requestContent,
+        SignedRequestMetaModel $requestMeta,
+        $contentSnapshot = null
+    ) {
         $this->requestContent = $requestContent;
         $this->requestMeta = $requestMeta;
+
+        if ($contentSnapshot != null) {
+            $this->contentSnapshot = $contentSnapshot;
+        } else {
+            $this->contentSnapshot = base64_encode(json_encode($this->requestContent));
+        }
     }
 
 
@@ -54,7 +67,7 @@ class SignedRequestModel extends AbstractModel
      */
     public function getSnapshot()
     {
-        return base64_encode(json_encode($this->requestContent));
+        return $this->contentSnapshot;
     }
 
 

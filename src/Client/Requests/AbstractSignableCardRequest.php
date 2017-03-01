@@ -21,6 +21,9 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
     /** @var BufferInterface[] $signatures */
     protected $signatures = [];
 
+    /** @var string */
+    protected $contentSnapshot = null;
+
 
     /**
      * Imports card request from base64 json string.
@@ -33,19 +36,31 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
     {
         /** @var AbstractJsonModelMapper $requestModelJsonMapper */
         $requestModelJsonMapper = static::getRequestModelJsonMapper();
+
         $modelJson = base64_decode($exportedSignedRequestModel);
         $model = $requestModelJsonMapper->toModel($modelJson);
 
-        $cardContent = $model->getRequestContent();
+        $request = self::buildRequestFromRequestModel($model);
+
+        return $request;
+    }
+
+
+    protected static function buildRequestFromRequestModel(SignedRequestModel $signedRequestModel)
+    {
+        $cardContent = $signedRequestModel->getRequestContent();
 
         /** @var AbstractSignableCardRequest $request */
         $request = static::buildRequestFromCardContent($cardContent);
 
         /** @var SignedRequestMetaModel $meta */
-        $meta = $model->getRequestMeta();
+        $meta = $signedRequestModel->getRequestMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
             $request->appendSignature($signKey, Buffer::fromBase64($sign));
         }
+
+        //rewrite content snapshot to received one
+        $request->contentSnapshot = $signedRequestModel->getSnapshot();
 
         return $request;
     }
@@ -71,7 +86,7 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
      */
     public function getRequestModel()
     {
-        return new SignedRequestModel($this->getCardContent(), $this->getCardMeta());
+        return new SignedRequestModel($this->getCardContent(), $this->getCardMeta(), $this->contentSnapshot);
     }
 
 

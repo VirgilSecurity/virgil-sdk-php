@@ -28,6 +28,8 @@ class RevokeCardRequest extends AbstractSignableCardRequest
     {
         $this->id = $id;
         $this->reason = $reason;
+
+        $this->contentSnapshot = $this->getSnapshot();
     }
 
 

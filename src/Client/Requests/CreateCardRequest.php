@@ -60,6 +60,8 @@ class CreateCardRequest extends AbstractSignableCardRequest
         $this->data = $data;
         $this->info = $info;
         $this->scope = $scope;
+
+        $this->contentSnapshot = $this->getSnapshot();
     }
 
 
