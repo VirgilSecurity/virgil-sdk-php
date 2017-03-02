@@ -18,15 +18,6 @@ abstract class AbstractVirgilKeyTest extends AbstractVirgilApiContextTest
     /**
      * @inheritdoc
      */
-    protected function createCrypto()
-    {
-        return $this->createMock(CryptoInterface::class);
-    }
-
-
-    /**
-     * @inheritdoc
-     */
     protected function createKeyStorage()
     {
         return new MemoryKeyStorage();

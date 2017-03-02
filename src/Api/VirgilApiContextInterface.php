@@ -7,6 +7,8 @@ use Virgil\Sdk\Client\VirgilClientInterface;
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
 
+use Virgil\Sdk\Client\Requests\RequestSignerInterface;
+
 /**
  * Interface provides virgil api dependencies.
  */
@@ -64,4 +66,58 @@ interface VirgilApiContextInterface
      * @return $this
      */
     public function setClient(VirgilClientInterface $virgilClient);
+
+
+    /**
+     * Gets application access token.
+     *
+     * @return string
+     */
+    public function getAccessToken();
+
+
+    /**
+     * Sets application access token.
+     *
+     * @param string $accessToken
+     *
+     * @return $this
+     */
+    public function setAccessToken($accessToken);
+
+
+    /**
+     * Sets the application authentication credentials.
+     *
+     * @param CredentialsInterface $credentials
+     *
+     * @return $this
+     */
+    public function setCredentials(CredentialsInterface $credentials);
+
+
+    /**
+     * Gets the application authentication credentials.
+     *
+     * @return CredentialsInterface
+     */
+    public function getCredentials();
+
+
+    /**
+     * Gets the card request signer.
+     *
+     * @return RequestSignerInterface
+     */
+    public function getRequestSigner();
+
+
+    /**
+     * Sets the card request signer.
+     *
+     * @param RequestSignerInterface $requestSigner
+     *
+     * @return $this
+     */
+    public function setRequestSigner(RequestSignerInterface $requestSigner);
 }

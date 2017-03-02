@@ -4,6 +4,9 @@ namespace Virgil\Sdk\Api;
 
 use Virgil\Sdk\Api\Storage\StubKeyStorage;
 
+use Virgil\Sdk\Client\Requests\RequestSigner;
+use Virgil\Sdk\Client\Requests\RequestSignerInterface;
+
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\VirgilClientInterface;
 
@@ -27,15 +30,29 @@ class VirgilApiContext implements VirgilApiContextInterface
     /** @var VirgilClientInterface */
     private $client;
 
+    /** @var string */
+    private $accessToken;
+
+    /** @var CredentialsInterface */
+    private $credentials;
+
+    /** @var RequestSignerInterface */
+    private $requestSigner;
+
 
     /**
      * Class constructor.
+     *
+     * @param string $accessToken
      */
-    public function __construct()
+    public function __construct($accessToken = null)
     {
         $this->keyStorage = new StubKeyStorage();
         $this->crypto = new VirgilCrypto();
-        $this->client = VirgilClient::create();
+        $this->client = VirgilClient::create($accessToken);
+        $this->requestSigner = new RequestSigner($this->crypto);
+
+        $this->accessToken = $accessToken;
     }
 
 
@@ -96,5 +113,59 @@ class VirgilApiContext implements VirgilApiContextInterface
         $this->client = $virgilClient;
 
         return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setCredentials(CredentialsInterface $credentials)
+    {
+        $this->credentials = $credentials;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getCredentials()
+    {
+        return $this->credentials;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getRequestSigner()
+    {
+        return $this->requestSigner;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setRequestSigner(RequestSignerInterface $requestSigner)
+    {
+        $this->requestSigner = $requestSigner;
     }
 }

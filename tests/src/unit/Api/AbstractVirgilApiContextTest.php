@@ -37,13 +37,19 @@ abstract class AbstractVirgilApiContextTest extends TestCase
     /**
      * @return KeyStorageInterface
      */
-    abstract protected function createKeyStorage();
+    protected function createKeyStorage()
+    {
+        return $this->createMock(KeyStorageInterface::class);
+    }
 
 
     /**
      * @return CryptoInterface
      */
-    abstract protected function createCrypto();
+    protected function createCrypto()
+    {
+        return $this->createMock(CryptoInterface::class);
+    }
 
 
     /**

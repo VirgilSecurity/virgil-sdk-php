@@ -43,16 +43,6 @@ abstract class AbstractKeysManagerTest extends AbstractVirgilApiContextTest
         return new MemoryKeyStorage();
     }
 
-
-    /**
-     * @return CryptoInterface
-     */
-    protected function createCrypto()
-    {
-        return $this->createMock(CryptoInterface::class);
-    }
-
-
     /**
      * @return KeysManager
      */

@@ -2,6 +2,7 @@
 namespace Virgil\Sdk\Api\Cards;
 
 
+use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationAttemptInterface;
@@ -30,4 +31,25 @@ interface VirgilCardInterface
      * @return IdentityVerificationAttemptInterface
      */
     public function checkIdentity(IdentityVerificationOptionsInterface $identityVerificationOptions = null);
+
+
+    /**
+     * Encrypts the specified data for current virgil card recipient.
+     *
+     * @param mixed $content
+     *
+     * @return BufferInterface
+     */
+    public function encrypt($content);
+
+
+    /**
+     * Verifies the specified content and signature with current virgil card recipient.
+     *
+     * @param mixed           $content
+     * @param BufferInterface $signature
+     *
+     * @return bool
+     */
+    public function verify($content, BufferInterface $signature);
 }
