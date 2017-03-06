@@ -33,7 +33,7 @@ class CardContentModel extends AbstractModel
      *
      * @param string          $identity
      * @param string          $identityType
-     * @param string          $publicKey
+     * @param string          $publicKey base64 encoded public key
      * @param array           $data
      * @param string          $scope
      * @param DeviceInfoModel $info

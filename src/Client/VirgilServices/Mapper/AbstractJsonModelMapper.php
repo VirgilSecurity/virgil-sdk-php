@@ -25,4 +25,18 @@ abstract class AbstractJsonModelMapper implements JsonModelMapperInterface
     {
         return json_encode($model);
     }
+
+
+    /**
+     * Gets json property value and prevents error if property is not exists by providing default value.
+     *
+     * @param mixed $propertyValue
+     * @param null  $defaultValue
+     *
+     * @return mixed
+     */
+    protected function getPropertyValue(&$propertyValue, $defaultValue = null)
+    {
+        return isset($propertyValue) ? $propertyValue : $defaultValue;
+    }
 }

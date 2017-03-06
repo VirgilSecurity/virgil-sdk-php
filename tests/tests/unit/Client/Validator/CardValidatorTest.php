@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Tests\Unit\Client\Validator;
 
 
+use DateTime;
+
 use Virgil\Sdk\Tests\BaseTestCase;
 
 use Virgil\Sdk\Buffer;
@@ -45,7 +47,8 @@ class CardValidatorTest extends BaseTestCase
                     '3e29d43373348cfb373b7eae189214dc01d7237765e572db685839b64adca853' => Buffer::fromBase64(
                         'MFEwDQYJYIZIAWUDBAICBQAEQMpaO3OmXlsYhzR7pvF0Xuu7Dv84r3SRrmqjMvod9ik+oQ0M0uc+dwHNeNtQpy84qI14cXXaMAJDcfgtKyHPdA0='
                     ),
-                ]
+                ],
+                new DateTime()
             )
         );
 
@@ -85,7 +88,8 @@ class CardValidatorTest extends BaseTestCase
                     '3e29d43373348cfb373b7eae189214dc01d7237765e572db685839b64adca853' => Buffer::fromBase64(
                         'MFEwDQYJYIZIAWUDBAICBQAEQMpaO3OmXlsYhzR7pvF0Xuu7Dv84r3SRrmqjMvod9ik+oQ0M0uc+dwHNeNtQpy84qI14cXXaMAJDcfgtKyHPdA0='
                     ),
-                ]
+                ],
+                new DateTime()
             )
         );
 
@@ -125,7 +129,8 @@ class CardValidatorTest extends BaseTestCase
                     '3e29d43373348cfb373b7eae189214dc01d7237765e572db685839b64adca853' => Buffer::fromBase64(
                         'MFEwDQYJYIZIAWUDBAICBQAEQMpaO3OmXlsYhzR7pvF0Xuu7Dv84r3SRrmqjMvod9ik+oQ0M0uc+dwHNeNtQpy84qI14cXXaMAJDcfgtKyHPdA0='
                     ),
-                ]
+                ],
+                new DateTime()
             )
         );
 

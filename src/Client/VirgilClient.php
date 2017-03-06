@@ -2,7 +2,8 @@
 namespace Virgil\Sdk\Client;
 
 
-use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\Card\CardMapperInterface;
+use Virgil\Sdk\Client\Card\SignedResponseCardMapper;
 
 use Virgil\Sdk\Client\Requests\PublishGlobalCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeGlobalCardRequest;
@@ -68,6 +69,9 @@ class VirgilClient implements VirgilClientInterface
     /** @var CardValidatorInterface */
     private $cardValidator;
 
+    /** @var SignedResponseCardMapper */
+    private $cardMapper;
+
 
     /**
      * Class constructor.
@@ -98,6 +102,8 @@ class VirgilClient implements VirgilClientInterface
         $this->cardsService = $cardsService;
         $this->registrationAuthorityService = $registrationAuthorityService;
         $this->identityService = $identityService;
+
+        $this->cardMapper = new SignedResponseCardMapper();
     }
 
 
@@ -245,37 +251,13 @@ class VirgilClient implements VirgilClientInterface
 
 
     /**
-     * Builds card from response model.
-     *
-     * @param SignedResponseModel $responseModel
-     *
-     * @return Card
+     * @inheritdoc
      */
-    private function responseToCard(SignedResponseModel $responseModel)
+    public function setCardMapper(CardMapperInterface $cardMapper)
     {
-        $responseCardModelContent = $responseModel->getCardContent();
-        $responseCardModelContentInfo = $responseCardModelContent->getInfo();
-        $responseCardModelMeta = $responseModel->getMeta();
+        $this->cardMapper = $cardMapper;
 
-        $responseModelSignsToCardSigns = function ($sign) {
-            return Buffer::fromBase64($sign);
-        };
-
-        $cardSigns = array_map($responseModelSignsToCardSigns, $responseCardModelMeta->getSigns());
-
-        return new Card(
-            $responseModel->getId(),
-            Buffer::fromBase64($responseModel->getSnapshot()),
-            $responseCardModelContent->getIdentity(),
-            $responseCardModelContent->getIdentityType(),
-            Buffer::fromBase64($responseCardModelContent->getPublicKey()),
-            $responseCardModelContent->getScope(),
-            $responseCardModelContent->getData(),
-            $responseCardModelContentInfo->getDevice(),
-            $responseCardModelContentInfo->getDeviceName(),
-            $responseCardModelMeta->getCardVersion(),
-            $cardSigns
-        );
+        return $this;
     }
 
 
@@ -301,15 +283,16 @@ class VirgilClient implements VirgilClientInterface
     /**
      * Builds and verify card from response model.
      *
-     * @param SignedResponseModel $responseModel
+     * @param SignedResponseModel $signedResponseModel
      *
      * @return Card
      *
      * @throws CardValidationException
      */
-    private function buildAndVerifyCard(SignedResponseModel $responseModel)
+    private function buildAndVerifyCard(SignedResponseModel $signedResponseModel)
     {
-        $card = $this->responseToCard($responseModel);
+        $card = $this->cardMapper->toCard($signedResponseModel);
+
         $this->validateCard($card);
 
         return $card;

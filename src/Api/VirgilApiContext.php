@@ -131,6 +131,8 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function setAccessToken($accessToken)
     {
         $this->accessToken = $accessToken;
+
+        return $this;
     }
 
 
@@ -140,6 +142,8 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function setCredentials(CredentialsInterface $credentials)
     {
         $this->credentials = $credentials;
+
+        return $this;
     }
 
 
@@ -167,5 +171,7 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function setRequestSigner(RequestSignerInterface $requestSigner)
     {
         $this->requestSigner = $requestSigner;
+
+        return $this;
     }
 }

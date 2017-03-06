@@ -5,6 +5,8 @@ namespace Virgil\Sdk\Api\Cards;
 use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
+use Virgil\Sdk\Client\Card\CardSerializerInterface;
+
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationAttemptInterface;
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationOptionsInterface;
 
@@ -52,4 +54,22 @@ interface VirgilCardInterface
      * @return bool
      */
     public function verify($content, BufferInterface $signature);
+
+
+    /**
+     * Exports a current virgil card instance into base64 encoded string.
+     *
+     * @return string
+     */
+    public function export();
+
+
+    /**
+     * Sets custom card serializer.
+     *
+     * @param CardSerializerInterface $cardSerializer
+     *
+     * @return $this
+     */
+    public function setCardSerializer(CardSerializerInterface $cardSerializer);
 }

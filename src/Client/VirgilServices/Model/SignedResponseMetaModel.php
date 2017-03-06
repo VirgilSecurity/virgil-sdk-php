@@ -4,10 +4,12 @@ namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 use DateTime;
 
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
+
 /**
  * Class represents card meta model response.
  */
-class SignedResponseMetaModel
+class SignedResponseMetaModel extends AbstractModel
 {
     /** @var array $signs */
     private $signs;
@@ -64,5 +66,18 @@ class SignedResponseMetaModel
     public function getSigns()
     {
         return $this->signs;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function jsonSerializeData()
+    {
+        return [
+            JsonProperties::CREATED_AT_ATTRIBUTE_NAME   => $this->createdAt->format(DateTIme::ISO8601),
+            JsonProperties::CARD_VERSION_ATTRIBUTE_NAME => $this->cardVersion,
+            JsonProperties::SIGNS_ATTRIBUTE_NAME        => $this->signs,
+        ];
     }
 }

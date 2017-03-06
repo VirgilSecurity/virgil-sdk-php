@@ -61,6 +61,7 @@ class VirgilClientGetCardTest extends AbstractVirgilClientTest
                     'Space grey one',
                     'v4',
                     ['sign-id-3' => Buffer::fromBase64('X3NpZ24z'), 'sign-id-4' => Buffer::fromBase64('X3NpZ240')],
+                    new DateTime('2016-11-04T13:16:17+0000'),
                 ],
                 [
                     'model-id-1',
@@ -97,6 +98,7 @@ class VirgilClientGetCardTest extends AbstractVirgilClientTest
                     null,
                     'v4',
                     ['sign-id-3' => Buffer::fromBase64('X3NpZ24z'), 'sign-id-4' => Buffer::fromBase64('X3NpZ240')],
+                    new DateTime('2016-11-04T13:16:17+0000'),
                 ],
                 [
                     'model-id-2',

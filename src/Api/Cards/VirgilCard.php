@@ -6,6 +6,9 @@ use Virgil\Sdk\Api\VirgilApiContextInterface;
 
 use Virgil\Sdk\Client\Card;
 
+use Virgil\Sdk\Client\Card\Base64CardSerializer;
+use Virgil\Sdk\Client\Card\CardSerializerInterface;
+
 use Virgil\Sdk\Client\VirgilClientInterface;
 
 use Virgil\Sdk\Contracts\BufferInterface;
@@ -31,6 +34,9 @@ class VirgilCard implements VirgilCardInterface
     /** @var VirgilClientInterface */
     private $virgilClient;
 
+    /** @var CardSerializerInterface */
+    private $base64CardSerializer;
+
 
     /**
      * Class constructor.
@@ -43,6 +49,8 @@ class VirgilCard implements VirgilCardInterface
         $this->virgilCrypto = $virgilApiContext->getCrypto();
 
         $this->virgilClient = $virgilApiContext->getClient();
+
+        $this->base64CardSerializer = Base64CardSerializer::create();
 
         $this->card = $card;
     }
@@ -100,5 +108,25 @@ class VirgilCard implements VirgilCardInterface
     public function verify($content, BufferInterface $signature)
     {
         return $this->virgilCrypto->verify((string)$content, $signature, $this->getPublicKey());
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function export()
+    {
+        return $this->base64CardSerializer->serialize($this->card);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setCardSerializer(CardSerializerInterface $cardSerializer)
+    {
+        $this->base64CardSerializer = $cardSerializer;
+
+        return $this;
     }
 }

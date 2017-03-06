@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client;
 
 
+use Virgil\Sdk\Client\Card\CardMapperInterface;
+
 use Virgil\Sdk\Client\Requests\CreateCardRequest;
 use Virgil\Sdk\Client\Requests\PublishGlobalCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
@@ -124,4 +126,14 @@ interface VirgilClientInterface
      * @return $this
      */
     public function setCardValidator(CardValidatorInterface $validator);
+
+
+    /**
+     * Sets card mapper for response transformation to card.
+     *
+     * @param CardMapperInterface $cardMapper
+     *
+     * @return $this
+     */
+    public function setCardMapper(CardMapperInterface $cardMapper);
 }

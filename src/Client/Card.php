@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Client;
 
 
+use DateTime;
+
 use Virgil\Sdk\Contracts\BufferInterface;
 
 /**
@@ -42,6 +44,9 @@ class Card
     /** @var BufferInterface $snapshot */
     private $snapshot;
 
+    /** @var DateTime */
+    private $createdAt;
+
 
     /**
      * Class constructor.
@@ -57,6 +62,7 @@ class Card
      * @param string            $deviceName
      * @param string            $version
      * @param BufferInterface[] $signatures
+     * @param DateTime          $createdAt
      */
     public function __construct(
         $id,
@@ -69,7 +75,8 @@ class Card
         $device = null,
         $deviceName = null,
         $version,
-        array $signatures
+        array $signatures,
+        DateTime $createdAt
     ) {
         $this->id = $id;
         $this->snapshot = $snapshot;
@@ -82,6 +89,7 @@ class Card
         $this->deviceName = $deviceName;
         $this->signatures = $signatures;
         $this->version = $version;
+        $this->createdAt = $createdAt;
     }
 
 
@@ -216,5 +224,14 @@ class Card
     public function getSnapshot()
     {
         return $this->snapshot;
+    }
+
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

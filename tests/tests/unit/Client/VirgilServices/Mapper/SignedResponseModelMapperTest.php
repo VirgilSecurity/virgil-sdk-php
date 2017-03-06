@@ -38,6 +38,29 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
     }
 
 
+    /**
+     * @dataProvider signedResponseDataProvider
+     *
+     * @param array $signedResponseData
+     * @param array $signedResponseJsonData
+     *
+     * @test
+     */
+    public function toJson__fromSignedResponseModel__returnsSignedResponseModelJsonString(
+        array $signedResponseData,
+        array $signedResponseJsonData
+    ) {
+        $signedResponseModel = ResponseModel::createSignedResponseModel(...$signedResponseData);
+        $expectedSignedResponseJson = $this->createSignedCardResponseJson(...$signedResponseJsonData);
+
+
+        $signedResponseModelJson = $this->mapper->toJson($signedResponseModel);
+
+
+        $this->assertEquals($expectedSignedResponseJson, $signedResponseModelJson);
+    }
+
+
     public function signedResponseDataProvider()
     {
         return [
@@ -81,7 +104,7 @@ class SignedResponseModelMapperTest extends AbstractMapperTest
                     self::CARD_SIGNED_RESPONSE_JSON_FORMAT,
                     'model-id-2',
                     '{"identity":"alice2","identity_type":"member","public_key":"public-key-2","scope":"global"}',
-                    '{"created_at":"2016-11-04T13:16:17+0000","card_version":"v4","signs":null}',
+                    '{"created_at":"2016-11-04T13:16:17+0000","card_version":"v4"}',
                 ],
             ],
         ];
