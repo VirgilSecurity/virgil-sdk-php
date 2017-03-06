@@ -4,6 +4,8 @@ namespace Virgil\Sdk\Api\Cards;
 
 use Virgil\Sdk\Api\Cards\Identity\IdentityValidationToken;
 
+use Virgil\Sdk\Api\Keys\VirgilKey;
+
 use Virgil\Sdk\Client\Card\CardMapperInterface;
 use Virgil\Sdk\Client\Card\CardSerializerInterface;
 
@@ -31,6 +33,32 @@ interface CardsManagerInterface
      * @return $this
      */
     public function publishGlobal(VirgilCard $virgilCard, IdentityValidationToken $identityValidationToken);
+
+
+    /**
+     * Revokes a virgil card from application Virgil Services scope.
+     *
+     * @param VirgilCard $virgilCard
+     *
+     * @return $this
+     */
+    public function revoke(VirgilCard $virgilCard);
+
+
+    /**
+     * Revokes a global virgil card from Virgil Security services.
+     *
+     * @param VirgilCard              $virgilCard
+     * @param VirgilKey               $virgilKey
+     * @param IdentityValidationToken $identityValidationToken
+     *
+     * @return $this
+     */
+    public function revokeGlobal(
+        VirgilCard $virgilCard,
+        VirgilKey $virgilKey,
+        IdentityValidationToken $identityValidationToken
+    );
 
 
     /**

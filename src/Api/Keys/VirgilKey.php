@@ -1,6 +1,7 @@
 <?php
 namespace Virgil\Sdk\Api\Keys;
 
+
 use Virgil\Sdk\Api\Cards\VirgilCardInterface;
 
 use Virgil\Sdk\Api\VirgilApiContextInterface;
@@ -129,5 +130,14 @@ class VirgilKey implements VirgilKeyInterface
         $this->keyStorage->store($keyEntry);
 
         return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getPrivateKey()
+    {
+        return $this->privateKey;
     }
 }

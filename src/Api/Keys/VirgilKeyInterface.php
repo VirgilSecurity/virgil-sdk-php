@@ -1,11 +1,13 @@
 <?php
 namespace Virgil\Sdk\Api\Keys;
 
+
 use Virgil\Sdk\Api\Cards\VirgilCardInterface;
 
 use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 
 use Virgil\Sdk\Contracts\BufferInterface;
+use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 
 /**
@@ -82,4 +84,12 @@ interface VirgilKeyInterface
      * @return $this
      */
     public function save($keyName, $password);
+
+
+    /**
+     * Gets a private key.
+     *
+     * @return PrivateKeyInterface
+     */
+    public function getPrivateKey();
 }
