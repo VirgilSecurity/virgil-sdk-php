@@ -129,4 +129,24 @@ class VirgilCard implements VirgilCardInterface
 
         return $this;
     }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getCard()
+    {
+        return $this->card;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setCard(Card $card)
+    {
+        $this->card = $card;
+
+        return $this;
+    }
 }

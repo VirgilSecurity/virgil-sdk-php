@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Api\Cards;
 
 
+use Virgil\Sdk\Client\Card;
+
 use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
@@ -72,4 +74,22 @@ interface VirgilCardInterface
      * @return $this
      */
     public function setCardSerializer(CardSerializerInterface $cardSerializer);
+
+
+    /**
+     * Gets a card from virgil card is built.
+     *
+     * @return Card
+     */
+    public function getCard();
+
+
+    /**
+     * Sets a card.
+     *
+     * @param Card $card
+     *
+     * @return $this
+     */
+    public function setCard(Card $card);
 }

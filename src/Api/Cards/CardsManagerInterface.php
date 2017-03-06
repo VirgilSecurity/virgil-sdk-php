@@ -2,6 +2,9 @@
 namespace Virgil\Sdk\Api\Cards;
 
 
+use Virgil\Sdk\Api\Cards\Identity\IdentityValidationToken;
+
+use Virgil\Sdk\Client\Card\CardMapperInterface;
 use Virgil\Sdk\Client\Card\CardSerializerInterface;
 
 /**
@@ -20,6 +23,27 @@ interface CardsManagerInterface
 
 
     /**
+     * Publishes a virgil card into global Virgil Services scope.
+     *
+     * @param VirgilCard              $virgilCard
+     * @param IdentityValidationToken $identityValidationToken
+     *
+     * @return $this
+     */
+    public function publishGlobal(VirgilCard $virgilCard, IdentityValidationToken $identityValidationToken);
+
+
+    /**
+     * Publishes a virgil card into application Virgil Services scope.
+     *
+     * @param VirgilCard $virgilCard
+     *
+     * @return $this
+     */
+    public function publish(VirgilCard $virgilCard);
+
+
+    /**
      * Sets custom card serializer.
      *
      * @param CardSerializerInterface $cardSerializer
@@ -27,4 +51,14 @@ interface CardsManagerInterface
      * @return $this
      */
     public function setCardSerializer(CardSerializerInterface $cardSerializer);
+
+
+    /**
+     * Sets card mapper for response transformation to card.
+     *
+     * @param CardMapperInterface $cardMapper
+     *
+     * @return $this
+     */
+    public function setCardMapper(CardMapperInterface $cardMapper);
 }
