@@ -35,7 +35,7 @@ class VirgilCard implements VirgilCardInterface
     private $virgilClient;
 
     /** @var CardSerializerInterface */
-    private $base64CardSerializer;
+    private $cardSerializer;
 
 
     /**
@@ -50,7 +50,7 @@ class VirgilCard implements VirgilCardInterface
 
         $this->virgilClient = $virgilApiContext->getClient();
 
-        $this->base64CardSerializer = Base64CardSerializer::create();
+        $this->cardSerializer = Base64CardSerializer::create();
 
         $this->card = $card;
     }
@@ -116,7 +116,7 @@ class VirgilCard implements VirgilCardInterface
      */
     public function export()
     {
-        return $this->base64CardSerializer->serialize($this->card);
+        return $this->cardSerializer->serialize($this->card);
     }
 
 
@@ -125,7 +125,7 @@ class VirgilCard implements VirgilCardInterface
      */
     public function setCardSerializer(CardSerializerInterface $cardSerializer)
     {
-        $this->base64CardSerializer = $cardSerializer;
+        $this->cardSerializer = $cardSerializer;
 
         return $this;
     }
