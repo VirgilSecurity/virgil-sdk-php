@@ -46,6 +46,8 @@ use Virgil\Sdk\Contracts\CryptoInterface;
  */
 class CardsManager implements CardsManagerInterface
 {
+    const CARDS_VERSION = '4.0';
+
     /** @var VirgilApiContextInterface */
     private $virgilApiContext;
 
@@ -318,11 +320,11 @@ class CardsManager implements CardsManagerInterface
 
         $contentSnapshot = $signedRequestModel->getSnapshot();
 
-        $contentSnapshotFingerprint = $this->virgilCrypto->calculateFingerprint($contentSnapshot);
+        $contentSnapshotFingerprint = $this->virgilCrypto->calculateFingerprint(base64_decode($contentSnapshot));
 
         $cardId = $contentSnapshotFingerprint->toHex();
 
-        $ownerSignature = $ownerKey->sign($contentSnapshot);
+        $ownerSignature = $ownerKey->sign($contentSnapshotFingerprint->getData());
 
         $card = new Card(
             $cardId,
@@ -336,7 +338,7 @@ class CardsManager implements CardsManagerInterface
                              ->getDevice(),
             $cardContentModel->getInfo()
                              ->getDeviceName(),
-            'v4',
+            self::CARDS_VERSION,
             [$cardId => $ownerSignature],
             new DateTime()
         );

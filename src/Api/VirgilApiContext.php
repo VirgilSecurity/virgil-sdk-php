@@ -126,6 +126,8 @@ class VirgilApiContext implements VirgilApiContextInterface
 
 
     /**
+     * TODO: after set need rebuild virgil client
+     *
      * @inheritdoc
      */
     public function setAccessToken($accessToken)

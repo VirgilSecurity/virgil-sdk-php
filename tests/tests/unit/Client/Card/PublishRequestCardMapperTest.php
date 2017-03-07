@@ -87,7 +87,7 @@ class PublishRequestCardMapperTest extends BaseTestCase
             [
                 [$signatureKey => $signature->toBase64()],
             ],
-            $contentSnapshot->getData()
+            $contentSnapshot->toBase64()
         );
 
         $publishRequestCardMapper = $this->createPublishRequestCardMapper();
@@ -166,7 +166,7 @@ class PublishRequestCardMapperTest extends BaseTestCase
                 [$signatureKey => $signature->toBase64()],
                 $validationToken,
             ],
-            $contentSnapshot->getData()
+            $contentSnapshot->toBase64()
         );
 
         $publishRequestCardMapper = $this->createPublishRequestCardMapper();

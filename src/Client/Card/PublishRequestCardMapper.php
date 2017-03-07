@@ -31,7 +31,7 @@ class PublishRequestCardMapper implements CardMapperInterface
     /**
      * Creates publish card request model from Card.
      *
-     * @param Card   $card
+     * @param Card $card
      * @param string $validationToken
      *
      * @return SignedRequestModel
@@ -62,6 +62,11 @@ class PublishRequestCardMapper implements CardMapperInterface
 
         $signedRequestMetaModel = new SignedRequestMetaModel(...$signedRequestMetaModelArgs);
 
-        return new SignedRequestModel($cardContentModel, $signedRequestMetaModel, $card->getSnapshot());
+        return new SignedRequestModel(
+            $cardContentModel,
+            $signedRequestMetaModel,
+            $card->getSnapshot()
+                 ->toBase64()
+        );
     }
 }
