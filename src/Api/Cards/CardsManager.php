@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Api\Cards;
 
 
+use DateTime;
+
 use Virgil\Sdk\Api\Cards\Identity\IdentityValidationToken;
 
 use Virgil\Sdk\Api\CredentialsInterface;
@@ -9,6 +11,8 @@ use Virgil\Sdk\Api\CredentialsInterface;
 use Virgil\Sdk\Api\Keys\VirgilKey;
 
 use Virgil\Sdk\Api\VirgilApiContextInterface;
+
+use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Client\Card;
 
@@ -29,6 +33,10 @@ use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
 use Virgil\Sdk\Client\VirgilClientInterface;
 
+use Virgil\Sdk\Client\VirgilServices\Model\CardContentModel;
+use Virgil\Sdk\Client\VirgilServices\Model\DeviceInfoModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
+use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
 use Virgil\Sdk\Client\VirgilServices\Model\ValidationModel;
 
 use Virgil\Sdk\Contracts\CryptoInterface;
@@ -245,6 +253,95 @@ class CardsManager implements CardsManagerInterface
         $virgilCards = array_map([$this, 'cardToVirgilCard'], $cards);
 
         return new VirgilCards($this->virgilApiContext, $virgilCards);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function create($identity, $identityType, VirgilKey $ownerKey, array $customFields = [])
+    {
+        return $this->createVirgilCard(
+            $identity,
+            $identityType,
+            $ownerKey,
+            CardScopes::TYPE_APPLICATION,
+            $customFields
+        );
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function createGlobal($identity, $identityType, VirgilKey $ownerKey, array $customFields = [])
+    {
+        return $this->createVirgilCard(
+            $identity,
+            $identityType,
+            $ownerKey,
+            CardScopes::TYPE_GLOBAL,
+            $customFields
+        );
+    }
+
+
+    /**
+     * @param string    $identity
+     * @param string    $identityType
+     * @param VirgilKey $ownerKey
+     * @param string    $cardScope
+     * @param array     $customFields
+     *
+     * @return VirgilCard
+     */
+    protected function createVirgilCard(
+        $identity,
+        $identityType,
+        VirgilKey $ownerKey,
+        $cardScope,
+        array $customFields = []
+    ) {
+        $cardContentModel = new CardContentModel(
+            $identity,
+            $identityType,
+            $ownerKey->exportPublicKey()
+                     ->toBase64(),
+            $cardScope,
+            $customFields,
+            new DeviceInfoModel()
+        );
+
+        $signedRequestMetaModel = new SignedRequestMetaModel([]);
+
+        $signedRequestModel = new SignedRequestModel($cardContentModel, $signedRequestMetaModel);
+
+        $contentSnapshot = $signedRequestModel->getSnapshot();
+
+        $contentSnapshotFingerprint = $this->virgilCrypto->calculateFingerprint($contentSnapshot);
+
+        $cardId = $contentSnapshotFingerprint->toHex();
+
+        $ownerSignature = $ownerKey->sign($contentSnapshot);
+
+        $card = new Card(
+            $cardId,
+            Buffer::fromBase64($contentSnapshot),
+            $cardContentModel->getIdentity(),
+            $cardContentModel->getIdentityType(),
+            Buffer::fromBase64($cardContentModel->getPublicKey()),
+            $cardContentModel->getScope(),
+            $cardContentModel->getData(),
+            $cardContentModel->getInfo()
+                             ->getDevice(),
+            $cardContentModel->getInfo()
+                             ->getDeviceName(),
+            'v4',
+            [$cardId => $ownerSignature],
+            new DateTime()
+        );
+
+        return $this->cardToVirgilCard($card);
     }
 
 

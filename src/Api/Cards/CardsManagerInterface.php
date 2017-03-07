@@ -14,6 +14,35 @@ use Virgil\Sdk\Client\Card\CardSerializerInterface;
  */
 interface CardsManagerInterface
 {
+
+    /**
+     * Creates a new virgil card that is representing user's Public key and information
+     * about identity. This card has to be published to the Virgil's services.
+     *
+     * @param string    $identity
+     * @param string    $identityType
+     * @param VirgilKey $ownerKey
+     * @param array     $customFields
+     *
+     * @return VirgilCard
+     */
+    public function create($identity, $identityType, VirgilKey $ownerKey, array $customFields = []);
+
+
+    /**
+     * Creates a new global virgil card that is representing user's
+     * Public key and information about identity.
+     *
+     * @param string    $identity
+     * @param string    $identityType
+     * @param VirgilKey $ownerKey
+     * @param array     $customFields
+     *
+     * @return VirgilCard
+     */
+    public function createGlobal($identity, $identityType, VirgilKey $ownerKey, array $customFields = []);
+
+
     /**
      * Imports a virgil card from string representation.
      *

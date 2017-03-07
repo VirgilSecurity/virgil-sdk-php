@@ -47,11 +47,8 @@ class VirgilCard implements VirgilCardInterface
     public function __construct(VirgilApiContextInterface $virgilApiContext, Card $card)
     {
         $this->virgilCrypto = $virgilApiContext->getCrypto();
-
         $this->virgilClient = $virgilApiContext->getClient();
-
         $this->cardSerializer = Base64CardSerializer::create();
-
         $this->card = $card;
     }
 
