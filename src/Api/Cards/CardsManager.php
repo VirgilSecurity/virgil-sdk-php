@@ -10,17 +10,22 @@ use Virgil\Sdk\Api\Keys\VirgilKey;
 
 use Virgil\Sdk\Api\VirgilApiContextInterface;
 
+use Virgil\Sdk\Client\Card;
+
 use Virgil\Sdk\Client\Card\Base64CardSerializer;
 use Virgil\Sdk\Client\Card\CardMapperInterface;
 use Virgil\Sdk\Client\Card\CardSerializerInterface;
 use Virgil\Sdk\Client\Card\PublishRequestCardMapper;
 
+use Virgil\Sdk\Client\Requests\Constants\CardScopes;
 use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
+
 use Virgil\Sdk\Client\Requests\PublishCardRequest;
 use Virgil\Sdk\Client\Requests\PublishGlobalCardRequest;
 use Virgil\Sdk\Client\Requests\RequestSignerInterface;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeGlobalCardRequest;
+use Virgil\Sdk\Client\Requests\SearchCardRequest;
 
 use Virgil\Sdk\Client\VirgilClientInterface;
 
@@ -63,17 +68,11 @@ class CardsManager implements CardsManagerInterface
     public function __construct(VirgilApiContextInterface $virgilApiContext)
     {
         $this->virgilApiContext = $virgilApiContext;
-
         $this->virgilClient = $virgilApiContext->getClient();
-
         $this->requestSigner = $virgilApiContext->getRequestSigner();
-
         $this->credentials = $virgilApiContext->getCredentials();
-
         $this->virgilCrypto = $virgilApiContext->getCrypto();
-
         $this->cardSerializer = Base64CardSerializer::create();
-
         $this->cardMapper = new PublishRequestCardMapper();
     }
 
@@ -85,7 +84,7 @@ class CardsManager implements CardsManagerInterface
     {
         $card = $this->cardSerializer->unserialize($exportedVirgilCard);
 
-        return new VirgilCard($this->virgilApiContext, $card);
+        return $this->cardToVirgilCard($card);
     }
 
 
@@ -201,5 +200,56 @@ class CardsManager implements CardsManagerInterface
         $this->cardMapper = $cardMapper;
 
         return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function get($cardId)
+    {
+        $card = $this->virgilClient->getCard($cardId);
+
+        return $this->cardToVirgilCard($card);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function find(array $identities, $identityType = null)
+    {
+        $searchCardRequest = new SearchCardRequest($identityType, CardScopes::TYPE_APPLICATION);
+
+        $searchCardRequest->setIdentities($identities);
+
+        $cards = $this->virgilClient->searchCards($searchCardRequest);
+
+        $virgilCards = array_map([$this, 'cardToVirgilCard'], $cards);
+
+        return new VirgilCards($this->virgilApiContext, $virgilCards);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function findGlobal(array $identities, $identityType = null)
+    {
+        $searchCardRequest = new SearchCardRequest($identityType, CardScopes::TYPE_GLOBAL);
+
+        $searchCardRequest->setIdentities($identities);
+
+        $cards = $this->virgilClient->searchCards($searchCardRequest);
+
+        $virgilCards = array_map([$this, 'cardToVirgilCard'], $cards);
+
+        return new VirgilCards($this->virgilApiContext, $virgilCards);
+    }
+
+
+    private function cardToVirgilCard(Card $card)
+    {
+        return new VirgilCard($this->virgilApiContext, $card);
     }
 }

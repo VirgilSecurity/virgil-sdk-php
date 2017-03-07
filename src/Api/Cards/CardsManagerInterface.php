@@ -25,6 +25,38 @@ interface CardsManagerInterface
 
 
     /**
+     * Finds virgil cards by specified identities and type in application scope.
+     *
+     * @param string $identityType
+     * @param array  $identities
+     *
+     * @return VirgilCardsInterface
+     */
+    public function find(array $identities, $identityType);
+
+
+    /**
+     * Finds virgil cards by specified identities and type in global scope.
+     *
+     * @param string $identityType
+     * @param array  $identities
+     *
+     * @return VirgilCardsInterface
+     */
+    public function findGlobal(array $identities, $identityType);
+
+
+    /**
+     * Gets a virgil card from Virgil Security services by specified Card ID.
+     *
+     * @param string $cardId
+     *
+     * @return VirgilCardInterface
+     */
+    public function get($cardId);
+
+
+    /**
      * Publishes a virgil card into global Virgil Services scope.
      *
      * @param VirgilCard              $virgilCard
