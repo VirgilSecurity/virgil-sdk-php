@@ -31,12 +31,16 @@ class CardValidator implements CardValidatorInterface
      * Class constructor.
      *
      * @param CryptoInterface $crypto
+     * @param bool            $useBuiltInVerifiers
      */
-    public function __construct(CryptoInterface $crypto)
+    public function __construct(CryptoInterface $crypto, $useBuiltInVerifiers = true)
     {
         $this->crypto = $crypto;
-        $publicKey = $crypto->importPublicKey(Buffer::fromBase64(self::SERVICE_PUBLIC_KEY));
-        $this->addVerifier(self::SERVICE_CARD_ID, $publicKey);
+
+        if ($useBuiltInVerifiers) {
+            $publicKey = $crypto->importPublicKey(Buffer::fromBase64(self::SERVICE_PUBLIC_KEY));
+            $this->addVerifier(self::SERVICE_CARD_ID, $publicKey);
+        }
     }
 
 
@@ -45,7 +49,10 @@ class CardValidator implements CardValidatorInterface
      */
     public function validate(Card $card)
     {
-        $fingerprint = $this->crypto->calculateFingerprint($card->getSnapshot()->getData());
+        $fingerprint = $this->crypto->calculateFingerprint(
+            $card->getSnapshot()
+                 ->getData()
+        );
         $fingerprintHex = $fingerprint->toHex();
         $exceptionMessage = 'Card signs with id ' . $card->getId() . ' are invalid.';
 

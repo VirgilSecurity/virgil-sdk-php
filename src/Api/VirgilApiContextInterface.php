@@ -4,10 +4,12 @@ namespace Virgil\Sdk\Api;
 
 use Virgil\Sdk\Client\VirgilClientInterface;
 
-use Virgil\Sdk\Contracts\CryptoInterface;
-use Virgil\Sdk\Contracts\KeyStorageInterface;
+use Virgil\Sdk\Client\Validator\CardVerifierInfoInterface;
 
 use Virgil\Sdk\Client\Requests\RequestSignerInterface;
+
+use Virgil\Sdk\Contracts\CryptoInterface;
+use Virgil\Sdk\Contracts\KeyStorageInterface;
 
 /**
  * Interface provides virgil api dependencies.
@@ -120,4 +122,24 @@ interface VirgilApiContextInterface
      * @return $this
      */
     public function setRequestSigner(RequestSignerInterface $requestSigner);
+
+
+    /**
+     * Appends additional card verifier.
+     *
+     * @param CardVerifierInfoInterface $cardVerifierInfo
+     *
+     * @return $this
+     */
+    public function appendCardVerifier(CardVerifierInfoInterface $cardVerifierInfo);
+
+
+    /**
+     * If sets true than built in verifiers should be enabled.
+     *
+     * @param bool $flag
+     *
+     * @return $this
+     */
+    public function useBuiltInVerifiers($flag);
 }

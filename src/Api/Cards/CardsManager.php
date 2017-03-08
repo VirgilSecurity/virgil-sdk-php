@@ -88,11 +88,15 @@ class CardsManager implements CardsManagerInterface
 
 
     /**
+     * TODO: add validation
+     *
      * @inheritdoc
      */
     public function import($exportedVirgilCard)
     {
         $card = $this->cardSerializer->unserialize($exportedVirgilCard);
+
+        //$this->virgilClient->validateCard($card);
 
         return $this->cardToVirgilCard($card);
     }

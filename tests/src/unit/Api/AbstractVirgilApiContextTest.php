@@ -63,6 +63,7 @@ abstract class AbstractVirgilApiContextTest extends TestCase
         $virgilApiContext = new VirgilApiContext();
         $virgilApiContext->setKeyStorage($keyStorage);
         $virgilApiContext->setCrypto($crypto);
+        $virgilApiContext->useBuiltInVerifiers(false);
 
         return $virgilApiContext;
     }

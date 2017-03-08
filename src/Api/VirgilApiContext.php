@@ -7,6 +7,10 @@ use Virgil\Sdk\Api\Storage\StubKeyStorage;
 use Virgil\Sdk\Client\Requests\RequestSigner;
 use Virgil\Sdk\Client\Requests\RequestSignerInterface;
 
+use Virgil\Sdk\Client\Validator\CardValidator;
+use Virgil\Sdk\Client\Validator\CardValidatorInterface;
+use Virgil\Sdk\Client\Validator\CardVerifierInfoInterface;
+
 use Virgil\Sdk\Client\VirgilClient;
 use Virgil\Sdk\Client\VirgilClientInterface;
 
@@ -21,6 +25,9 @@ use Virgil\Sdk\Cryptography\VirgilCrypto;
  */
 class VirgilApiContext implements VirgilApiContextInterface
 {
+    /** @var bool $useBuiltInVerifiers */
+    public $useBuiltInVerifiers = true;
+
     /** @var KeyStorageInterface */
     private $keyStorage;
 
@@ -39,6 +46,9 @@ class VirgilApiContext implements VirgilApiContextInterface
     /** @var RequestSignerInterface */
     private $requestSigner;
 
+    /** @var array $cardVerifiers */
+    private $cardVerifiers = [];
+
 
     /**
      * Class constructor.
@@ -47,11 +57,6 @@ class VirgilApiContext implements VirgilApiContextInterface
      */
     public function __construct($accessToken = null)
     {
-        $this->keyStorage = new StubKeyStorage();
-        $this->crypto = new VirgilCrypto();
-        $this->client = VirgilClient::create($accessToken);
-        $this->requestSigner = new RequestSigner($this->crypto);
-
         $this->accessToken = $accessToken;
     }
 
@@ -61,6 +66,10 @@ class VirgilApiContext implements VirgilApiContextInterface
      */
     public function getKeyStorage()
     {
+        if ($this->keyStorage === null) {
+            $this->keyStorage = new StubKeyStorage();
+        }
+
         return $this->keyStorage;
     }
 
@@ -70,6 +79,10 @@ class VirgilApiContext implements VirgilApiContextInterface
      */
     public function getCrypto()
     {
+        if ($this->crypto === null) {
+            $this->crypto = new VirgilCrypto();
+        }
+
         return $this->crypto;
     }
 
@@ -92,6 +105,9 @@ class VirgilApiContext implements VirgilApiContextInterface
     {
         $this->crypto = $crypto;
 
+        $this->requestSigner = null;
+        $this->client = null;
+
         return $this;
     }
 
@@ -101,6 +117,12 @@ class VirgilApiContext implements VirgilApiContextInterface
      */
     public function getClient()
     {
+        if ($this->client === null) {
+            $cardValidator = $this->getCardValidator();
+
+            $this->client = $this->initClient($this->accessToken, $cardValidator);
+        }
+
         return $this->client;
     }
 
@@ -126,13 +148,13 @@ class VirgilApiContext implements VirgilApiContextInterface
 
 
     /**
-     * TODO: after set need rebuild virgil client
-     *
      * @inheritdoc
      */
     public function setAccessToken($accessToken)
     {
         $this->accessToken = $accessToken;
+
+        $this->client = null;
 
         return $this;
     }
@@ -163,6 +185,10 @@ class VirgilApiContext implements VirgilApiContextInterface
      */
     public function getRequestSigner()
     {
+        if ($this->requestSigner === null) {
+            $this->requestSigner = $this->initRequestSigner($this->crypto);
+        }
+
         return $this->requestSigner;
     }
 
@@ -175,5 +201,94 @@ class VirgilApiContext implements VirgilApiContextInterface
         $this->requestSigner = $requestSigner;
 
         return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function appendCardVerifier(CardVerifierInfoInterface $cardVerifierInfo)
+    {
+        $this->cardVerifiers[] = $cardVerifierInfo;
+
+        $this->client = null;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function useBuiltInVerifiers($flag)
+    {
+        $this->useBuiltInVerifiers = $flag;
+
+        $this->client = null;
+
+        return $this;
+    }
+
+
+    /**
+     * Init the virgil client.
+     *
+     * @param string                 $accessToken
+     * @param CardValidatorInterface $cardValidator
+     *
+     * @return VirgilClient
+     */
+    private function initClient($accessToken, CardValidatorInterface $cardValidator)
+    {
+        $virgilClient = VirgilClient::create($accessToken);
+
+        $virgilClient->setCardValidator($cardValidator);
+
+        return $virgilClient;
+    }
+
+
+    /**
+     * Init the card validator.
+     *
+     * @param CryptoInterface $crypto
+     * @param bool            $useBuiltInVerifiers
+     * @param array           $cardVerifiers
+     *
+     * @return CardValidator
+     */
+    private function initCardValidator(CryptoInterface $crypto, $useBuiltInVerifiers = true, array $cardVerifiers = [])
+    {
+        $cardValidator = new CardValidator($crypto, $useBuiltInVerifiers);
+
+        /** @var CardVerifierInfoInterface $cardVerifier */
+        foreach ($cardVerifiers as $cardVerifier) {
+            $verifierPublicKey = $crypto->importPublicKey($cardVerifier->getPublicKeyData());
+            $cardValidator->addVerifier($cardVerifier->getCardId(), $verifierPublicKey);
+        }
+
+        return $cardValidator;
+    }
+
+
+    /**
+     * @return CardValidator
+     */
+    private function getCardValidator()
+    {
+        return $this->initCardValidator($this->getCrypto(), $this->useBuiltInVerifiers, $this->cardVerifiers);
+    }
+
+
+    /**
+     * Init the request signer.
+     *
+     * @param CryptoInterface $crypto
+     *
+     * @return RequestSignerInterface
+     */
+    private function initRequestSigner(CryptoInterface $crypto)
+    {
+        return new RequestSigner($crypto);
     }
 }

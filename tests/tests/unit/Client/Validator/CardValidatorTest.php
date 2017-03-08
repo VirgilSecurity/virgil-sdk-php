@@ -58,6 +58,42 @@ class CardValidatorTest extends BaseTestCase
 
 
     /**
+     * @test
+     */
+    public function validate__cardWithoutApplicationSign__doesNotThrowExceptionIfBuiltInVerifiersIsDisabled()
+    {
+        $validator = $this->createCardValidator(false);
+
+
+        $validator->validate(
+            new Card(
+                'eb95e1b31ff3090598a05bf108c06088af5f70cfd6338924932396e9dfce840a',
+                Buffer::fromBase64(
+                    'eyJpZGVudGl0eSI6ImFsaWNlIiwiaWRlbnRpdHlfdHlwZSI6Im1lbWJlciIsInB1YmxpY19rZXkiOiJNQ293QlFZREsyVndBeUVBWnpCdEVRRVdNUTlWZUpycVNvTzkzOVZSNXFpbWFUczRyZXFlOXV0MVZQaz0iLCJzY29wZSI6ImFwcGxpY2F0aW9uIiwiZGF0YSI6e30sImluZm8iOm51bGx9'
+                ),
+                'alice2',
+                'member',
+                Buffer::fromBase64('MCowBQYDK2VwAyEAZzBtEQEWMQ9VeJrqSoO939VR5qimaTs4reqe9ut1VPk='),
+                CardScopes::TYPE_GLOBAL,
+                [],
+                null,
+                null,
+                '4.0',
+                [
+                    'eb95e1b31ff3090598a05bf108c06088af5f70cfd6338924932396e9dfce840a' => Buffer::fromBase64(
+                        'MFEwDQYJYIZIAWUDBAICBQAEQFpw+jB5eDT1Dj3I2WqCewGqhAdG9f8pncAYeYcWHGWIONZlog1gjBb/y5/km8VbIPjrn4wlF0Ld8L5tRqRZOQM='
+                    ),
+                ],
+                new DateTime()
+            )
+        );
+
+
+        $this->assertTrue(true);
+    }
+
+
+    /**
      * @expectedException \Virgil\Sdk\Client\Validator\CardValidationException
      *
      * @test
@@ -139,10 +175,10 @@ class CardValidatorTest extends BaseTestCase
     }
 
 
-    protected function createCardValidator()
+    protected function createCardValidator($useBuiltInVerifiers = true)
     {
         $crypto = new VirgilCrypto();
 
-        return new CardValidator($crypto);
+        return new CardValidator($crypto, $useBuiltInVerifiers);
     }
 }
