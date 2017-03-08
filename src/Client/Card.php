@@ -11,6 +11,9 @@ use Virgil\Sdk\Contracts\BufferInterface;
  */
 class Card
 {
+    const CARDS_VERSION = '4.0';
+    const LEGACY_CARD_VERSION = '3.0';
+
     /** @var string $id */
     private $id;
 

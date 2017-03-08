@@ -175,6 +175,38 @@ class CardValidatorTest extends BaseTestCase
     }
 
 
+    /**
+     * @test
+     */
+    public function validate__cardLegacy3Version__doesNotThrowExceptionInAllCases()
+    {
+        $validator = $this->createCardValidator();
+
+
+        $validator->validate(
+            new Card(
+                'ee2be60bd1f98564641da899ee37e517540d039ae3668e6261a6642427d4c82a',
+                Buffer::fromBase64(
+                    'eyJpZGVudGl0eSI6ImFsaWNlMiIsImlkZW50aXR5X3R5cGUiOiJtZW1iZXIiLCJwdWJsaWNfa2V5IjoiTUNvd0JRWURLMlZ3QXlFQXB0ZUx6Szh1VGtQRjZmeWJXWHV2VkxUZlJnOUsxY3hnWjZBU1g4VTJiVnM9IiwiZGF0YSI6eyJjdXN0b21EYXRhIjoicXdlcnR5In0sInNjb3BlIjoiZ2xvYmFsIiwiaW5mbyI6eyJkZXZpY2UiOiJpUGhvbmU2cyIsImRldmljZV9uYW1lIjoiU3BhY2UgZ3JleSBvbmUifX0='
+                ),
+                'alice2',
+                'member',
+                Buffer::fromBase64('MCowBQYDK2VwAyEApteLzK8uTkPF6fybWXuvVLTfRg9K1cxgZ6ASX8U2bVs='),
+                CardScopes::TYPE_GLOBAL,
+                ['customData' => 'qwerty'],
+                'iPhone6s',
+                'Space grey one',
+                Card::LEGACY_CARD_VERSION,
+                [],
+                new DateTime()
+            )
+        );
+
+
+        //does not expected thrown exception
+    }
+
+
     protected function createCardValidator($useBuiltInVerifiers = true)
     {
         $crypto = new VirgilCrypto();

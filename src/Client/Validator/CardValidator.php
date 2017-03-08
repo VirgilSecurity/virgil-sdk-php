@@ -49,10 +49,15 @@ class CardValidator implements CardValidatorInterface
      */
     public function validate(Card $card)
     {
+        if ($card->getVersion() == Card::LEGACY_CARD_VERSION) {
+            return $this;
+        }
+
         $fingerprint = $this->crypto->calculateFingerprint(
             $card->getSnapshot()
                  ->getData()
         );
+
         $fingerprintHex = $fingerprint->toHex();
         $exceptionMessage = 'Card signs with id ' . $card->getId() . ' are invalid.';
 

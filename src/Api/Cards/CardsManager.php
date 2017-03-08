@@ -46,8 +46,6 @@ use Virgil\Sdk\Contracts\CryptoInterface;
  */
 class CardsManager implements CardsManagerInterface
 {
-    const CARDS_VERSION = '4.0';
-
     /** @var VirgilApiContextInterface */
     private $virgilApiContext;
 
@@ -342,7 +340,7 @@ class CardsManager implements CardsManagerInterface
                              ->getDevice(),
             $cardContentModel->getInfo()
                              ->getDeviceName(),
-            self::CARDS_VERSION,
+            Card::CARDS_VERSION,
             [$cardId => $ownerSignature],
             new DateTime()
         );
