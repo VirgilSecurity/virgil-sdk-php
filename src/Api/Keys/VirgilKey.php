@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Api\Keys;
 
 
+use Virgil\Sdk\Buffer;
+
 use Virgil\Sdk\Api\Cards\VirgilCardInterface;
 
 use Virgil\Sdk\Api\VirgilApiContextInterface;
@@ -73,15 +75,19 @@ class VirgilKey implements VirgilKeyInterface
      */
     public function sign($content)
     {
-        return $this->crypto->sign($content, $this->privateKey);
+        return $this->crypto->sign((string)$content, $this->privateKey);
     }
 
 
     /**
      * @inheritdoc
      */
-    public function decrypt(BufferInterface $encryptedContent)
+    public function decrypt($encryptedContent)
     {
+        if (!$encryptedContent instanceof BufferInterface) {
+            $encryptedContent = Buffer::fromBase64($encryptedContent);
+        }
+
         return $this->crypto->decrypt($encryptedContent, $this->privateKey);
     }
 
@@ -97,15 +103,19 @@ class VirgilKey implements VirgilKeyInterface
 
         $recipientsPublicKeys = array_map($virgilCardToPublicKey, $recipientsVirgilCard);
 
-        return $this->crypto->signThenEncrypt($content, $this->privateKey, $recipientsPublicKeys);
+        return $this->crypto->signThenEncrypt((string)$content, $this->privateKey, $recipientsPublicKeys);
     }
 
 
     /**
      * @inheritdoc
      */
-    public function decryptThenVerify(BufferInterface $encryptedAndSignedContent, VirgilCardInterface $signerPublicKey)
+    public function decryptThenVerify($encryptedAndSignedContent, VirgilCardInterface $signerPublicKey)
     {
+        if (!$encryptedAndSignedContent instanceof BufferInterface) {
+            $encryptedAndSignedContent = Buffer::fromBase64($encryptedAndSignedContent);
+        }
+
         return $this->crypto->decryptThenVerify(
             $encryptedAndSignedContent,
             $this->privateKey,

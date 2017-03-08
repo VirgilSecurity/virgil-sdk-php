@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Api\Cards;
 
 
-use Virgil\Sdk\Api\VirgilApiContextInterface;
+use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Client\Card;
 
@@ -13,6 +13,8 @@ use Virgil\Sdk\Client\VirgilClientInterface;
 
 use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\CryptoInterface;
+
+use Virgil\Sdk\Api\VirgilApiContextInterface;
 
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationAttempt;
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationOptions;
@@ -102,8 +104,12 @@ class VirgilCard implements VirgilCardInterface
     /**
      * @inheritdoc
      */
-    public function verify($content, BufferInterface $signature)
+    public function verify($content, $signature)
     {
+        if (!$signature instanceof BufferInterface) {
+            $signature = Buffer::fromBase64($signature);
+        }
+
         return $this->virgilCrypto->verify((string)$content, $signature, $this->getPublicKey());
     }
 

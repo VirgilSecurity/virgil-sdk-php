@@ -19,7 +19,6 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
      * @dataProvider encryptContentProvider
      *
      * @param mixed  $content
-     *
      * @param string $stringContentRepresentation
      *
      * @test
@@ -55,9 +54,8 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
      * @dataProvider verifyCipherContentProvider
      *
      * @param mixed           $content
-     *
-     * @param BufferInterface $signature
      * @param string          $stringContentRepresentation
+     * @param BufferInterface $signature
      *
      * @test
      */
@@ -88,13 +86,57 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
     }
 
 
+    /**
+     * @dataProvider verifyCipherContentProvider
+     *
+     * @param mixed           $content
+     * @param string          $stringContentRepresentation
+     * @param BufferInterface $signature
+     *
+     * @param string          $base64EncodedSignature
+     *
+     * @test
+     */
+    public function verify__withBase64EncodedSignature__callsVirgilCryptoVerifyWithBufferSignatureRepresentation(
+        $content,
+        $stringContentRepresentation,
+        $signature,
+        $base64EncodedSignature
+    ) {
+        $aliceCard = $this->createCard(new Buffer('alice-public-key'));
+        $alicePublicKey = $this->createMock(PublicKeyInterface::class);
+
+        $this->crypto->expects($this->once())
+                     ->method('importPublicKey')
+                     ->with($aliceCard->getPublicKeyData())
+                     ->willReturn($alicePublicKey)
+        ;
+
+        $this->crypto->expects($this->once())
+                     ->method('verify')
+                     ->with($stringContentRepresentation, $signature, $alicePublicKey)
+        ;
+
+
+        $aliceVirgilCard = new VirgilCard($this->virgilApiContext, $aliceCard);
+
+
+        $aliceVirgilCard->verify($stringContentRepresentation, $base64EncodedSignature);
+    }
+
+
     public function verifyCipherContentProvider()
     {
         return [
-            [new Buffer('encrypted content'), 'encrypted content', new Buffer('sign')],
-            ['encrypted content', 'encrypted content', new Buffer('sign')],
-            [Buffer::fromHex('656e6372797074656420636f6e74656e74'), 'encrypted content', new Buffer('sign')],
-            [Buffer::fromBase64('ZW5jcnlwdGVkIGNvbnRlbnQ='), 'encrypted content', new Buffer('sign')],
+            [new Buffer('encrypted content'), 'encrypted content', new Buffer('sign'), 'c2lnbg=='],
+            ['encrypted content', 'encrypted content', new Buffer('sign'), 'c2lnbg=='],
+            [
+                Buffer::fromHex('656e6372797074656420636f6e74656e74'),
+                'encrypted content',
+                new Buffer('sign'),
+                'c2lnbg==',
+            ],
+            [Buffer::fromBase64('ZW5jcnlwdGVkIGNvbnRlbnQ='), 'encrypted content', new Buffer('sign'), 'c2lnbg=='],
         ];
     }
 

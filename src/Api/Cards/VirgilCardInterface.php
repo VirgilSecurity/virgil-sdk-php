@@ -50,12 +50,12 @@ interface VirgilCardInterface
     /**
      * Verifies the specified content and signature with current virgil card recipient.
      *
-     * @param mixed           $content
-     * @param BufferInterface $signature
+     * @param mixed $content
+     * @param mixed $signature base64 encoded string or Buffer
      *
      * @return bool
      */
-    public function verify($content, BufferInterface $signature);
+    public function verify($content, $signature);
 
 
     /**

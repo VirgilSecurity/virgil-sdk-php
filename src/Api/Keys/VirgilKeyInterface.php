@@ -36,7 +36,7 @@ interface VirgilKeyInterface
     /**
      * Generates a digital signature for specified content using current virgil key.
      *
-     * @param string $content
+     * @param mixed $content
      *
      * @return BufferInterface
      */
@@ -46,11 +46,11 @@ interface VirgilKeyInterface
     /**
      * Decrypts the specified cipher content using virgil key.
      *
-     * @param BufferInterface $encryptedContent
+     * @param mixed $encryptedContent base64 encoded string or Buffer
      *
      * @return BufferInterface
      */
-    public function decrypt(BufferInterface $encryptedContent);
+    public function decrypt($encryptedContent);
 
 
     /**
@@ -65,12 +65,12 @@ interface VirgilKeyInterface
     /**
      * Decrypts and verifies the content.
      *
-     * @param BufferInterface     $encryptedAndSignedContent
+     * @param mixed               $encryptedAndSignedContent base64 encoded string or Buffer
      * @param VirgilCardInterface $signerPublicKey
      *
      * @return BufferInterface
      */
-    public function decryptThenVerify(BufferInterface $encryptedAndSignedContent, VirgilCardInterface $signerPublicKey);
+    public function decryptThenVerify($encryptedAndSignedContent, VirgilCardInterface $signerPublicKey);
 
 
     /**
