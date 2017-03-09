@@ -2,11 +2,24 @@
 namespace Virgil\Sdk\Api\Keys;
 
 
+use Virgil\Sdk\Contracts\BufferInterface;
+
 /**
  * Interface allows manipulate with virgil key by provided methods.
  */
 interface KeysManagerInterface
 {
+    /**
+     * Imports a virgil key from exported buffer.
+     *
+     * @param BufferInterface $virgilKeyBuffer
+     * @param string          $password
+     *
+     * @return VirgilKeyInterface
+     */
+    public function import(BufferInterface $virgilKeyBuffer, $password = '');
+
+
     /**
      * Generates a new virgil key with default parameters.
      *

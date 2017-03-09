@@ -4,6 +4,7 @@ namespace Virgil\Sdk\Api\Keys;
 
 use Virgil\Sdk\Buffer;
 
+use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
 
@@ -72,5 +73,16 @@ class KeysManager implements KeysManagerInterface
         }
 
         $this->keyStorage->delete($keyName);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function import(BufferInterface $virgilKeyBuffer, $password = '')
+    {
+        $privateKey = $this->crypto->importPrivateKey($virgilKeyBuffer, $password);
+
+        return new VirgilKey($this->crypto, $this->keyStorage, $privateKey);
     }
 }
