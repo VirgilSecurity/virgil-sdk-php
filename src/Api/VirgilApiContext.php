@@ -19,6 +19,10 @@ class VirgilApiContext implements VirgilApiContextInterface
     const CardVerifiers = 'card_verifiers';
     const UseBuiltInVerifiers = 'builtin_card_verifiers_enable';
     const Credentials = 'credentials';
+    const KeysPath = 'keys_path';
+
+    /** @var string */
+    private $keysPath;
 
     /** @var bool $useBuiltInVerifiers */
     private $useBuiltInVerifiers = true;
@@ -78,6 +82,10 @@ class VirgilApiContext implements VirgilApiContextInterface
 
         if (array_key_exists(self::UseBuiltInVerifiers, $config)) {
             $virgilApiContext->useBuiltInVerifiers = $config[self::UseBuiltInVerifiers];
+        }
+
+        if (array_key_exists(self::KeysPath, $config)) {
+            $virgilApiContext->keysPath = $config[self::KeysPath];
         }
 
         return $virgilApiContext;
@@ -159,5 +167,14 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function isUseBuiltInVerifiers()
     {
         return $this->useBuiltInVerifiers;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getKeysPath()
+    {
+        return $this->keysPath;
     }
 }

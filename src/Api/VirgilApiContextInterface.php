@@ -78,4 +78,12 @@ interface VirgilApiContextInterface
      * @return bool
      */
     public function isUseBuiltInVerifiers();
+
+
+    /**
+     * Gets a path where virgil keys store.
+     *
+     * @return string
+     */
+    public function getKeysPath();
 }
