@@ -77,33 +77,14 @@ class VirgilClient implements VirgilClientInterface
     /**
      * Class constructor.
      *
-     * @param VirgilClientParamsInterface           $virgilClientParams
-     * @param CardsServiceInterface                 $cardsService
-     * @param RegistrationAuthorityServiceInterface $registrationAuthorityService
-     * @param IdentityServiceInterface              $identityService
+     * @param VirgilClientParamsInterface $virgilClientParams
      */
     public function __construct(
-        VirgilClientParamsInterface $virgilClientParams,
-        CardsServiceInterface $cardsService = null,
-        RegistrationAuthorityServiceInterface $registrationAuthorityService = null,
-        IdentityServiceInterface $identityService = null
+        VirgilClientParamsInterface $virgilClientParams
     ) {
-        if ($cardsService === null) {
-            $cardsService = $this->initializeCardService($virgilClientParams);
-        }
-
-        if ($registrationAuthorityService === null) {
-            $registrationAuthorityService = $this->initializeRegistrationAuthorityService($virgilClientParams);
-        }
-
-        if ($identityService === null) {
-            $identityService = $this->initializeIdentityService($virgilClientParams);
-        }
-
-        $this->cardsService = $cardsService;
-        $this->registrationAuthorityService = $registrationAuthorityService;
-        $this->identityService = $identityService;
-
+        $this->cardsService = $this->initializeCardService($virgilClientParams);;
+        $this->registrationAuthorityService = $this->initializeRegistrationAuthorityService($virgilClientParams);;
+        $this->identityService = $this->initializeIdentityService($virgilClientParams);
         $this->cardMapper = new SignedResponseCardMapper();
         $this->cardValidator = new StubCardValidator();
     }
@@ -258,6 +239,39 @@ class VirgilClient implements VirgilClientInterface
     public function setCardMapper(CardMapperInterface $cardMapper)
     {
         $this->cardMapper = $cardMapper;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setCardsService(CardsServiceInterface $cardsService)
+    {
+        $this->cardsService = $cardsService;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setRegistrationAuthorityService(RegistrationAuthorityServiceInterface $registrationAuthorityService)
+    {
+        $this->registrationAuthorityService = $registrationAuthorityService;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setIdentityService(IdentityServiceInterface $identityService)
+    {
+        $this->identityService = $identityService;
 
         return $this;
     }

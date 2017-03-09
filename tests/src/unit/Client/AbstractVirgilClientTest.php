@@ -1,6 +1,7 @@
 <?php
 namespace Virgil\Sdk\Tests\Unit\Client;
 
+
 use Virgil\Sdk\Tests\BaseTestCase;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceInterface;
@@ -67,12 +68,15 @@ abstract class AbstractVirgilClientTest extends BaseTestCase
         $registrationAuthorityServiceMock,
         $identityServiceMock
     ) {
-        return new VirgilClient(
-            $virgilClientParams,
-            $cardsServiceMock,
-            $registrationAuthorityServiceMock,
-            $identityServiceMock
+        $virgilClient = new VirgilClient(
+            $virgilClientParams
         );
+
+        $virgilClient->setCardsService($cardsServiceMock);
+        $virgilClient->setRegistrationAuthorityService($registrationAuthorityServiceMock);
+        $virgilClient->setIdentityService($identityServiceMock);
+
+        return $virgilClient;
     }
 
 

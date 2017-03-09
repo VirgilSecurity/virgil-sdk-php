@@ -365,10 +365,14 @@ class VirgilCrypto implements CryptoInterface
      * Sets a custom key pair type.
      *
      * @param CryptoServiceInterface $cryptoService
+     *
+     * @return $this
      */
     public function setCryptoService(CryptoServiceInterface $cryptoService)
     {
         $this->cryptoService = $cryptoService;
+
+        return $this;
     }
 
 

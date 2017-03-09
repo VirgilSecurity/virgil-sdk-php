@@ -185,8 +185,10 @@ class VirgilClientValidationTest extends BaseTestCase
 
     private function createVirgilClientWithValidator($cardsServiceMock)
     {
-        $virgilClient = new VirgilClient(new VirgilClientParams(self::VIRGIL_CARDS_ACCESS_TOKEN), $cardsServiceMock);
+        $virgilClient = new VirgilClient(new VirgilClientParams(self::VIRGIL_CARDS_ACCESS_TOKEN));
         $cardValidator = $this->createCardValidator();
+
+        $virgilClient->setCardsService($cardsServiceMock);
         $virgilClient->setCardValidator($cardValidator);
 
         return $virgilClient;

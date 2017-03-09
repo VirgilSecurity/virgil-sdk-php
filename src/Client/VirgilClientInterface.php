@@ -14,6 +14,12 @@ use Virgil\Sdk\Client\Validator\CardValidatorInterface;
 
 use Virgil\Sdk\Client\VirgilServices\UnsuccessfulResponseException;
 
+use Virgil\Sdk\Client\VirgilServices\VirgilCards\CardsServiceInterface;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\IdentityServiceInterface;
+
+use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\RegistrationAuthorityServiceInterface;
+
 /**
  * Interface represents one point access to Virgil Services such as card creation, user identity verification etc.
  */
@@ -136,4 +142,35 @@ interface VirgilClientInterface
      * @return $this
      */
     public function setCardMapper(CardMapperInterface $cardMapper);
+
+
+    /**
+     * Sets custom identity service instance.
+     *
+     * @param IdentityServiceInterface $identityService
+     *
+     * @return $this
+     */
+    public function setIdentityService(IdentityServiceInterface $identityService);
+
+
+    /**
+     * Sets custom registration authority service instance.
+     *
+     * @param RegistrationAuthorityServiceInterface $registrationAuthorityService
+     *
+     * @return $this
+     */
+    public function setRegistrationAuthorityService(RegistrationAuthorityServiceInterface $registrationAuthorityService
+    );
+
+
+    /**
+     * Sets custom cards service instance.
+     *
+     * @param CardsServiceInterface $cardsService
+     *
+     * @return $this
+     */
+    public function setCardsService(CardsServiceInterface $cardsService);
 }
