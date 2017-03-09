@@ -19,6 +19,7 @@ use Virgil\Sdk\Client\Card\CardSerializerInterface;
 use Virgil\Sdk\Client\Card\PublishRequestCardMapper;
 
 use Virgil\Sdk\Client\Requests\Constants\CardScopes;
+use Virgil\Sdk\Client\Requests\Constants\IdentityTypes;
 use Virgil\Sdk\Client\Requests\Constants\RevocationReasons;
 
 use Virgil\Sdk\Client\Requests\PublishCardRequest;
@@ -122,11 +123,6 @@ class CardsManager implements CardsManagerInterface
 
         /** @var PublishGlobalCardRequest $publishGlobalCardRequest */
         $publishGlobalCardRequest = PublishGlobalCardRequest::import($signedRequestModel);
-
-        //TODO: implement this to perform application global card creation
-        //if ($card->getIdentityType() == IdentityTypes::TYPE_APPLICATION) {
-        //    $this->requestSigner->authoritySign($publishGlobalCardRequest, $devPortalId, $dPrivateKeyReference);
-        //}
 
         $publishedCard = $this->virgilClient->publishGlobalCard($publishGlobalCardRequest);
 

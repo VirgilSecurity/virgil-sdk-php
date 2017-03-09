@@ -24,12 +24,11 @@ class VirgilApiContext implements VirgilApiContextInterface
     const KeysPath = 'keys_path';
     const KeyPairType = 'key_pair_type';
 
-    // TODO:define default path
     /** @var string */
     private $keysPath;
 
-    /** @var bool $useBuiltInVerifiers */
-    private $useBuiltInVerifiers = true;
+    /** @var bool */
+    private $useBuiltInVerifiers;
 
     /** @var KeyStorageInterface */
     private $keyStorage;
@@ -43,11 +42,11 @@ class VirgilApiContext implements VirgilApiContextInterface
     /** @var CredentialsInterface */
     private $credentials;
 
-    /** @var array $cardVerifiers */
-    private $cardVerifiers = [];
+    /** @var array */
+    private $cardVerifiers;
 
     /** @var string */
-    private $keyPairType = KeyPairTypes::FAST_EC_ED25519;
+    private $keyPairType;
 
 
     /**
@@ -58,6 +57,10 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function __construct($accessToken = '')
     {
         $this->accessToken = $accessToken;
+        $this->keysPath = $this->createDefaultKeyPath();
+        $this->keyPairType = KeyPairTypes::FAST_EC_ED25519;
+        $this->cardVerifiers = [];
+        $this->useBuiltInVerifiers = true;
     }
 
 
@@ -200,5 +203,17 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function getKeyPairType()
     {
         return $this->keyPairType;
+    }
+
+
+    /**
+     * Creates a default key storage path.
+     *
+     * @return string
+     */
+    private function createDefaultKeyPath()
+    {
+        return rtrim(getenv('HOME'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '.virgil' . DIRECTORY_SEPARATOR .
+               'storage';
     }
 }

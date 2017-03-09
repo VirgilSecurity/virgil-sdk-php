@@ -24,18 +24,20 @@ class FileKeyStorage implements KeyStorageInterface
      */
     public function __construct($keysPath)
     {
-        $keysPath = realpath($keysPath);
+        if (!file_exists($keysPath)) {
+            mkdir($keysPath, 0755, true);
+        }
 
         if (!is_dir($keysPath)) {
             throw new VirgilException('Provided keys storage path should be directory');
         }
 
         if (!is_readable($keysPath)) {
-            throw new VirgilException('Provided keys storage path should be writable');
+            throw new VirgilException('Provided keys storage path should be readable');
         }
 
         if (!is_writeable($keysPath)) {
-            throw new VirgilException('Provided keys storage path should be readable');
+            throw new VirgilException('Provided keys storage path should be writable');
         }
 
         $this->keysPath = $keysPath;
