@@ -86,4 +86,12 @@ interface VirgilApiContextInterface
      * @return string
      */
     public function getKeysPath();
+
+
+    /**
+     * Gets a key pair type.
+     *
+     * @return string
+     */
+    public function getKeyPairType();
 }

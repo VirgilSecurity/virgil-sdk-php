@@ -7,6 +7,8 @@ use Virgil\Sdk\Api\Storage\StubKeyStorage;
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
 
+use Virgil\Sdk\Cryptography\Constants\KeyPairTypes;
+
 use Virgil\Sdk\Cryptography\VirgilCrypto;
 
 /**
@@ -20,6 +22,7 @@ class VirgilApiContext implements VirgilApiContextInterface
     const UseBuiltInVerifiers = 'builtin_card_verifiers_enable';
     const Credentials = 'credentials';
     const KeysPath = 'keys_path';
+    const KeyPairType = 'key_pair_type';
 
     /** @var string */
     private $keysPath;
@@ -42,6 +45,9 @@ class VirgilApiContext implements VirgilApiContextInterface
     /** @var array $cardVerifiers */
     private $cardVerifiers = [];
 
+    /** @var string */
+    private $keyPairType = KeyPairTypes::FAST_EC_ED25519;
+
 
     /**
      * Class constructor.
@@ -51,9 +57,6 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function __construct($accessToken = '')
     {
         $this->accessToken = $accessToken;
-
-        $this->crypto = new VirgilCrypto();
-        $this->keyStorage = new StubKeyStorage();
     }
 
 
@@ -88,6 +91,10 @@ class VirgilApiContext implements VirgilApiContextInterface
             $virgilApiContext->keysPath = $config[self::KeysPath];
         }
 
+        if (array_key_exists(self::KeyPairType, $config)) {
+            $virgilApiContext->keyPairType = $config[self::KeyPairType];
+        }
+
         return $virgilApiContext;
     }
 
@@ -98,6 +105,10 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function getKeyStorage()
     {
 
+        if ($this->keyStorage === null) {
+            $this->keyStorage = new StubKeyStorage();
+        }
+
         return $this->keyStorage;
     }
 
@@ -107,6 +118,9 @@ class VirgilApiContext implements VirgilApiContextInterface
      */
     public function getCrypto()
     {
+        if ($this->crypto === null) {
+            $this->crypto = new VirgilCrypto($this->keyPairType);
+        }
 
         return $this->crypto;
     }
@@ -176,5 +190,14 @@ class VirgilApiContext implements VirgilApiContextInterface
     public function getKeysPath()
     {
         return $this->keysPath;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getKeyPairType()
+    {
+        return $this->keyPairType;
     }
 }
