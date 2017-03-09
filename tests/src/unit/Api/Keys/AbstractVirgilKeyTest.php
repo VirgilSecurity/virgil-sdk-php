@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Tests\Unit\Api\Keys;
 
 
+use PHPUnit_Framework_MockObject_MockObject;
+
 use Virgil\Sdk\Api\Cards\VirgilCardInterface;
 
 use Virgil\Sdk\Api\Keys\VirgilKey;
@@ -10,13 +12,40 @@ use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
-use Virgil\Sdk\Tests\Unit\Api\AbstractVirgilApiContextTest;
+use Virgil\Sdk\Tests\BaseTestCase;
+
+use Virgil\Sdk\Tests\Unit\Api\Asserts\KeysStorageAsserts;
 use Virgil\Sdk\Tests\Unit\Api\Storage\MemoryKeyStorage;
 
-abstract class AbstractVirgilKeyTest extends AbstractVirgilApiContextTest
+abstract class AbstractVirgilKeyTest extends BaseTestCase
 {
+    use KeysStorageAsserts;
+
+    /** @var PHPUnit_Framework_MockObject_MockObject */
+    protected $crypto;
+
+    /** @var PHPUnit_Framework_MockObject_MockObject */
+    protected $keyStorage;
+
+
+    public function setUp()
+    {
+        $this->crypto = $this->createCrypto();
+        $this->keyStorage = $this->createKeyStorage();
+    }
+
+
     /**
-     * @inheritdoc
+     * @return CryptoInterface
+     */
+    protected function createCrypto()
+    {
+        return $this->createMock(CryptoInterface::class);
+    }
+
+
+    /**
+     * @return MemoryKeyStorage
      */
     protected function createKeyStorage()
     {
@@ -31,7 +60,7 @@ abstract class AbstractVirgilKeyTest extends AbstractVirgilApiContextTest
      */
     protected function createVirgilKey(PrivateKeyInterface $privateKey)
     {
-        return new VirgilKey($this->virgilApiContext, $privateKey);
+        return new VirgilKey($this->crypto, $this->keyStorage, $privateKey);
     }
 
 
@@ -50,5 +79,23 @@ abstract class AbstractVirgilKeyTest extends AbstractVirgilApiContextTest
         ;
 
         return $virgilCard;
+    }
+
+
+    /**
+     * @return PrivateKeyInterface
+     */
+    protected function createPrivateKey()
+    {
+        return $this->createMock(PrivateKeyInterface::class);
+    }
+
+
+    /**
+     * @return PublicKeyInterface
+     */
+    protected function createPublicKey()
+    {
+        return $this->createMock(PublicKeyInterface::class);
     }
 }

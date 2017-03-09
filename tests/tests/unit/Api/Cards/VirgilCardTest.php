@@ -2,18 +2,14 @@
 namespace Virgil\Sdk\Tests\Unit\Api\Cards;
 
 
-use Virgil\Sdk\Buffer;
+use PHPUnit_Framework_MockObject_MockObject;
 
-use Virgil\Sdk\Client\Card;
+use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
-use Virgil\Sdk\Api\Cards\VirgilCard;
-
-use Virgil\Sdk\Tests\Unit\Api\AbstractVirgilApiContextTest;
-
-class VirgilCardTest extends AbstractVirgilApiContextTest
+class VirgilCardTest extends AbstractVirgilCardTest
 {
     /**
      * @dataProvider encryptContentProvider
@@ -27,14 +23,11 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
         $content,
         $stringContentRepresentation
     ) {
-        $aliceCard = $this->createCard(new Buffer('alice-public-key'));
+        $aliceCard = $this->createCard();
+        $alicePublicKeyData = new Buffer('alice-public-key');
         $alicePublicKey = $this->createMock(PublicKeyInterface::class);
 
-        $this->crypto->expects($this->once())
-                     ->method('importPublicKey')
-                     ->with($aliceCard->getPublicKeyData())
-                     ->willReturn($alicePublicKey)
-        ;
+        $this->configureGetPublicKey($aliceCard, $alicePublicKey, $alicePublicKeyData);
 
 
         $this->crypto->expects($this->once())
@@ -42,8 +35,7 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
                      ->with($stringContentRepresentation, [$alicePublicKey])
         ;
 
-
-        $aliceVirgilCard = new VirgilCard($this->virgilApiContext, $aliceCard);
+        $aliceVirgilCard = $this->createVirgilCard($aliceCard);
 
 
         $aliceVirgilCard->encrypt($content);
@@ -64,22 +56,18 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
         $stringContentRepresentation,
         $signature
     ) {
-        $aliceCard = $this->createCard(new Buffer('alice-public-key'));
+        $aliceCard = $this->createCard();
+        $alicePublicKeyData = new Buffer('alice-public-key');
         $alicePublicKey = $this->createMock(PublicKeyInterface::class);
 
-        $this->crypto->expects($this->once())
-                     ->method('importPublicKey')
-                     ->with($aliceCard->getPublicKeyData())
-                     ->willReturn($alicePublicKey)
-        ;
+        $this->configureGetPublicKey($aliceCard, $alicePublicKey, $alicePublicKeyData);
 
         $this->crypto->expects($this->once())
                      ->method('verify')
                      ->with($stringContentRepresentation, $signature, $alicePublicKey)
         ;
 
-
-        $aliceVirgilCard = new VirgilCard($this->virgilApiContext, $aliceCard);
+        $aliceVirgilCard = $this->createVirgilCard($aliceCard);
 
 
         $aliceVirgilCard->verify($content, $signature);
@@ -103,22 +91,18 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
         $signature,
         $base64EncodedSignature
     ) {
-        $aliceCard = $this->createCard(new Buffer('alice-public-key'));
+        $aliceCard = $this->createCard();
+        $alicePublicKeyData = new Buffer('alice-public-key');
         $alicePublicKey = $this->createMock(PublicKeyInterface::class);
 
-        $this->crypto->expects($this->once())
-                     ->method('importPublicKey')
-                     ->with($aliceCard->getPublicKeyData())
-                     ->willReturn($alicePublicKey)
-        ;
+        $this->configureGetPublicKey($aliceCard, $alicePublicKey, $alicePublicKeyData);
 
         $this->crypto->expects($this->once())
                      ->method('verify')
                      ->with($stringContentRepresentation, $signature, $alicePublicKey)
         ;
 
-
-        $aliceVirgilCard = new VirgilCard($this->virgilApiContext, $aliceCard);
+        $aliceVirgilCard = $this->createVirgilCard($aliceCard);
 
 
         $aliceVirgilCard->verify($stringContentRepresentation, $base64EncodedSignature);
@@ -152,20 +136,20 @@ class VirgilCardTest extends AbstractVirgilApiContextTest
     }
 
 
-    /**
-     * @param $publicKeyData
-     *
-     * @return Card
-     */
-    protected function createCard($publicKeyData)
-    {
-        $cardMock = $this->createMock(Card::class);
-
-        $cardMock->expects($this->any())
-                 ->method('getPublicKeyData')
-                 ->willReturn($publicKeyData)
+    protected function configureGetPublicKey(
+        PHPUnit_Framework_MockObject_MockObject $aliceCard,
+        $publicKey,
+        BufferInterface $publicKeyData
+    ) {
+        $aliceCard->expects($this->any())
+                  ->method('getPublicKeyData')
+                  ->willReturn($publicKeyData)
         ;
 
-        return $cardMock;
+        $this->crypto->expects($this->once())
+                     ->method('importPublicKey')
+                     ->with($publicKeyData)
+                     ->willReturn($publicKey)
+        ;
     }
 }

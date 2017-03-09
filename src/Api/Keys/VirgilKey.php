@@ -6,8 +6,6 @@ use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Api\Cards\VirgilCardInterface;
 
-use Virgil\Sdk\Api\VirgilApiContextInterface;
-
 use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 use Virgil\Sdk\Api\Storage\KeyEntry;
 
@@ -28,9 +26,6 @@ class VirgilKey implements VirgilKeyInterface
     /** @var KeyStorageInterface */
     private $keyStorage;
 
-    /** @var VirgilApiContextInterface */
-    private $context;
-
     /** @var PrivateKeyInterface */
     private $privateKey;
 
@@ -38,14 +33,17 @@ class VirgilKey implements VirgilKeyInterface
     /**
      * Class constructor.
      *
-     * @param VirgilApiContextInterface $context
-     * @param PrivateKeyInterface       $privateKey
+     * @param CryptoInterface     $crypto
+     * @param KeyStorageInterface $keyStorage
+     * @param PrivateKeyInterface $privateKey
      */
-    public function __construct(VirgilApiContextInterface $context, PrivateKeyInterface $privateKey)
-    {
-        $this->context = $context;
-        $this->crypto = $context->getCrypto();
-        $this->keyStorage = $context->getKeyStorage();
+    public function __construct(
+        CryptoInterface $crypto,
+        KeyStorageInterface $keyStorage,
+        PrivateKeyInterface $privateKey
+    ) {
+        $this->crypto = $crypto;
+        $this->keyStorage = $keyStorage;
         $this->privateKey = $privateKey;
     }
 

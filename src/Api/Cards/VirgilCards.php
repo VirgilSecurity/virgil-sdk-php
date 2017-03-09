@@ -4,8 +4,6 @@ namespace Virgil\Sdk\Api\Cards;
 
 use ArrayObject;
 
-use Virgil\Sdk\Api\VirgilApiContextInterface;
-
 use Virgil\Sdk\Contracts\CryptoInterface;
 
 /**
@@ -20,12 +18,13 @@ class VirgilCards extends ArrayObject implements VirgilCardsInterface
     /**
      * Class constructor.
      *
-     * @param VirgilApiContextInterface $virgilApiContext
-     * @param VirgilCard[]              $virgilCards
+     * @param CryptoInterface $crypto
+     * @param VirgilCard[]    $virgilCards
+     *
      */
-    public function __construct(VirgilApiContextInterface $virgilApiContext, array $virgilCards = [])
+    public function __construct(CryptoInterface $crypto, array $virgilCards = [])
     {
-        $this->virgilCrypto = $virgilApiContext->getCrypto();
+        $this->virgilCrypto = $crypto;
 
         parent::__construct($virgilCards, ArrayObject::ARRAY_AS_PROPS | ArrayObject::STD_PROP_LIST);
     }

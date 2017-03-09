@@ -10,13 +10,10 @@ use Virgil\Sdk\Api\CredentialsInterface;
 
 use Virgil\Sdk\Api\Keys\VirgilKey;
 
-use Virgil\Sdk\Api\VirgilApiContextInterface;
-
 use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Client\Card;
 
-use Virgil\Sdk\Client\Card\Base64CardSerializer;
 use Virgil\Sdk\Client\Card\CardMapperInterface;
 use Virgil\Sdk\Client\Card\CardSerializerInterface;
 use Virgil\Sdk\Client\Card\PublishRequestCardMapper;
@@ -30,6 +27,8 @@ use Virgil\Sdk\Client\Requests\RequestSignerInterface;
 use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeGlobalCardRequest;
 use Virgil\Sdk\Client\Requests\SearchCardRequest;
+
+use Virgil\Sdk\Client\Validator\CardValidatorInterface;
 
 use Virgil\Sdk\Client\VirgilClientInterface;
 
@@ -46,9 +45,6 @@ use Virgil\Sdk\Contracts\CryptoInterface;
  */
 class CardsManager implements CardsManagerInterface
 {
-    /** @var VirgilApiContextInterface */
-    private $virgilApiContext;
-
     /** @var CardSerializerInterface */
     private $cardSerializer;
 
@@ -67,34 +63,49 @@ class CardsManager implements CardsManagerInterface
     /** @var CryptoInterface */
     private $virgilCrypto;
 
+    /** @var CardValidatorInterface */
+    private $cardValidator;
+
 
     /**
      * Class constructor.
      *
-     * @param VirgilApiContextInterface $virgilApiContext
+     * @param VirgilClientInterface   $virgilClient
+     * @param RequestSignerInterface  $requestSigner
+     * @param CardValidatorInterface  $cardValidator
+     * @param CryptoInterface         $crypto
+     * @param CredentialsInterface    $credentials
+     * @param CardSerializerInterface $cardSerializer
+     * @param CardMapperInterface     $cardMapper
      */
-    public function __construct(VirgilApiContextInterface $virgilApiContext)
-    {
-        $this->virgilApiContext = $virgilApiContext;
-        $this->virgilClient = $virgilApiContext->getClient();
-        $this->requestSigner = $virgilApiContext->getRequestSigner();
-        $this->credentials = $virgilApiContext->getCredentials();
-        $this->virgilCrypto = $virgilApiContext->getCrypto();
-        $this->cardSerializer = Base64CardSerializer::create();
-        $this->cardMapper = new PublishRequestCardMapper();
+    public function __construct(
+        VirgilClientInterface $virgilClient,
+        RequestSignerInterface $requestSigner,
+        CardValidatorInterface $cardValidator,
+        CryptoInterface $crypto,
+        CredentialsInterface $credentials,
+        CardSerializerInterface $cardSerializer,
+        CardMapperInterface $cardMapper
+    ) {
+        $this->virgilClient = $virgilClient;
+        $this->requestSigner = $requestSigner;
+        $this->credentials = $credentials;
+        $this->virgilCrypto = $crypto;
+        $this->cardValidator = $cardValidator;
+        $this->cardSerializer = $cardSerializer;
+        $this->cardMapper = $cardMapper;
     }
 
 
     /**
-     * TODO: add validation
-     *
      * @inheritdoc
      */
     public function import($exportedVirgilCard)
     {
         $card = $this->cardSerializer->unserialize($exportedVirgilCard);
 
-        //$this->virgilClient->validateCard($card);
+        //TODO:https://virgil.atlassian.net/browse/SDK-192
+        //$this->cardValidator->validate($card);
 
         return $this->cardToVirgilCard($card);
     }
@@ -111,6 +122,11 @@ class CardsManager implements CardsManagerInterface
 
         /** @var PublishGlobalCardRequest $publishGlobalCardRequest */
         $publishGlobalCardRequest = PublishGlobalCardRequest::import($signedRequestModel);
+
+        //TODO: implement this to perform application global card creation
+        //if ($card->getIdentityType() == IdentityTypes::TYPE_APPLICATION) {
+        //    $this->requestSigner->authoritySign($publishGlobalCardRequest, $devPortalId, $dPrivateKeyReference);
+        //}
 
         $publishedCard = $this->virgilClient->publishGlobalCard($publishGlobalCardRequest);
 
@@ -196,28 +212,6 @@ class CardsManager implements CardsManagerInterface
     /**
      * @inheritdoc
      */
-    public function setCardSerializer(CardSerializerInterface $cardSerializer)
-    {
-        $this->cardSerializer = $cardSerializer;
-
-        return $this;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function setCardMapper(CardMapperInterface $cardMapper)
-    {
-        $this->cardMapper = $cardMapper;
-
-        return $this;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
     public function get($cardId)
     {
         $card = $this->virgilClient->getCard($cardId);
@@ -239,7 +233,7 @@ class CardsManager implements CardsManagerInterface
 
         $virgilCards = array_map([$this, 'cardToVirgilCard'], $cards);
 
-        return new VirgilCards($this->virgilApiContext, $virgilCards);
+        return new VirgilCards($this->virgilCrypto, $virgilCards);
     }
 
 
@@ -256,7 +250,7 @@ class CardsManager implements CardsManagerInterface
 
         $virgilCards = array_map([$this, 'cardToVirgilCard'], $cards);
 
-        return new VirgilCards($this->virgilApiContext, $virgilCards);
+        return new VirgilCards($this->virgilCrypto, $virgilCards);
     }
 
 
@@ -351,6 +345,6 @@ class CardsManager implements CardsManagerInterface
 
     private function cardToVirgilCard(Card $card)
     {
-        return new VirgilCard($this->virgilApiContext, $card);
+        return new VirgilCard($this->virgilCrypto, $this->virgilClient, $this->cardSerializer, $card);
     }
 }

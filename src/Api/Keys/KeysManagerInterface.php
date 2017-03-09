@@ -2,8 +2,6 @@
 namespace Virgil\Sdk\Api\Keys;
 
 
-use Virgil\Sdk\Api\VirgilKeyInterface;
-
 /**
  * Interface allows manipulate with virgil key by provided methods.
  */

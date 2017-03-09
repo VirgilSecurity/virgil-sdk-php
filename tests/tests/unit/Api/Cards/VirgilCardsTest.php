@@ -5,13 +5,10 @@ namespace Virgil\Sdk\Tests\Unit\Api\Cards;
 use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Api\Cards\VirgilCard;
-use Virgil\Sdk\Api\Cards\VirgilCards;
 
 use Virgil\Sdk\Contracts\PublicKeyInterface;
 
-use Virgil\Sdk\Tests\Unit\Api\AbstractVirgilApiContextTest;
-
-class VirgilCardsTest extends AbstractVirgilApiContextTest
+class VirgilCardsTest extends AbstractVirgilCardsTest
 {
     /**
      * @dataProvider encryptContentProvider
@@ -25,8 +22,8 @@ class VirgilCardsTest extends AbstractVirgilApiContextTest
         $content,
         $stringContentRepresentation
     ) {
-        $bobVirgilCard = $this->createVirgilCard(new Buffer('bob-public-key'));
-        $aliceVirgilCard = $this->createVirgilCard(new Buffer('alice-public-key'));
+        $bobVirgilCard = $this->createVirgilCard();
+        $aliceVirgilCard = $this->createVirgilCard();
 
         $alicePublicKey = $this->createMock(PublicKeyInterface::class);
         $bobPublicKey = $this->createMock(PublicKeyInterface::class);
@@ -48,7 +45,7 @@ class VirgilCardsTest extends AbstractVirgilApiContextTest
         ;
 
 
-        $virgilCards = new VirgilCards($this->virgilApiContext, [$bobVirgilCard, $aliceVirgilCard]);
+        $virgilCards = $this->createVirgilCards([$bobVirgilCard, $aliceVirgilCard]);
 
 
         $virgilCards->encrypt($content);
@@ -71,9 +68,9 @@ class VirgilCardsTest extends AbstractVirgilApiContextTest
      */
     protected function createVirgilCard()
     {
-        $cardMock = $this->createMock(VirgilCard::class);
+        $virgilCard = $this->createMock(VirgilCard::class);
 
-        return $cardMock;
+        return $virgilCard;
     }
 
 }

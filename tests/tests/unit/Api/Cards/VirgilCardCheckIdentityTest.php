@@ -2,16 +2,7 @@
 namespace Virgil\Sdk\Tests\Unit\Api\Cards;
 
 
-use Virgil\Sdk\Api\VirgilApiContextInterface;
-
-use Virgil\Sdk\Client\Card;
-use Virgil\Sdk\Client\VirgilClientInterface;
-
-use Virgil\Sdk\Tests\BaseTestCase;
-
-use Virgil\Sdk\Tests\Unit\Api\Cards;
-
-class VirgilCardCheckIdentityTest extends BaseTestCase
+class VirgilCardCheckIdentityTest extends AbstractVirgilCardTest
 {
     /*
      * @test
@@ -25,7 +16,7 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
         $actionId = '202b65f1-ee1c-4cc2-941a-9548c9cded1c';
         $extraFields = [];
 
-        list($card, $virgilApiContext) = $this->create(
+        list($card, $virgilClient) = $this->create(
             $identity,
             $identityType,
             $extraFields,
@@ -33,7 +24,7 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
         );
 
         $expectedIdentityVerificationAttempt = Identity::createIdentityVerificationAttempt(
-            $virgilApiContext->getClient(),
+            $virgilClient,
             $actionId,
             $timeToLive,
             $countToLive,
@@ -41,7 +32,7 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
             $identity
         );
 
-        $virgilCard = Cards::createVirgilCard($virgilApiContext, $card);
+        $virgilCard = $this->createVirgilCard($card);
 
 
         $identityVerificationAttempt = $virgilCard->checkIdentity();
@@ -63,7 +54,7 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
         $actionId = '202b65f1-ee1c-4cc2-941a-9548c9cded1c';
         $extraFields = ['extra_field-1' => 'extra_value'];
 
-        list($card, $virgilApiContext) = $this->create(
+        list($card, $virgilClient) = $this->create(
             $identity,
             $identityType,
             $extraFields,
@@ -71,7 +62,7 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
         );
 
         $expectedIdentityVerificationAttempt = Identity::createIdentityVerificationAttempt(
-            $virgilApiContext->getClient(),
+            $virgilClient,
             $actionId,
             $timeToLive,
             $countToLive,
@@ -79,7 +70,7 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
             $identity
         );
 
-        $virgilCard = Cards::createVirgilCard($virgilApiContext, $card);
+        $virgilCard = $this->createVirgilCard($card);
 
         $identityVerificationOptions = Identity::createIdentityVerificationOptions(
             $extraFields,
@@ -97,65 +88,7 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
 
     protected function create($identity, $identityType, $extraFields, $actionId)
     {
-        $cardMock = $this->createCard($identity, $identityType);
-
-        $virgilClientMock = $this->createVirgilClient($identity, $identityType, $extraFields, $actionId);
-
-        $virgilApiContextMock = $this->createVirgilApiContext($virgilClientMock);
-
-        return [$cardMock, $virgilApiContextMock];
-    }
-
-
-    /**
-     * @param $identity
-     * @param $identityType
-     * @param $extraFields
-     * @param $actionId
-     *
-     * @return VirgilClientInterface
-     */
-    protected function createVirgilClient($identity, $identityType, $extraFields, $actionId)
-    {
-        $virgilClient = $this->createMock(VirgilClientInterface::class);
-
-        $virgilClient->expects($this->any())
-                     ->method('verifyIdentity')
-                     ->with($identity, $identityType, $extraFields)
-                     ->willReturn($actionId)
-        ;
-
-        return $virgilClient;
-    }
-
-
-    /**
-     * @param VirgilClientInterface $virgilClient
-     *
-     * @return VirgilApiContextInterface
-     */
-    protected function createVirgilApiContext(VirgilClientInterface $virgilClient)
-    {
-        $virgilApiContext = $this->createMock(VirgilApiContextInterface::class);
-
-        $virgilApiContext->expects($this->any())
-                         ->method('getClient')
-                         ->willReturn($virgilClient)
-        ;
-
-        return $virgilApiContext;
-    }
-
-
-    /**
-     * @param $identity
-     * @param $identityType
-     *
-     * @return Card
-     */
-    protected function createCard($identity, $identityType)
-    {
-        $cardMock = $this->createMock(Card::class);
+        $cardMock = parent::createCard();
 
         $cardMock->expects($this->any())
                  ->method('getIdentity')
@@ -167,7 +100,12 @@ class VirgilCardCheckIdentityTest extends BaseTestCase
                  ->willReturn($identityType)
         ;
 
-        return $cardMock;
-    }
+        $this->virgilClient->expects($this->any())
+                           ->method('verifyIdentity')
+                           ->with($identity, $identityType, $extraFields)
+                           ->willReturn($actionId)
+        ;
 
+        return [$cardMock, $this->virgilClient];
+    }
 }

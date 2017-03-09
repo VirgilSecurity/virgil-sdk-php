@@ -13,6 +13,7 @@ use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
 use Virgil\Sdk\Client\Validator\CardValidationException;
 use Virgil\Sdk\Client\Validator\CardValidatorInterface;
+use Virgil\Sdk\Client\Validator\StubCardValidator;
 
 use Virgil\Sdk\Client\Http\Curl\CurlClient;
 use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
@@ -104,6 +105,7 @@ class VirgilClient implements VirgilClientInterface
         $this->identityService = $identityService;
 
         $this->cardMapper = new SignedResponseCardMapper();
+        $this->cardValidator = new StubCardValidator();
     }
 
 
@@ -262,25 +264,6 @@ class VirgilClient implements VirgilClientInterface
 
 
     /**
-     * Validate card.
-     *
-     * @param Card $card
-     *
-     * @return $this
-     *
-     * @throws CardValidationException
-     */
-    private function validateCard(Card $card)
-    {
-        if ($this->cardValidator != null) {
-            $this->cardValidator->validate($card);
-        }
-
-        return $this;
-    }
-
-
-    /**
      * Builds and verify card from response model.
      *
      * @param SignedResponseModel $signedResponseModel
@@ -293,7 +276,7 @@ class VirgilClient implements VirgilClientInterface
     {
         $card = $this->cardMapper->toCard($signedResponseModel);
 
-        $this->validateCard($card);
+        $this->cardValidator->validate($card);
 
         return $card;
     }

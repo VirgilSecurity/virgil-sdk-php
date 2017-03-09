@@ -16,7 +16,7 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
     public function export__withEmptyPassword__returnsExportedPrivateKey()
     {
         $expectedPrivateKeyExport = new Buffer('exported_private_key');
-        $privateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $privateKeyMock = $this->createPrivateKey();
 
         $this->crypto->expects($this->once())
                      ->method('exportPrivateKey')
@@ -40,8 +40,8 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
     public function exportPublicKey__withEmptyArgs__returnsExportedPublicKey()
     {
         $expectedPublicKeyExport = new Buffer('exported_public_key');
-        $privateKeyMock = $this->createMock(PrivateKeyInterface::class);
-        $publicKeyMock = $this->createMock(PublicKeyInterface::class);
+        $privateKeyMock = $this->createPrivateKey();
+        $publicKeyMock = $this->createPublicKey();
 
         $this->crypto->expects($this->once())
                      ->method('extractPublicKey')
@@ -79,7 +79,7 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
     ) {
         $expectedSignature = new Buffer('sign');
 
-        $privateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $privateKeyMock = $this->createPrivateKey();
 
         $this->crypto->expects($this->once())
                      ->method('sign')
@@ -102,7 +102,7 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
      */
     public function decrypt__withEncryptedContent__returnsOriginalContent()
     {
-        $privateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $privateKeyMock = $this->createPrivateKey();
         $encryptedContentBuffer = new Buffer('encrypted');
         $expectedOriginalContent = 'original';
 
@@ -132,7 +132,7 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
         $base64cipher = 'ZW5jcnlwdGVk';
         $originalString = 'original';
 
-        $privateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $privateKeyMock = $this->createPrivateKey();
 
         $this->crypto->expects($this->once())
                      ->method('decrypt')
@@ -162,9 +162,9 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
         $content,
         $expectedSignedAndEncryptedContent
     ) {
-        $bobPrivateKeyMock = $this->createMock(PrivateKeyInterface::class);
-        $alicePublicKeyMock = $this->createMock(PublicKeyInterface::class);
-        $alexPublicKeyMock = $this->createMock(PublicKeyInterface::class);
+        $bobPrivateKeyMock = $this->createPrivateKey();
+        $alicePublicKeyMock = $this->createPublicKey();
+        $alexPublicKeyMock = $this->createPublicKey();
 
         $aliceVirgilCard = $this->createVirgilCard($alicePublicKeyMock);
         $alexVirgilCard = $this->createVirgilCard($alexPublicKeyMock);
@@ -193,10 +193,10 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
         $encryptedAndSignedContent = new Buffer('encrypted with sign content');
         $expectedContent = new Buffer('decrypted content');
 
-        $alicePublicKeyMock = $this->createMock(PublicKeyInterface::class);
+        $alicePublicKeyMock = $this->createPublicKey();
         $aliceVirgilCard = $this->createVirgilCard($alicePublicKeyMock);
 
-        $bobPrivateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $bobPrivateKeyMock = $this->createPrivateKey();
         $bobVirgilKey = $this->createVirgilKey($bobPrivateKeyMock);
 
         $this->crypto->expects($this->once())
@@ -223,10 +223,10 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
         $expectedContent = new Buffer('decrypted content');
         $base64EncodedCipherContent = 'ZW5jcnlwdGVkIHdpdGggc2lnbiBjb250ZW50';
 
-        $alicePublicKeyMock = $this->createMock(PublicKeyInterface::class);
+        $alicePublicKeyMock = $this->createPublicKey();
         $aliceVirgilCard = $this->createVirgilCard($alicePublicKeyMock);
 
-        $bobPrivateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $bobPrivateKeyMock = $this->createPrivateKey();
         $bobVirgilKey = $this->createVirgilKey($bobPrivateKeyMock);
 
         $this->crypto->expects($this->once())

@@ -2,11 +2,7 @@
 namespace Virgil\Sdk\Api;
 
 
-use Virgil\Sdk\Client\VirgilClientInterface;
-
 use Virgil\Sdk\Client\Validator\CardVerifierInfoInterface;
-
-use Virgil\Sdk\Client\Requests\RequestSignerInterface;
 
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
@@ -33,14 +29,6 @@ interface VirgilApiContextInterface
 
 
     /**
-     * Gets a Virgil Security services client.
-     *
-     * @return VirgilClientInterface
-     */
-    public function getClient();
-
-
-    /**
      * Sets the custom cryptographic keys storage.
      *
      * @param KeyStorageInterface $keyStorage
@@ -61,41 +49,11 @@ interface VirgilApiContextInterface
 
 
     /**
-     * Sets a Virgil Security services client.
-     *
-     * @param VirgilClientInterface $virgilClient
-     *
-     * @return $this
-     */
-    public function setClient(VirgilClientInterface $virgilClient);
-
-
-    /**
      * Gets application access token.
      *
      * @return string
      */
     public function getAccessToken();
-
-
-    /**
-     * Sets application access token.
-     *
-     * @param string $accessToken
-     *
-     * @return $this
-     */
-    public function setAccessToken($accessToken);
-
-
-    /**
-     * Sets the application authentication credentials.
-     *
-     * @param CredentialsInterface $credentials
-     *
-     * @return $this
-     */
-    public function setCredentials(CredentialsInterface $credentials);
 
 
     /**
@@ -107,39 +65,17 @@ interface VirgilApiContextInterface
 
 
     /**
-     * Gets the card request signer.
+     * Gets a list of card verifiers.
      *
-     * @return RequestSignerInterface
+     * @return CardVerifierInfoInterface[]
      */
-    public function getRequestSigner();
+    public function getCardVerifiers();
 
 
     /**
-     * Sets the card request signer.
+     * Indicates if builtin card verifiers is in use.
      *
-     * @param RequestSignerInterface $requestSigner
-     *
-     * @return $this
+     * @return bool
      */
-    public function setRequestSigner(RequestSignerInterface $requestSigner);
-
-
-    /**
-     * Appends additional card verifier.
-     *
-     * @param CardVerifierInfoInterface $cardVerifierInfo
-     *
-     * @return $this
-     */
-    public function appendCardVerifier(CardVerifierInfoInterface $cardVerifierInfo);
-
-
-    /**
-     * If sets true than built in verifiers should be enabled.
-     *
-     * @param bool $flag
-     *
-     * @return $this
-     */
-    public function useBuiltInVerifiers($flag);
+    public function isUseBuiltInVerifiers();
 }

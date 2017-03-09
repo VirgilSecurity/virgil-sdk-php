@@ -6,11 +6,10 @@ use Virgil\Sdk\Api\Cards\Identity\IdentityValidationToken;
 
 use Virgil\Sdk\Api\Keys\VirgilKey;
 
-use Virgil\Sdk\Client\Card\CardMapperInterface;
-use Virgil\Sdk\Client\Card\CardSerializerInterface;
+use Virgil\Sdk\Client\Validator\CardValidationException;
 
 /**
- * Interface provides methods to work with virigl card.
+ * Interface provides methods to work with virgil card.
  */
 interface CardsManagerInterface
 {
@@ -47,6 +46,8 @@ interface CardsManagerInterface
      * Imports a virgil card from string representation.
      *
      * @param string $exportedVirgilCard
+     *
+     * @throws CardValidationException
      *
      * @return VirgilCardInterface
      */
@@ -130,24 +131,4 @@ interface CardsManagerInterface
      * @return $this
      */
     public function publish(VirgilCard $virgilCard);
-
-
-    /**
-     * Sets custom card serializer.
-     *
-     * @param CardSerializerInterface $cardSerializer
-     *
-     * @return $this
-     */
-    public function setCardSerializer(CardSerializerInterface $cardSerializer);
-
-
-    /**
-     * Sets card mapper for response transformation to card.
-     *
-     * @param CardMapperInterface $cardMapper
-     *
-     * @return $this
-     */
-    public function setCardMapper(CardMapperInterface $cardMapper);
 }

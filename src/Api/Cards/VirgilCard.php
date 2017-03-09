@@ -6,15 +6,12 @@ use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Client\Card;
 
-use Virgil\Sdk\Client\Card\Base64CardSerializer;
 use Virgil\Sdk\Client\Card\CardSerializerInterface;
 
 use Virgil\Sdk\Client\VirgilClientInterface;
 
 use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\CryptoInterface;
-
-use Virgil\Sdk\Api\VirgilApiContextInterface;
 
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationAttempt;
 use Virgil\Sdk\Api\Cards\Identity\IdentityVerificationOptions;
@@ -43,14 +40,20 @@ class VirgilCard implements VirgilCardInterface
     /**
      * Class constructor.
      *
-     * @param VirgilApiContextInterface $virgilApiContext
-     * @param Card                      $card
+     * @param CryptoInterface         $crypto
+     * @param VirgilClientInterface   $virgilClient
+     * @param CardSerializerInterface $cardSerializer
+     * @param Card                    $card
      */
-    public function __construct(VirgilApiContextInterface $virgilApiContext, Card $card)
-    {
-        $this->virgilCrypto = $virgilApiContext->getCrypto();
-        $this->virgilClient = $virgilApiContext->getClient();
-        $this->cardSerializer = Base64CardSerializer::create();
+    public function __construct(
+        CryptoInterface $crypto,
+        VirgilClientInterface $virgilClient,
+        CardSerializerInterface $cardSerializer,
+        Card $card
+    ) {
+        $this->virgilCrypto = $crypto;
+        $this->virgilClient = $virgilClient;
+        $this->cardSerializer = $cardSerializer;
         $this->card = $card;
     }
 
