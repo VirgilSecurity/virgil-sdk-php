@@ -2,7 +2,7 @@
 namespace Virgil\Sdk\Api;
 
 
-use Virgil\Sdk\Api\Storage\StubKeyStorage;
+use Virgil\Sdk\Api\Storage\FileKeyStorage;
 
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
@@ -24,6 +24,7 @@ class VirgilApiContext implements VirgilApiContextInterface
     const KeysPath = 'keys_path';
     const KeyPairType = 'key_pair_type';
 
+    // TODO:define default path
     /** @var string */
     private $keysPath;
 
@@ -106,7 +107,7 @@ class VirgilApiContext implements VirgilApiContextInterface
     {
 
         if ($this->keyStorage === null) {
-            $this->keyStorage = new StubKeyStorage();
+            $this->keyStorage = new FileKeyStorage($this->keysPath);
         }
 
         return $this->keyStorage;
