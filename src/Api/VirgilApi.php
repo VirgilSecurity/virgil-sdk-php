@@ -254,8 +254,8 @@ class VirgilApi implements VirgilApiInterface
         $crypto = $virgilApiContext->getCrypto();
 
         $virgilClient = $this->getClient();
-        $requestSigner = $this->getRequestSigner();
         $cardValidator = $this->getCardValidator();
+        $requestSigner = $this->getRequestSigner();
         $credentials = $virgilApiContext->getCredentials();
         $cardSerializer = $this->getCardSerializer();
         $cardsMapper = $this->getCardsMapper();
@@ -265,6 +265,8 @@ class VirgilApi implements VirgilApiInterface
             $verifierPublicKey = $crypto->importPublicKey($cardVerifier->getPublicKeyData());
             $cardValidator->addVerifier($cardVerifier->getCardId(), $verifierPublicKey);
         }
+
+        $virgilClient->setCardValidator($cardValidator);
 
         return new CardsManager(
             $virgilClient, $requestSigner, $cardValidator, $crypto, $credentials, $cardSerializer, $cardsMapper
