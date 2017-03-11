@@ -25,6 +25,9 @@ use Virgil\Sdk\Client\VirgilClientInterface;
 
 /**
  * Virgil api is a one point to work with Virgil entities that provides high-level API such as cards and keys.
+ *
+ * @property CardsManager Cards
+ * @property KeysManager  Keys
  */
 class VirgilApi implements VirgilApiInterface
 {
