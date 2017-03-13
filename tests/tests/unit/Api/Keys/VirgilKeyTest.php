@@ -2,6 +2,7 @@
 namespace Virgil\Sdk\Tests\Unit\Api\Keys;
 
 
+use Virgil\Sdk\Api\Cards\VirgilCards;
 use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Contracts\BufferInterface;
@@ -178,7 +179,12 @@ class VirgilKeyTest extends AbstractVirgilKeyTest
         $virgilKey = $this->createVirgilKey($bobPrivateKeyMock);
 
 
-        $signedAndEncryptedContent = $virgilKey->signThenEncrypt($content, [$aliceVirgilCard, $alexVirgilCard]);
+        $signedAndEncryptedContent = $virgilKey->signThenEncrypt(
+            $content,
+            new VirgilCards(
+                $this->crypto, [$aliceVirgilCard, $alexVirgilCard]
+            )
+        );
 
 
         $this->assertEquals($expectedSignedAndEncryptedContent, $signedAndEncryptedContent);

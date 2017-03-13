@@ -5,6 +5,7 @@ namespace Virgil\Sdk\Api\Keys;
 use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Api\Cards\VirgilCardInterface;
+use Virgil\Sdk\Api\Cards\VirgilCardsInterface;
 
 use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 use Virgil\Sdk\Api\Storage\KeyEntry;
@@ -93,15 +94,13 @@ class VirgilKey implements VirgilKeyInterface
     /**
      * @inheritdoc
      */
-    public function signThenEncrypt($content, array $recipientsVirgilCard)
+    public function signThenEncrypt($content, VirgilCardsInterface $recipientsVirgilCards)
     {
-        $virgilCardToPublicKey = function (VirgilCardInterface $virgilCard) {
-            return $virgilCard->getPublicKey();
-        };
-
-        $recipientsPublicKeys = array_map($virgilCardToPublicKey, $recipientsVirgilCard);
-
-        return $this->crypto->signThenEncrypt((string)$content, $this->privateKey, $recipientsPublicKeys);
+        return $this->crypto->signThenEncrypt(
+            (string)$content,
+            $this->privateKey,
+            $recipientsVirgilCards->getPublicKeys()
+        );
     }
 
 

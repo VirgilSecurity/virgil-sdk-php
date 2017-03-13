@@ -41,7 +41,7 @@ class RegistrationAuthorityServiceParams extends AbstractServiceParams implement
 
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getCreateUrl()
     {
@@ -50,7 +50,7 @@ class RegistrationAuthorityServiceParams extends AbstractServiceParams implement
 
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getDeleteUrl($id)
     {

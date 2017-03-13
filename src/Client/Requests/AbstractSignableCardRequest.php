@@ -67,6 +67,7 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
      */
     public function export()
     {
+        /** @var AbstractJsonModelMapper $requestModelJsonMapper */
         $requestModelJsonMapper = static::getRequestModelJsonMapper();
 
         return base64_encode($requestModelJsonMapper->toJson($this->getRequestModel()));
