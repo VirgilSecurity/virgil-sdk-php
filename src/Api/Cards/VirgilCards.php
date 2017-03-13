@@ -45,7 +45,7 @@ class VirgilCards extends ArrayObject implements VirgilCardsInterface
     public function getPublicKeys()
     {
         return array_map(
-            function (VirgilCard $virgilCard) {
+            function (VirgilCardInterface $virgilCard) {
                 return $virgilCard->getPublicKey();
             },
             $this->getArrayCopy()

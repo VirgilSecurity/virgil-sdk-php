@@ -28,7 +28,7 @@ interface VirgilApiInterface
      *
      * @return $this
      */
-    public function create($accessToken = null);
+    public static function create($accessToken = null);
 
 
     /**

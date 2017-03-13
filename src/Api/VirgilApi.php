@@ -25,6 +25,9 @@ use Virgil\Sdk\Client\VirgilClientInterface;
 
 /**
  * Virgil api is a one point to work with Virgil entities that provides high-level API such as cards and keys.
+ *
+ * @property CardsManager Cards
+ * @property KeysManager  Keys
  */
 class VirgilApi implements VirgilApiInterface
 {
@@ -67,22 +70,22 @@ class VirgilApi implements VirgilApiInterface
     /**
      * @inheritdoc
      */
-    public function __get($name)
+    public static function create($accessToken = null)
     {
-        $methodName = 'get' . $name;
+        $virgilApiContext = new VirgilApiContext($accessToken);
 
-        return call_user_func([$this, $methodName]);
+        return new self($virgilApiContext);
     }
 
 
     /**
      * @inheritdoc
      */
-    public function create($accessToken = null)
+    public function __get($name)
     {
-        $virgilApiContext = new VirgilApiContext($accessToken);
+        $methodName = 'get' . $name;
 
-        return new self($virgilApiContext);
+        return call_user_func([$this, $methodName]);
     }
 
 

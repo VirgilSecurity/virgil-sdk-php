@@ -3,6 +3,7 @@ namespace Virgil\Sdk\Api\Keys;
 
 
 use Virgil\Sdk\Api\Cards\VirgilCardInterface;
+use Virgil\Sdk\Api\Cards\VirgilCardsInterface;
 
 use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 
@@ -54,12 +55,14 @@ interface VirgilKeyInterface
 
 
     /**
-     * @param mixed                 $content
-     * @param VirgilCardInterface[] $recipientsVirgilCard
+     * Signs then encrypt content for virgil cards.
+     *
+     * @param mixed                $content
+     * @param VirgilCardsInterface $recipientsVirgilCards
      *
      * @return BufferInterface
      */
-    public function signThenEncrypt($content, array $recipientsVirgilCard);
+    public function signThenEncrypt($content, VirgilCardsInterface $recipientsVirgilCards);
 
 
     /**
