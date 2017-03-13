@@ -2,10 +2,12 @@
 namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
+
 /**
  * Class keeps information of any signed response from Virgil Cards Service.
  */
-class SignedResponseModel
+class SignedResponseModel extends AbstractModel
 {
     /** @var string $id */
     private $id;
@@ -78,5 +80,18 @@ class SignedResponseModel
     public function getSnapshot()
     {
         return $this->contentSnapshot;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function jsonSerializeData()
+    {
+        return [
+            JsonProperties::ID_ATTRIBUTE_NAME               => $this->id,
+            JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME => $this->contentSnapshot,
+            JsonProperties::META_ATTRIBUTE_NAME             => $this->meta,
+        ];
     }
 }

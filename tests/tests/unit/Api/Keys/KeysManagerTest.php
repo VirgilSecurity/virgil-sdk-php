@@ -1,5 +1,5 @@
 <?php
-namespace Virgil\Sdk\Tests\Unit\Api\Manager;
+namespace Virgil\Sdk\Tests\Unit\Api\Keys;
 
 
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
@@ -60,7 +60,7 @@ class KeysManagerTest extends AbstractKeysManagerTest
 
 
     /**
-     * @expectedException \Virgil\Sdk\Api\Manager\VirgilKeyIsNotFoundException
+     * @expectedException \Virgil\Sdk\Api\Keys\VirgilKeyIsNotFoundException
      *
      * @test
      */
@@ -95,7 +95,7 @@ class KeysManagerTest extends AbstractKeysManagerTest
 
 
     /**
-     * @expectedException \Virgil\Sdk\Api\Manager\VirgilKeyIsNotFoundException
+     * @expectedException \Virgil\Sdk\Api\Keys\VirgilKeyIsNotFoundException
      *
      * @test
      */

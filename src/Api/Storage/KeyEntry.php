@@ -13,22 +13,17 @@ class KeyEntry
     /** @var mixed */
     private $value;
 
-    /** @var array */
-    private $metadata;
-
 
     /**
      * Class constructor.
      *
      * @param string $name
      * @param mixed  $value
-     * @param array  $metadata
      */
-    public function __construct($name, $value, array $metadata = [])
+    public function __construct($name, $value)
     {
         $this->name = $name;
         $this->value = $value;
-        $this->metadata = $metadata;
     }
 
 
@@ -52,16 +47,4 @@ class KeyEntry
     {
         return $this->value;
     }
-
-
-    /**
-     * Gets the meta data associated with key entry.
-     *
-     * @return array
-     */
-    public function getMetadata()
-    {
-        return $this->metadata;
-    }
-
 }

@@ -48,12 +48,10 @@ class CreateRequestModelMapper extends SignedRequestModelMapper
 
         $requestMeta[] = (array)$cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME];
 
-        if (array_key_exists(JsonProperties::VALIDATION_ATTRIBUTE_NAME, $cardMetaData)) {
+        $cardValidationMetaData = $this->getPropertyValue($cardMetaData[JsonProperties::VALIDATION_ATTRIBUTE_NAME], []);
 
-            $cardValidationMetaData = $cardMetaData[JsonProperties::VALIDATION_ATTRIBUTE_NAME];
-            if (array_key_exists(JsonProperties::TOKEN_ATTRIBUTE_NAME, $cardValidationMetaData)) {
-                $requestMeta[] = new ValidationModel($cardValidationMetaData[JsonProperties::TOKEN_ATTRIBUTE_NAME]);
-            }
+        if (array_key_exists(JsonProperties::TOKEN_ATTRIBUTE_NAME, $cardValidationMetaData)) {
+            $requestMeta[] = new ValidationModel($cardValidationMetaData[JsonProperties::TOKEN_ATTRIBUTE_NAME]);
         }
 
         $cardMetaModel = new SignedRequestMetaModel(...$requestMeta);

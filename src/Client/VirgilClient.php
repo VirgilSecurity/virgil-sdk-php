@@ -2,7 +2,8 @@
 namespace Virgil\Sdk\Client;
 
 
-use Virgil\Sdk\Buffer;
+use Virgil\Sdk\Client\Card\CardMapperInterface;
+use Virgil\Sdk\Client\Card\SignedResponseCardMapper;
 
 use Virgil\Sdk\Client\Requests\PublishGlobalCardRequest;
 use Virgil\Sdk\Client\Requests\RevokeGlobalCardRequest;
@@ -12,6 +13,7 @@ use Virgil\Sdk\Client\Requests\RevokeCardRequest;
 
 use Virgil\Sdk\Client\Validator\CardValidationException;
 use Virgil\Sdk\Client\Validator\CardValidatorInterface;
+use Virgil\Sdk\Client\Validator\StubCardValidator;
 
 use Virgil\Sdk\Client\Http\Curl\CurlClient;
 use Virgil\Sdk\Client\Http\Curl\CurlRequestFactory;
@@ -48,8 +50,9 @@ use Virgil\Sdk\Client\VirgilServices\VirgilRegistrationAuthority\Mapper\ModelMap
 /**
  * Before you can use any Virgil services features in your app, you must first initialize VirgilClient class.
  * You use the VirgilClient object to get access to Create, Revoke and Search for Virgil Cards (Public keys).
+ * Use appropriate methods to verify user identity if needed.
  */
-class VirgilClient
+class VirgilClient implements VirgilClientInterface
 {
     const AUTH_HEADER_FORMAT = 'VIRGIL %s';
 
@@ -67,36 +70,23 @@ class VirgilClient
     /** @var CardValidatorInterface */
     private $cardValidator;
 
+    /** @var SignedResponseCardMapper */
+    private $cardMapper;
+
 
     /**
      * Class constructor.
      *
-     * @param VirgilClientParamsInterface           $virgilClientParams
-     * @param CardsServiceInterface                 $cardsService
-     * @param RegistrationAuthorityServiceInterface $registrationAuthorityService
-     * @param IdentityServiceInterface              $identityService
+     * @param VirgilClientParamsInterface $virgilClientParams
      */
     public function __construct(
-        VirgilClientParamsInterface $virgilClientParams,
-        CardsServiceInterface $cardsService = null,
-        RegistrationAuthorityServiceInterface $registrationAuthorityService = null,
-        IdentityServiceInterface $identityService = null
+        VirgilClientParamsInterface $virgilClientParams
     ) {
-        if ($cardsService === null) {
-            $cardsService = $this->initializeCardService($virgilClientParams);
-        }
-
-        if ($registrationAuthorityService === null) {
-            $registrationAuthorityService = $this->initializeRegistrationAuthorityService($virgilClientParams);
-        }
-
-        if ($identityService === null) {
-            $identityService = $this->initializeIdentityService($virgilClientParams);
-        }
-
-        $this->cardsService = $cardsService;
-        $this->registrationAuthorityService = $registrationAuthorityService;
-        $this->identityService = $identityService;
+        $this->cardsService = $this->initializeCardService($virgilClientParams);;
+        $this->registrationAuthorityService = $this->initializeRegistrationAuthorityService($virgilClientParams);;
+        $this->identityService = $this->initializeIdentityService($virgilClientParams);
+        $this->cardMapper = new SignedResponseCardMapper();
+        $this->cardValidator = new StubCardValidator();
     }
 
 
@@ -114,11 +104,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service searching by search request.
-     *
-     * @param SearchCardRequest $searchCardRequest
-     *
-     * @return Card[]
+     * @inheritdoc
      */
     public function searchCards(SearchCardRequest $searchCardRequest)
     {
@@ -133,11 +119,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service card creation by request.
-     *
-     * @param CreateCardRequest $createCardRequest
-     *
-     * @return Card
+     * @inheritdoc
      */
     public function createCard(CreateCardRequest $createCardRequest)
     {
@@ -148,11 +130,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil RA service global card creation by request.
-     *
-     * @param PublishGlobalCardRequest $publishGlobalCardRequest
-     *
-     * @return Card
+     * @inheritdoc
      */
     public function publishGlobalCard(PublishGlobalCardRequest $publishGlobalCardRequest)
     {
@@ -163,11 +141,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service card revoking by request.
-     *
-     * @param RevokeCardRequest $revokeCardRequest
-     *
-     * @return $this
+     * @inheritdoc
      */
     public function revokeCard(RevokeCardRequest $revokeCardRequest)
     {
@@ -178,11 +152,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil RA global card revoking by request.
-     *
-     * @param RevokeGlobalCardRequest $revokeGlobalCardRequest
-     *
-     * @return $this
+     * @inheritdoc
      */
     public function revokeGlobalCard(RevokeGlobalCardRequest $revokeGlobalCardRequest)
     {
@@ -193,11 +163,7 @@ class VirgilClient
 
 
     /**
-     * Performs the Virgil Cards service card searching by ID.
-     *
-     * @param $id
-     *
-     * @return Card
+     * @inheritdoc
      */
     public function getCard($id)
     {
@@ -208,13 +174,7 @@ class VirgilClient
 
 
     /**
-     * Sends the request for identity verification, that's will be processed depending of specified type.
-     *
-     * @param string $identity
-     * @param string $identityType
-     * @param array  $extraFields
-     *
-     * @return string Returns action id.
+     * @inheritdoc
      */
     public function verifyIdentity($identity, $identityType, array $extraFields = [])
     {
@@ -227,14 +187,7 @@ class VirgilClient
 
 
     /**
-     * Confirms the identity using confirmation code, that has been generated to confirm an identity.
-     *
-     * @param string $actionId
-     * @param string $confirmationCode
-     * @param int    $timeToLive
-     * @param int    $countToLive
-     *
-     * @return string Returns validation token.
+     * @inheritdoc
      */
     public function confirmIdentity($actionId, $confirmationCode, $timeToLive = 3600, $countToLive = 1)
     {
@@ -249,15 +202,7 @@ class VirgilClient
 
 
     /**
-     * Checks if validation token is valid
-     *
-     * @param string $identityType
-     * @param string $identity
-     * @param string $validationToken
-     *
-     * @throws UnsuccessfulResponseException
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isIdentityValid($identityType, $identity, $validationToken)
     {
@@ -278,11 +223,7 @@ class VirgilClient
 
 
     /**
-     * Sets the card validator.
-     *
-     * @param CardValidatorInterface $validator
-     *
-     * @return $this
+     * @inheritdoc
      */
     public function setCardValidator(CardValidatorInterface $validator)
     {
@@ -293,54 +234,44 @@ class VirgilClient
 
 
     /**
-     * Builds card from response model.
-     *
-     * @param SignedResponseModel $responseModel
-     *
-     * @return Card
+     * @inheritdoc
      */
-    private function responseToCard(SignedResponseModel $responseModel)
+    public function setCardMapper(CardMapperInterface $cardMapper)
     {
-        $responseCardModelContent = $responseModel->getCardContent();
-        $responseCardModelContentInfo = $responseCardModelContent->getInfo();
-        $responseCardModelMeta = $responseModel->getMeta();
+        $this->cardMapper = $cardMapper;
 
-        $responseModelSignsToCardSigns = function ($sign) {
-            return Buffer::fromBase64($sign);
-        };
-
-        $cardSigns = array_map($responseModelSignsToCardSigns, $responseCardModelMeta->getSigns());
-
-        return new Card(
-            $responseModel->getId(),
-            Buffer::fromBase64($responseModel->getSnapshot()),
-            $responseCardModelContent->getIdentity(),
-            $responseCardModelContent->getIdentityType(),
-            Buffer::fromBase64($responseCardModelContent->getPublicKey()),
-            $responseCardModelContent->getScope(),
-            $responseCardModelContent->getData(),
-            $responseCardModelContentInfo->getDevice(),
-            $responseCardModelContentInfo->getDeviceName(),
-            $responseCardModelMeta->getCardVersion(),
-            $cardSigns
-        );
+        return $this;
     }
 
 
     /**
-     * Validate card.
-     *
-     * @param Card $card
-     *
-     * @return $this
-     *
-     * @throws CardValidationException
+     * @inheritdoc
      */
-    private function validateCard(Card $card)
+    public function setCardsService(CardsServiceInterface $cardsService)
     {
-        if ($this->cardValidator != null) {
-            $this->cardValidator->validate($card);
-        }
+        $this->cardsService = $cardsService;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setRegistrationAuthorityService(RegistrationAuthorityServiceInterface $registrationAuthorityService)
+    {
+        $this->registrationAuthorityService = $registrationAuthorityService;
+
+        return $this;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setIdentityService(IdentityServiceInterface $identityService)
+    {
+        $this->identityService = $identityService;
 
         return $this;
     }
@@ -349,16 +280,17 @@ class VirgilClient
     /**
      * Builds and verify card from response model.
      *
-     * @param SignedResponseModel $responseModel
+     * @param SignedResponseModel $signedResponseModel
      *
      * @return Card
      *
      * @throws CardValidationException
      */
-    private function buildAndVerifyCard(SignedResponseModel $responseModel)
+    private function buildAndVerifyCard(SignedResponseModel $signedResponseModel)
     {
-        $card = $this->responseToCard($responseModel);
-        $this->validateCard($card);
+        $card = $this->cardMapper->toCard($signedResponseModel);
+
+        $this->cardValidator->validate($card);
 
         return $card;
     }
@@ -409,7 +341,7 @@ class VirgilClient
 
         $curlRequestFactory = new CurlRequestFactory(self::CURL_FACTORY_OPTIONS);
 
-        $curlClient = new CurlClient($curlRequestFactory, ['Expect'=>'']);
+        $curlClient = new CurlClient($curlRequestFactory, ['Expect' => '']);
 
         $jsonMappers = RegistrationAuthorityModelMappersCollection::getInstance();
 

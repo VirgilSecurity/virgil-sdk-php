@@ -9,8 +9,8 @@ use InvalidArgumentException;
  */
 class VirgilClientParams implements VirgilClientParamsInterface
 {
-    const CARDS_SERVICE_UR = 'https://cards.virgilsecurity.com';
-    const CARDS_RO_SERVICE_UR = 'https://cards-ro.virgilsecurity.com';
+    const CARDS_SERVICE_URL = 'https://cards.virgilsecurity.com';
+    const CARDS_RO_SERVICE_URL = 'https://cards-ro.virgilsecurity.com';
     const IDENTITY_SERVICE_URL = 'https://identity.virgilsecurity.com';
     const REGISTRATION_AUTHORITY_SERVICE_URL = 'https://ra.virgilsecurity.com';
 
@@ -41,8 +41,8 @@ class VirgilClientParams implements VirgilClientParamsInterface
      */
     public function __construct(
         $accessToken = null,
-        $cardsServiceAddress = self::CARDS_SERVICE_UR,
-        $readOnlyCardsServiceAddress = self::CARDS_RO_SERVICE_UR,
+        $cardsServiceAddress = self::CARDS_SERVICE_URL,
+        $readOnlyCardsServiceAddress = self::CARDS_RO_SERVICE_URL,
         $identityServiceAddress = self::IDENTITY_SERVICE_URL,
         $registrationAuthorityServiceAddress = self::REGISTRATION_AUTHORITY_SERVICE_URL
     ) {

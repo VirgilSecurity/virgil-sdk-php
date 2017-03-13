@@ -25,7 +25,6 @@ class RequestSignerTest extends BaseTestCase
     {
         /** @var VirgilCrypto $cryptoMock */
         $cryptoMock = $this->getMockBuilder(VirgilCrypto::class)
-                           ->setConstructorArgs([new VirgilCryptoService()])
                            ->setMethods(['sign'])
                            ->getMock()
         ;
@@ -62,7 +61,6 @@ class RequestSignerTest extends BaseTestCase
     {
         /** @var VirgilCrypto $cryptoMock */
         $cryptoMock = $this->getMockBuilder(VirgilCrypto::class)
-                           ->setConstructorArgs([new VirgilCryptoService()])
                            ->setMethods(['sign'])
                            ->getMock()
         ;

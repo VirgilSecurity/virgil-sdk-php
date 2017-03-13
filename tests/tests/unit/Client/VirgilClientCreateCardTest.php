@@ -83,6 +83,7 @@ class VirgilClientCreateCardTest extends AbstractVirgilClientTest
                     'Space grey one',
                     'v4',
                     ['sign-id-3' => Buffer::fromBase64('X3NpZ24z')],
+                    new DateTime('2016-11-04T13:16:17+0000'),
                 ],
                 [
                     [
@@ -132,6 +133,7 @@ class VirgilClientCreateCardTest extends AbstractVirgilClientTest
                     null,
                     'v4',
                     ['sign-id-3' => Buffer::fromBase64('X3NpZ24z')],
+                    new DateTime('2016-11-04T13:16:17+0000')
                 ],
                 [
                     ['alice2', 'member', base64_encode('public-key-2'), CardScopes::TYPE_GLOBAL],

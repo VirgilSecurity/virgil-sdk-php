@@ -15,7 +15,7 @@ class CardsErrorMessages extends AbstractErrorMessages
     protected function getErrorsList()
     {
         return [
-            10000 => "Internal application error. You know, shit happens, so do internal server errors.Just take a deep breath and try harder.",
+            10000 => "Internal application error.",
             20300 => "The Virgil access token was not specified or is invalid",
             20301 => "The Virgil authenticator service responded with an error",
             20302 => "The Virgil access token validation has failed on the Virgil Authenticator service",
@@ -49,7 +49,7 @@ class CardsErrorMessages extends AbstractErrorMessages
             30127 => "SCR sign item signed digest is invalid for the Virgil Card public key",
             30128 => "SCR sign item signed digest is invalid for the application",
             30131 => "Virgil Card id specified in the request body must match with the one passed in the URL",
-            30134 => "Virgil Card data parameters key must be aplphanumerical",
+            30134 => "Virgil Card data parameters key must be alphanumerical",
             30135 => "Virgil Card validation token must be an object with value parameter",
             30136 => "SCR sign item signed digest is invalid for the virgil identity service",
             30137 => "Global Virgil Card cannot be created unconfirmed(which means that Virgil Identity service sign is mandatory)",

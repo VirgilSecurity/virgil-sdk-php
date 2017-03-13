@@ -26,9 +26,9 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
 
 
     /**
-     * Imports card request from base64 json string.
+     * Imports card request from base64 json string or signed request model.
      *
-     * @param string $exportedSignedRequestModel base64 encoded request.
+     * @param mixed $exportedSignedRequestModel base64 encoded request or request model.
      *
      * @return AbstractSignableCardRequest
      */
@@ -37,20 +37,24 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
         /** @var AbstractJsonModelMapper $requestModelJsonMapper */
         $requestModelJsonMapper = static::getRequestModelJsonMapper();
 
-        $modelJson = base64_decode($exportedSignedRequestModel);
-        $model = $requestModelJsonMapper->toModel($modelJson);
+        if ($exportedSignedRequestModel instanceof SignedRequestModel) {
+            $signedRequestModel = $exportedSignedRequestModel;
+        } else {
+            $modelJson = base64_decode($exportedSignedRequestModel);
+            $signedRequestModel = $requestModelJsonMapper->toModel($modelJson);
+        }
 
         /** @var AbstractSignableCardRequest $request */
-        $request = static::buildRequestFromRequestModel($model);
+        $request = static::buildRequestFromRequestModel($signedRequestModel);
 
         /** @var SignedRequestMetaModel $meta */
-        $meta = $model->getRequestMeta();
+        $meta = $signedRequestModel->getRequestMeta();
         foreach ($meta->getSigns() as $signKey => $sign) {
             $request->appendSignature($signKey, Buffer::fromBase64($sign));
         }
 
         //rewrite content snapshot to received one
-        $request->contentSnapshot = $model->getSnapshot();
+        $request->contentSnapshot = $signedRequestModel->getSnapshot();
 
         return $request;
     }
@@ -63,6 +67,7 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
      */
     public function export()
     {
+        /** @var AbstractJsonModelMapper $requestModelJsonMapper */
         $requestModelJsonMapper = static::getRequestModelJsonMapper();
 
         return base64_encode($requestModelJsonMapper->toJson($this->getRequestModel()));

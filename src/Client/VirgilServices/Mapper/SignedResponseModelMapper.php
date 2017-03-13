@@ -38,14 +38,14 @@ class SignedResponseModelMapper extends AbstractJsonModelMapper
     {
         $data = json_decode($json, true);
         $cardContentJson = base64_decode($data[JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME]);
-        $cardMetaData = $data[JsonProperties::META_ATTRIBUTE_NAME];
+        $cardMetaData = $this->getPropertyValue($data[JsonProperties::META_ATTRIBUTE_NAME], []);
 
         $cardContentModel = $this->cardContentModelMapper->toModel($cardContentJson);
 
         $cardMetaModel = new SignedResponseMetaModel(
-            (array)$cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME],
-            new DateTime($cardMetaData[JsonProperties::CREATED_AT_ATTRIBUTE_NAME]),
-            $cardMetaData[JsonProperties::CARD_VERSION_ATTRIBUTE_NAME]
+            $this->getPropertyValue($cardMetaData[JsonProperties::SIGNS_ATTRIBUTE_NAME], []),
+            new DateTime($this->getPropertyValue($cardMetaData[JsonProperties::CREATED_AT_ATTRIBUTE_NAME])),
+            $this->getPropertyValue($cardMetaData[JsonProperties::CARD_VERSION_ATTRIBUTE_NAME])
         );
 
         return new SignedResponseModel(

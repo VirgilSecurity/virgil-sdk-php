@@ -15,7 +15,7 @@ class RegistrationAuthorityErrorMessages extends AbstractErrorMessages
     public function getErrorsList()
     {
         return [
-            10000 => "Internal application error. You know, shit happens, so do internal server errors. Just take a deep breath and try harder.",
+            10000 => "Internal application error.",
             20300 => "The Virgil access token or token header was not specified or is invalid",
             20301 => "The Virgil authenticator service responded with an error",
             20302 => "The Virgil access token validation has failed on the Virgil Authenticator service",
@@ -44,9 +44,9 @@ class RegistrationAuthorityErrorMessages extends AbstractErrorMessages
             30123 => "SCR signs list parameter is missing or is invalid",
             30128 => "SCR sign item is invalid or missing for the application",
             30131 => "Virgil Card id specified in the request body must match with the one passed in the URL",
-            30134 => "Virgil Card data parameters key must be aplphanumerical",
-            30138 => "Virigl Card with the same fingerprint exists already",
-            30139 => "Virigl Card revocation reason isn't specified or is invalid",
+            30134 => "Virgil Card data parameters key must be alphanumerical",
+            30138 => "Virgil Card with the same fingerprint exists already",
+            30139 => "Virgil Card revocation reason isn't specified or is invalid",
             30140 => "SCR sign validation failed",
             30141 => "SCR one of signers Virgil Cards is not found",
             30142 => "SCR sign item is invalid or missing for the Client",

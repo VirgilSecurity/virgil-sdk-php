@@ -72,7 +72,8 @@ class VirgilCryptoTest extends BaseTestCase
                           )
         ;
 
-        $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
+        $virgilCrypto = new VirgilCrypto();
+        $virgilCrypto->setCryptoService($cryptoServiceMock);
 
 
         $actualKeys = $virgilCrypto->generateKeys();
@@ -157,7 +158,8 @@ class VirgilCryptoTest extends BaseTestCase
                           ->willReturn('fingerprint_content_hash')
         ;
 
-        $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
+        $virgilCrypto = new VirgilCrypto();
+        $virgilCrypto->setCryptoService($cryptoServiceMock);
 
 
         $fingerprint = $virgilCrypto->calculateFingerprint($content);
@@ -175,7 +177,8 @@ class VirgilCryptoTest extends BaseTestCase
         $content = 'data_to_sign';
 
         $cryptoServiceMock = $this->createPartialMock(VirgilCryptoService::class, ['sign', 'verify']);
-        $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
+        $virgilCrypto = new VirgilCrypto();
+        $virgilCrypto->setCryptoService($cryptoServiceMock);
 
         $privateKey = Buffer::fromBase64('MC4CAQAwBQYDK2VwBCIEIB4bj3f9XEvvM6Z8F42oJr7nHpuBEIxm42Y2CqPtCng5');
         $publicKey = Buffer::fromBase64('MCowBQYDK2VwAyEAX9FREHNOfQ7b1W9b+iSc2rdMhTrZ/HxmHvMuhYiRd9g=');
@@ -218,7 +221,9 @@ class VirgilCryptoTest extends BaseTestCase
         fwrite($source, $content);
 
         $cryptoServiceMock = $this->createPartialMock(VirgilCryptoService::class, ['signStream', 'verifyStream']);
-        $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
+        $virgilCrypto = new VirgilCrypto();
+
+        $virgilCrypto->setCryptoService($cryptoServiceMock);
 
         $privateKey = Buffer::fromBase64('MC4CAQAwBQYDK2VwBCIEIB4bj3f9XEvvM6Z8F42oJr7nHpuBEIxm42Y2CqPtCng5');
         $publicKey = Buffer::fromBase64('MCowBQYDK2VwAyEAX9FREHNOfQ7b1W9b+iSc2rdMhTrZ/HxmHvMuhYiRd9g=');
@@ -278,7 +283,8 @@ class VirgilCryptoTest extends BaseTestCase
             ['computeHash', 'extractPublicKey', 'privateKeyToDER']
         );
 
-        $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
+        $virgilCrypto = new VirgilCrypto();
+        $virgilCrypto->setCryptoService($cryptoServiceMock);
 
         $expectedPrivateKey = Buffer::fromBase64('MC4CAQAwBQYDK2VwBCIEIIZcCzLErF1EscqmXnBauI5GSIcIisbEmGwp+R9MRWW+');
 
@@ -329,7 +335,8 @@ class VirgilCryptoTest extends BaseTestCase
             ]
         );
 
-        $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
+        $virgilCrypto = new VirgilCrypto();
+        $virgilCrypto->setCryptoService($cryptoServiceMock);
 
         $exportedKeyWithPassword = Buffer::fromBase64(
             'MIGhMF0GCSqGSIb3DQEFDTBQMC8GCSqGSIb3DQEFDDAiBBCz/65j81rtPqETLglLsfNkAgIQ7jAKBggqhkiG9w0CCjAdBglghkgBZQMEASoEEMNHmKo5iiy8rHpTDcx2gGMEQAbMHw2wKtL+1Ie1Ij7Ar/52o+bnVCzyXPjfxh91V0eN0Z4mn6NfiNwyYq8HI+khp/xvRYMLQWUTOrgvGhGJ/yk='
@@ -382,7 +389,8 @@ class VirgilCryptoTest extends BaseTestCase
     {
         $cryptoServiceMock = $this->createPartialMock(VirgilCryptoService::class, ['computeHash', 'publicKeyToDER']);
 
-        $virgilCrypto = new VirgilCrypto($cryptoServiceMock);
+        $virgilCrypto = new VirgilCrypto();
+        $virgilCrypto->setCryptoService($cryptoServiceMock);
 
         $expectedPublicKey = Buffer::fromBase64('MCowBQYDK2VwAyEA9cZXjjONZguBy94+59RMQ1xSIE9es2cbCGLsNFM8yls=');
 

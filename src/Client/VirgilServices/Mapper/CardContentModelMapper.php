@@ -28,27 +28,19 @@ class CardContentModelMapper extends AbstractJsonModelMapper
             $cardContentData[JsonProperties::SCOPE_ATTRIBUTE_NAME],
         ];
 
-        if (array_key_exists(JsonProperties::DATA_ATTRIBUTE_NAME, $cardContentData)) {
-            $cardContentModelArguments[] = (array)$cardContentData[JsonProperties::DATA_ATTRIBUTE_NAME];
-        } else {
-            $cardContentModelArguments[] = [];
-        }
+        $cardContentModelArguments[] = $this->getPropertyValue(
+            $cardContentData[JsonProperties::DATA_ATTRIBUTE_NAME],
+            []
+        );
 
-        if (array_key_exists(JsonProperties::INFO_ATTRIBUTE_NAME, $cardContentData)) {
-            $deviceInfoModelArguments = [];
+        $cardInfo = $this->getPropertyValue($cardContentData[JsonProperties::INFO_ATTRIBUTE_NAME], []);
 
-            $cardInfo = $cardContentData[JsonProperties::INFO_ATTRIBUTE_NAME];
+        $deviceInfoModelArguments[] = $this->getPropertyValue($cardInfo[JsonProperties::INFO_DEVICE_ATTRIBUTE_NAME]);
+        $deviceInfoModelArguments[] = $this->getPropertyValue(
+            $cardInfo[JsonProperties::INFO_DEVICE_NAME_ATTRIBUTE_NAME]
+        );
 
-            if (array_key_exists(JsonProperties::INFO_DEVICE_ATTRIBUTE_NAME, $cardInfo)) {
-                $deviceInfoModelArguments[] = $cardInfo[JsonProperties::INFO_DEVICE_ATTRIBUTE_NAME];
-            }
-
-            if (array_key_exists(JsonProperties::INFO_DEVICE_NAME_ATTRIBUTE_NAME, $cardInfo)) {
-                $deviceInfoModelArguments[] = $cardInfo[JsonProperties::INFO_DEVICE_NAME_ATTRIBUTE_NAME];
-            }
-
-            $cardContentModelArguments[] = new DeviceInfoModel(...$deviceInfoModelArguments);
-        }
+        $cardContentModelArguments[] = new DeviceInfoModel(...$deviceInfoModelArguments);
 
         return new CardContentModel(...$cardContentModelArguments);
     }

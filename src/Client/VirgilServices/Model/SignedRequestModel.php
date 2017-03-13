@@ -24,7 +24,7 @@ class SignedRequestModel extends AbstractModel
      *
      * @param AbstractModel          $requestContent
      * @param SignedRequestMetaModel $requestMeta
-     * @param string                 $contentSnapshot
+     * @param string                 $contentSnapshot base64 encoded string
      */
     public function __construct(
         AbstractModel $requestContent,

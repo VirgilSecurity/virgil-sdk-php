@@ -1,10 +1,14 @@
 <?php
-namespace Virgil\Sdk\Api;
+namespace Virgil\Sdk\Api\Keys;
 
+
+use Virgil\Sdk\Api\Cards\VirgilCardInterface;
+use Virgil\Sdk\Api\Cards\VirgilCardsInterface;
 
 use Virgil\Sdk\Api\Storage\InvalidKeyNameException;
 
 use Virgil\Sdk\Contracts\BufferInterface;
+use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 
 /**
@@ -33,7 +37,7 @@ interface VirgilKeyInterface
     /**
      * Generates a digital signature for specified content using current virgil key.
      *
-     * @param string $content
+     * @param mixed $content
      *
      * @return BufferInterface
      */
@@ -43,31 +47,33 @@ interface VirgilKeyInterface
     /**
      * Decrypts the specified cipher content using virgil key.
      *
-     * @param BufferInterface $encryptedContent
+     * @param mixed $encryptedContent base64 encoded string or Buffer
      *
      * @return BufferInterface
      */
-    public function decrypt(BufferInterface $encryptedContent);
+    public function decrypt($encryptedContent);
 
 
     /**
-     * @param mixed                 $content
-     * @param VirgilCardInterface[] $recipientsVirgilCard
+     * Signs then encrypt content for virgil cards.
+     *
+     * @param mixed                $content
+     * @param VirgilCardsInterface $recipientsVirgilCards
      *
      * @return BufferInterface
      */
-    public function signThenEncrypt($content, array $recipientsVirgilCard);
+    public function signThenEncrypt($content, VirgilCardsInterface $recipientsVirgilCards);
 
 
     /**
      * Decrypts and verifies the content.
      *
-     * @param BufferInterface     $encryptedAndSignedContent
+     * @param mixed               $encryptedAndSignedContent base64 encoded string or Buffer
      * @param VirgilCardInterface $signerPublicKey
      *
      * @return BufferInterface
      */
-    public function decryptThenVerify(BufferInterface $encryptedAndSignedContent, VirgilCardInterface $signerPublicKey);
+    public function decryptThenVerify($encryptedAndSignedContent, VirgilCardInterface $signerPublicKey);
 
 
     /**
@@ -81,4 +87,12 @@ interface VirgilKeyInterface
      * @return $this
      */
     public function save($keyName, $password);
+
+
+    /**
+     * Gets a private key.
+     *
+     * @return PrivateKeyInterface
+     */
+    public function getPrivateKey();
 }

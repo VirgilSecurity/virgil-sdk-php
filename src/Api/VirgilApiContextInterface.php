@@ -2,6 +2,8 @@
 namespace Virgil\Sdk\Api;
 
 
+use Virgil\Sdk\Client\Validator\CardVerifierInfoInterface;
+
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
 
@@ -44,4 +46,52 @@ interface VirgilApiContextInterface
      * @return $this
      */
     public function setCrypto(CryptoInterface $crypto);
+
+
+    /**
+     * Gets application access token.
+     *
+     * @return string
+     */
+    public function getAccessToken();
+
+
+    /**
+     * Gets the application authentication credentials.
+     *
+     * @return CredentialsInterface
+     */
+    public function getCredentials();
+
+
+    /**
+     * Gets a list of card verifiers.
+     *
+     * @return CardVerifierInfoInterface[]
+     */
+    public function getCardVerifiers();
+
+
+    /**
+     * Indicates if builtin card verifiers is in use.
+     *
+     * @return bool
+     */
+    public function isUseBuiltInVerifiers();
+
+
+    /**
+     * Gets a path where virgil keys store.
+     *
+     * @return string
+     */
+    public function getKeysPath();
+
+
+    /**
+     * Gets a key pair type.
+     *
+     * @return string
+     */
+    public function getKeyPairType();
 }

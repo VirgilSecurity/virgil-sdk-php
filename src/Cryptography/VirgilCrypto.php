@@ -40,32 +40,29 @@ class VirgilCrypto implements CryptoInterface
     /** @var VirgilCryptoService $cryptoService */
     private $cryptoService;
 
+    /** @var string */
+    private $keyPairType;
+
 
     /**
      * Class constructor.
      *
-     * @param CryptoServiceInterface $cryptoService
+     * @param string $keyPairType
      */
-    public function __construct(CryptoServiceInterface $cryptoService = null)
-    {
-        if ($cryptoService === null) {
-            $cryptoService = new VirgilCryptoService();
-        }
-
-        $this->cryptoService = $cryptoService;
+    public function __construct(
+        $keyPairType = KeyPairTypes::FAST_EC_ED25519
+    ) {
+        $this->keyPairType = $keyPairType;
+        $this->cryptoService = new VirgilCryptoService();
     }
 
 
     /**
-     * Generates the public\private key pair by specific crypto type.
-     *
-     * @param int $keyPairType is one of key pair type constant
-     *
-     * @return VirgilKeyPair
+     * @inheritdoc
      */
-    public function generateKeys($keyPairType = KeyPairTypes::FAST_EC_ED25519)
+    public function generateKeys()
     {
-        $keyPair = $this->cryptoService->generateKeyPair($keyPairType);
+        $keyPair = $this->cryptoService->generateKeyPair($this->keyPairType);
 
         $publicKeyDerEncoded = $this->cryptoService->publicKeyToDer($keyPair->getPublicKey());
         $privateKeyDerEncoded = $this->cryptoService->privateKeyToDer($keyPair->getPrivateKey());
@@ -361,6 +358,32 @@ class VirgilCrypto implements CryptoInterface
         $this->persistKeyEntry($publicKeyReference, $keyEntry);
 
         return $publicKeyReference;
+    }
+
+
+    /**
+     * Sets a custom key pair type.
+     *
+     * @param CryptoServiceInterface $cryptoService
+     *
+     * @return $this
+     */
+    public function setCryptoService(CryptoServiceInterface $cryptoService)
+    {
+        $this->cryptoService = $cryptoService;
+
+        return $this;
+    }
+
+
+    /**
+     * Gets using key pair type.
+     *
+     * @return string
+     */
+    public function getKeyPairType()
+    {
+        return $this->keyPairType;
     }
 
 

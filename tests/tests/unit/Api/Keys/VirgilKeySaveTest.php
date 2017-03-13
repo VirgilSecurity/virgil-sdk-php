@@ -1,8 +1,9 @@
 <?php
-namespace Virgil\Sdk\Tests\Unit\Api;
+namespace Virgil\Sdk\Tests\Unit\Api\Keys;
 
 
 use Virgil\Sdk\Buffer;
+
 use Virgil\Sdk\Contracts\PrivateKeyInterface;
 
 class VirgilKeySaveTest extends AbstractVirgilKeyTest
@@ -18,7 +19,7 @@ class VirgilKeySaveTest extends AbstractVirgilKeyTest
     {
         $privateKeyPassword = 'testPassword';
         $exportedPrivateKeyBuffer = new Buffer('exported_private_key');
-        $privateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $privateKeyMock = $this->createPrivateKey();
 
         $this->crypto->expects($this->once())
                      ->method('exportPrivateKey')
@@ -49,7 +50,7 @@ class VirgilKeySaveTest extends AbstractVirgilKeyTest
     public function save__withInvalidName__throwsException($invalidPrivateKeyName)
     {
         $privateKeyPassword = 'testPassword';
-        $privateKeyMock = $this->createMock(PrivateKeyInterface::class);
+        $privateKeyMock = $this->createPrivateKey();
 
         $virgilKey = $this->createVirgilKey($privateKeyMock);
 

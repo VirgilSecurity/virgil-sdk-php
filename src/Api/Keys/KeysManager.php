@@ -1,24 +1,18 @@
 <?php
-namespace Virgil\Sdk\Api\Manager;
+namespace Virgil\Sdk\Api\Keys;
 
 
 use Virgil\Sdk\Buffer;
 
-use Virgil\Sdk\Api\VirgilApiContextInterface;
-use Virgil\Sdk\Api\VirgilKey;
-
+use Virgil\Sdk\Contracts\BufferInterface;
 use Virgil\Sdk\Contracts\CryptoInterface;
 use Virgil\Sdk\Contracts\KeyStorageInterface;
-
 
 /**
  * Class provides a list of methods to generate the virgil keys and manage them.
  */
 class KeysManager implements KeysManagerInterface
 {
-    /** @var VirgilApiContextInterface */
-    private $context;
-
     /** @var CryptoInterface */
     private $crypto;
 
@@ -29,13 +23,14 @@ class KeysManager implements KeysManagerInterface
     /**
      * Class constructor.
      *
-     * @param VirgilApiContextInterface $virgilApiContext
+     * @param CryptoInterface     $crypto
+     * @param KeyStorageInterface $keyStorage
+     *
      */
-    public function __construct(VirgilApiContextInterface $virgilApiContext)
+    public function __construct(CryptoInterface $crypto, KeyStorageInterface $keyStorage)
     {
-        $this->context = $virgilApiContext;
-        $this->crypto = $virgilApiContext->getCrypto();
-        $this->keyStorage = $virgilApiContext->getKeyStorage();
+        $this->crypto = $crypto;
+        $this->keyStorage = $keyStorage;
     }
 
 
@@ -46,7 +41,7 @@ class KeysManager implements KeysManagerInterface
     {
         $cryptoKeyPair = $this->crypto->generateKeys();
 
-        return new VirgilKey($this->context, $cryptoKeyPair->getPrivateKey());
+        return new VirgilKey($this->crypto, $this->keyStorage, $cryptoKeyPair->getPrivateKey());
     }
 
 
@@ -64,7 +59,7 @@ class KeysManager implements KeysManagerInterface
 
         $importedPrivateKey = $this->crypto->importPrivateKey($keyValue, $keyPassword);
 
-        return new VirgilKey($this->context, $importedPrivateKey);
+        return new VirgilKey($this->crypto, $this->keyStorage, $importedPrivateKey);
     }
 
 
@@ -78,5 +73,16 @@ class KeysManager implements KeysManagerInterface
         }
 
         $this->keyStorage->delete($keyName);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function import(BufferInterface $virgilKeyBuffer, $password = '')
+    {
+        $privateKey = $this->crypto->importPrivateKey($virgilKeyBuffer, $password);
+
+        return new VirgilKey($this->crypto, $this->keyStorage, $privateKey);
     }
 }
