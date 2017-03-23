@@ -61,6 +61,7 @@ class VirgilApiContext implements VirgilApiContextInterface
         $this->keyPairType = KeyPairTypes::FAST_EC_ED25519;
         $this->cardVerifiers = [];
         $this->useBuiltInVerifiers = true;
+        $this->credentials = null;
     }
 
 

@@ -83,7 +83,7 @@ class CardsManager implements CardsManagerInterface
         RequestSignerInterface $requestSigner,
         CardValidatorInterface $cardValidator,
         CryptoInterface $crypto,
-        CredentialsInterface $credentials,
+        CredentialsInterface $credentials = null,
         CardSerializerInterface $cardSerializer,
         CardMapperInterface $cardMapper
     ) {
