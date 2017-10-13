@@ -56,7 +56,7 @@ $exportedCard = $aliceCard->export();
 transmitToServer($exportedCard);
 ```
 
-Use the [approve & publish users guide](/) to publish users Virgil Cards on Virgil Services.
+Use the approve & publish users guide to publish users Virgil Cards on Virgil Services.
 
 ## <a name="head4"></a> Sign Data
 

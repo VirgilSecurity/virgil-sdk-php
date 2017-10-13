@@ -50,7 +50,9 @@ AT.7652ee415726a1f43c7206e4b4bc67ac935b53781f5b43a92540e8aae5381b14
 ### With a Token
 With the Access Token we can initialize the Virgil PFS SDK on the client-side to start doing fun stuff like sending and receiving messages. To initialize the **Virgil SDK** on a client-side you need to use the following code:
 
-#{ import "/guides/configuration/client/__code__/%lang%#initialize_with_token" }
+```php
+$virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
+```
 
 ### Without a Token
 
@@ -58,4 +60,6 @@ In case of a **Global Virgil Card** creation you don't need to initialize the SD
 
 Use the following code to initialize the Virgil SDK without the Access Token.
 
-#{ import "/guides/configuration/client/__code__/%lang%#initialize_without_token" }
+```php
+$virgilApi = VirgilApi::create();
+```
