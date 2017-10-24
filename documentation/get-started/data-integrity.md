@@ -37,7 +37,7 @@ $aliceCard = $virgilApi->Cards->create('alice', 'alice_member', $aliceKey);
 ```
 
 
-Warning: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key, there is no way to recover it.
+**Warning**: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key, there is no way to recover it.
 
 It should be noted that recently created user Virgil Cards will be visible only for application users because they are related to the Application.
 
@@ -56,7 +56,7 @@ $exportedCard = $aliceCard->export();
 transmitToServer($exportedCard);
 ```
 
-Use the approve & publish users guide to publish users Virgil Cards on Virgil Services.
+Use the **approve & publish users guide** to publish users Virgil Cards on Virgil Services.
 
 ## <a name="head4"></a> Sign Data
 

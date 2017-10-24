@@ -1,6 +1,7 @@
 # Creating Card
 
-This guide shows how to create a user's **Virgil Card** – the main entity of **Virgil Services**. Every user/device is represented by Virgil Card with all the necessary information to identify them.
+This guide shows how to create a user's **Virgil Card** – the main entity of **Virgil Services**.
+Every user/device is represented by Virgil Card with all the necessary information to identify them.
 
 Every developer can create a user's **Virgil Card** (visible within the Application) or **Global Virgil Card** (visible to anybody and not related to the Application).
 
@@ -8,7 +9,7 @@ See our [Use Cases](https://github.com/VirgilSecurity/virgil-sdk-php/tree/docs-r
 
 After a Virgil Card is created, it's published at Virgil Card Service, where an owner can find their Virgil Cards at any time.
 
-Warning: You cannot change a Virgil Card's content after it is published.
+**Warning**: You cannot change a Virgil Card's content after it is published.
 
 Each Virgil Card contains a  permanent digital signature that provides data integrity for the Virgil Card over its life-cycle.
 
@@ -55,7 +56,10 @@ Warning: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key
 
 3. Developers have to transmit the Virgil Card to the App's server side where it will be signed, validated and then published on Virgil Services (this is necessary for further operations with the Virgil Card).
 
-#{ import "/guides/virgil_card/__code__/%lang%#export_card" }
+```php
+// export a Virgil Card to its string representation
+$exportedAliceCard = $aliceCard->export();
+```
 
 A user's Virgil Card is related to its Application, so the developer must identify their Application.
 
