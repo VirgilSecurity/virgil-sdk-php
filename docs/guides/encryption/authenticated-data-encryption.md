@@ -47,4 +47,4 @@ $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 
 To load a Virgil Key from a specific storage, developers need to change the storage path during Virgil SDK initialization.
 
-In many cases you will need the receiver's Virgil Cards. See [Finding Cards](/docs/guides/virgil-card/finding-card.md) guide to find them.
+In many cases you will need the receiver's Virgil Cards. See [Finding Card](/docs/guides/virgil-card/finding-card.md) guide to find them.

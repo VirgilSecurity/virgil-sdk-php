@@ -34,4 +34,4 @@ if (!$aliceCard->verify($message, $signature)) {
 }
 ```
 
-See our guide on [Validating Cards](/docs/guides/virgil-card/validating-card.md) for the best practices.
+See our [Validating Card](/docs/guides/virgil-card/validating-card.md) guide for the best practices.
