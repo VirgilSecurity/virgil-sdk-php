@@ -4,7 +4,7 @@ This guide demonstrates how to create a **Global Virgil Card**. The main feature
 
 After a Global Virgil Card was created, it's published at the Virgil Card Service, where an owner can find their Cards at any time.
 
-**Warning**: You can not change a Global Virgil Card's content after its publishing.
+**Warning**: You can not change a Global Virgil Card content after its publishing.
 
 Each Virgil Card contains a permanent digital signature that provides data integrity for the Virgil Card over its life-cycle.
 
