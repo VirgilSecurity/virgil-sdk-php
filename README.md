@@ -133,8 +133,8 @@ Virgil Security has a powerful set of APIs and the documentation to help you get
   * [Encryption](/docs/guides/encryption)
   * [Signature](/docs/guides/signature)
 * [Configuration](/docs/guides/configuration)
-  * [Set Up Client Side](/docs/guides/configuration/client.md)
-  * [Set Up Server Side](/docs/guides/configuration/server.md)
+  * [Set Up Client Side](/docs/guides/configuration/client-configuration.md)
+  * [Set Up Server Side](/docs/guides/configuration/server-configuration.md)
 
 ## License
 
