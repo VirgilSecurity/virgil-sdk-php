@@ -38,7 +38,7 @@ $aliceKey->save('[KEY_NAME]', '[KEY_PASSWORD]');
 $aliceCard = $virgilApi->Cards->create('alice', 'alice_member', $aliceKey);
 ```
 
-Warning: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key, there is no way to recover it.
+**Warning**: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key, there is no way to recover it.
 
 It should be noted that recently created user Virgil Cards will be visible only for application users because they are related to the Application.
 
@@ -78,7 +78,7 @@ $fileBuffer = new Buffer('[FILE_CONTENT_HERE]');
 $cipherFileBuffer = $aliceCards->encrypt($fileBuffer);
 ```
 
-See our [guide](/docs/guides/virgil-card/-card.md) on Finding Cards for best practices on loading Alice's card.
+See our [Finding Cards](/docs/guides/virgil-card/finding-card.md) guide for best practices on loading Alice's card.
 
 ### Storage
 

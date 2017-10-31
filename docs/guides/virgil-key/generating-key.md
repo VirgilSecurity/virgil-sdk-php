@@ -28,7 +28,7 @@ $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 $aliceKey = $virgilApi->Keys->generate();
 ```
 
-Warning: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key, there is no way to recover it.
+**Warning**: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key, there is no way to recover it.
 
 2. To generate a Virgil Key with a specific type, we need to:
 
