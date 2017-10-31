@@ -10,7 +10,7 @@ To initialize and use Virgil SDK, you need to have [Developer Account](https://d
 
 The Virgil SDK is provided as a package named *virgil/sdk*. The package is distributed via **composer** package management system.
 
-To install package use the command below:
+To install package, use the command below:
 
 1. Go to the your project root directory.
 2. Run
@@ -44,7 +44,7 @@ call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI.
 
 Be sure that you have already registered at the [Dev Portal](https://developer.virgilsecurity.com/account/signin) and created your application.
 
-To initialize the SDK at the __Client Side__ you need only the __Access Token__ created for a client at [Dev Portal](https://developer.virgilsecurity.com/account/signin). The Access Token helps to authenticate client's requests.
+To initialize the SDK at the __Client Side__, you need only the __Access Token__ created for a client at [Dev Portal](https://developer.virgilsecurity.com/account/signin). The Access Token helps to authenticate client's requests.
 
 ```php
 use Virgil\Sdk\Api\VirgilApi;
@@ -53,7 +53,7 @@ $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 ```
 
 
-To initialize the SDK at the __Server Side__ you need the application credentials (__Access Token__, __App ID__, __App Key__ and __App Key Password__) you got during Application registration at the [Dev Portal](https://developer.virgilsecurity.com/account/signin).
+To initialize the SDK at the __Server Side__, you need the application credentials (__Access Token__, __App ID__, __App Key__ and __App Key Password__) you got during Application registration at the [Dev Portal](https://developer.virgilsecurity.com/account/signin).
 
 ```php
 use Virgil\Sdk\Buffer;
