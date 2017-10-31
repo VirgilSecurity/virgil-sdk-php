@@ -51,7 +51,7 @@ The Virgil Key will be saved into default device storage. Developers can also ch
 **Warning**: Virgil doesn't keep a copy of your Virgil Key. If you lose a Virgil Key, there is no way to recover it.
 
 3. Now, developers can initiate an identity verification process.
-4. A User has to confirm a Virgil Card's identity using a **confirmation code** received by email.
+4. A User has to confirm a Virgil Card identity using a **confirmation code** received by email.
 5. Finally, developers must publish the User's Global Virgil Card on Virgil Services.
 
 ```php
