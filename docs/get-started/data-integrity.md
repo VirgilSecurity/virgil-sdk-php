@@ -12,7 +12,7 @@ Your server should be able to authorize your users, store Application's Virgil K
 
 
 ## <a name="head2"></a> Setup Your Clients
-Set up the client side to provide your users with an access token after their registration at your Application Server to authenticate them for further operations and transmit their **Virgil Cards** to the server. Configure the client side using the [Setup Guide](/docs/guides/configuration/client-configuration.md).
+Set up the client side to provide your users with an access token after their registration at your Application Server to authenticate them for further operations and transmit their Virgil Cards to the server. Configure the client side using the [Setup Guide](/docs/guides/configuration/client-configuration.md).
 
 
 ## <a name="head3"></a> Register Users
@@ -56,7 +56,7 @@ $exportedCard = $aliceCard->export();
 transmitToServer($exportedCard);
 ```
 
-Use the **approve & publish users guide** to publish users Virgil Cards on Virgil Services.
+Use the [approve & publish users](/docs/guides/configuration/server-configuration.md) guide to publish users Virgil Cards on Virgil Services.
 
 ## <a name="head4"></a> Sign Data
 

@@ -36,7 +36,7 @@ $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 Users' Virgil Card creation is carried out on the client side.
 
 2. Once the SDK is ready, we can proceed to the next step:
-  – Generate and save a **Virgil Key** (it's also necessary to enter the Virgil Key's name and password)
+  – Generate and save a Virgil Key (it's also necessary to enter the Virgil Key's name and password)
   – Create a Virgil Card using the recently generated Virgil Key
 
 

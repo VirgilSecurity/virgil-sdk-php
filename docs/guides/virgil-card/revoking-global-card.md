@@ -1,6 +1,6 @@
 # Revoking Global Card
 
-This guide shows how to revoke a **Global Virgil Card**.
+This guide shows how to revoke a Global Virgil Card.
 
 Set up your project environment before you begin to revoke a Global Virgil Card, with the [getting started](/docs/guides/configuration/client-configuration.md) guide.
 
@@ -23,7 +23,7 @@ $virgilApiContext = VirgilApiContext::create(
 $virgilApi = new VirgilApi($virgilApiContext);
 ```
 
-- Load Alice's **Virgil Key** from the secure storage provided by default
+- Load Alice's Virgil Key from the secure storage provided by default
 - Load Alice's Virgil Card from **Virgil Services**
 - Initiate the Card's identity verification process
 - Confirm the Card's identity using a **confirmation code**

@@ -47,7 +47,7 @@ Read more about Virgil Cards and their types [here](/docs/guides/virgil-card/cre
 
 ### Transmit the Cards to Your Server
 
-Next, you must serialize and transmit this Card to your server, where you will Approve & Publish Users' Cards.
+Next, you must serialize and transmit this Card to your server, where you will approve & publish Users' Cards.
 
 ```php
 // export a Virgil Card to its string representation
@@ -57,7 +57,7 @@ $exportedCard = $aliceCard->export();
 transmitToServer($exportedCard);
 ```
 
-Use the [approve & publish users guide](/docs/guides/configuration/server-configuration.md) to publish user's Virgil Card on Virgil Services.
+Use the [approve & publish users](/docs/guides/configuration/server-configuration.md) guide to publish user's Virgil Card on Virgil Services.
 
 
 ## <a name="head4"></a> Encrypt Data
