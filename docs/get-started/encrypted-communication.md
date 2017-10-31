@@ -69,7 +69,7 @@ Use the [approve & publish users guide](/docs/guides/configuration/server-config
 
 With the user's Cards in place, we are now ready to encrypt a message for encrypted communication. In this case, we will encrypt the message using the Recipient's Virgil Card.
 
-As previously noted we encrypt data for secure communication, but a recipient also must be sure that no third party modified any of the message's content and that they can trust a sender, which is why we provide **Data Integrity** by adding a **Digital Signature**. Therefore we must digitally sign data first and then encrypt.
+As previously noted we encrypt data for secure communication, but a recipient also must be sure that no third party modified any of the message's content and that they can trust a sender, which is why we provide **Data Integrity** by adding a **Digital Signature**. Therefore, we must digitally sign data first and then encrypt.
 
 ![Virgil Intro](/docs/img/Guides_introduction.png "Sign & Encrypt")
 
