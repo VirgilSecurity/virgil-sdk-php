@@ -47,8 +47,6 @@ Be sure that you have already registered at the [Dev Portal](https://developer.v
 To initialize the SDK at the __Client Side__, you need only the __Access Token__ created for a client at [Dev Portal](https://developer.virgilsecurity.com/account/signin). The Access Token helps to authenticate client's requests.
 
 ```php
-use Virgil\Sdk\Api\VirgilApi;
-
 $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 ```
 
@@ -56,17 +54,15 @@ $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 To initialize the SDK at the __Server Side__, you need the application credentials (__Access Token__, __App ID__, __App Key__ and __App Key Password__) you got during Application registration at the [Dev Portal](https://developer.virgilsecurity.com/account/signin).
 
 ```php
-use Virgil\Sdk\Buffer;
-
-use Virgil\Sdk\Api\AppCredentials;
-use Virgil\Sdk\Api\VirgilApiContext;
-use Virgil\Sdk\Api\VirgilApi;
-
 $virgilApiContext = VirgilApiContext::create(
     [
-        VirgilApiContext::AccessToken => '[YOUR_ACCESS_TOKEN_HERE]', //sets application access token
-        VirgilApiContext::Credentials => new AppCredentials(        //sets a credentials to work with application virgil cards
-            '[YOUR_APP_ID_HERE]', Buffer::fromBase64('[YOUR_APP_PRIVATE_KEY_HERE]'), '[YOUR_APP_PRIVATE_KEY_PASS_HERE]'
+        // use Application Access Token
+        VirgilApiContext::AccessToken => '[YOUR_ACCESS_TOKEN_HERE]',
+        // user Application's credentials for work with Virgil Cards
+        VirgilApiContext::Credentials => new AppCredentials(        
+            '[YOUR_APP_ID_HERE]', 
+            Buffer::fromBase64('[YOUR_APP_PRIVATE_KEY_HERE]'), 
+            '[YOUR_APP_PRIVATE_KEY_PASS_HERE]'
         ),
     ]
 );
@@ -83,15 +79,15 @@ Virgil Security simplifies adding encryption to any application. With our SDK yo
 ```php
 use Virgil\Sdk\Api\VirgilApi;
 
-// create virgil api
+// create Virgil api
 $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 
-// find Alice's card(s)
+// find Alice's Virigl Card(s) at Virgil Services
 $aliceCards = $virgilApi->Cards->find(['alice']);
 
 $message = 'Hello Alice!';
 
-// encrypt the message using Alice's cards
+// encrypt the message using Alice's Virigl Cards
 $encryptedMessage = $aliceCards->encrypt($message);
 
 // transmit the message with your preferred technology
@@ -104,16 +100,14 @@ Alice uses her Virgil Private Key to decrypt the encrypted message.
 ```php
 use Virgil\Sdk\Api\VirgilApi;
 
-// create virgil api
+// create Virgil api
 $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 
-// load Alice's Key from local storage.
+// load Alice's Private Virgil Key from local storage.
 $aliceKey = $virgilApi->Keys->load('alice_key_1', 'mypassword');
 
-// decrypt the message using the Alice Virgil key
-$originalMessage = $aliceKey->decrypt($recievedMessage)
-                            ->toString()
-;
+// decrypt the message using the Alice Private Virgil key
+$originalMessage = $aliceKey->decrypt($recievedMessage)->toString();
 ```
 
 __Next:__ On the page below you can find configuration documentation and the list of our guides and use cases where you can see appliance of Virgil PHP SDK.
