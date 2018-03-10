@@ -86,11 +86,6 @@ $virgilApi = new VirgilApi($virgilApiContext);
 #### Generate and publish user's Cards with Public Keys inside on Cards Service
 Use the following lines of code to create and publish a user's Card with Public Key inside on Virgil Cards Service:
 
-
-## Encryption / Decryption Example
-
-Virgil Security simplifies adding encryption to any application. With our SDK you may create unique Virgil Cards for your all users and devices. With users' Virgil Cards, you can easily encrypt any data at Client Side.
-
 ```php
 // generate and save Alice's Key into a key storage on a device
 $aliceKey = $virgilApi->Keys->generate();
