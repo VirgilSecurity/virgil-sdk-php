@@ -2,12 +2,20 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/virgil/sdk.svg?style=flat-square)](https://packagist.org/packages/virgil/sdk)
 [![Total Downloads](https://img.shields.io/packagist/dt/virgil/sdk.svg?style=flat-square)](https://packagist.org/packages/virgil/sdk.svg)
+[![GitHub license](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE)
 
-[Installation](#installation) | [Initialization](#initialization) | [Encryption / Decryption Example](#encryption-example) |  [Documentation](#documentation) | [Support](#support)
+[SDK Features](#sdk-features) | [Installation](#installation) | [Initialization](#initialization) | [Usage Examples](#usage-examples) | [Docs](#docs) | [Support](#support)
 
-[Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. In a few steps, you can encrypt communication, securely store data, provide passwordless authentication, and ensure data integrity.
 
-To initialize and use Virgil SDK, you need to have [Developer Account](https://developer.virgilsecurity.com/account/signin).
+<a href="https://virgilsecurity.com"><img width="230px" src="logo.png" align="left" hspace="10" vspace="6"></a> [Virgil Security](https://virgilsecurity.com) provides a set of APIs for adding security to any application. In a few simple steps you can encrypt communication, securely store data, provide passwordless login, and ensure data integrity.
+
+The Virgil SDK allows developers to get up and running with Virgil API quickly and add full end-to-end security to their existing digital solutions to become HIPAA and GDPR compliant and more.
+
+## SDK Features
+- communicate with [Virgil Cards Service][_cards_service]
+- manage users' Public Keys
+- store private keys in secure local storage
+- use Virgil [Crypto library][_virgil_crypto]
 
 ## Installation
 
@@ -46,14 +54,14 @@ call **php -i | grep php\.ini** or **php -i | grep extension_dir** from CLI.
 
 Be sure that you have already registered at the [Dev Portal](https://developer.virgilsecurity.com/account/signin) and created your application.
 
-To initialize the SDK at the __Client Side__, you need only the __Access Token__ created for a client at [Dev Portal](https://developer.virgilsecurity.com/account/signin). The Access Token helps to authenticate client's requests.
+To initialize the SDK at the __Client Side__, you need only the __Access Token__ created for a client at Dev Portal. The Access Token helps to authenticate client's requests.
 
 ```php
 $virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
 ```
 
 
-To initialize the SDK at the __Server Side__, you need the application credentials (__Access Token__, __App ID__, __App Key__ and __App Key Password__) you got during Application registration at the [Dev Portal](https://developer.virgilsecurity.com/account/signin).
+To initialize the SDK at the __Server Side__, you need the application credentials (__Access Token__, __App ID__, __App Key__ and __App Key Password__) you got during Application registration at the Dev Portal.
 
 ```php
 $virgilApiContext = VirgilApiContext::create(
@@ -62,8 +70,8 @@ $virgilApiContext = VirgilApiContext::create(
         VirgilApiContext::AccessToken => '[YOUR_ACCESS_TOKEN_HERE]',
         // user Application's credentials for work with Virgil Cards
         VirgilApiContext::Credentials => new AppCredentials(        
-            '[YOUR_APP_ID_HERE]', 
-            Buffer::fromBase64('[YOUR_APP_PRIVATE_KEY_HERE]'), 
+            '[YOUR_APP_ID_HERE]',
+            Buffer::fromBase64('[YOUR_APP_PRIVATE_KEY_HERE]'),
             '[YOUR_APP_PRIVATE_KEY_PASS_HERE]'
         ),
     ]
@@ -73,64 +81,81 @@ $virgilApiContext = VirgilApiContext::create(
 $virgilApi = new VirgilApi($virgilApiContext);
 ```
 
+## Usage Examples
 
-## Encryption / Decryption Example
-
-Virgil Security simplifies adding encryption to any application. With our SDK you may create unique Virgil Cards for your all users and devices. With users' Virgil Cards, you can easily encrypt any data at Client Side.
-
-```php
-use Virgil\Sdk\Api\VirgilApi;
-
-// create Virgil api
-$virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
-
-// find Alice's Virigl Card(s) at Virgil Services
-$aliceCards = $virgilApi->Cards->find(['alice']);
-
-$message = 'Hello Alice!';
-
-// encrypt the message using Alice's Virigl Cards
-$encryptedMessage = $aliceCards->encrypt($message);
-
-// transmit the message with your preferred technology
-$this->transmitMessage($encryptedMessage->toBase64());
-```
-
-Alice uses her Virgil Private Key to decrypt the encrypted message.
-
+#### Generate and publish user's Cards with Public Keys inside on Cards Service
+Use the following lines of code to create and publish a user's Card with Public Key inside on Virgil Cards Service:
 
 ```php
-use Virgil\Sdk\Api\VirgilApi;
+// generate and save Alice's Key into a key storage on a device
+$aliceKey = $virgilApi->Keys->generate();
+$aliceKey->save('[KEY_NAME]', '[KEY_PASSWORD]');
 
-// create Virgil api
-$virgilApi = VirgilApi::create('[YOUR_ACCESS_TOKEN_HERE]');
+// create Alice's Card using her Key
+$aliceCard = $virgilApi->Cards->create('alice', 'alice_member', $aliceKey);
 
-// load Alice's Private Virgil Key from local storage.
-$aliceKey = $virgilApi->Keys->load('alice_key_1', 'mypassword');
+// export the Virgil Card to a base64-encoded string
+$exportedAliceCard = $aliceCard->export();
 
-// decrypt the message using the Alice Private Virgil key
-$originalMessage = $aliceKey->decrypt($recievedMessage)->toString();
+// transmit the Card to your App server
+// import the Virgil Card from a string
+$aliceCard = $virgilApi->Cards->import($exportedAliceCard);
+
+// publish a Virgil Card
+$virgilApi->Cards->publish($aliceCard);
 ```
 
-__Next:__ On the page below you can find configuration documentation and the list of our guides and use cases where you can see appliance of Virgil PHP SDK.
+#### Sign then encrypt data
+
+Virgil SDK lets you use a user's Private key and his or her Cards to sign, then encrypt any kind of data.
+
+In the following example, we load a Private Key from a customized Key Storage and get recipient's Card from the Virgil Cards Services. Recipient's Card contains a Public Key on which we will encrypt the data and verify a signature.
 
 
-## Documentation
+```php
+// load Alice's Key from a key storage
+$aliceKey = $virgilApi->Keys->load('[KEY_NAME]', '[KEY_PASSWORD]');
 
-Virgil Security has a powerful set of APIs and the documentation to help you get started:
+// search for Bob's Cards on Virgil Cards Service
+$bobCards = $virgilApi->Cards->find(['bob']);
 
-* [Get Started](/docs/get-started) documentation
-  * [Encrypted storage](/docs/get-started/encrypted-storage.md)
-  * [Encrypted communication](/docs/get-started/encrypted-communication.md)
-  * [Data integrity](/docs/get-started/data-integrity.md)
-* [Guides](/docs/guides)
-  * [Virgil Cards](/docs/guides/virgil-card)
-  * [Virgil Keys](/docs/guides/virgil-key)
-  * [Encryption](/docs/guides/encryption)
-  * [Signature](/docs/guides/signature)
-* [Configuration](/docs/guides/configuration)
-  * [Set Up Client Side](/docs/guides/configuration/client-configuration.md)
-  * [Set Up Server Side](/docs/guides/configuration/server-configuration.md)
+// prepare a message
+$message = "Hey Bob, how's it going?";
+
+// sign by Alice's key and then encrypt message for found Bob's Cards
+$cipherText = $aliceKey->signThenEncrypt($message, $bobCards)->toBase64();
+```
+
+#### Decrypt then verify data
+Once the Users receive the signed and encrypted message, they can decrypt it with their own Private Key and verify signature with a Sender's Card:
+
+```php
+// load a Virgil Key from a device storage
+$bobKey = $virgilApi->Keys->load('[KEY_NAME]', '[OPTIONAL_KEY_PASSWORD]');
+
+// get a sender's Virgil Card from the Virgil Cards Service
+$aliceCard = $virgilApi->Cards->get('[ALICE_CARD_ID]');
+
+// decrypt the message
+$originalMessage = $bobKey->decryptThenVerify($cipherText, $aliceCard)->toString();
+```
+
+## Docs
+Virgil Security has a powerful set of APIs, and the documentation below can get you started today.
+
+In order to use the Virgil SDK with your application, you will need to first configure your application. By default, the SDK will attempt to look for Virgil-specific settings in your application but you can change it during SDK configuration.
+
+* [Configure the SDK][_configure_sdk] documentation
+  * [Setup authentication][_setup_authentication] to make API calls to Virgil Services
+  * [Setup Card Manager][_card_manager] to manage user's Public Keys
+  * [Setup Card Verifier][_card_verifier] to verify signatures inside of user's Card
+  * [Setup Key storage][_key_storage] to store Private Keys
+* [More usage examples][_more_examples]
+  * [Create & publish a Card][_create_card] that has a Public Key on Virgil Cards Service
+  * [Search user's Card by user's identity][_search_card]
+  * [Get user's Card by its ID][_get_card]
+  * [Use Card for crypto operations][_use_card]
+* [Reference API][_reference_api]
 
 ## License
 
@@ -138,6 +163,24 @@ This library is released under the [3-clause BSD License](LICENSE.md).
 
 ## Support
 
-Our developer support team is here to help you. You can find us on [Twitter](https://twitter.com/virgilsecurity) and [email][support].
+Our developer support team is here to help you.
 
-[support]: mailto:support@virgilsecurity.com
+You can find us on [Twitter](https://twitter.com/VirgilSecurity) or send us email support@VirgilSecurity.com.
+
+Also, get extra help from our support team on [Slack](https://join.slack.com/t/VirgilSecurity/shared_invite/enQtMjg4MDE4ODM3ODA4LTc2OWQwOTQ3YjNhNTQ0ZjJiZDc2NjkzYjYxNTI0YzhmNTY2ZDliMGJjYWQ5YmZiOGU5ZWEzNmJiMWZhYWVmYTM).
+
+
+[_virgil_crypto]: https://github.com/VirgilSecurity/virgil-crypto
+[_cards_service]: https://developer.virgilsecurity.com/docs/api-reference/card-service/v4
+[_use_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v4/use-card-for-crypto-operation
+[_get_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v4/get-card
+[_search_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v4/search-card
+[_create_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v4/create-card
+[_key_storage]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v4/setup-key-storage
+[_card_verifier]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v4/setup-card-verifier
+[_card_manager]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v4/setup-card-manager
+[_setup_authentication]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v4/setup-authentication
+[_services_reference_api]: https://developer.virgilsecurity.com/docs/api-reference
+[_configure_sdk]: https://developer.virgilsecurity.com/docs/how-to#sdk-configuration
+[_more_examples]: https://developer.virgilsecurity.com/docs/how-to#public-key-management
+[_reference_api]: https://developer.virgilsecurity.com/docs/api-reference
