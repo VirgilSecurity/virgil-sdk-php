@@ -32,6 +32,29 @@ Installing the package using Package Manager Console:
 $ composer require virgil/sdk
 ```
 
+### Crypto library notice
+
+In order to support cipher operations upon your data there is must be installed
+crypto library also. We supply Virgil SDK with own implementation of
+cypto intefaces that can be easyly used by everyone. Just require it as a package:
+
+```bash
+$ composer require virgil/crypto
+```
+
+Be aware this package requires installed php virgil crypto extension *ext-virgil_crypto_php*.
+
+Also there is avaliable [setup your own Crypto library][_own_crypto] inside of the SDK
+
+### Using external crypto library (c++)
+
+If you decide to use *virgil/crypto* package there is needs to install php virgil crypto extension
+*ext-virgil_crypto_php* as one of dependency otherwise you will get the requested PHP extension virgil_crypto_php
+is missing from your system error during composer install.
+Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/)
+like **virgil-crypto-2.3.0-php-5.6-linux-x86_64.tgz** (highly recommended using latest version)
+and install. Unfortunately PHP extensions installation is out of this topic but you can find a lot of public information about it.
+
 ## Usage Examples
 
 #### Generate and publish user's Cards with Public Keys inside on Cards Service
