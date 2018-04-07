@@ -42,7 +42,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Virgil\\": ""
+      "Virgil\\Sdk\\": "Virgil/Sdk/"
     }
   },
   "minimum-stability": "dev",
