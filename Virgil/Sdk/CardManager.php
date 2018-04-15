@@ -38,6 +38,17 @@
 namespace Virgil\Sdk;
 
 
+use DateTime;
+use Virgil\CryptoApi\CardCrypto;
+use Virgil\Sdk\Signer\ModelSigner;
+use Virgil\Sdk\Verification\CardVerifier;
+
+use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
+use Virgil\Sdk\Web\CardClient;
+use Virgil\Sdk\Web\RawCardContent;
+use Virgil\Sdk\Web\RawSignedModel;
+
+
 /**
  * Class CardManager
  * @package Virgil\Sdk
@@ -45,23 +56,180 @@ namespace Virgil\Sdk;
 class CardManager
 {
     /**
-     * @param CardParams $cardParams
-     *
-     * @return Card
+     * @var callable
      */
-    public function publishCard(CardParams $cardParams)
-    {
-        return new Card();
+    private $signCallback;
+    /**
+     * @var ModelSigner
+     */
+    private $modelSigner;
+    /**
+     * @var CardCrypto
+     */
+    private $cardCrypto;
+    /**
+     * @var AccessTokenProvider
+     */
+    private $accessTokenProvider;
+    /**
+     * @var CardVerifier
+     */
+    private $cardVerifier;
+    /**
+     * @var CardClient
+     */
+    private $cardClient;
+
+
+    public function __construct(
+        ModelSigner $modelSigner,
+        CardCrypto $cardCrypto,
+        AccessTokenProvider $accessTokenProvider,
+        CardVerifier $cardVerifier,
+        CardClient $cardClient,
+        callable $signCallback
+    ) {
+        $this->signCallback = $signCallback;
+        $this->modelSigner = $modelSigner;
+        $this->cardCrypto = $cardCrypto;
+        $this->accessTokenProvider = $accessTokenProvider;
+        $this->cardVerifier = $cardVerifier;
+        $this->cardClient = $cardClient;
     }
 
 
     /**
-     * @param string $identity
+     * @param CardParams $cardParams
      *
-     * @return Card[]
+     * @return RawSignedModel
      */
-    public function searchCards($identity)
+    public function generateRawCard(CardParams $cardParams)
     {
-        return [new Card()];
+        $now = new DateTime();
+        $publicKeyString = $this->cardCrypto->exportPublicKey($cardParams->getPublicKey());
+
+        $rawCardContent = new RawCardContent($cardParams->getIdentity(), $publicKeyString, '5.0', $now->getTimestamp());
+        $rawCardContentSnapshot = json_encode($rawCardContent);
+
+        $rawSignedModel = new RawSignedModel($rawCardContentSnapshot, []);
+
+        try {
+            $this->modelSigner->selfSign($rawSignedModel, $cardParams->getPrivateKey(), $cardParams->getExtraFields());
+        } catch (VirgilException $e) {
+            //model with empty signatures hasn't this exception
+        }
+
+        return $rawSignedModel;
     }
+
+
+    ///**
+    // * @param RawSignedModel $rawSignedModel
+    // *
+    // * @return Card
+    // */
+    //public function publishRawSignedModel(RawSignedModel $rawSignedModel)
+    //{
+    //    return new Card();
+    //}
+    //
+    //
+    ///**
+    // * @param CardParams $cardParams
+    // *
+    // * @return Card
+    // */
+    //public function publishCard(CardParams $cardParams)
+    //{
+    //    return new Card();
+    //}
+    //
+    //
+    ///**
+    // * @param $cardID
+    // *
+    // * @return Card
+    // */
+    //public function getCard($cardID)
+    //{
+    //    return new Card();
+    //}
+    //
+    //
+    ///**
+    // * @param string $identity
+    // *
+    // * @return Card[]
+    // */
+    //public function searchCards($identity)
+    //{
+    //    return [new Card()];
+    //}
+    //
+    //
+    ///**
+    // * @param string $stringCard
+    // *
+    // * @return Card
+    // */
+    //public function importCardFromString($stringCard)
+    //{
+    //    return new Card();
+    //}
+    //
+    //
+    ///**
+    // * @param string $jsonCard
+    // *
+    // * @return Card
+    // */
+    //public function importCardFromJson($jsonCard)
+    //{
+    //    return new Card();
+    //}
+    //
+    //
+    ///**
+    // * @param RawSignedModel $rawSignedModel
+    // *
+    // * @return Card
+    // */
+    //public function importCard(RawSignedModel $rawSignedModel)
+    //{
+    //    return new Card();
+    //}
+    //
+    //
+    ///**
+    // * @param Card $card
+    // *
+    // * @return string
+    // */
+    //public function exportCardAsString(Card $card)
+    //{
+    //    return "";
+    //}
+    //
+    //
+    ///**
+    // * @param Card $card
+    // *
+    // * @return string
+    // */
+    //public function exportCardAsJson(Card $card)
+    //{
+    //    return "";
+    //}
+    //
+    //
+    ///**
+    // * @param Card $card
+    // *
+    // * @return RawSignedModel
+    // */
+    //public function exportCardAsRawCard(Card $card)
+    //{
+    //    return new RawSignedModel();
+    //}
+
 }

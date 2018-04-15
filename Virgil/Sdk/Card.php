@@ -40,7 +40,6 @@ namespace Virgil\Sdk;
 
 use DateTime;
 use Virgil\CryptoApi\PublicKey;
-use Virgil\CryptoImpl\VirgilPublicKey;
 
 /**
  * Class Card
@@ -134,7 +133,7 @@ class Card
      */
     public function getPublicKey()
     {
-        return new VirgilPublicKey();
+        return $this->publicKey;
     }
 
 

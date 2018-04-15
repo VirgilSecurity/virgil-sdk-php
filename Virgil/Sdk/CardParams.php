@@ -111,6 +111,7 @@ class CardParams
 
         $cardParams = new self($publicKey, $privateKey);
 
+        // todo: is identity optional?
         if (array_key_exists(self::Identity, $params)) {
             $cardParams->identity = $params[self::Identity];
         }
@@ -122,6 +123,51 @@ class CardParams
         }
 
         return $cardParams;
+    }
+
+
+    /**
+     * @return PublicKey
+     */
+    public function getPublicKey()
+    {
+        return $this->publicKey;
+    }
+
+
+    /**
+     * @return PrivateKey
+     */
+    public function getPrivateKey()
+    {
+        return $this->privateKey;
+    }
+
+
+    /**
+     * @return null|string
+     */
+    public function getIdentity()
+    {
+        return $this->identity;
+    }
+
+
+    /**
+     * @return null|string
+     */
+    public function getPreviousCardID()
+    {
+        return $this->previousCardID;
+    }
+
+
+    /**
+     * @return array|null
+     */
+    public function getExtraFields()
+    {
+        return $this->extraFields;
     }
 
 }

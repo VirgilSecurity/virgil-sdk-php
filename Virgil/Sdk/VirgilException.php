@@ -38,32 +38,13 @@
 namespace Virgil\Sdk;
 
 
-use Virgil\CryptoApi\PrivateKey;
+use Exception;
 
 /**
- * Class PrivateKeyStorage
+ * Class VirgilException
  * @package Virgil\Sdk
  */
-class PrivateKeyStorage
+class VirgilException extends Exception
 {
-    /**
-     * @param PrivateKey $privateKey
-     * @param string     $name
-     * @param array      $meta
-     */
-    public function store(PrivateKey $privateKey, $name, array $meta = null)
-    {
 
-    }
-
-
-    /**
-     * @param string $name
-     *
-     * @return PrivateKeyEntry
-     */
-    public function load($name)
-    {
-        return new PrivateKeyEntry();
-    }
 }

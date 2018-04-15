@@ -35,70 +35,22 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk;
+namespace Virgil\Sdk\Verification;
 
 
-use Virgil\CryptoApi\PrivateKey;
+use Virgil\Sdk\Card;
 
 
 /**
- * Class StoredPrivateKey
- * @package Virgil\Sdk
+ * Class CardVerifier
+ * @package Virgil\Sdk\Verification
  */
-class PrivateKeyEntry
+interface CardVerifier
 {
     /**
-     * @var string
-     */
-    private $name;
-    /**
-     * @var PrivateKey
-     */
-    private $privateKey;
-    /**
-     * @var array|null
-     */
-    private $meta;
-
-
-    /**
-     * Class constructor.
+     * @param Card $card
      *
-     * @param string     $name
-     * @param PrivateKey $privateKey
-     * @param array|null $meta
+     * @return bool
      */
-    function __construct($name, PrivateKey $privateKey, array $meta = null)
-    {
-        $this->name = $name;
-        $this->privateKey = $privateKey;
-        $this->meta = $meta;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-
-    /**
-     * @return PrivateKey
-     */
-    public function getPrivateKey()
-    {
-        return $this->privateKey;
-    }
-
-
-    /**
-     * @return array|null
-     */
-    public function getMeta()
-    {
-        return $this->meta;
-    }
+    public function verifyCard(Card $card);
 }
