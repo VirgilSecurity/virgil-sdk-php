@@ -38,11 +38,76 @@
 namespace Virgil\Sdk\Web;
 
 
+use Virgil\Http\HttpClientInterface;
+use Virgil\Http\Requests\PostHttpRequest;
+
+
 /**
  * Class CardClient
  * @package Virgil\Sdk\Web
  */
 class CardClient
 {
+
+    /**
+     * @var HttpClientInterface
+     */
+    protected $httpClient;
+    /**
+     * @var string
+     */
+    private $serviceUrl;
+
+
+    /**
+     * CardClient constructor.
+     *
+     * @param string              $serviceUrl
+     * @param HttpClientInterface $httpClient
+     */
+    public function __construct($serviceUrl, HttpClientInterface $httpClient)
+    {
+        $this->httpClient = $httpClient;
+        $this->serviceUrl = $serviceUrl;
+    }
+
+
+    /**
+     * @param RawSignedModel $model
+     * @param string         $token
+     *
+     * @return RawSignedModel|ErrorResponseModel
+     *
+     */
+    public function publishCard(RawSignedModel $model, $token)
+    {
+        $httpResponse = $this->httpClient->send(
+            new PostHttpRequest(
+                $this->serviceUrl, json_encode($model), ["Authorization" => sprintf("Virgil %s", $token)]
+            )
+        );
+        if (!$httpResponse->getHttpStatusCode()
+                          ->isSuccess()) {
+
+            $code = 20000;
+            $message = "error during request serving";
+            $badResponseBody = json_decode($httpResponse->getBody(), true);
+
+            if (is_array($badResponseBody)) {
+                if (array_key_exists('code', $badResponseBody)) {
+                    $code = $badResponseBody['code'];
+                }
+                if (array_key_exists('message', $badResponseBody)) {
+                    $message = $badResponseBody['message'];
+                }
+            }
+
+            return new ErrorResponseModel($code, $message);
+        }
+
+        $body = json_decode($httpResponse->getBody(), true);
+
+        return new RawSignedModel($body['content_snapshot'], $model['signatures']);
+    }
 
 }

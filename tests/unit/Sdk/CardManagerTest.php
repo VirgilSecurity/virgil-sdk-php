@@ -1,15 +1,25 @@
 <?php
 
+namespace Tests\Virgil\Sdk;
+
+
 use PHPUnit\Framework\TestCase;
 use Virgil\CryptoApi\CardCrypto;
 use Virgil\CryptoApi\PrivateKey;
 use Virgil\CryptoApi\PublicKey;
+use Virgil\Http\HttpClientInterface;
+use Virgil\Http\Responses\HttpResponse;
+use Virgil\Http\Responses\HttpStatusCode;
+use Virgil\Sdk\CardClientException;
 use Virgil\Sdk\CardManager;
 use Virgil\Sdk\CardParams;
 use Virgil\Sdk\Signer\ModelSigner;
+use Virgil\Sdk\Verification\CardVerificationException;
 use Virgil\Sdk\Verification\CardVerifier;
+use Virgil\Sdk\Web\Authorization\AccessToken;
 use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
 use Virgil\Sdk\Web\CardClient;
+use Virgil\Sdk\Web\RawSignedModel;
 
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
@@ -56,12 +66,11 @@ class CardManagerTest extends TestCase
         $cardCryptoMock = $this->createMock(CardCrypto::class);
         $accessTokenProvider = $this->createMock(AccessTokenProvider::class);
         $cardVerifier = $this->createMock(CardVerifier::class);
-        $cardClient = new CardClient();
+        $cardClient = new CardClient("http://service.url", $this->createMock(HttpClientInterface::class));
         $modelSigner = new ModelSigner($cardCryptoMock);
 
         $cardManager = new CardManager(
-            $modelSigner, $cardCryptoMock, $accessTokenProvider, $cardVerifier, $cardClient, function () {
-        }
+            $modelSigner, $cardCryptoMock, $accessTokenProvider, $cardVerifier, $cardClient
         );
 
         $cardCryptoMock->expects($this->once())
@@ -98,12 +107,11 @@ class CardManagerTest extends TestCase
         $cardCryptoMock = $this->createMock(CardCrypto::class);
         $accessTokenProvider = $this->createMock(AccessTokenProvider::class);
         $cardVerifier = $this->createMock(CardVerifier::class);
-        $cardClient = new CardClient();
+        $cardClient = new CardClient("http://service.url", $this->createMock(HttpClientInterface::class));
         $modelSigner = new ModelSigner($cardCryptoMock);
 
         $cardManager = new CardManager(
-            $modelSigner, $cardCryptoMock, $accessTokenProvider, $cardVerifier, $cardClient, function () {
-        }
+            $modelSigner, $cardCryptoMock, $accessTokenProvider, $cardVerifier, $cardClient
         );
 
         $cardCryptoMock->expects($this->once())
@@ -132,5 +140,54 @@ class CardManagerTest extends TestCase
         $this->assertEquals('self', $signatures[0]->getSigner());
         $this->assertEquals('expected_signature', $signatures[0]->getSignature());
         $this->assertEquals('{"extra_a":"val_1","extra_b":"val_2"}', $signatures[0]->getSnapshot());
+    }
+
+
+    /**
+     * @test
+     *
+     * @expectedException \Virgil\Sdk\CardClientException
+     */
+    public function publishRawSignedModel_withHttpClientErrorResponse_throwsCardClientException()
+    {
+        $cardCryptoMock = $this->createMock(CardCrypto::class);
+        $accessTokenProvider = $this->createMock(AccessTokenProvider::class);
+        $cardVerifier = $this->createMock(CardVerifier::class);
+        $httpClient = $this->createMock(HttpClientInterface::class);
+        $cardClient = new CardClient("http://service.url", $httpClient);
+        $modelSigner = new ModelSigner($cardCryptoMock);
+
+        $cardManager = new CardManager(
+            $modelSigner, $cardCryptoMock, $accessTokenProvider, $cardVerifier, $cardClient
+        );
+
+        $accessTokenProvider->expects($this->once())
+                            ->method('getToken')
+                            ->with($this->anything())
+                            ->willReturn($this->createMock(AccessToken::class))
+        ;
+
+        $httpClient->expects($this->once())
+                   ->method('send')
+                   ->with($this->anything())
+                   ->willReturn(new HttpResponse(new HttpStatusCode(500), '', ''))
+        ;
+
+        try {
+            $cardManager->publishRawSignedModel(new RawSignedModel('', []));
+        } catch (CardClientException $e) {
+            $this->assertEquals(
+                20000,
+                $e->getErrorResponse()
+                  ->getCode()
+            );
+            $this->assertEquals(
+                "error during request serving",
+                $e->getErrorResponse()
+                  ->getMessage()
+            );
+
+            throw $e;
+        }
     }
 }

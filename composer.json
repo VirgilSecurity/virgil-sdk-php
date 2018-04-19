@@ -34,6 +34,7 @@
   ],
   "require": {
     "php": ">=5.6",
+    "ext-curl": "*",
     "virgil/crypto-api-implementation": "^v5.0"
   },
   "require-dev": {
@@ -42,15 +43,10 @@
   },
   "autoload": {
     "psr-4": {
-      "Virgil\\Sdk\\": "Virgil/Sdk/"
+      "Virgil\\": "Virgil/"
     }
   },
   "minimum-stability": "dev",
-  "autoload-dev": {
-    "psr-4": {
-      "Virgil\\Sdk\\Tests\\": "tests/src/"
-    }
-  },
   "repositories": [
     {
       "type": "vcs",

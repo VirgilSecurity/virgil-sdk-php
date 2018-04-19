@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Virgil\Sdk;
+
+
 use PHPUnit\Framework\TestCase;
 
 use Virgil\CryptoApi\CardCrypto;
@@ -62,8 +65,8 @@ class ModelSignerTest extends TestCase
 
         $rawSignedModel = new RawSignedModel(
             '{"identity":"Alice"}', [
-                                  new RawSignature('Bob', 'bobs_signature', 'snaps'),
-                              ]
+                                      new RawSignature('Bob', 'bobs_signature', 'snaps'),
+                                  ]
         );
         try {
             $modelSigner->sign($rawSignedModel, 'Alice', $pk);
@@ -125,8 +128,8 @@ class ModelSignerTest extends TestCase
 
         $rawSignedModel = new RawSignedModel(
             '{"identity":"Alice"}', [
-                                  new RawSignature('Alice', 'bobs_signature', 'snaps'),
-                              ]
+                                      new RawSignature('Alice', 'bobs_signature', 'snaps'),
+                                  ]
         );
 
         $modelSigner->sign($rawSignedModel, 'Alice', $pk);

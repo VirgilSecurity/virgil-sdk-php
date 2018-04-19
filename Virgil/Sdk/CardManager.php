@@ -41,9 +41,14 @@ namespace Virgil\Sdk;
 use DateTime;
 use Virgil\CryptoApi\CardCrypto;
 use Virgil\Sdk\Signer\ModelSigner;
+
+use Virgil\Sdk\Verification\CardVerificationException;
 use Virgil\Sdk\Verification\CardVerifier;
 
+use Virgil\Sdk\Web\Authorization\AccessToken;
 use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
+use Virgil\Sdk\Web\Authorization\TokenContext;
+use Virgil\Sdk\Web\ErrorResponseModel;
 use Virgil\Sdk\Web\CardClient;
 use Virgil\Sdk\Web\RawCardContent;
 use Virgil\Sdk\Web\RawSignedModel;
@@ -56,7 +61,7 @@ use Virgil\Sdk\Web\RawSignedModel;
 class CardManager
 {
     /**
-     * @var callable
+     * @var callable|null
      */
     private $signCallback;
     /**
@@ -87,7 +92,7 @@ class CardManager
         AccessTokenProvider $accessTokenProvider,
         CardVerifier $cardVerifier,
         CardClient $cardClient,
-        callable $signCallback
+        callable $signCallback = null
     ) {
         $this->signCallback = $signCallback;
         $this->modelSigner = $modelSigner;
@@ -123,26 +128,65 @@ class CardManager
     }
 
 
-    ///**
-    // * @param RawSignedModel $rawSignedModel
-    // *
-    // * @return Card
-    // */
-    //public function publishRawSignedModel(RawSignedModel $rawSignedModel)
-    //{
-    //    return new Card();
-    //}
-    //
-    //
-    ///**
-    // * @param CardParams $cardParams
-    // *
-    // * @return Card
-    // */
-    //public function publishCard(CardParams $cardParams)
-    //{
-    //    return new Card();
-    //}
+    /**
+     * @param RawSignedModel $rawSignedModel
+     *
+     * @return Card
+     *
+     * @throws CardVerificationException
+     * @throws CardClientException
+     */
+    public function publishRawSignedModel(RawSignedModel $rawSignedModel)
+    {
+        $contentSnapshotString = base64_decode($rawSignedModel->getContentSnapshot());
+        $contentSnapshot = json_decode($contentSnapshotString, true);
+
+        $tokenContext = new TokenContext($contentSnapshot['identity'], 'publish');
+        $token = $this->accessTokenProvider->getToken($tokenContext);
+
+        $card = $this->publishRawSignedModelWithToken($rawSignedModel, $token);
+
+        if (!$this->cardVerifier->verifyCard($card)) {
+            throw new CardVerificationException('Validation errors have been detected');
+        }
+
+        return $card;
+    }
+
+
+    /**
+     * @param CardParams $cardParams
+     *
+     * @return Card
+     *
+     * @throws CardVerificationException
+     * @throws CardClientException
+     */
+    public function publishCard(CardParams $cardParams)
+    {
+        $tokenContext = new TokenContext($cardParams->getIdentity(), 'publish');
+        $token = $this->accessTokenProvider->getToken($tokenContext);
+
+        $rawSignedModel = $this->generateRawCard(
+            CardParams::create(
+                [
+                    CardParams::Identity       => $token->identity(),
+                    CardParams::PrivateKey     => $cardParams->getPrivateKey(),
+                    CardParams::PublicKey      => $cardParams->getPublicKey(),
+                    CardParams::ExtraFields    => $cardParams->getExtraFields(),
+                    CardParams::PreviousCardID => $cardParams->getPreviousCardID(),
+                ]
+            )
+        );
+
+        $card = $this->publishRawSignedModelWithToken($rawSignedModel, $token);
+
+        if (!$this->cardVerifier->verifyCard($card)) {
+            throw new CardVerificationException('Validation errors have been detected');
+        }
+
+        return $card;
+    }
     //
     //
     ///**
@@ -232,4 +276,72 @@ class CardManager
     //    return new RawSignedModel();
     //}
 
+    /**
+     * @param RawSignedModel $model
+     * @param AccessToken    $token
+     *
+     * @return Card
+     *
+     * @throws CardClientException
+     */
+    protected function publishRawSignedModelWithToken(RawSignedModel $model, AccessToken $token)
+    {
+        if (is_callable($this->signCallback)) {
+            $model = call_user_func($this->signCallback, $model);
+        }
+
+        $responseModel = $this->cardClient->publishCard($model, (string)$token);
+
+        if ($responseModel instanceof ErrorResponseModel) {
+            throw new CardClientException("error response from card service", $responseModel);
+        }
+
+        $contentSnapshotString = base64_decode($responseModel->getContentSnapshot());
+        $contentSnapshot = json_decode($contentSnapshotString, true);
+
+        $cardSignatures = [];
+        foreach ($responseModel->getSignatures() as $signature) {
+            $extraFields = null;
+            if ($signature->getSnapshot() != "") {
+                $snapshotString = base64_decode($signature->getSnapshot());
+                $extraFields = json_decode($snapshotString, true);
+
+            }
+
+            $cardSignatures[] = new CardSignature(
+                $signature->getSigner(), $signature->getSignature(), $signature->getSnapshot(), $extraFields
+            );
+        }
+
+        $publicKey = $this->cardCrypto->importPublicKey($contentSnapshot['public_key']);
+
+        $previousCardID = null;
+        if (array_key_exists('previous_card_id', $contentSnapshot)) {
+            $previousCardID = $contentSnapshot['previous_card_id'];
+        }
+
+        return new Card(
+            $this->generateCardID($this->cardCrypto, $model->getContentSnapshot()),
+            $contentSnapshot['identity'],
+            $publicKey,
+            $contentSnapshot['version'],
+            new DateTime($contentSnapshot['created_at']),
+            false,
+            $cardSignatures,
+            $model->getContentSnapshot(),
+            $previousCardID
+        );
+    }
+
+
+    /**
+     * @param CardCrypto $cardCrypto
+     * @param string     $snapshot
+     *
+     * @return string
+     */
+    protected function generateCardID(CardCrypto $cardCrypto, $snapshot)
+    {
+        return bin2hex(substr($cardCrypto->generateSHA512($snapshot), 0, 32));
+    }
 }

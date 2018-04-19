@@ -1,4 +1,11 @@
 <?php
+
+namespace Virgil\Sdk;
+
+
+use Virgil\Sdk\Web\ErrorResponseModel;
+
+
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -34,24 +41,27 @@
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
-
-namespace Virgil\Sdk\Web\Authorization;
-
-
-/**
- * Interface AccessToken
- * @package Virgil\Sdk\Web\Authorization
- */
-interface AccessToken
+class CardClientException extends VirgilException
 {
     /**
-     * @return string
+     * @var ErrorResponseModel
      */
-    public function identity();
+    private $errorResponseModel;
+
+
+    public function __construct($message = "", ErrorResponseModel $errorResponseModel)
+    {
+        parent::__construct($message, 0);
+
+        $this->errorResponseModel = $errorResponseModel;
+    }
 
 
     /**
-     * @return string
+     * @return ErrorResponseModel
      */
-    public function __toString();
+    public function getErrorResponse()
+    {
+        return $this->errorResponseModel;
+    }
 }

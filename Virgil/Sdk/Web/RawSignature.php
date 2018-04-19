@@ -108,7 +108,7 @@ class RawSignature implements JsonSerializable
 
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSnapshot()
     {

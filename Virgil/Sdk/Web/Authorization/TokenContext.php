@@ -65,7 +65,7 @@ class TokenContext
      * @param string $operation
      * @param bool   $forceReload
      */
-    public function __construct($identity, $operation, $forceReload)
+    public function __construct($identity, $operation, $forceReload = false)
     {
         $this->identity = $identity;
         $this->operation = $operation;

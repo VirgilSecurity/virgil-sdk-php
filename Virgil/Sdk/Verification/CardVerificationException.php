@@ -1,4 +1,10 @@
 <?php
+
+namespace Virgil\Sdk\Verification;
+
+
+use Virgil\Sdk\VirgilException;
+
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -34,24 +40,6 @@
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
-
-namespace Virgil\Sdk\Web\Authorization;
-
-
-/**
- * Interface AccessToken
- * @package Virgil\Sdk\Web\Authorization
- */
-interface AccessToken
+class CardVerificationException extends VirgilException
 {
-    /**
-     * @return string
-     */
-    public function identity();
-
-
-    /**
-     * @return string
-     */
-    public function __toString();
 }

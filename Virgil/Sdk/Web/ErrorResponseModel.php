@@ -35,23 +35,49 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk\Web\Authorization;
+namespace Virgil\Sdk\Web;
 
 
 /**
- * Interface AccessToken
- * @package Virgil\Sdk\Web\Authorization
+ * Class ErrorResponseModel
+ * @package Virgil\Sdk\Web
  */
-interface AccessToken
+class ErrorResponseModel
 {
+
+    private $code;
+    private $message;
+
+
     /**
-     * @return string
+     * ErrorResponseModel constructor.
+     *
+     * @param int    $code
+     * @param string $message
      */
-    public function identity();
+    public function __construct($code, $message)
+    {
+        $this->code = $code;
+        $this->message = $message;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
 
 
     /**
      * @return string
      */
-    public function __toString();
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+
 }
