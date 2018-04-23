@@ -39,6 +39,7 @@ namespace Virgil\Sdk;
 
 
 use DateTime;
+
 use Virgil\CryptoApi\CardCrypto;
 use Virgil\Sdk\Signer\ModelSigner;
 
@@ -207,39 +208,52 @@ class CardManager
     //{
     //    return [new Card()];
     //}
-    //
-    //
-    ///**
-    // * @param string $stringCard
-    // *
-    // * @return Card
-    // */
-    //public function importCardFromString($stringCard)
-    //{
-    //    return new Card();
-    //}
-    //
-    //
-    ///**
-    // * @param string $jsonCard
-    // *
-    // * @return Card
-    // */
-    //public function importCardFromJson($jsonCard)
-    //{
-    //    return new Card();
-    //}
-    //
-    //
-    ///**
-    // * @param RawSignedModel $rawSignedModel
-    // *
-    // * @return Card
-    // */
-    //public function importCard(RawSignedModel $rawSignedModel)
-    //{
-    //    return new Card();
-    //}
+
+
+    /**
+     * @param string $stringCard
+     *
+     * @return Card
+     *
+     * @throws CardVerificationException
+     */
+    public function importCardFromString($stringCard)
+    {
+        return $this->importCard(RawSignedModel::RawSignedModelFromBase64String($stringCard));
+    }
+
+
+    /**
+     * @param RawSignedModel $rawSignedModel
+     *
+     * @return Card
+     *
+     * @throws CardVerificationException
+     */
+    public function importCard(RawSignedModel $rawSignedModel)
+    {
+        $card = $this->parseRawCard($rawSignedModel);
+
+        if (!$this->cardVerifier->verifyCard($card)) {
+            throw new CardVerificationException('Validation errors have been detected');
+        }
+
+        return $card;
+    }
+
+
+    /**
+     * @param $json
+     *
+     * @return Card
+     *
+     * @throws CardVerificationException
+     */
+    public function importCardFromJson($json)
+    {
+        return $this->importCard(RawSignedModel::RawSignedModelFromJson($json));
+    }
+
     //
     //
     ///**
@@ -297,11 +311,33 @@ class CardManager
             );
         }
 
-        $contentSnapshotString = base64_decode($responseModel->getContentSnapshot());
-        $contentSnapshotArray = json_decode($contentSnapshotString, true);
+        return $this->parseRawCard($responseModel);
+    }
+
+
+    /**
+     * @param CardCrypto $cardCrypto
+     * @param string     $snapshot
+     *
+     * @return string
+     */
+    protected function generateCardID(CardCrypto $cardCrypto, $snapshot)
+    {
+        return bin2hex(substr($cardCrypto->generateSHA512($snapshot), 0, 32));
+    }
+
+
+    /**
+     * @param RawSignedModel $rawSignedModel
+     *
+     * @return Card
+     */
+    protected function parseRawCard(RawSignedModel $rawSignedModel)
+    {
+        $contentSnapshotArray = json_decode($rawSignedModel->getContentSnapshot(), true);
 
         $cardSignatures = [];
-        foreach ($responseModel->getSignatures() as $signature) {
+        foreach ($rawSignedModel->getSignatures() as $signature) {
             $extraFields = null;
             if ($signature->getSnapshot() != "") {
                 $snapshotString = base64_decode($signature->getSnapshot());
@@ -322,27 +358,15 @@ class CardManager
         }
 
         return new Card(
-            $this->generateCardID($this->cardCrypto, $model->getContentSnapshot()),
+            $this->generateCardID($this->cardCrypto, $rawSignedModel->getContentSnapshot()),
             $contentSnapshotArray['identity'],
             $publicKey,
             $contentSnapshotArray['version'],
             (new DateTime())->setTimestamp($contentSnapshotArray['created_at']),
             false,
             $cardSignatures,
-            $model->getContentSnapshot(),
+            $rawSignedModel->getContentSnapshot(),
             $previousCardID
         );
-    }
-
-
-    /**
-     * @param CardCrypto $cardCrypto
-     * @param string     $snapshot
-     *
-     * @return string
-     */
-    protected function generateCardID(CardCrypto $cardCrypto, $snapshot)
-    {
-        return bin2hex(substr($cardCrypto->generateSHA512($snapshot), 0, 32));
     }
 }

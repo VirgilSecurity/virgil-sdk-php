@@ -70,7 +70,7 @@ class CardSignature
      * @param string     $snapshot
      * @param array|null $extraFields
      */
-    function __construct($signer, $signature, $snapshot, array $extraFields = null)
+    function __construct($signer, $signature, $snapshot = null, array $extraFields = null)
     {
         $this->signer = $signer;
         $this->signature = $signature;

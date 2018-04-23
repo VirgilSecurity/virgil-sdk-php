@@ -107,21 +107,7 @@ class CardClient
             return new ErrorResponseModel($code, $message);
         }
 
-        $body = json_decode($httpResponse->getBody(), true);
-        $signatures = $body['signatures'];
-
-        $rawSignatures = [];
-        foreach ($signatures as $signature) {
-            $signatureSnapshot = null;
-            if (array_key_exists('snapshot', $signature)) {
-                $signatureSnapshot = $signature['snapshot'];
-            }
-
-            $rawSignatures[] = new RawSignature($signature['signer'], $signature['signature'], $signatureSnapshot);
-        }
-
-
-        return new RawSignedModel($body['content_snapshot'], $rawSignatures);
+        return RawSignedModel::RawSignedModelFromJson($httpResponse->getBody());
     }
 
 }

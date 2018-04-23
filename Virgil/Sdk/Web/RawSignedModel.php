@@ -59,7 +59,7 @@ class RawSignedModel implements JsonSerializable
     /**
      * RawSignedModel constructor.
      *
-     * @param string         $contentSnapshot
+     * @param string $contentSnapshot
      * @param RawSignature[] $signatures
      */
     function __construct($contentSnapshot, array $signatures)
@@ -69,15 +69,44 @@ class RawSignedModel implements JsonSerializable
     }
 
 
-    ///**
-    // * @param $json
-    // *
-    // * @return RawSignedModel
-    // */
-    //public static function RawSignedModelFromJson($json)
-    //{
-    //    return new RawSignedModel();
-    //}
+    /**
+     * @param $json
+     *
+     * @return RawSignedModel
+     */
+    public static function RawSignedModelFromJson($json)
+    {
+        $body = json_decode($json, true);
+        $signatures = $body['signatures'];
+
+        $rawSignatures = [];
+        foreach ($signatures as $signature) {
+            $signatureSnapshot = null;
+            if (array_key_exists('snapshot', $signature)) {
+                $signatureSnapshot = $signature['snapshot'];
+            }
+
+            $rawSignatures[] = new RawSignature(
+                $signature['signer'],
+                base64_decode($signature['signature']),
+                base64_decode($signatureSnapshot)
+            );
+        }
+
+
+        return new RawSignedModel(base64_decode($body['content_snapshot']), $rawSignatures);
+    }
+
+
+    /**
+     * @param $base64String
+     *
+     * @return RawSignedModel
+     */
+    public static function RawSignedModelFromBase64String($base64String)
+    {
+        return self::RawSignedModelFromJson(base64_decode($base64String));
+    }
 
 
     /**
@@ -114,7 +143,19 @@ class RawSignedModel implements JsonSerializable
     }
 
 
+    ///**
+    // * @return string
+    // */
     //public function exportAsJson()
+    //{
+    //    return json_encode($this);
+    //}
+    //
+    //
+    ///**
+    // * @return string
+    // */
+    //public function exportAsBase64String()
     //{
     //    return json_encode($this);
     //}
