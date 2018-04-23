@@ -8,6 +8,7 @@ use Virgil\CryptoApi\CardCrypto;
 use Virgil\CryptoApi\PrivateKey;
 use Virgil\CryptoApi\PublicKey;
 use Virgil\Http\HttpClientInterface;
+use Virgil\Http\Requests\PostHttpRequest;
 use Virgil\Http\Responses\HttpResponse;
 use Virgil\Http\Responses\HttpStatusCode;
 use Virgil\Sdk\CardClientException;
@@ -18,7 +19,9 @@ use Virgil\Sdk\Verification\CardVerificationException;
 use Virgil\Sdk\Verification\CardVerifier;
 use Virgil\Sdk\Web\Authorization\AccessToken;
 use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
+use Virgil\Sdk\Web\Authorization\TokenContext;
 use Virgil\Sdk\Web\CardClient;
+use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
 
 /**
@@ -178,16 +181,103 @@ class CardManagerTest extends TestCase
         } catch (CardClientException $e) {
             $this->assertEquals(
                 20000,
-                $e->getErrorResponse()
-                  ->getCode()
+                $e->getErrorCode()
             );
             $this->assertEquals(
                 "error during request serving",
-                $e->getErrorResponse()
-                  ->getMessage()
+                $e->getErrorMessage()
             );
 
             throw $e;
         }
+    }
+
+
+    /**
+     * @test
+     */
+    public function publishRawSignedModel_withAccessToken_returnsCardWithID()
+    {
+        $cardCryptoMock = $this->createMock(CardCrypto::class);
+        $accessTokenProvider = $this->createMock(AccessTokenProvider::class);
+        $cardVerifier = $this->createMock(CardVerifier::class);
+        $httpClient = $this->createMock(HttpClientInterface::class);
+        $cardClient = new CardClient("http://service.url", $httpClient);
+        $modelSigner = new ModelSigner($cardCryptoMock);
+        $signCallback = function (RawSignedModel &$model) {
+            $signatures = $model->getSignatures();
+            $signatures[] = new RawSignature("callback", "sign");
+            $model = new  RawSignedModel($model->getContentSnapshot(), $signatures);
+        };
+
+        $cardManager = new CardManager(
+            $modelSigner, $cardCryptoMock, $accessTokenProvider, $cardVerifier, $cardClient, $signCallback
+        );
+
+        $cardVerifier->expects($this->once())
+                     ->method("verifyCard")
+                     ->with($this->anything())
+                     ->willReturn(true)
+        ;
+
+        $cardCryptoMock->expects($this->once())
+                       ->method("generateSHA512")
+                       ->with(
+                           '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}'
+                       )
+                       ->willReturn(
+                           base64_decode(
+                               "AQVcYCMpp3HfyLx6X/HC7lcdFpw2s8UoFwnl1PeRNV9OOmt6onnlFg9LXqLzihLKcrjcb1zMNqhg8BMcGQfQgQ=="
+                           )
+                       )
+        ;
+
+        $cardCryptoMock->expects($this->once())
+                       ->method("importPublicKey")
+                       ->with("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=")
+                       ->willReturn($this->createMock(PublicKey::class))
+        ;
+
+        $httpClient->expects($this->once())
+                   ->method('send')
+                   ->with(
+                       new PostHttpRequest(
+                           "http://service.url",
+                           '{"content_snapshot":"eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==","signatures":[{"signer":"self","signature":"MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="},{"signer":"callback","signature":"c2lnbg=="}]}',
+                           ["Authorization" => "Virgil access_token_string"]
+                       )
+                   )
+                   ->willReturn(
+                       new HttpResponse(
+                           new HttpStatusCode(201),
+                           '',
+                           '{"content_snapshot":"eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==","signatures":[{"signer":"self","signature":"MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="},{"signer":"virgil","signature":"MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="}]}'
+                       )
+                   )
+        ;
+
+        $accessTokenMock = $this->createMock(AccessToken::class);
+        $accessTokenMock->method("__toString")
+                        ->willReturn("access_token_string")
+        ;
+
+        $accessTokenProvider->expects($this->once())
+                            ->method('getToken')
+                            ->with(new TokenContext("Alice-6cadaa68f091d3d3626a", 'publish'))
+                            ->willReturn($accessTokenMock)
+        ;
+
+        $contentSnapshot = '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}';
+        $signatures = [
+            new RawSignature(
+                "self", base64_decode(
+                          "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
+                      )
+            ),
+        ];
+
+        $card = $cardManager->publishRawSignedModel(new RawSignedModel($contentSnapshot, $signatures));
+
+        $this->assertEquals("01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f", $card->getID());
     }
 }

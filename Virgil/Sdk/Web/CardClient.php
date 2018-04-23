@@ -83,7 +83,9 @@ class CardClient
     {
         $httpResponse = $this->httpClient->send(
             new PostHttpRequest(
-                $this->serviceUrl, json_encode($model), ["Authorization" => sprintf("Virgil %s", $token)]
+                $this->serviceUrl,
+                json_encode($model, JSON_UNESCAPED_SLASHES),
+                ["Authorization" => sprintf("Virgil %s", $token)]
             )
         );
         if (!$httpResponse->getHttpStatusCode()
@@ -106,8 +108,20 @@ class CardClient
         }
 
         $body = json_decode($httpResponse->getBody(), true);
+        $signatures = $body['signatures'];
 
-        return new RawSignedModel($body['content_snapshot'], $model['signatures']);
+        $rawSignatures = [];
+        foreach ($signatures as $signature) {
+            $signatureSnapshot = null;
+            if (array_key_exists('snapshot', $signature)) {
+                $signatureSnapshot = $signature['snapshot'];
+            }
+
+            $rawSignatures[] = new RawSignature($signature['signer'], $signature['signature'], $signatureSnapshot);
+        }
+
+
+        return new RawSignedModel($body['content_snapshot'], $rawSignatures);
     }
 
 }

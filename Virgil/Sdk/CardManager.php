@@ -138,14 +138,12 @@ class CardManager
      */
     public function publishRawSignedModel(RawSignedModel $rawSignedModel)
     {
-        $contentSnapshotString = base64_decode($rawSignedModel->getContentSnapshot());
-        $contentSnapshot = json_decode($contentSnapshotString, true);
+        $contentSnapshot = json_decode($rawSignedModel->getContentSnapshot(), true);
 
         $tokenContext = new TokenContext($contentSnapshot['identity'], 'publish');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
         $card = $this->publishRawSignedModelWithToken($rawSignedModel, $token);
-
         if (!$this->cardVerifier->verifyCard($card)) {
             throw new CardVerificationException('Validation errors have been detected');
         }
@@ -287,17 +285,20 @@ class CardManager
     protected function publishRawSignedModelWithToken(RawSignedModel $model, AccessToken $token)
     {
         if (is_callable($this->signCallback)) {
-            $model = call_user_func($this->signCallback, $model);
+            $signCallback = $this->signCallback;
+            $signCallback($model);
         }
 
         $responseModel = $this->cardClient->publishCard($model, (string)$token);
 
         if ($responseModel instanceof ErrorResponseModel) {
-            throw new CardClientException("error response from card service", $responseModel);
+            throw new CardClientException(
+                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+            );
         }
 
         $contentSnapshotString = base64_decode($responseModel->getContentSnapshot());
-        $contentSnapshot = json_decode($contentSnapshotString, true);
+        $contentSnapshotArray = json_decode($contentSnapshotString, true);
 
         $cardSignatures = [];
         foreach ($responseModel->getSignatures() as $signature) {
@@ -313,19 +314,19 @@ class CardManager
             );
         }
 
-        $publicKey = $this->cardCrypto->importPublicKey($contentSnapshot['public_key']);
+        $publicKey = $this->cardCrypto->importPublicKey($contentSnapshotArray['public_key']);
 
         $previousCardID = null;
-        if (array_key_exists('previous_card_id', $contentSnapshot)) {
-            $previousCardID = $contentSnapshot['previous_card_id'];
+        if (array_key_exists('previous_card_id', $contentSnapshotArray)) {
+            $previousCardID = $contentSnapshotArray['previous_card_id'];
         }
 
         return new Card(
             $this->generateCardID($this->cardCrypto, $model->getContentSnapshot()),
-            $contentSnapshot['identity'],
+            $contentSnapshotArray['identity'],
             $publicKey,
-            $contentSnapshot['version'],
-            new DateTime($contentSnapshot['created_at']),
+            $contentSnapshotArray['version'],
+            (new DateTime())->setTimestamp($contentSnapshotArray['created_at']),
             false,
             $cardSignatures,
             $model->getContentSnapshot(),

@@ -3,9 +3,6 @@
 namespace Virgil\Sdk;
 
 
-use Virgil\Sdk\Web\ErrorResponseModel;
-
-
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -44,24 +41,45 @@ use Virgil\Sdk\Web\ErrorResponseModel;
 class CardClientException extends VirgilException
 {
     /**
-     * @var ErrorResponseModel
+     * @var int
      */
-    private $errorResponseModel;
+    private $errorCode;
+    /**
+     * @var string
+     */
+    private $errorMessage;
 
 
-    public function __construct($message = "", ErrorResponseModel $errorResponseModel)
+    /**
+     * CardClientException constructor.
+     *
+     * @param string $message
+     * @param int    $errorCode
+     * @param string $errorMessage
+     */
+    public function __construct($message = "", $errorCode, $errorMessage)
     {
         parent::__construct($message, 0);
 
-        $this->errorResponseModel = $errorResponseModel;
+        $this->errorCode = $errorCode;
+        $this->errorMessage = $errorMessage;
     }
 
 
     /**
-     * @return ErrorResponseModel
+     * @return int
      */
-    public function getErrorResponse()
+    public function getErrorCode()
     {
-        return $this->errorResponseModel;
+        return $this->errorCode;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
     }
 }
