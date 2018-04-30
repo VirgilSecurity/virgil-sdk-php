@@ -59,7 +59,7 @@ class RawSignedModel implements JsonSerializable
     /**
      * RawSignedModel constructor.
      *
-     * @param string $contentSnapshot
+     * @param string         $contentSnapshot
      * @param RawSignature[] $signatures
      */
     function __construct($contentSnapshot, array $signatures)
@@ -87,9 +87,7 @@ class RawSignedModel implements JsonSerializable
             }
 
             $rawSignatures[] = new RawSignature(
-                $signature['signer'],
-                base64_decode($signature['signature']),
-                base64_decode($signatureSnapshot)
+                $signature['signer'], base64_decode($signature['signature']), base64_decode($signatureSnapshot)
             );
         }
 
@@ -143,20 +141,20 @@ class RawSignedModel implements JsonSerializable
     }
 
 
-    ///**
-    // * @return string
-    // */
-    //public function exportAsJson()
-    //{
-    //    return json_encode($this);
-    //}
-    //
-    //
-    ///**
-    // * @return string
-    // */
-    //public function exportAsBase64String()
-    //{
-    //    return json_encode($this);
-    //}
+    /**
+     * @return string
+     */
+    public function exportAsJson()
+    {
+        return json_encode($this);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function exportAsBase64String()
+    {
+        return base64_encode($this->exportAsJson());
+    }
 }

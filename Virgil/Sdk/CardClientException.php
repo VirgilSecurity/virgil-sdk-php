@@ -1,8 +1,4 @@
 <?php
-
-namespace Virgil\Sdk;
-
-
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -37,6 +33,14 @@ namespace Virgil\Sdk;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ */
+
+namespace Virgil\Sdk;
+
+
+/**
+ * Class CardClientException
+ * @package Virgil\Sdk
  */
 class CardClientException extends VirgilException
 {

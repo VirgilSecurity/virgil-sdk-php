@@ -41,18 +41,19 @@ namespace Virgil\Sdk;
 use DateTime;
 
 use Virgil\CryptoApi\CardCrypto;
-use Virgil\Sdk\Signer\ModelSigner;
 
-use Virgil\Sdk\Verification\CardVerificationException;
+use Virgil\Sdk\Signer\ModelSigner;
 use Virgil\Sdk\Verification\CardVerifier;
+
+use Virgil\Sdk\Web\ErrorResponseModel;
+use Virgil\Sdk\Web\CardClient;
+use Virgil\Sdk\Web\RawCardContent;
+use Virgil\Sdk\Web\RawSignature;
+use Virgil\Sdk\Web\RawSignedModel;
 
 use Virgil\Sdk\Web\Authorization\AccessToken;
 use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
 use Virgil\Sdk\Web\Authorization\TokenContext;
-use Virgil\Sdk\Web\ErrorResponseModel;
-use Virgil\Sdk\Web\CardClient;
-use Virgil\Sdk\Web\RawCardContent;
-use Virgil\Sdk\Web\RawSignedModel;
 
 
 /**
@@ -243,7 +244,7 @@ class CardManager
 
 
     /**
-     * @param $json
+     * @param string $json
      *
      * @return Card
      *
@@ -254,39 +255,50 @@ class CardManager
         return $this->importCard(RawSignedModel::RawSignedModelFromJson($json));
     }
 
-    //
-    //
-    ///**
-    // * @param Card $card
-    // *
-    // * @return string
-    // */
-    //public function exportCardAsString(Card $card)
-    //{
-    //    return "";
-    //}
-    //
-    //
-    ///**
-    // * @param Card $card
-    // *
-    // * @return string
-    // */
-    //public function exportCardAsJson(Card $card)
-    //{
-    //    return "";
-    //}
-    //
-    //
-    ///**
-    // * @param Card $card
-    // *
-    // * @return RawSignedModel
-    // */
-    //public function exportCardAsRawCard(Card $card)
-    //{
-    //    return new RawSignedModel();
-    //}
+
+    /**
+     * @param Card $card
+     *
+     * @return string
+     */
+    public function exportCardAsString(Card $card)
+    {
+        return $this->exportCardAsRawCard($card)
+                    ->exportAsBase64String()
+            ;
+    }
+
+
+    /**
+     * @param Card $card
+     *
+     * @return string
+     */
+    public function exportCardAsJson(Card $card)
+    {
+        return $this->exportCardAsRawCard($card)
+                    ->exportAsJson()
+            ;
+    }
+
+
+    /**
+     * @param Card $card
+     *
+     * @return RawSignedModel
+     */
+    public function exportCardAsRawCard(Card $card)
+    {
+        $modelSignatures = [];
+        foreach ($card->getSignatures() as $cardSignature) {
+            $modelSignatures[] = new RawSignature(
+                $cardSignature->getSigner(), $cardSignature->getSignature(), $cardSignature->getSnapshot()
+            );
+        }
+
+        return new RawSignedModel($card->getContentSnapshot(), $modelSignatures);
+    }
+
 
     /**
      * @param RawSignedModel $model
@@ -340,9 +352,7 @@ class CardManager
         foreach ($rawSignedModel->getSignatures() as $signature) {
             $extraFields = null;
             if ($signature->getSnapshot() != "") {
-                $snapshotString = base64_decode($signature->getSnapshot());
-                $extraFields = json_decode($snapshotString, true);
-
+                $extraFields = json_decode($signature->getSnapshot(), true);
             }
 
             $cardSignatures[] = new CardSignature(

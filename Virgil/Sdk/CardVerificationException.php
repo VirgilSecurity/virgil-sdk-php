@@ -1,10 +1,4 @@
 <?php
-
-namespace Virgil\Sdk\Verification;
-
-
-use Virgil\Sdk\VirgilException;
-
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -39,6 +33,14 @@ use Virgil\Sdk\VirgilException;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ */
+
+namespace Virgil\Sdk;
+
+
+/**
+ * Class CardVerificationException
+ * @package Virgil\Sdk
  */
 class CardVerificationException extends VirgilException
 {
