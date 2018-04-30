@@ -84,7 +84,7 @@ class ModelSigner
         }
 
         if ($extraFields != null) {
-            $extraFieldsSnapshot = json_encode($extraFields);
+            $extraFieldsSnapshot = json_encode($extraFields, JSON_UNESCAPED_SLASHES);
 
             $resultSnapshot = $model->getContentSnapshot();
             $resultSnapshot .= $extraFieldsSnapshot;

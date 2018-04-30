@@ -9,6 +9,7 @@ use Virgil\CryptoApi\CardCrypto;
 use Virgil\CryptoApi\PrivateKey;
 use Virgil\CryptoApi\PublicKey;
 use Virgil\Http\HttpClientInterface;
+use Virgil\Http\Requests\GetHttpRequest;
 use Virgil\Http\Requests\PostHttpRequest;
 use Virgil\Http\Responses\HttpResponse;
 use Virgil\Http\Responses\HttpStatusCode;
@@ -171,12 +172,36 @@ class CardManagerTest extends TestCase
     }
 
 
+    public function cardManager_withHttpClientErrorResponse_throwsCardClientException_dataProvider()
+    {
+        return [
+            [
+                function (CardManager $cardManager) {
+                    $cardManager->publishRawSignedModel(new RawSignedModel('', []));
+                },
+            ],
+            [
+                function (CardManager $cardManager) {
+                    $cardManager->getCard("01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f");
+                },
+            ],
+            [
+                function (CardManager $cardManager) {
+                    $cardManager->searchCards("Alice");
+                },
+            ],
+        ];
+    }
+
+
     /**
      * @test
      *
+     * @dataProvider  cardManager_withHttpClientErrorResponse_throwsCardClientException_dataProvider
+     *
      * @expectedException \Virgil\Sdk\CardClientException
      */
-    public function publishRawSignedModel_withHttpClientErrorResponse_throwsCardClientException()
+    public function cardManager_withHttpClientErrorResponse_throwsCardClientException($testFunc)
     {
         $this->accessTokenProviderMock->expects($this->once())
                                       ->method('getToken')
@@ -191,9 +216,7 @@ class CardManagerTest extends TestCase
         ;
 
         try {
-            $this->getCardManager()
-                 ->publishRawSignedModel(new RawSignedModel('', []))
-            ;
+            $testFunc($this->getCardManager());
         } catch (CardClientException $e) {
             $this->assertEquals(
                 20000,
@@ -248,7 +271,7 @@ class CardManagerTest extends TestCase
                              ->method('send')
                              ->with(
                                  new PostHttpRequest(
-                                     "http://service.url",
+                                     "http://service.url/card/v5",
                                      '{"content_snapshot":"eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==","signatures":[{"signer":"self","signature":"MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="},{"signer":"callback","signature":"c2lnbg=="}]}',
                                      ["Authorization" => "Virgil access_token_string"]
                                  )
@@ -298,6 +321,234 @@ class CardManagerTest extends TestCase
         ;
 
         $this->assertEquals("01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f", $card->getID());
+    }
+
+
+    public function getCardByID_withAccessToken_returnsCard_dataProvider()
+    {
+        return [
+            [
+                null,
+                false,
+            ],
+            [
+                "
+                date: Mon, 30 Apr 2018 13:52:22 GMT \n\r
+                content-type: text/html \n\r
+                X-Virgil-Is-Superseeded: true \n\r
+                ",
+                true,
+            ],
+        ];
+    }
+
+
+    /**
+     * @test
+     *
+     * @dataProvider  getCardByID_withAccessToken_returnsCard_dataProvider
+     */
+    public function getCardByID_withAccessToken_returnsCard($headers, $isOutdated)
+    {
+        $this->cardVerifierMock->expects($this->once())
+                               ->method("verifyCard")
+                               ->with($this->anything())
+                               ->willReturn(true)
+        ;
+
+        $this->cardCryptoMock->expects($this->once())
+                             ->method("generateSHA512")
+                             ->with(
+                                 '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}'
+                             )
+                             ->willReturn(
+                                 base64_decode(
+                                     "AQVcYCMpp3HfyLx6X/HC7lcdFpw2s8UoFwnl1PeRNV9OOmt6onnlFg9LXqLzihLKcrjcb1zMNqhg8BMcGQfQgQ=="
+                                 )
+                             )
+        ;
+
+        $this->cardCryptoMock->expects($this->once())
+                             ->method("importPublicKey")
+                             ->with("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=")
+                             ->willReturn($this->createMock(PublicKey::class))
+        ;
+
+        $this->httpClientMock->expects($this->once())
+                             ->method('send')
+                             ->with(
+                                 new GetHttpRequest(
+                                     "http://service.url/card/v5/01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f",
+                                     null,
+                                     ["Authorization" => "Virgil access_token_string"]
+                                 )
+                             )
+                             ->willReturn(
+                                 new HttpResponse(
+                                     new HttpStatusCode(200), $headers, '
+                                            {
+                                              "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==",
+                                              "signatures": [
+                                                {
+                                                  "signer": "self",
+                                                  "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
+                                                },
+                                                {
+                                                  "signer": "virgil",
+                                                  "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="
+                                                }
+                                              ]
+                                            }'
+                                 )
+                             )
+        ;
+
+        $accessTokenMock = $this->createMock(AccessToken::class);
+        $accessTokenMock->method("__toString")
+                        ->willReturn("access_token_string")
+        ;
+
+        $this->accessTokenProviderMock->expects($this->once())
+                                      ->method('getToken')
+                                      ->with(new TokenContext('', 'get'))
+                                      ->willReturn($accessTokenMock)
+        ;
+
+
+        $card = $this->getCardManager()
+                     ->getCard("01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f")
+        ;
+
+        $this->assertEquals("01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f", $card->getID());
+        $this->assertEquals($isOutdated, $card->isOutdated());
+    }
+
+
+    /**
+     * @test
+     */
+    public function searchCardByIdentity_withAccessToken_returnsCards()
+    {
+        $this->cardVerifierMock->expects($this->exactly(3))
+                               ->method("verifyCard")
+                               ->with($this->anything())
+                               ->willReturn(true)
+        ;
+
+
+        $this->cardCryptoMock->expects($this->exactly(3))
+                             ->method("generateSHA512")
+                             ->will(
+                                 $this->returnValueMap(
+                                     [
+                                         [
+                                             '{"identity":"Alice-6f5dd654af58ff84110c","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}',
+                                             base64_decode(
+                                                 "vC3MNikrfwU/f4Oaqy3Lag5xVti0nHbbiSQwzjvQbiLu0IO0qWKRTfN8GoPz3PfoewAdUFnI6OCIvwqjWmcwCQ=="
+                                             ),
+                                         ],
+                                         [
+                                             '{"identity":"Alice-a86060c7007b007c070f","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888, "previous_card_id":"01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f"}',
+                                             base64_decode(
+                                                 "cAcONe9y5LM/qv0Wtz4HPL3/et2eShDTwBoovlf/4eJgGACC8M45kwj10+jI07R+L3VwYlSPshKLgfJAkkclCg=="
+                                             ),
+                                         ],
+                                         [
+                                             '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}',
+                                             base64_decode(
+                                                 "AQVcYCMpp3HfyLx6X/HC7lcdFpw2s8UoFwnl1PeRNV9OOmt6onnlFg9LXqLzihLKcrjcb1zMNqhg8BMcGQfQgQ=="
+                                             ),
+                                         ],
+                                     ]
+                                 )
+                             )
+        ;
+
+        $this->cardCryptoMock->expects($this->exactly(3))
+                             ->method("importPublicKey")
+                             ->with("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=")
+                             ->willReturn($this->createMock(PublicKey::class))
+        ;
+
+        $this->httpClientMock->expects($this->once())
+                             ->method('send')
+                             ->with(
+                                 new PostHttpRequest(
+                                     "http://service.url/card/v5/actions/search",
+                                     '{"identity":"Alice"}',
+                                     ["Authorization" => "Virgil access_token_string"]
+                                 )
+                             )
+                             ->willReturn(
+                                 new HttpResponse(
+                                     new HttpStatusCode(200), '', '
+                                            [
+                                              {
+                                                "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==",
+                                                "signatures": [
+                                                  {
+                                                    "signer": "self",
+                                                    "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
+                                                  },
+                                                  {
+                                                    "signer": "virgil",
+                                                    "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLWE4NjA2MGM3MDA3YjAwN2MwNzBmIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4LCAicHJldmlvdXNfY2FyZF9pZCI6IjAxMDU1YzYwMjMyOWE3NzFkZmM4YmM3YTVmZjFjMmVlNTcxZDE2OWMzNmIzYzUyODE3MDllNWQ0Zjc5MTM1NWYifQ==",
+                                                "signatures": [
+                                                  {
+                                                    "signer": "self",
+                                                    "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
+                                                  },
+                                                  {
+                                                    "signer": "virgil",
+                                                    "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLTZmNWRkNjU0YWY1OGZmODQxMTBjIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==",
+                                                "signatures": [
+                                                  {
+                                                    "signer": "self",
+                                                    "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
+                                                  },
+                                                  {
+                                                    "signer": "virgil",
+                                                    "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                            '
+                                 )
+                             )
+        ;
+
+        $accessTokenMock = $this->createMock(AccessToken::class);
+        $accessTokenMock->method("__toString")
+                        ->willReturn("access_token_string")
+        ;
+
+        $this->accessTokenProviderMock->expects($this->once())
+                                      ->method('getToken')
+                                      ->with(new TokenContext('Alice', 'search'))
+                                      ->willReturn($accessTokenMock)
+        ;
+
+
+        $cards = $this->getCardManager()
+                      ->searchCards("Alice")
+        ;
+
+
+        $this->assertCount(2, $cards);
+
+        $this->assertEquals('70070e35ef72e4b33faafd16b73e073cbdff7add9e4a10d3c01a28be57ffe1e2', $cards[0]->getID());
+        $this->assertEquals('bc2dcc36292b7f053f7f839aab2dcb6a0e7156d8b49c76db892430ce3bd06e22', $cards[1]->getID());
     }
 
 

@@ -146,7 +146,7 @@ class RawSignedModel implements JsonSerializable
      */
     public function exportAsJson()
     {
-        return json_encode($this);
+        return json_encode($this, JSON_UNESCAPED_SLASHES);
     }
 
 

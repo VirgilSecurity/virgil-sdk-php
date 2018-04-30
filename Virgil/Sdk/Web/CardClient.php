@@ -39,6 +39,8 @@ namespace Virgil\Sdk\Web;
 
 
 use Virgil\Http\HttpClientInterface;
+
+use Virgil\Http\Requests\GetHttpRequest;
 use Virgil\Http\Requests\PostHttpRequest;
 
 
@@ -68,7 +70,7 @@ class CardClient
     public function __construct($serviceUrl, HttpClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
-        $this->serviceUrl = $serviceUrl;
+        $this->serviceUrl = rtrim($serviceUrl, "/");
     }
 
 
@@ -83,31 +85,102 @@ class CardClient
     {
         $httpResponse = $this->httpClient->send(
             new PostHttpRequest(
-                $this->serviceUrl,
+                $this->serviceUrl . "/card/v5",
                 json_encode($model, JSON_UNESCAPED_SLASHES),
                 ["Authorization" => sprintf("Virgil %s", $token)]
             )
         );
+
         if (!$httpResponse->getHttpStatusCode()
                           ->isSuccess()) {
-
-            $code = 20000;
-            $message = "error during request serving";
-            $badResponseBody = json_decode($httpResponse->getBody(), true);
-
-            if (is_array($badResponseBody)) {
-                if (array_key_exists('code', $badResponseBody)) {
-                    $code = $badResponseBody['code'];
-                }
-                if (array_key_exists('message', $badResponseBody)) {
-                    $message = $badResponseBody['message'];
-                }
-            }
-
-            return new ErrorResponseModel($code, $message);
+            return $this->parseErrorResponse($httpResponse->getBody());
         }
 
         return RawSignedModel::RawSignedModelFromJson($httpResponse->getBody());
+    }
+
+
+    /**
+     * @param string $cardID
+     * @param string $token
+     *
+     * @return ResponseModel|ErrorResponseModel
+     *
+     */
+    public function getCard($cardID, $token)
+    {
+        $httpResponse = $this->httpClient->send(
+            new GetHttpRequest(
+                sprintf("%s/card/v5/%s", $this->serviceUrl, $cardID),
+                null,
+                ["Authorization" => sprintf("Virgil %s", $token)]
+            )
+        );
+
+        if (!$httpResponse->getHttpStatusCode()
+                          ->isSuccess()) {
+            return $this->parseErrorResponse($httpResponse->getBody());
+        }
+
+        $rawSignedModel = RawSignedModel::RawSignedModelFromJson($httpResponse->getBody());
+
+        return new ResponseModel($httpResponse->getHeaders(), $rawSignedModel);
+    }
+
+
+    /**
+     * @param string $identity
+     * @param string $token
+     *
+     * @return RawSignedModel[]|ErrorResponseModel
+     */
+    public function searchCards($identity, $token)
+    {
+        $httpResponse = $this->httpClient->send(
+            new PostHttpRequest(
+                $this->serviceUrl . "/card/v5/actions/search",
+                json_encode(["identity" => $identity], JSON_UNESCAPED_SLASHES),
+                ["Authorization" => sprintf("Virgil %s", $token)]
+            )
+        );
+
+        if (!$httpResponse->getHttpStatusCode()
+                          ->isSuccess()) {
+            return $this->parseErrorResponse($httpResponse->getBody());
+        }
+
+        $rawModels = [];
+
+        $rawModelsJson = json_decode($httpResponse->getBody(), true);
+        foreach ($rawModelsJson as $rawModelJson) {
+            $rawModels[] = RawSignedModel::RawSignedModelFromJson(json_encode($rawModelJson, JSON_UNESCAPED_SLASHES));
+        }
+
+        return $rawModels;
+    }
+
+
+    /**
+     * @param string $errorBody
+     *
+     * @return ErrorResponseModel
+     */
+    protected function parseErrorResponse($errorBody)
+    {
+        $code = 20000;
+        $message = "error during request serving";
+        $badResponseBody = json_decode($errorBody, true);
+
+        if (is_array($badResponseBody)) {
+            if (array_key_exists('code', $badResponseBody)) {
+                $code = $badResponseBody['code'];
+            }
+            if (array_key_exists('message', $badResponseBody)) {
+                $message = $badResponseBody['message'];
+            }
+        }
+
+        return new ErrorResponseModel($code, $message);
     }
 
 }

@@ -116,7 +116,7 @@ class CardManager
         $publicKeyString = $this->cardCrypto->exportPublicKey($cardParams->getPublicKey());
 
         $rawCardContent = new RawCardContent($cardParams->getIdentity(), $publicKeyString, '5.0', $now->getTimestamp());
-        $rawCardContentSnapshot = json_encode($rawCardContent);
+        $rawCardContentSnapshot = json_encode($rawCardContent, JSON_UNESCAPED_SLASHES);
 
         $rawSignedModel = new RawSignedModel($rawCardContentSnapshot, []);
 
@@ -187,28 +187,70 @@ class CardManager
 
         return $card;
     }
-    //
-    //
-    ///**
-    // * @param $cardID
-    // *
-    // * @return Card
-    // */
-    //public function getCard($cardID)
-    //{
-    //    return new Card();
-    //}
-    //
-    //
-    ///**
-    // * @param string $identity
-    // *
-    // * @return Card[]
-    // */
-    //public function searchCards($identity)
-    //{
-    //    return [new Card()];
-    //}
+
+
+    /**
+     * @param string $cardID
+     *
+     * @return Card
+     *
+     * @throws CardClientException
+     * @throws CardVerificationException
+     */
+    public function getCard($cardID)
+    {
+        $tokenContext = new TokenContext("", 'get');
+        $token = $this->accessTokenProvider->getToken($tokenContext);
+
+        $responseModel = $this->cardClient->getCard($cardID, (string)$token);
+        if ($responseModel instanceof ErrorResponseModel) {
+            throw new CardClientException(
+                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+            );
+        }
+
+        $card = $this->parseRawCard($responseModel->getRawSignedModel(), $responseModel->isOutdated());
+
+        if (!$this->cardVerifier->verifyCard($card)) {
+            throw new CardVerificationException('Validation errors have been detected');
+        }
+
+        return $card;
+    }
+
+
+    /**
+     * @param string $identity
+     *
+     * @return Card[]
+     *
+     * @throws CardClientException
+     * @throws CardVerificationException
+     */
+    public function searchCards($identity)
+    {
+        $tokenContext = new TokenContext($identity, 'search');
+        $token = $this->accessTokenProvider->getToken($tokenContext);
+
+        $responseModel = $this->cardClient->searchCards($identity, (string)$token);
+        if ($responseModel instanceof ErrorResponseModel) {
+            throw new CardClientException(
+                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+            );
+        }
+
+        $cards = [];
+        foreach ($responseModel as $model) {
+            $card = $this->parseRawCard($model, false);
+            if (!$this->cardVerifier->verifyCard($card)) {
+                throw new CardVerificationException('Validation errors have been detected');
+            }
+
+            $cards[] = $card;
+        }
+
+        return $this->linkCards($cards);
+    }
 
 
     /**
@@ -342,9 +384,11 @@ class CardManager
     /**
      * @param RawSignedModel $rawSignedModel
      *
+     * @param bool           $isOutdated
+     *
      * @return Card
      */
-    protected function parseRawCard(RawSignedModel $rawSignedModel)
+    protected function parseRawCard(RawSignedModel $rawSignedModel, $isOutdated = false)
     {
         $contentSnapshotArray = json_decode($rawSignedModel->getContentSnapshot(), true);
 
@@ -373,10 +417,68 @@ class CardManager
             $publicKey,
             $contentSnapshotArray['version'],
             (new DateTime())->setTimestamp($contentSnapshotArray['created_at']),
-            false,
+            $isOutdated,
             $cardSignatures,
             $rawSignedModel->getContentSnapshot(),
             $previousCardID
         );
+    }
+
+
+    /**
+     * @param Card[] $cards
+     *
+     * @return Card[]
+     */
+    protected function linkCards(array $cards)
+    {
+        /** @var Card[] $linkedCards */
+        $linkedCards = [];
+        foreach ($cards as $card) {
+            foreach ($cards as $previousCard) {
+                if ($card->getPreviousCardId() == $previousCard->getID()) {
+                    $linkedCards[] = new Card(
+                        $card->getID(),
+                        $card->getIdentity(),
+                        $card->getPublicKey(),
+                        $card->getVersion(),
+                        $card->getCreatedAt(),
+                        $card->isOutdated(),
+                        $card->getSignatures(),
+                        $card->getContentSnapshot(),
+                        $card->getPreviousCardId(),
+                        new Card(
+                            $previousCard->getID(),
+                            $previousCard->getIdentity(),
+                            $previousCard->getPublicKey(),
+                            $previousCard->getVersion(),
+                            $previousCard->getCreatedAt(),
+                            true,
+                            $previousCard->getSignatures(),
+                            $previousCard->getContentSnapshot()
+                        )
+                    );
+                }
+            }
+        }
+
+        foreach ($cards as $card) {
+            $isCardAdded = false;
+            foreach ($linkedCards as $linkedCard) {
+                if ($linkedCard->getID() == $card->getID()) {
+                    $isCardAdded = true;
+                }
+
+                $previousCard = $linkedCard->getPreviousCard();
+                if ($previousCard != null && $previousCard->getID() == $card->getID()) {
+                    $isCardAdded = true;
+                }
+            }
+            if (!$isCardAdded) {
+                $linkedCards[] = $card;
+            }
+        }
+
+        return $linkedCards;
     }
 }
