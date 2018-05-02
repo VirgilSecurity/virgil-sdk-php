@@ -35,56 +35,39 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk\Verification;
-
-
-use Virgil\CryptoApi\PublicKey;
+namespace Virgil\Sdk\Web\Authorization;
 
 
 /**
- * Class VerifierCredentials
- * @package Virgil\Sdk\Verification
+ * Class ConstAccessTokenProvider
+ * @package Virgil\Sdk\Web\Authorization
  */
-class VerifierCredentials
+class ConstAccessTokenProvider implements AccessTokenProvider
 {
     /**
-     * @var string
+     * @var AccessToken
      */
-    private $signer;
-
-    /**
-     * @var PublicKey
-     */
-    private $publicKey;
+    private $accessToken;
 
 
     /**
-     * VerifierCredentials constructor.
+     * ConstAccessTokenProvider constructor.
      *
-     * @param string    $signer
-     * @param PublicKey $publicKey
+     * @param AccessToken $accessToken
      */
-    public function __construct($signer, PublicKey $publicKey)
+    public function __construct(AccessToken $accessToken)
     {
-        $this->signer = $signer;
-        $this->publicKey = $publicKey;
+        $this->accessToken = $accessToken;
     }
 
 
     /**
-     * @return PublicKey
+     * @param TokenContext $context
+     *
+     * @return AccessToken
      */
-    public function getPublicKey()
+    public function getToken(TokenContext $context)
     {
-        return $this->publicKey;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getSigner()
-    {
-        return $this->signer;
+        return $this->accessToken;
     }
 }

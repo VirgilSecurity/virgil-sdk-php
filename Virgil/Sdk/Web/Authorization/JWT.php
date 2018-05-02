@@ -35,56 +35,40 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk\Verification;
-
-
-use Virgil\CryptoApi\PublicKey;
+namespace Virgil\Sdk\Web\Authorization;
 
 
 /**
- * Class VerifierCredentials
- * @package Virgil\Sdk\Verification
+ * Class JWT
+ * @package Virgil\Sdk\Web\Authorization
  */
-class VerifierCredentials
+class JWT implements AccessToken
 {
     /**
-     * @var string
-     */
-    private $signer;
-
-    /**
-     * @var PublicKey
-     */
-    private $publicKey;
-
-
-    /**
-     * VerifierCredentials constructor.
+     * @param string $token
      *
-     * @param string    $signer
-     * @param PublicKey $publicKey
+     * @return JWT
      */
-    public function __construct($signer, PublicKey $publicKey)
+    public static function fromString($token)
     {
-        $this->signer = $signer;
-        $this->publicKey = $publicKey;
-    }
-
-
-    /**
-     * @return PublicKey
-     */
-    public function getPublicKey()
-    {
-        return $this->publicKey;
+        return new JWT();
     }
 
 
     /**
      * @return string
      */
-    public function getSigner()
+    public function identity()
     {
-        return $this->signer;
+        // TODO: Implement identity() method.
+    }
+
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        // TODO: Implement __toString() method.
     }
 }

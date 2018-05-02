@@ -63,7 +63,7 @@ use Virgil\Sdk\Web\Authorization\TokenContext;
 class CardManager
 {
     /**
-     * @var callable|null
+     * @var (RawSignedModel) -> RawSignedModel callable|null
      */
     private $signCallback;
     /**
@@ -350,11 +350,11 @@ class CardManager
      *
      * @throws CardClientException
      */
-    protected function publishRawSignedModelWithToken(RawSignedModel $model, AccessToken $token)
+    private function publishRawSignedModelWithToken(RawSignedModel $model, AccessToken $token)
     {
         if (is_callable($this->signCallback)) {
             $signCallback = $this->signCallback;
-            $signCallback($model);
+            $model = $signCallback($model);
         }
 
         $responseModel = $this->cardClient->publishCard($model, (string)$token);
@@ -375,7 +375,7 @@ class CardManager
      *
      * @return string
      */
-    protected function generateCardID(CardCrypto $cardCrypto, $snapshot)
+    private function generateCardID(CardCrypto $cardCrypto, $snapshot)
     {
         return bin2hex(substr($cardCrypto->generateSHA512($snapshot), 0, 32));
     }
@@ -388,7 +388,7 @@ class CardManager
      *
      * @return Card
      */
-    protected function parseRawCard(RawSignedModel $rawSignedModel, $isOutdated = false)
+    private function parseRawCard(RawSignedModel $rawSignedModel, $isOutdated = false)
     {
         $contentSnapshotArray = json_decode($rawSignedModel->getContentSnapshot(), true);
 
@@ -430,7 +430,7 @@ class CardManager
      *
      * @return Card[]
      */
-    protected function linkCards(array $cards)
+    private function linkCards(array $cards)
     {
         /** @var Card[] $linkedCards */
         $linkedCards = [];

@@ -54,7 +54,7 @@ class CardClient
     /**
      * @var HttpClientInterface
      */
-    protected $httpClient;
+    private $httpClient;
     /**
      * @var string
      */
@@ -165,7 +165,7 @@ class CardClient
      *
      * @return ErrorResponseModel
      */
-    protected function parseErrorResponse($errorBody)
+    private function parseErrorResponse($errorBody)
     {
         $code = 20000;
         $message = "error during request serving";

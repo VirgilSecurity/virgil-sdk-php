@@ -145,7 +145,7 @@ class VirgilCardVerifier implements CardVerifier
      *
      * @return bool
      */
-    protected function validateSignerSignature(Card $card, $signer, PublicKey $publicKey)
+    private function validateSignerSignature(Card $card, $signer, PublicKey $publicKey)
     {
         foreach ($card->getSignatures() as $cardSignature) {
             if ($cardSignature->getSigner() == $signer) {

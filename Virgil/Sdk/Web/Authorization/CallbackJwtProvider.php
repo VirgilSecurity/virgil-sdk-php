@@ -35,56 +35,43 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk\Verification;
-
-
-use Virgil\CryptoApi\PublicKey;
+namespace Virgil\Sdk\Web\Authorization;
 
 
 /**
- * Class VerifierCredentials
- * @package Virgil\Sdk\Verification
+ * Class CallbackJwtProvider
+ * @package Virgil\Sdk\Web\Authorization
  */
-class VerifierCredentials
+class CallbackJwtProvider implements AccessTokenProvider
 {
+
     /**
-     * @var string
+     * @var (TokenContext) -> string callable
      */
-    private $signer;
-
-    /**
-     * @var PublicKey
-     */
-    private $publicKey;
+    private $callbackFunc;
 
 
     /**
-     * VerifierCredentials constructor.
+     * CallbackJwtProvider constructor.
      *
-     * @param string    $signer
-     * @param PublicKey $publicKey
+     * @param callable $callbackFunc
      */
-    public function __construct($signer, PublicKey $publicKey)
+    public function __construct(callable $callbackFunc)
     {
-        $this->signer = $signer;
-        $this->publicKey = $publicKey;
+        $this->callbackFunc = $callbackFunc;
     }
 
 
     /**
-     * @return PublicKey
+     * @param TokenContext $context
+     *
+     * @return AccessToken
      */
-    public function getPublicKey()
+    public function getToken(TokenContext $context)
     {
-        return $this->publicKey;
-    }
+        $getTokenCallback = $this->callbackFunc;
+        $jwtString = $getTokenCallback($context);
 
-
-    /**
-     * @return string
-     */
-    public function getSigner()
-    {
-        return $this->signer;
+        return JWT::fromString($jwtString);
     }
 }

@@ -237,10 +237,11 @@ class CardManagerTest extends TestCase
      */
     public function publishRawSignedModel_withAccessToken_returnsCardWithID()
     {
-        $this->signCallback = function (RawSignedModel &$model) {
+        $this->signCallback = function (RawSignedModel $model) {
             $signatures = $model->getSignatures();
             $signatures[] = new RawSignature("callback", "sign");
-            $model = new  RawSignedModel($model->getContentSnapshot(), $signatures);
+
+            return new RawSignedModel($model->getContentSnapshot(), $signatures);
         };
 
         $this->cardVerifierMock->expects($this->once())
