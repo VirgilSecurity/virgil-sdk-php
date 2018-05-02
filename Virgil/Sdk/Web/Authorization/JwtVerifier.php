@@ -38,37 +38,72 @@
 namespace Virgil\Sdk\Web\Authorization;
 
 
+use Virgil\CryptoApi\AccessTokenSigner;
+use Virgil\CryptoApi\PublicKey;
+
+// todo: add test
+
 /**
- * Class JWT
+ * Class JwtVerifier
  * @package Virgil\Sdk\Web\Authorization
  */
-class JWT implements AccessToken
+class JwtVerifier
 {
     /**
-     * @param string $token
+     * @var PublicKey
+     */
+    private $apiPublicKey;
+    /**
+     * @var string
+     */
+    private $appPublicKeyID;
+    /**
+     * @var AccessTokenSigner
+     */
+    private $accessTokenSigner;
+
+
+    /**
+     * JwtVerifier constructor.
      *
-     * @return JWT
+     * @param PublicKey         $apiPublicKey
+     * @param string            $appPublicKeyID
+     * @param AccessTokenSigner $accessTokenSigner
      */
-    public static function fromString($token)
+    public function __construct(PublicKey $apiPublicKey, $appPublicKeyID, AccessTokenSigner $accessTokenSigner)
     {
-        return new JWT();
+        $this->apiPublicKey = $apiPublicKey;
+        $this->appPublicKeyID = $appPublicKeyID;
+        $this->accessTokenSigner = $accessTokenSigner;
     }
 
 
     /**
-     * @return string
+     * @param Jwt $jwt
+     *
+     * @return bool
      */
-    public function identity()
+    public function verifyToken(Jwt $jwt)
     {
-        // TODO: Implement identity() method.
-    }
+        $headerContent = $jwt->getHeaderContent();
+        if ($headerContent->getApiPublicKeyIdentifier() != $this->appPublicKeyID) {
+            return false;
+        }
+        if ($headerContent->getAlgorithm() != $this->accessTokenSigner->getAlgorithm()) {
+            return false;
+        }
+        if ($headerContent->getContentType() != Jwt::VirgilJwtContentType) {
+            return false;
+        }
+        if ($headerContent->getType() != Jwt::VirgilJwtType) {
+            return false;
+        }
 
 
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        // TODO: Implement __toString() method.
+        return $this->accessTokenSigner->verifyTokenSignature(
+            $jwt->getSignatureContent(),
+            $jwt->getUnsigned(),
+            $this->apiPublicKey
+        );
     }
 }

@@ -39,63 +39,47 @@ namespace Virgil\Sdk\Web\Authorization;
 
 
 /**
- * Class TokenContext
+ * Class GeneratorJwtProvider
  * @package Virgil\Sdk\Web\Authorization
  */
-class TokenContext
+class GeneratorJwtProvider implements AccessTokenProvider
 {
     /**
-     * @var string
+     * @var JwtGenerator
      */
-    private $identity;
+    private $jwtGenerator;
+    /**
+     * @var array|null
+     */
+    private $additionalData;
     /**
      * @var string
      */
-    private $operation;
-    /**
-     * @var bool
-     */
-    private $forceReload;
+    private $defaultIdentity;
 
 
     /**
-     * TokenContext constructor.
+     * GeneratorJwtProvider constructor.
      *
-     * @param string $identity
-     * @param string $operation
-     * @param bool   $forceReload
+     * @param JwtGenerator $jwtGenerator
+     * @param array|null   $additionalData
+     * @param string       $defaultIdentity
      */
-    public function __construct($identity, $operation, $forceReload = false)
+    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity, array $additionalData = null)
     {
-        $this->identity = $identity;
-        $this->operation = $operation;
-        $this->forceReload = $forceReload;
+        $this->jwtGenerator = $jwtGenerator;
+        $this->additionalData = $additionalData;
+        $this->defaultIdentity = $defaultIdentity;
     }
 
 
     /**
-     * @return string
+     * @param TokenContext $context
+     *
+     * @return AccessToken
      */
-    public function getIdentity()
+    public function getToken(TokenContext $context)
     {
-        return $this->identity;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getOperation()
-    {
-        return $this->operation;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isForceReload()
-    {
-        return $this->forceReload;
+        return $this->jwtGenerator->generateToken($context->getIdentity(), $this->additionalData);
     }
 }

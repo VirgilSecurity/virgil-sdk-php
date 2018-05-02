@@ -39,63 +39,70 @@ namespace Virgil\Sdk\Web\Authorization;
 
 
 /**
- * Class TokenContext
+ * Class JwtParser
  * @package Virgil\Sdk\Web\Authorization
  */
-class TokenContext
+class JwtParser
 {
     /**
-     * @var string
-     */
-    private $identity;
-    /**
-     * @var string
-     */
-    private $operation;
-    /**
-     * @var bool
-     */
-    private $forceReload;
-
-
-    /**
-     * TokenContext constructor.
+     * @param string $jwtBodyString
      *
-     * @param string $identity
-     * @param string $operation
-     * @param bool   $forceReload
+     * @return JwtBodyContent
      */
-    public function __construct($identity, $operation, $forceReload = false)
+    public function parseJwtBodyContent($jwtBodyString)
     {
-        $this->identity = $identity;
-        $this->operation = $operation;
-        $this->forceReload = $forceReload;
+        $tokenJsonBody = json_decode($jwtBodyString, true);
+
+        $iss = str_replace('virgil-', '', $tokenJsonBody['iss']);
+        $sub = str_replace('identity-', '', $tokenJsonBody['sub']);
+        $iat = $tokenJsonBody['iat'];
+        $exp = $tokenJsonBody['exp'];
+
+        if (array_key_exists('ada', $tokenJsonBody)) {
+            return new JwtBodyContent($iss, $sub, $iat, $exp, $tokenJsonBody['ada']);
+        }
+
+        return new JwtBodyContent($iss, $sub, $iat, $exp);
     }
 
 
     /**
+     * @param string $jwtHeaderString
+     *
+     * @return JwtHeaderContent
+     */
+    public function parseJwtHeaderContent($jwtHeaderString)
+    {
+
+        $tokenJsonHeader = json_decode($jwtHeaderString, true);
+
+        $alg = $tokenJsonHeader['alg'];
+        $kid = $tokenJsonHeader['kid'];
+
+        return new JwtHeaderContent($alg, $kid);
+    }
+
+
+    /**
+     * @param JwtBodyContent $jwtBodyContent
+     *
      * @return string
      */
-    public function getIdentity()
+    public function buildJwtBody(JwtBodyContent $jwtBodyContent)
     {
-        return $this->identity;
+        return json_encode($jwtBodyContent);
     }
 
 
     /**
+     * @param JwtHeaderContent $jwtHeaderContent
+     *
      * @return string
      */
-    public function getOperation()
+    public function buildJwtHeader(JwtHeaderContent $jwtHeaderContent)
     {
-        return $this->operation;
+        return json_encode($jwtHeaderContent);
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isForceReload()
-    {
-        return $this->forceReload;
-    }
 }

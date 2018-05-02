@@ -72,6 +72,6 @@ class CallbackJwtProvider implements AccessTokenProvider
         $getTokenCallback = $this->callbackFunc;
         $jwtString = $getTokenCallback($context);
 
-        return JWT::fromString($jwtString);
+        return Jwt::fromString($jwtString);
     }
 }

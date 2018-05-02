@@ -38,64 +38,79 @@
 namespace Virgil\Sdk\Web\Authorization;
 
 
+use Virgil\CryptoApi\AccessTokenSigner;
+use Virgil\CryptoApi\PrivateKey;
+
+
 /**
- * Class TokenContext
+ * Class JwtGenerator
  * @package Virgil\Sdk\Web\Authorization
  */
-class TokenContext
+class JwtGenerator
 {
     /**
-     * @var string
+     * @var PrivateKey
      */
-    private $identity;
+    private $apiKey;
     /**
      * @var string
      */
-    private $operation;
+    private $apiPublicKeyIdentifier;
     /**
-     * @var bool
+     * @var AccessTokenSigner
      */
-    private $forceReload;
+    private $accessTokenSigner;
+    /**
+     * @var string
+     */
+    private $appID;
+    /**
+     * @var int
+     */
+    private $ttl;
 
 
     /**
-     * TokenContext constructor.
+     * JwtGenerator constructor.
      *
+     * @param PrivateKey        $apiKey
+     * @param string            $apiPublicKeyIdentifier
+     * @param AccessTokenSigner $accessTokenSigner
+     * @param string            $appID
+     * @param int               $ttl
+     */
+    public function __construct(
+        PrivateKey $apiKey,
+        $apiPublicKeyIdentifier,
+        AccessTokenSigner $accessTokenSigner,
+        $appID,
+        $ttl
+    ) {
+        $this->apiKey = $apiKey;
+        $this->apiPublicKeyIdentifier = $apiPublicKeyIdentifier;
+        $this->accessTokenSigner = $accessTokenSigner;
+        $this->appID = $appID;
+        $this->ttl = $ttl;
+    }
+
+
+    /**
      * @param string $identity
-     * @param string $operation
-     * @param bool   $forceReload
+     * @param array  $additionalData
+     *
+     * @return Jwt
      */
-    public function __construct($identity, $operation, $forceReload = false)
+    public function generateToken($identity, array $additionalData = null)
     {
-        $this->identity = $identity;
-        $this->operation = $operation;
-        $this->forceReload = $forceReload;
-    }
+        $issuedAt = time();
+        $expiresAt = $issuedAt + $this->ttl;
+        $jwtBody = new JwtBodyContent($this->appID, $identity, $issuedAt, $expiresAt, $additionalData);
+        $jwtHeader = new JwtHeaderContent($this->accessTokenSigner->getAlgorithm(), $this->apiPublicKeyIdentifier);
 
+        $unsignedJwt = new Jwt($jwtHeader, $jwtBody, '');
 
-    /**
-     * @return string
-     */
-    public function getIdentity()
-    {
-        return $this->identity;
-    }
+        $jwtSignature = $this->accessTokenSigner->generateTokenSignature($unsignedJwt->getUnsigned(), $this->apiKey);
 
-
-    /**
-     * @return string
-     */
-    public function getOperation()
-    {
-        return $this->operation;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isForceReload()
-    {
-        return $this->forceReload;
+        return new Jwt($jwtHeader, $jwtBody, $jwtSignature);
     }
 }

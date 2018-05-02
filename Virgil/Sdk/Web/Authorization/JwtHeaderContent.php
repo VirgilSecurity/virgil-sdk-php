@@ -38,64 +38,99 @@
 namespace Virgil\Sdk\Web\Authorization;
 
 
+use JsonSerializable;
+
+
 /**
- * Class TokenContext
+ * Class JwtHeaderContent
  * @package Virgil\Sdk\Web\Authorization
  */
-class TokenContext
+class JwtHeaderContent implements JsonSerializable
 {
     /**
      * @var string
      */
-    private $identity;
+    protected $contentType;
     /**
      * @var string
      */
-    private $operation;
+    protected $type;
     /**
-     * @var bool
+     * @var string
      */
-    private $forceReload;
+    private $algorithm;
+    /**
+     * @var string
+     */
+    private $apiPublicKeyIdentifier;
 
 
     /**
-     * TokenContext constructor.
+     * JwtHeaderContent constructor.
      *
-     * @param string $identity
-     * @param string $operation
-     * @param bool   $forceReload
+     * @param string $algorithm
+     * @param string $apiPublicKeyIdentifier
      */
-    public function __construct($identity, $operation, $forceReload = false)
+    public function __construct($algorithm, $apiPublicKeyIdentifier)
     {
-        $this->identity = $identity;
-        $this->operation = $operation;
-        $this->forceReload = $forceReload;
+        $this->algorithm = $algorithm;
+        $this->apiPublicKeyIdentifier = $apiPublicKeyIdentifier;
+        $this->contentType = Jwt::VirgilJwtContentType;
+        $this->type = Jwt::VirgilJwtType;
+
     }
 
 
     /**
      * @return string
      */
-    public function getIdentity()
+    public function getAlgorithm()
     {
-        return $this->identity;
+        return $this->algorithm;
     }
 
 
     /**
      * @return string
      */
-    public function getOperation()
+    public function getApiPublicKeyIdentifier()
     {
-        return $this->operation;
+        return $this->apiPublicKeyIdentifier;
     }
 
 
     /**
-     * @return bool
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    public function isForceReload()
+    public function jsonSerialize()
     {
-        return $this->forceReload;
+        return [
+            'alg' => $this->algorithm,
+            'kid' => $this->apiPublicKeyIdentifier,
+            'typ' => $this->type,
+            'cty' => $this->contentType,
+        ];
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

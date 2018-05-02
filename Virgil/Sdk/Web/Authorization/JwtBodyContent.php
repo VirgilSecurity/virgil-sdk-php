@@ -38,38 +38,53 @@
 namespace Virgil\Sdk\Web\Authorization;
 
 
+use JsonSerializable;
+
+
 /**
- * Class TokenContext
+ * Class JwtBodyContent
  * @package Virgil\Sdk\Web\Authorization
  */
-class TokenContext
+class JwtBodyContent implements JsonSerializable
 {
+    /**
+     * @var string
+     */
+    private $appID;
     /**
      * @var string
      */
     private $identity;
     /**
-     * @var string
+     * @var int
      */
-    private $operation;
+    private $issuedAt;
     /**
-     * @var bool
+     * @var int
      */
-    private $forceReload;
+    private $expiresAt;
+    /**
+     * @var array|null
+     */
+    private $additionalData;
 
 
     /**
-     * TokenContext constructor.
+     * JwtBodyContent constructor.
      *
-     * @param string $identity
-     * @param string $operation
-     * @param bool   $forceReload
+     * @param string     $appID
+     * @param string     $identity
+     * @param int        $issuedAt
+     * @param int        $expiresAt
+     * @param array|null $additionalData
      */
-    public function __construct($identity, $operation, $forceReload = false)
+    public function __construct($appID, $identity, $issuedAt, $expiresAt, array $additionalData = null)
     {
+        $this->appID = $appID;
         $this->identity = $identity;
-        $this->operation = $operation;
-        $this->forceReload = $forceReload;
+        $this->issuedAt = $issuedAt;
+        $this->expiresAt = $expiresAt;
+        $this->additionalData = $additionalData;
     }
 
 
@@ -85,17 +100,59 @@ class TokenContext
     /**
      * @return string
      */
-    public function getOperation()
+    public function getAppID()
     {
-        return $this->operation;
+        return $this->appID;
     }
 
 
     /**
-     * @return bool
+     * @return int
      */
-    public function isForceReload()
+    public function getIssuedAt()
     {
-        return $this->forceReload;
+        return $this->issuedAt;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getAdditionalData()
+    {
+        return $this->additionalData;
+    }
+
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        $json = [
+            'iss' => 'virgil-' . $this->appID,
+            'sub' => 'identity-' . $this->identity,
+            'iat' => $this->issuedAt,
+            'exp' => $this->expiresAt,
+        ];
+
+        if ($this->additionalData != null) {
+            $json['ada'] = $this->additionalData;
+        }
+
+        return $json;
     }
 }
