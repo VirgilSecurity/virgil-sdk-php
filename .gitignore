@@ -6,5 +6,4 @@ CryptoImpl/
 composer.lock
 phpunit.xml
 tests/config.json
-Virgil/Sdk/Storage/
 tests/intergration/
