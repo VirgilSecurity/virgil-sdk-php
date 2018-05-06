@@ -38,79 +38,46 @@
 namespace Virgil\Sdk\Storage;
 
 
-use Virgil\Sdk\VirgilException;
-
 use Virgil\CryptoApi\PrivateKey;
-use Virgil\CryptoApi\PrivateKeyExporter;
+
 
 /**
- * Class PrivateKeyStorage
+ * Class PrivateKeyEntry
  * @package Virgil\Sdk\Storage
  */
-class PrivateKeyStorage
+class PrivateKeyEntry
 {
     /**
-     * @var KeyStorage
+     * @var PrivateKey
      */
-    protected $keyStorage;
+    private $privateKey;
     /**
-     * @var PrivateKeyExporter
+     * @var array
      */
-    private $privateKeyExporter;
+    private $meta;
 
 
-    /**
-     * PrivateKeyStorage constructor.
-     *
-     * @param PrivateKeyExporter $privateKeyExporter
-     * @param string             $storagePath
-     *
-     * @throws VirgilException
-     */
-    public function __construct(PrivateKeyExporter $privateKeyExporter, $storagePath)
+    public function __construct(PrivateKey $privateKey, array $meta = null)
     {
-        $this->keyStorage = new KeyStorage($storagePath);
-        $this->privateKeyExporter = $privateKeyExporter;
+        $this->privateKey = $privateKey;
+        $this->meta = $meta;
     }
 
 
     /**
-     * @param PrivateKey $privateKey
-     * @param string     $name
-     * @param array      $meta
-     *
-     * @throws VirgilException
+     * @return PrivateKey
      */
-    public function store(PrivateKey $privateKey, $name, array $meta = null)
+    public function getPrivateKey()
     {
-        $exportedData = $this->privateKeyExporter->exportPrivateKey($privateKey);
-
-        $this->keyStorage->store(new KeyEntry($name, $exportedData, $meta));
+        return $this->privateKey;
     }
 
 
     /**
-     * @param string $name
-     *
-     * @return PrivateKeyEntry
-     * @throws VirgilException
+     * @return array
      */
-    public function load($name)
+    public function getMeta()
     {
-        $keyEntry = $this->keyStorage->load($name);
-        $privateKey = $this->privateKeyExporter->importPrivateKey($keyEntry->getValue());
-
-        return new PrivateKeyEntry($privateKey, $keyEntry->getMeta());
-    }
-
-
-    /**
-     * @param string $name
-     *
-     * @throws VirgilException
-     */
-    public function delete($name)
-    {
-        $this->keyStorage->delete($name);
+        return $this->meta;
     }
 }
