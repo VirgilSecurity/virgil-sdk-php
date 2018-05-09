@@ -1,9 +1,12 @@
 <?php
+
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
 use Exception;
-use Virgil\Crypto\VirgilCipherBase;
+
+use VirgilCipherBase;
+
 use Virgil\Sdk\Cryptography\Core\Exceptions\CipherException;
 
 /**
