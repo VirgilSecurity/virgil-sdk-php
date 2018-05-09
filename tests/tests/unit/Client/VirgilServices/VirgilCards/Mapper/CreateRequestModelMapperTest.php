@@ -122,7 +122,7 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
             [
                 [
                     self::CARD_SIGNED_REQUEST_JSON_FORMAT,
-                    '{"identity":"alice2","identity_type":"member","public_key":"public-key-2","data":{"customData":"qwerty"},"scope":"global","info":{"device":"iPhone6s","device_name":"Space grey one"}}',
+                    '{"identity":"alice2","identity_type":"member","public_key":"public-key-2","scope":"global","data":{"customData":"qwerty"},"info":{"device":"iPhone6s","device_name":"Space grey one"}}',
                     '{"signs":{"sign-id-3":"_sign3","sign-id-4":"_sign4"}}',
                 ],
                 [
@@ -136,7 +136,7 @@ class CreateRequestModelMapperTest extends AbstractMapperTest
                     ],
                     ['sign-id-3' => '_sign3', 'sign-id-4' => '_sign4'],
                 ],
-                'eyJpZGVudGl0eV90eXBlIjoibWVtYmVyIiwiaWRlbnRpdHkiOiJhbGljZTIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwiZGF0YSI6eyJjdXN0b21EYXRhIjoicXdlcnR5In0sInNjb3BlIjoiZ2xvYmFsIiwiaW5mbyI6eyJkZXZpY2UiOiJpUGhvbmU2cyIsImRldmljZV9uYW1lIjoiU3BhY2UgZ3JleSBvbmUifX0=',
+                'eyJpZGVudGl0eV90eXBlIjoibWVtYmVyIiwiaWRlbnRpdHkiOiJhbGljZTIiLCJwdWJsaWNfa2V5IjoicHVibGljLWtleS0yIiwic2NvcGUiOiJnbG9iYWwiLCJkYXRhIjp7ImN1c3RvbURhdGEiOiJxd2VydHkifSwiaW5mbyI6eyJkZXZpY2UiOiJpUGhvbmU2cyIsImRldmljZV9uYW1lIjoiU3BhY2UgZ3JleSBvbmUifX0=',
             ],
         ];
     }

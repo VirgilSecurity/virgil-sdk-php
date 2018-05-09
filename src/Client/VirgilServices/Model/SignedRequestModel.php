@@ -2,14 +2,16 @@
 namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
+use JsonSerializable;
+
 use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class keeps content and meta information of any signed request to Virgil Cards Service.
  */
-class SignedRequestModel extends AbstractModel
+class SignedRequestModel implements JsonSerializable
 {
-    /** @var AbstractModel $requestContent */
+    /** @var JsonSerializable $requestContent */
     protected $requestContent;
 
     /** @var SignedRequestMetaModel $requestMeta */
@@ -22,12 +24,12 @@ class SignedRequestModel extends AbstractModel
     /**
      * Class constructor.
      *
-     * @param AbstractModel          $requestContent
+     * @param JsonSerializable       $requestContent
      * @param SignedRequestMetaModel $requestMeta
      * @param string                 $contentSnapshot base64 encoded string
      */
     public function __construct(
-        AbstractModel $requestContent,
+        JsonSerializable $requestContent,
         SignedRequestMetaModel $requestMeta,
         $contentSnapshot = null
     ) {
@@ -43,7 +45,7 @@ class SignedRequestModel extends AbstractModel
 
 
     /**
-     * @return AbstractModel
+     * @return JsonSerializable
      */
     public function getRequestContent()
     {
@@ -72,9 +74,13 @@ class SignedRequestModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    protected function jsonSerializeData()
+    public function jsonSerialize()
     {
         return [
             JsonProperties::CONTENT_SNAPSHOT_ATTRIBUTE_NAME => $this->getSnapshot(),

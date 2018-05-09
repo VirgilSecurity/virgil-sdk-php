@@ -2,14 +2,14 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+use JsonSerializable;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Constants\JsonProperties;
 
 /**
  * Class represents the validate identity request model.
  */
-class ValidateRequestModel extends AbstractModel
+class ValidateRequestModel implements JsonSerializable
 {
     /** @var string */
     private $type;
@@ -64,9 +64,13 @@ class ValidateRequestModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    protected function jsonSerializeData()
+    public function jsonSerialize()
     {
         return [
             JsonProperties::TYPE_ATTRIBUTE_NAME             => $this->type,

@@ -2,13 +2,13 @@
 namespace Virgil\Sdk\Client\Requests;
 
 
+use JsonSerializable;
+
 use Virgil\Sdk\Buffer;
 
 use Virgil\Sdk\Contracts\BufferInterface;
 
 use Virgil\Sdk\Client\VirgilServices\Mapper\AbstractJsonModelMapper;
-
-use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
 
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestMetaModel;
 use Virgil\Sdk\Client\VirgilServices\Model\SignedRequestModel;
@@ -124,7 +124,7 @@ abstract class AbstractSignableCardRequest implements CardRequestInterface
     /**
      * Returns the card content.
      *
-     * @return AbstractModel
+     * @return JsonSerializable
      */
     protected abstract function getCardContent();
 

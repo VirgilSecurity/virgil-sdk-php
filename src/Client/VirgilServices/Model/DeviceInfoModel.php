@@ -2,12 +2,14 @@
 namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
+use JsonSerializable;
+
 use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class represents json serializable card device info.
  */
-class DeviceInfoModel extends AbstractModel
+class DeviceInfoModel implements JsonSerializable
 {
     /** @var null|string $device */
     private $device;
@@ -52,13 +54,23 @@ class DeviceInfoModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    protected function jsonSerializeData()
+    public function jsonSerialize()
     {
-        return [
-            JsonProperties::INFO_DEVICE_ATTRIBUTE_NAME      => $this->device,
-            JsonProperties::INFO_DEVICE_NAME_ATTRIBUTE_NAME => $this->deviceName,
-        ];
+        $data = [];
+
+        if ($this->device != null) {
+            $data[JsonProperties::INFO_DEVICE_ATTRIBUTE_NAME] = $this->device;
+        }
+        if ($this->deviceName != null) {
+            $data[JsonProperties::INFO_DEVICE_NAME_ATTRIBUTE_NAME] = $this->deviceName;
+        }
+
+        return $data;
     }
 }

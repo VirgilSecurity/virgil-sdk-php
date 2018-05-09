@@ -2,14 +2,14 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilCards\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
+use JsonSerializable;
 
-use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class provides search request model for Virgil Cards Service.
  */
-class SearchRequestModel extends AbstractModel
+class SearchRequestModel implements JsonSerializable
 {
     /** @var array $identities */
     private $identities;
@@ -70,14 +70,26 @@ class SearchRequestModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    protected function jsonSerializeData()
+    public function jsonSerialize()
     {
-        return [
-            JsonProperties::IDENTITIES_ATTRIBUTE_NAME    => $this->identities,
-            JsonProperties::IDENTITY_TYPE_ATTRIBUTE_NAME => $this->identityType,
-            JsonProperties::SCOPE_ATTRIBUTE_NAME         => $this->scope,
+        $data = [
+            JsonProperties::IDENTITIES_ATTRIBUTE_NAME => $this->identities,
         ];
+
+        if ($this->identityType != null) {
+            $data[JsonProperties::IDENTITY_TYPE_ATTRIBUTE_NAME] = $this->identityType;
+        }
+
+        if ($this->scope != null) {
+            $data[JsonProperties::SCOPE_ATTRIBUTE_NAME] = $this->scope;
+        }
+
+        return $data;
     }
 }

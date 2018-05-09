@@ -2,14 +2,14 @@
 namespace Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Model;
 
 
-use Virgil\Sdk\Client\VirgilServices\Model\AbstractModel;
+use JsonSerializable;
 
 use Virgil\Sdk\Client\VirgilServices\VirgilIdentity\Constants\JsonProperties;
 
 /**
  * Class represents confirm token model.
  */
-class TokenModel extends AbstractModel
+class TokenModel implements JsonSerializable
 {
     /** @var string */
     private $timeToLive;
@@ -50,9 +50,13 @@ class TokenModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    protected function jsonSerializeData()
+    public function jsonSerialize()
     {
         return [
             JsonProperties::TIME_TO_LIVE_ATTRIBUTE_NAME  => $this->timeToLive,

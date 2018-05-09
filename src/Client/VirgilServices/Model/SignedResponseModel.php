@@ -2,12 +2,14 @@
 namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
+use JsonSerializable;
+
 use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class keeps information of any signed response from Virgil Cards Service.
  */
-class SignedResponseModel extends AbstractModel
+class SignedResponseModel implements JsonSerializable
 {
     /** @var string $id */
     private $id;
@@ -84,9 +86,13 @@ class SignedResponseModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    protected function jsonSerializeData()
+    public function jsonSerialize()
     {
         return [
             JsonProperties::ID_ATTRIBUTE_NAME               => $this->id,

@@ -2,12 +2,14 @@
 namespace Virgil\Sdk\Client\VirgilServices\Model;
 
 
+use JsonSerializable;
+
 use Virgil\Sdk\Client\VirgilServices\Constants\JsonProperties;
 
 /**
  * Class represents json serializable card content model.
  */
-class CardContentModel extends AbstractModel
+class CardContentModel implements JsonSerializable
 {
     /** @var string $identity */
     private $identity;
@@ -122,17 +124,29 @@ class CardContentModel extends AbstractModel
 
 
     /**
-     * @inheritdoc
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
      */
-    protected function jsonSerializeData()
+    public function jsonSerialize()
     {
-        return [
+        $data = [
             JsonProperties::IDENTITY_ATTRIBUTE_NAME      => $this->identity,
             JsonProperties::IDENTITY_TYPE_ATTRIBUTE_NAME => $this->identityType,
             JsonProperties::PUBLIC_KEY_ATTRIBUTE_NAME    => $this->publicKey,
-            JsonProperties::DATA_ATTRIBUTE_NAME          => $this->data,
             JsonProperties::SCOPE_ATTRIBUTE_NAME         => $this->scope,
-            JsonProperties::INFO_ATTRIBUTE_NAME          => $this->info,
         ];
+
+        if (count($this->data)) {
+            $data[JsonProperties::DATA_ATTRIBUTE_NAME] = $this->data;
+        }
+
+        if ($this->info != null && count($this->info->jsonSerialize())) {
+            $data[JsonProperties::INFO_ATTRIBUTE_NAME] = $this->info;
+        }
+
+        return $data;
     }
 }
