@@ -2,12 +2,12 @@
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
-use Virgil\Crypto\VirgilDataSource;
+use VirgilDataSource as CryptoVirgilDataSource;
 
 /**
  * Class is representation of data provider stream.
  */
-class VirgilStreamDataSource extends VirgilDataSource
+class VirgilStreamDataSource extends CryptoVirgilDataSource
 {
     /** @var resource $stream */
     private $stream;

@@ -2,12 +2,12 @@
 namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
-use Virgil\Crypto\VirgilDataSink;
+use VirgilDataSink as CryptoVirgilDataSink;
 
 /**
  * Class is representation of data consumer stream.
  */
-class VirgilStreamDataSink extends VirgilDataSink
+class VirgilStreamDataSink extends CryptoVirgilDataSink
 {
     /** @var resource $stream */
     private $stream;

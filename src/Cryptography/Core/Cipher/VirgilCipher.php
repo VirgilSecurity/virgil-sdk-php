@@ -3,7 +3,7 @@ namespace Virgil\Sdk\Cryptography\Core\Cipher;
 
 
 use Exception;
-use Virgil\Crypto\VirgilCipher as InternalVirgilCipher;
+use VirgilCipher as CryptoVirgilCipher;
 use Virgil\Sdk\Cryptography\Core\Exceptions\CipherException;
 
 /**
@@ -14,9 +14,9 @@ class VirgilCipher extends AbstractVirgilCipher
     /**
      * Class constructor.
      *
-     * @param InternalVirgilCipher $cipher
+     * @param CryptoVirgilCipher $cipher
      */
-    public function __construct(InternalVirgilCipher $cipher)
+    public function __construct(CryptoVirgilCipher $cipher)
     {
         $this->cipher = $cipher;
     }
