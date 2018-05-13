@@ -35,55 +35,26 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk;
+namespace Virgil\Sdk\Verification;
+
+
+use Virgil\Sdk\Card;
 
 
 /**
- * Class CardClientException
- * @package Virgil\Sdk
+ * Class NullCardVerifier
+ * @package Virgil\Sdk\Verification
  */
-class CardClientException extends VirgilException
+class NullCardVerifier implements CardVerifier
 {
-    /**
-     * @var int
-     */
-    private $errorCode;
-    /**
-     * @var string
-     */
-    private $errorMessage;
-
 
     /**
-     * CardClientException constructor.
+     * @param Card $card
      *
-     * @param string $message
-     * @param int    $errorCode
-     * @param string $errorMessage
+     * @return bool
      */
-    public function __construct($message = "", $errorCode, $errorMessage)
+    public function verifyCard(Card $card)
     {
-        parent::__construct(sprintf("%s: code: %s: message: %s", $message, $errorCode, $errorMessage), 0);
-
-        $this->errorCode = $errorCode;
-        $this->errorMessage = $errorMessage;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getErrorCode()
-    {
-        return $this->errorCode;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage()
-    {
-        return $this->errorMessage;
+        return true;
     }
 }

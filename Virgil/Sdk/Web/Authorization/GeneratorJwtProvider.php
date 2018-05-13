@@ -65,7 +65,7 @@ class GeneratorJwtProvider implements AccessTokenProvider
      * @param array|null   $additionalData
      * @param string       $defaultIdentity
      */
-    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity, array $additionalData = null)
+    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity = '', array $additionalData = null)
     {
         $this->jwtGenerator = $jwtGenerator;
         $this->additionalData = $additionalData;

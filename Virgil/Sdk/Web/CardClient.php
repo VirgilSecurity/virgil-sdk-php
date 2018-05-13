@@ -40,6 +40,9 @@ namespace Virgil\Sdk\Web;
 
 use Virgil\Http\HttpClientInterface;
 
+use Virgil\Http\Curl\CurlClient;
+use Virgil\Http\Curl\CurlRequestFactory;
+
 use Virgil\Http\Requests\GetHttpRequest;
 use Virgil\Http\Requests\PostHttpRequest;
 
@@ -50,6 +53,7 @@ use Virgil\Http\Requests\PostHttpRequest;
  */
 class CardClient
 {
+    const API_SERVICE_URL = 'https://api.virgilsecurity.com';
 
     /**
      * @var HttpClientInterface
@@ -67,8 +71,18 @@ class CardClient
      * @param string              $serviceUrl
      * @param HttpClientInterface $httpClient
      */
-    public function __construct($serviceUrl, HttpClientInterface $httpClient)
+    public function __construct($serviceUrl = self::API_SERVICE_URL, HttpClientInterface $httpClient = null)
     {
+        if ($httpClient == null) {
+            $httpClient = new CurlClient(
+                new CurlRequestFactory(
+                    [
+                        CURLOPT_RETURNTRANSFER => 1,
+                        CURLOPT_HEADER         => true,
+                    ]
+                )
+            );
+        }
         $this->httpClient = $httpClient;
         $this->serviceUrl = rtrim($serviceUrl, "/");
     }

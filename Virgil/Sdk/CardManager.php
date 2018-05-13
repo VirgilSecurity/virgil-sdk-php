@@ -43,7 +43,9 @@ use DateTime;
 use Virgil\CryptoApi\CardCrypto;
 
 use Virgil\Sdk\Signer\ModelSigner;
+
 use Virgil\Sdk\Verification\CardVerifier;
+use Virgil\Sdk\Verification\NullCardVerifier;
 
 use Virgil\Sdk\Web\ErrorResponseModel;
 use Virgil\Sdk\Web\CardClient;
@@ -89,19 +91,26 @@ class CardManager
 
 
     public function __construct(
-        ModelSigner $modelSigner,
         CardCrypto $cardCrypto,
         AccessTokenProvider $accessTokenProvider,
-        CardVerifier $cardVerifier,
-        CardClient $cardClient,
+        CardVerifier $cardVerifier = null,
+        CardClient $cardClient = null,
         callable $signCallback = null
     ) {
-        $this->signCallback = $signCallback;
-        $this->modelSigner = $modelSigner;
+        if ($cardClient == null) {
+            $cardClient = new CardClient();
+        }
+
+        if ($cardVerifier == null) {
+            $cardVerifier = new NullCardVerifier();
+        }
+
         $this->cardCrypto = $cardCrypto;
         $this->accessTokenProvider = $accessTokenProvider;
-        $this->cardVerifier = $cardVerifier;
         $this->cardClient = $cardClient;
+        $this->signCallback = $signCallback;
+        $this->modelSigner = new ModelSigner($cardCrypto);
+        $this->cardVerifier = $cardVerifier;
     }
 
 
@@ -115,7 +124,9 @@ class CardManager
         $now = new DateTime();
         $publicKeyString = $this->cardCrypto->exportPublicKey($cardParams->getPublicKey());
 
-        $rawCardContent = new RawCardContent($cardParams->getIdentity(), base64_encode($publicKeyString), '5.0', $now->getTimestamp());
+        $rawCardContent = new RawCardContent(
+            $cardParams->getIdentity(), base64_encode($publicKeyString), '5.0', $now->getTimestamp()
+        );
         $rawCardContentSnapshot = json_encode($rawCardContent, JSON_UNESCAPED_SLASHES);
 
         $rawSignedModel = new RawSignedModel($rawCardContentSnapshot, []);

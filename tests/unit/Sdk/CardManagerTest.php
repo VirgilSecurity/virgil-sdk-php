@@ -670,10 +670,8 @@ class CardManagerTest extends TestCase
     protected function getCardManager()
     {
         $cardClient = new CardClient("http://service.url", $this->httpClientMock);
-        $modelSigner = new ModelSigner($this->cardCryptoMock);
 
         return new CardManager(
-            $modelSigner,
             $this->cardCryptoMock,
             $this->accessTokenProviderMock,
             $this->cardVerifierMock,
