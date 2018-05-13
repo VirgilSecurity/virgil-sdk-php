@@ -115,7 +115,7 @@ class CardManager
         $now = new DateTime();
         $publicKeyString = $this->cardCrypto->exportPublicKey($cardParams->getPublicKey());
 
-        $rawCardContent = new RawCardContent($cardParams->getIdentity(), $publicKeyString, '5.0', $now->getTimestamp());
+        $rawCardContent = new RawCardContent($cardParams->getIdentity(), base64_encode($publicKeyString), '5.0', $now->getTimestamp());
         $rawCardContentSnapshot = json_encode($rawCardContent, JSON_UNESCAPED_SLASHES);
 
         $rawSignedModel = new RawSignedModel($rawCardContentSnapshot, []);
@@ -404,7 +404,7 @@ class CardManager
             );
         }
 
-        $publicKey = $this->cardCrypto->importPublicKey($contentSnapshotArray['public_key']);
+        $publicKey = $this->cardCrypto->importPublicKey(base64_decode($contentSnapshotArray['public_key']));
 
         $previousCardID = null;
         if (array_key_exists('previous_card_id', $contentSnapshotArray)) {

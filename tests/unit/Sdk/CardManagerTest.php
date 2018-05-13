@@ -264,7 +264,7 @@ class CardManagerTest extends TestCase
 
         $this->cardCryptoMock->expects($this->once())
                              ->method("importPublicKey")
-                             ->with("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=")
+                             ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
                              ->willReturn($this->createMock(PublicKey::class))
         ;
 
@@ -371,7 +371,7 @@ class CardManagerTest extends TestCase
 
         $this->cardCryptoMock->expects($this->once())
                              ->method("importPublicKey")
-                             ->with("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=")
+                             ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
                              ->willReturn($this->createMock(PublicKey::class))
         ;
 
@@ -467,7 +467,7 @@ class CardManagerTest extends TestCase
 
         $this->cardCryptoMock->expects($this->exactly(3))
                              ->method("importPublicKey")
-                             ->with("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=")
+                             ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
                              ->willReturn($this->createMock(PublicKey::class))
         ;
 
@@ -577,7 +577,7 @@ class CardManagerTest extends TestCase
 
         $this->cardCryptoMock->expects($this->once())
                              ->method("importPublicKey")
-                             ->with("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=")
+                             ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
                              ->willReturn($this->createMock(PublicKey::class))
         ;
 

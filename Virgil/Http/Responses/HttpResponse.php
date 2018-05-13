@@ -27,7 +27,7 @@ class HttpResponse implements HttpResponseInterface
      * @param string                  $headers
      * @param string                  $body
      */
-    public function __construct(HttpStatusCodeInterface $status, $headers, $body)
+    public function __construct(HttpStatusCodeInterface $status, $headers, $body = null)
     {
         $this->body = $body;
         $this->headers = $headers;

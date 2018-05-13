@@ -63,7 +63,7 @@ class CardClientException extends VirgilException
      */
     public function __construct($message = "", $errorCode, $errorMessage)
     {
-        parent::__construct($message, 0);
+        parent::__construct(sprintf("%s: code: %s: messages %s", $message, $errorCode, $errorMessage), 0);
 
         $this->errorCode = $errorCode;
         $this->errorMessage = $errorMessage;
