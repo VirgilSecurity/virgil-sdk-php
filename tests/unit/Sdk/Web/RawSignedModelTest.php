@@ -1,12 +1,4 @@
 <?php
-
-namespace Tests\Virgil\Sdk\Web;
-
-
-use PHPUnit\Framework\TestCase;
-use Virgil\Sdk\Web\RawSignature;
-use Virgil\Sdk\Web\RawSignedModel;
-
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -42,6 +34,14 @@ use Virgil\Sdk\Web\RawSignedModel;
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
+
+namespace Tests\Unit\Virgil\Sdk\Web;
+
+
+use PHPUnit\Framework\TestCase;
+use Virgil\Sdk\Web\RawSignature;
+use Virgil\Sdk\Web\RawSignedModel;
+
 class RawSignedModelTest extends TestCase
 {
 

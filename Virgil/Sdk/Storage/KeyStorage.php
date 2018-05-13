@@ -116,7 +116,7 @@ class KeyStorage
             throw new VirgilException('Could not read key.');
         }
 
-        $keyValueData = json_decode($keyValue);
+        $keyValueData = json_decode($keyValue, true);
 
         return new KeyEntry($keyName, $keyValueData['value'], $keyValueData['meta']);
     }

@@ -125,7 +125,7 @@ class CardManager
         $publicKeyString = $this->cardCrypto->exportPublicKey($cardParams->getPublicKey());
 
         $rawCardContent = new RawCardContent(
-            $cardParams->getIdentity(), base64_encode($publicKeyString), '5.0', $now->getTimestamp()
+            $cardParams->getIdentity(), base64_encode($publicKeyString), '5.0', $now->getTimestamp(), $cardParams->getPreviousCardID()
         );
         $rawCardContentSnapshot = json_encode($rawCardContent, JSON_UNESCAPED_SLASHES);
 

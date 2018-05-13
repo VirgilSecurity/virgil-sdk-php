@@ -35,74 +35,51 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk\Web\Authorization;
-
-
-use Virgil\CryptoApi\AccessTokenSigner;
-use Virgil\CryptoApi\PublicKey;
+namespace Virgil\Tests;
 
 
 /**
- * Class JwtVerifier
- * @package Virgil\Sdk\Web\Authorization
+ * Class IntegrationTestsDataProvider
+ * @package Virgil\Tests
+ * @method STC4__Signature_Extra_Base64
+ * @method STC4__Signature_Virgil_Base64
+ * @method STC4__Signature_Self_Base64
+ * @method STC4__Public_Key_Base64
+ * @method STC4__Card_Id
+ * @method STC4__As_Json
+ * @method STC4__As_String
+ * @method STC3__As_Json
+ * @method STC3__As_String
+ * @method STC3__Card_Id
+ * @method STC3__Public_Key_Base64
+ * @method STC2__As_Json
+ * @method STC2__As_String
+ * @method STC1__As_Json
+ * @method STC1__As_String
  */
-class JwtVerifier
+class IntegrationTestsDataProvider
 {
-    /**
-     * @var PublicKey
-     */
-    private $apiPublicKey;
-    /**
-     * @var string
-     */
-    private $appPublicKeyID;
-    /**
-     * @var AccessTokenSigner
-     */
-    private $accessTokenSigner;
+
+    /** @var array $jsonData */
+    private $jsonData;
 
 
     /**
-     * JwtVerifier constructor.
+     * Class constructor.
      *
-     * @param PublicKey         $apiPublicKey
-     * @param string            $appPublicKeyID
-     * @param AccessTokenSigner $accessTokenSigner
+     * @param $pathToJsonData
      */
-    public function __construct(PublicKey $apiPublicKey, $appPublicKeyID, AccessTokenSigner $accessTokenSigner)
+    public function __construct($pathToJsonData)
     {
-        $this->apiPublicKey = $apiPublicKey;
-        $this->appPublicKeyID = $appPublicKeyID;
-        $this->accessTokenSigner = $accessTokenSigner;
+        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
     }
 
 
-    /**
-     * @param Jwt $jwt
-     *
-     * @return bool
-     */
-    public function verifyToken(Jwt $jwt)
+    public function __call($name, $a)
     {
-        $headerContent = $jwt->getHeaderContent();
-        if ($headerContent->getApiPublicKeyIdentifier() != $this->appPublicKeyID) {
-            return false;
-        }
-        if ($headerContent->getAlgorithm() != $this->accessTokenSigner->getAlgorithm()) {
-            return false;
-        }
-        if ($headerContent->getContentType() != Jwt::VirgilJwtContentType) {
-            return false;
-        }
-        if ($headerContent->getType() != Jwt::VirgilJwtType) {
-            return false;
-        }
 
+        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
 
-        return $this->accessTokenSigner->verifyTokenSignature(
-            $jwt->getSignatureContent(),
-            $jwt->getUnsigned(),
-            $this->apiPublicKey
-        );
+        return $this->jsonData[$key];
     }
 }

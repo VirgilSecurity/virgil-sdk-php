@@ -46,6 +46,11 @@
       "Virgil\\": "Virgil/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Virgil\\Tests\\": "tests/src/"
+    }
+  },
   "minimum-stability": "dev",
   "repositories": [
     {

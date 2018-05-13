@@ -111,7 +111,6 @@ class CardParams
 
         $cardParams = new self($publicKey, $privateKey);
 
-        // todo: is identity optional?
         if (array_key_exists(self::Identity, $params)) {
             $cardParams->identity = $params[self::Identity];
         }

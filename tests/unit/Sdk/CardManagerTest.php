@@ -1,32 +1,4 @@
 <?php
-
-namespace Tests\Virgil\Sdk;
-
-
-use DateTime;
-use PHPUnit\Framework\TestCase;
-use Virgil\CryptoApi\CardCrypto;
-use Virgil\CryptoApi\PrivateKey;
-use Virgil\CryptoApi\PublicKey;
-use Virgil\Http\HttpClientInterface;
-use Virgil\Http\Requests\GetHttpRequest;
-use Virgil\Http\Requests\PostHttpRequest;
-use Virgil\Http\Responses\HttpResponse;
-use Virgil\Http\Responses\HttpStatusCode;
-use Virgil\Sdk\Card;
-use Virgil\Sdk\CardClientException;
-use Virgil\Sdk\CardManager;
-use Virgil\Sdk\CardParams;
-use Virgil\Sdk\CardSignature;
-use Virgil\Sdk\Signer\ModelSigner;
-use Virgil\Sdk\Verification\CardVerifier;
-use Virgil\Sdk\Web\Authorization\AccessToken;
-use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
-use Virgil\Sdk\Web\Authorization\TokenContext;
-use Virgil\Sdk\Web\CardClient;
-use Virgil\Sdk\Web\RawSignature;
-use Virgil\Sdk\Web\RawSignedModel;
-
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -62,6 +34,33 @@ use Virgil\Sdk\Web\RawSignedModel;
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
+
+namespace Tests\Unit\Virgil\Sdk;
+
+
+use DateTime;
+use PHPUnit\Framework\TestCase;
+use Virgil\CryptoApi\CardCrypto;
+use Virgil\CryptoApi\PrivateKey;
+use Virgil\CryptoApi\PublicKey;
+use Virgil\Http\HttpClientInterface;
+use Virgil\Http\Requests\GetHttpRequest;
+use Virgil\Http\Requests\PostHttpRequest;
+use Virgil\Http\Responses\HttpResponse;
+use Virgil\Http\Responses\HttpStatusCode;
+use Virgil\Sdk\Card;
+use Virgil\Sdk\CardClientException;
+use Virgil\Sdk\CardManager;
+use Virgil\Sdk\CardParams;
+use Virgil\Sdk\CardSignature;
+use Virgil\Sdk\Verification\CardVerifier;
+use Virgil\Sdk\Web\Authorization\AccessToken;
+use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
+use Virgil\Sdk\Web\Authorization\TokenContext;
+use Virgil\Sdk\Web\CardClient;
+use Virgil\Sdk\Web\RawSignature;
+use Virgil\Sdk\Web\RawSignedModel;
+
 class CardManagerTest extends TestCase
 {
 
@@ -273,7 +272,7 @@ class CardManagerTest extends TestCase
                              ->with(
                                  new PostHttpRequest(
                                      "http://service.url/card/v5",
-                                     '{"content_snapshot":"eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==","signatures":[{"signer":"self","signature":"MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="},{"signer":"callback","signature":"c2lnbg=="}]}',
+                                     '{"content_snapshot":"eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==","signatures":[{"signature":"MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA=","signer":"self"},{"signature":"c2lnbg==","signer":"callback"}]}',
                                      ["Authorization" => "Virgil access_token_string"]
                                  )
                              )
@@ -284,12 +283,12 @@ class CardManagerTest extends TestCase
                                               "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==",
                                               "signatures": [
                                                 {
-                                                  "signer": "self",
-                                                  "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
+                                                  "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA=",
+                                                  "signer": "self"
                                                 },
                                                 {
-                                                  "signer": "virgil",
-                                                  "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="
+                                                  "signature": "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc=",
+                                                  "signer": "virgil"
                                                 }
                                               ]
                                             }'

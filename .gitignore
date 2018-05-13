@@ -2,8 +2,6 @@
 .idea/
 vendor/
 samples/
-CryptoImpl/
 composer.lock
 phpunit.xml
 tests/config.json
-tests/intergration/

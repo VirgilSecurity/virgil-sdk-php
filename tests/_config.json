@@ -1,0 +1,9 @@
+{
+  "application_settings": {
+    "service_address": "https://api-stg.virgilsecurity.com",
+    "service_key": "base64 service public key",
+    "api_key_id": "api key id",
+    "api_key": "base64 api private key",
+    "app_id": "application id"
+  }
+}

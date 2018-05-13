@@ -1,16 +1,4 @@
 <?php
-
-namespace Tests\Virgil\Sdk;
-
-
-use PHPUnit\Framework\TestCase;
-
-use Virgil\CryptoApi\CardCrypto;
-use Virgil\CryptoApi\PrivateKey;
-use Virgil\Sdk\Signer\ModelSigner;
-use Virgil\Sdk\Web\RawSignature;
-use Virgil\Sdk\Web\RawSignedModel;
-
 /**
  * Copyright (C) 2015-2018 Virgil Security Inc.
  *
@@ -46,6 +34,18 @@ use Virgil\Sdk\Web\RawSignedModel;
  *
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
+
+namespace Tests\Unit\Virgil\Sdk;
+
+
+use PHPUnit\Framework\TestCase;
+
+use Virgil\CryptoApi\CardCrypto;
+use Virgil\CryptoApi\PrivateKey;
+use Virgil\Sdk\Signer\ModelSigner;
+use Virgil\Sdk\Web\RawSignature;
+use Virgil\Sdk\Web\RawSignedModel;
+
 class ModelSignerTest extends TestCase
 {
     /**

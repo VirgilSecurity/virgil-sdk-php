@@ -86,8 +86,8 @@ class RawSignature implements JsonSerializable
     public function jsonSerialize()
     {
         $jsonData = [
-            'signer'    => $this->signer,
             'signature' => base64_encode($this->signature),
+            'signer'    => $this->signer,
         ];
 
         if ($this->snapshot != null) {
