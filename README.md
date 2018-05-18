@@ -183,7 +183,7 @@ Also, get extra help from our support team on [Slack](https://virgilsecurity.sla
 
 https://github.com/VirgilSecurity/virgil-sdk-php/tree/v4
 
-[_virgil_crypto]: https://github.com/VirgilSecurity/virgil-sdk-crypto-net
+[_virgil_crypto]: https://github.com/VirgilSecurity/virgil-sdk-crypto-php
 [_cards_service]: https://developer.virgilsecurity.com/docs/api-reference/card-service/v5
 [_use_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v5/use-card-for-crypto-operation
 [_get_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v5/get-card
