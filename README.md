@@ -57,27 +57,29 @@ and install. Unfortunately PHP extensions installation is out of this topic but 
 
 ## Usage Examples
 
+Before starting practicing with the usage examples be sure that the SDK is configured. Check out our [SDK configuration guides][_configure_sdk] for more information.
+
 #### Generate and publish user's Cards with Public Keys inside on Cards Service
 Use the following lines of code to create and publish a user's Card with Public Key inside on Virgil Cards Service:
 
 ```php
-use Virgil\CryptoImpl;
-use Virgil\Sdk;
+use Virgil\CryptoImpl\VirgilCrypto;
+use Virgil\Sdk\CardParams;
 
-$crypto = new CryptoImpl\VirgilCrypto();
+$crypto = new VirgilCrypto();
 
 // generate a key pair
 $keyPair = $crypto->generateKeys();
 
 // save a private key into key storage
-$privateKeyStorage->store($keyPair->PrivateKey(), 'Alice');
+$privateKeyStorage->store($keyPair->getPrivateKey(), "Alice");
 
 // publish user's on the Cards Service
 $card = $cardManager->publishCard(
-    Sdk\CardParams::create(
+    CardParams::create(
         [
-            Sdk\CardParams::PublicKey  => $keyPair->PublicKey(),
-            Sdk\CardParams::PrivateKey => $keyPair->PrivateKey(),
+            CardParams::PublicKey  => $keyPair->getPublicKey(),
+            CardParams::PrivateKey => $keyPair->getPrivateKey(),
         ]
     )
 );
@@ -171,11 +173,11 @@ In order to use the Virgil SDK with your application, you will need to first con
 This library is released under the [3-clause BSD License](LICENSE.md).
 
 ## Support
-Our developer support team is here to help you.
+Our developer support team is here to help you. Find out more information on our [Help Center](https://help.virgilsecurity.com/).
 
 You can find us on [Twitter](https://twitter.com/VirgilSecurity) or send us email support@VirgilSecurity.com.
 
-Also, get extra help from our support team on [Slack](https://join.slack.com/t/VirgilSecurity/shared_invite/enQtMjg4MDE4ODM3ODA4LTc2OWQwOTQ3YjNhNTQ0ZjJiZDc2NjkzYjYxNTI0YzhmNTY2ZDliMGJjYWQ5YmZiOGU5ZWEzNmJiMWZhYWVmYTM).
+Also, get extra help from our support team on [Slack](https://virgilsecurity.slack.com/join/shared_invite/enQtMjg4MDE4ODM3ODA4LTc2OWQwOTQ3YjNhNTQ0ZjJiZDc2NjkzYjYxNTI0YzhmNTY2ZDliMGJjYWQ5YmZiOGU5ZWEzNmJiMWZhYWVmYTM).
 
 ## SDK-V4
 
@@ -183,15 +185,15 @@ https://github.com/VirgilSecurity/virgil-sdk-php/tree/v4
 
 [_virgil_crypto]: https://github.com/VirgilSecurity/virgil-sdk-crypto-net
 [_cards_service]: https://developer.virgilsecurity.com/docs/api-reference/card-service/v5
-[_use_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/use-card-for-crypto-operation
-[_get_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/get-card
-[_search_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/search-card
-[_create_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/create-card
-[_own_crypto]: https://developer.virgilsecurity.com/docs/php/how-to/setup/setup-own-crypto-library
-[_key_storage]: https://developer.virgilsecurity.com/docs/php/how-to/setup/setup-key-storage
-[_card_verifier]: https://developer.virgilsecurity.com/docs/php/how-to/setup/setup-card-verifier
-[_card_manager]: https://developer.virgilsecurity.com/docs/php/how-to/setup/setup-card-manager
-[_setup_authentication]: https://developer.virgilsecurity.com/docs/php/how-to/setup/setup-authentication
+[_use_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v5/use-card-for-crypto-operation
+[_get_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v5/get-card
+[_search_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v5/search-card
+[_create_card]: https://developer.virgilsecurity.com/docs/php/how-to/public-key-management/v5/create-card
+[_own_crypto]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v5/setup-own-crypto-library
+[_key_storage]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v5/setup-key-storage
+[_card_verifier]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v5/setup-card-verifier
+[_card_manager]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v5/setup-card-manager
+[_setup_authentication]: https://developer.virgilsecurity.com/docs/php/how-to/setup/v5/setup-authentication
 [_reference_api]: https://developer.virgilsecurity.com/docs/api-reference
 [_configure_sdk]: https://developer.virgilsecurity.com/docs/how-to#sdk-configuration
 [_more_examples]: https://developer.virgilsecurity.com/docs/how-to#public-key-management
