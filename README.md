@@ -29,7 +29,7 @@ The package is available for PHP version 5.6 and newer.
 Installing the package using Package Manager Console:
 
 ```bash
-$ composer require virgil/sdk
+composer require virgil/sdk
 ```
 
 ### Crypto library notice
@@ -39,7 +39,7 @@ crypto library also. We supply Virgil SDK with own implementation of
 cypto intefaces that can be easyly used by everyone. Just require it as a package:
 
 ```bash
-$ composer require virgil/crypto
+composer require virgil/crypto
 ```
 
 Be aware this package requires installed php virgil crypto extension *ext-virgil_crypto_php*.
