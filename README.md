@@ -22,7 +22,7 @@ The Virgil SDK allows developers to get up and running with Virgil API quickly a
 
 ## Installation
 
-The Virgil SDK is provided as a package named *virgil/sdk*. The package is distributed via [Composer package](https://getcomposer.org/doc/) management system.
+The Virgil SDK is provided as a package named [*virgil/sdk*](https://packagist.org/packages/virgil/sdk). The package is distributed via [Composer package](https://getcomposer.org/doc/) management system.
 
 The package is available for PHP version 5.6 and newer.
 
