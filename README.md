@@ -1,5 +1,5 @@
 # Virgil Security PHP SDK
-<!-- [![Build status](https://ci.appveyor.com/api/projects/status/kqs4lqw426gbpccm/branch/release?svg=true)](https://ci.appveyor.com/project/unlim-it/virgil-sdk-net/branch/release) -->
+[![Build Status](https://travis-ci.com/VirgilSecurity/virgil-sdk-php.png?branch=master)](https://travis-ci.com/VirgilSecurity/virgil-sdk-php)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/virgil/sdk.svg?style=flat-square)](https://packagist.org/packages/virgil/sdk)
 [![Total Downloads](https://img.shields.io/packagist/dt/virgil/sdk.svg?style=flat-square)](https://packagist.org/packages/virgil/sdk.svg)
 [![GitHub license](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE)
@@ -34,9 +34,7 @@ composer require virgil/sdk
 
 ### Crypto library notice
 
-In order to support cipher operations upon your data there is must be installed
-crypto library also. We supply Virgil SDK with own implementation of
-cypto intefaces that can be easyly used by everyone. Just require it as a package:
+In order to support cipher operations upon your data there is must be installed crypto library also. We supply Virgil  SDK with own implementation of cypto intefaces that can be easyly used by everyone. Just require it as a package:
 
 ```bash
 composer require virgil/crypto

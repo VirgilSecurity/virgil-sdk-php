@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+  * Copyright (C) 2015-2019 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -35,55 +35,11 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk;
+namespace Virgil\Sdk\Web\Authorization;
 
+use Virgil\Sdk\VirgilException;
 
-/**
- * Class CardClientException
- * @package Virgil\Sdk
- */
-class CardClientException extends VirgilException
+class GeneratorJWTProviderException extends VirgilException
 {
-    /**
-     * @var int
-     */
-    private $errorCode;
-    /**
-     * @var string
-     */
-    private $errorMessage;
 
-
-    /**
-     * CardClientException constructor.
-     *
-     * @param string $message
-     * @param int    $errorCode
-     * @param string $errorMessage
-     */
-    public function __construct($message = "", $errorCode, $errorMessage)
-    {
-        parent::__construct(sprintf("%s: code: %s: message: %s", $message, $errorCode, $errorMessage), 0);
-
-        $this->errorCode = $errorCode;
-        $this->errorMessage = $errorMessage;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getErrorCode()
-    {
-        return $this->errorCode;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage()
-    {
-        return $this->errorMessage;
-    }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2018 Virgil Security Inc.
+ * Copyright (C) 2015-2019 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -57,19 +57,29 @@ class GeneratorJwtProvider implements AccessTokenProvider
      */
     private $defaultIdentity;
 
-
     /**
      * GeneratorJwtProvider constructor.
-     *
      * @param JwtGenerator $jwtGenerator
-     * @param array|null   $additionalData
-     * @param string       $defaultIdentity
+     * @param $defaultIdentity
+     * @param array|null $additionalData
+     * @throws GeneratorJWTProviderException
      */
-    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity = '', array $additionalData = null)
+    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity, array $additionalData = null)
     {
+        if(empty($defaultIdentity))
+            throw new GeneratorJWTProviderException('Default identity is required');
+
         $this->jwtGenerator = $jwtGenerator;
         $this->additionalData = $additionalData;
         $this->defaultIdentity = $defaultIdentity;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDefaultIdentity()
+    {
+        return $this->defaultIdentity;
     }
 
 
@@ -80,6 +90,7 @@ class GeneratorJwtProvider implements AccessTokenProvider
      */
     public function getToken(TokenContext $context)
     {
-        return $this->jwtGenerator->generateToken($context->getIdentity(), $this->additionalData);
+        $identity = empty($context->getIdentity()) ? $this->getDefaultIdentity() : $context->getIdentity();
+        return $this->jwtGenerator->generateToken($identity, $this->additionalData);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+  * Copyright (C) 2015-2019 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -35,55 +35,25 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk;
-
-
 /**
- * Class CardClientException
- * @package Virgil\Sdk
+ * @return string
  */
-class CardClientException extends VirgilException
+function extension_helper()
 {
-    /**
-     * @var int
-     */
-    private $errorCode;
-    /**
-     * @var string
-     */
-    private $errorMessage;
+    $params = [
+        // php -v
+        'PHP Version' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+        // php-config --extension-dir
+        'PHP Extension Dir' => PHP_EXTENSION_DIR,
+        // php -i | grep System
+        'OS Version' => PHP_OS,
+    ];
 
-
-    /**
-     * CardClientException constructor.
-     *
-     * @param string $message
-     * @param int    $errorCode
-     * @param string $errorMessage
-     */
-    public function __construct($message = "", $errorCode, $errorMessage)
-    {
-        parent::__construct(sprintf("%s: code: %s: message: %s", $message, $errorCode, $errorMessage), 0);
-
-        $this->errorCode = $errorCode;
-        $this->errorMessage = $errorMessage;
+    foreach ($params as $key => $value) {
+        echo $key . ": " . $value . "\n";
     }
 
-
-    /**
-     * @return int
-     */
-    public function getErrorCode()
-    {
-        return $this->errorCode;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage()
-    {
-        return $this->errorMessage;
-    }
+    return true;
 }
+
+extension_helper();
