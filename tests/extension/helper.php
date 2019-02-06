@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2018 Virgil Security Inc.
+ * Copyright (C) 2015-2019 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -35,62 +35,25 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk\Web\Authorization;
-
-
 /**
- * Class GeneratorJwtProvider
- * @package Virgil\Sdk\Web\Authorization
+ * @return string
  */
-class GeneratorJwtProvider implements AccessTokenProvider
+function extension_helper()
 {
-    /**
-     * @var JwtGenerator
-     */
-    private $jwtGenerator;
-    /**
-     * @var array|null
-     */
-    private $additionalData;
-    /**
-     * @var string
-     */
-    private $defaultIdentity;
+    $params = [
+        // php -v
+        'PHP Version' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+        // php-config --extension-dir
+        'PHP Extension Dir' => PHP_EXTENSION_DIR,
+        // php -i | grep System
+        'OS Version' => PHP_OS,
+    ];
 
-    /**
-     * GeneratorJwtProvider constructor.
-     * @param JwtGenerator $jwtGenerator
-     * @param $defaultIdentity
-     * @param array|null $additionalData
-     * @throws GeneratorJWTProviderException
-     */
-    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity, array $additionalData = null)
-    {
-        if(empty($defaultIdentity))
-            throw new GeneratorJWTProviderException('Default identity is required');
-
-        $this->jwtGenerator = $jwtGenerator;
-        $this->additionalData = $additionalData;
-        $this->defaultIdentity = $defaultIdentity;
+    foreach ($params as $key => $value) {
+        echo $key . ": " . $value . "\n";
     }
 
-    /**
-     * @return string
-     */
-    private function getDefaultIdentity()
-    {
-        return $this->defaultIdentity;
-    }
-
-
-    /**
-     * @param TokenContext $context
-     *
-     * @return AccessToken
-     */
-    public function getToken(TokenContext $context)
-    {
-        $identity = empty($context->getIdentity()) ? $this->getDefaultIdentity() : $context->getIdentity();
-        return $this->jwtGenerator->generateToken($identity, $this->additionalData);
-    }
+    return true;
 }
+
+extension_helper();

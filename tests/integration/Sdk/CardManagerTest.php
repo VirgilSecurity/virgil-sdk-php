@@ -37,7 +37,6 @@
 
 namespace Tests\Integration\Virgil\Sdk\Web;
 
-
 use DateTime;
 
 use Virgil\CryptoImpl\VirgilPublicKey;

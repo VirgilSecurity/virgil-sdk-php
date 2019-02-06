@@ -37,7 +37,7 @@
 
 namespace Virgil\Tests;
 
-
+use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 use Virgil\CryptoApi\CardCrypto;
 use Virgil\CryptoImpl\VirgilAccessTokenSigner;
@@ -111,14 +111,15 @@ class IntegrationBaseTestCase extends TestCase
     {
         parent::setUp();
 
-        $config = json_decode(file_get_contents(VIRGIL_TEST_CONFIG_PATH), true);
-        $settings = $config['application_settings'];
+        (new Dotenv(__DIR__."/../.."))->load();
 
-        $this->serviceAddress = $settings['service_address'];
-        $this->serviceKey = $settings['service_key'];
-        $this->testApiKeyId = $settings['api_key_id'];
-        $this->testApiKey = $settings['api_key'];
-        $this->testAppId = $settings['app_id'];
+        defined('VIRGIL_FIXTURE_PATH') or define('VIRGIL_FIXTURE_PATH', __DIR__.'/../fixtures/');
+
+        $this->serviceAddress = $_ENV['SERVICE_ADDRESS'];
+        $this->serviceKey = $_ENV['SERVICE_KEY'];
+        $this->testApiKeyId = $_ENV['API_KEY_ID'];
+        $this->testApiKey = $_ENV['API_KEY'];
+        $this->testAppId = $_ENV['APP_ID'];
 
         $this->fixtures = new IntegrationTestsDataProvider(VIRGIL_FIXTURE_PATH . DIRECTORY_SEPARATOR . "data.json");
 
@@ -130,7 +131,8 @@ class IntegrationBaseTestCase extends TestCase
 
         $virgilAccessTokenSigner = new VirgilAccessTokenSigner();
         $this->accessTokenProvider = new GeneratorJwtProvider(
-            new JwtGenerator($apiKey, $this->testApiKeyId, $virgilAccessTokenSigner, $this->testAppId, 60)
+            new JwtGenerator($apiKey, $this->testApiKeyId, $virgilAccessTokenSigner, $this->testAppId, $_ENV['TTL']),
+            'default-identity'.date('Y-m-d-H-i-s')
         );
         $this->cardVerifier = new VirgilCardVerifier($this->cardCrypto, true, true, [], $this->serviceKey);
         $this->cardClient = new CardClient($this->serviceAddress);
