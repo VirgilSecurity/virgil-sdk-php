@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2018 Virgil Security Inc.
+ * Copyright (C) 2015-2019 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -111,7 +111,8 @@ class IntegrationBaseTestCase extends TestCase
     {
         parent::setUp();
 
-//        (new Dotenv(__DIR__."/../.."))->load();
+        if(empty(getenv('SERVICE_ADDRESS')))
+            (new Dotenv(__DIR__."/../.."))->load();
 
         defined('VIRGIL_FIXTURE_PATH') or define('VIRGIL_FIXTURE_PATH', __DIR__.'/../fixtures/');
 
