@@ -7,11 +7,11 @@ matrix:
     sudo: required
     dist: trusty
 before_install:
+  - openssl aes-256-cbc -K $encrypted_e0df82fbaf3e_key -iv $encrypted_e0df82fbaf3e_iv -in .env.enc -out .env -d
   - date -u
   - uname -a
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then lscpu; fi
 install:
-  # Use clean dependencies installation to avoid versions collision.
   - export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   - echo "Install PHP version ${PHP_VERSION} ..."
   - travis_retry sudo apt-add-repository -y ppa:ondrej/php
