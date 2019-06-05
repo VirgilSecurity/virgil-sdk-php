@@ -9,6 +9,7 @@ use Virgil\Http\Constants\RequestMethods;
 
 use Virgil\Http\Responses\HttpResponse;
 use Virgil\Http\Responses\HttpStatusCode;
+use Virgil\Http\VirgilAgent\HttpVirgilAgent;
 
 /**
  * Class CurlClient
@@ -149,7 +150,7 @@ class CurlClient extends AbstractHttpClient
      */
     protected function buildHeaders($requestHeaders)
     {
-        $requestHeaders = $requestHeaders + $this->requestHeaders;
+        $requestHeaders = $requestHeaders + $this->requestHeaders + $this->getVirgilHeader();
         $resultHeaders = [];
 
         foreach ($requestHeaders as $headerName => $headerValue) {
@@ -180,5 +181,14 @@ class CurlClient extends AbstractHttpClient
         }
 
         return $requestUrl;
+    }
+
+    /**
+     * @return array
+     */
+    private function getVirgilHeader() {
+        return [
+            HttpVirgilAgent::NAME => HttpVirgilAgent::getFormatString(),
+        ];
     }
 }
