@@ -2,11 +2,8 @@
 
 namespace Virgil\Http\Curl;
 
-
 use Virgil\Http\AbstractHttpClient;
-
 use Virgil\Http\Constants\RequestMethods;
-
 use Virgil\Http\Responses\HttpResponse;
 use Virgil\Http\Responses\HttpStatusCode;
 use Virgil\Http\VirgilAgent\HttpVirgilAgent;
