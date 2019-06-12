@@ -43,23 +43,40 @@ namespace Virgil\Http\VirgilAgent;
  */
 class HttpVirgilAgent
 {
-    const NAME = 'virgil-agent';
-    const PRODUCT = 'sdk';
-    const FAMILY = 'php';
+    /**
+     * @var string
+     */
+    private $name = 'Virgil-agent';
+    /**
+     * @var string
+     */
+    private $product = 'sdk';
+    /**
+     * @var string
+     */
+    private $family = 'php';
 
     /**
      * @return string
      */
-    public static function getFormatString()
+    public function getName()
     {
-        $os = strtolower(php_uname('s'));
-        return self::PRODUCT . ";" . self::FAMILY . ";" . $os . ";" . self::getVersion();
+        return $this->name;
     }
 
     /**
      * @return string
      */
-    public static function getVersion()
+    public function getFormatString()
+    {
+        $os = strtolower(php_uname('s'));
+        return $this->product . ";" . $this->family . ";" . $os . ";" . $this->getVersion();
+    }
+
+    /**
+     * @return string
+     */
+    private function getVersion()
     {
         $composerLock = 'composer.lock';
         $packageName = 'virgil/crypto';

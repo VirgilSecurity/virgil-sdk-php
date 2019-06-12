@@ -42,6 +42,7 @@ use DateTime;
 
 use Virgil\CryptoApi\CardCrypto;
 
+use Virgil\Http\VirgilAgent\HttpVirgilAgent;
 use Virgil\Sdk\Signer\ModelSigner;
 
 use Virgil\Sdk\Verification\CardVerifier;
@@ -89,10 +90,15 @@ class CardManager
      */
     private $cardClient;
 
+    /**
+     * @var HttpVirgilAgent
+     */
+    private $httpVirgilAgent;
 
     public function __construct(
         CardCrypto $cardCrypto,
         AccessTokenProvider $accessTokenProvider,
+        HttpVirgilAgent $httpVirgilAgent,
         CardVerifier $cardVerifier = null,
         CardClient $cardClient = null,
         callable $signCallback = null
@@ -107,6 +113,7 @@ class CardManager
 
         $this->cardCrypto = $cardCrypto;
         $this->accessTokenProvider = $accessTokenProvider;
+        $this->httpVirgilAgent = $httpVirgilAgent;
         $this->cardClient = $cardClient;
         $this->signCallback = $signCallback;
         $this->modelSigner = new ModelSigner($cardCrypto);
@@ -213,7 +220,7 @@ class CardManager
         $tokenContext = new TokenContext("", 'get');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
-        $responseModel = $this->cardClient->getCard($cardID, (string)$token);
+        $responseModel = $this->cardClient->getCard($cardID, (string)$token, $this->httpVirgilAgent);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
                 "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
@@ -243,7 +250,7 @@ class CardManager
         $tokenContext = new TokenContext($identity, 'search');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
-        $responseModel = $this->cardClient->searchCards($identity, (string)$token);
+        $responseModel = $this->cardClient->searchCards($identity, (string)$token, $this->httpVirgilAgent);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
                 "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
@@ -368,7 +375,7 @@ class CardManager
             $model = $signCallback($model);
         }
 
-        $responseModel = $this->cardClient->publishCard($model, (string)$token);
+        $responseModel = $this->cardClient->publishCard($model, (string)$token, $this->httpVirgilAgent);
 
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(

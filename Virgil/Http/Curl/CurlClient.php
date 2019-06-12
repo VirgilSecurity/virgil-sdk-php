@@ -147,7 +147,7 @@ class CurlClient extends AbstractHttpClient
      */
     protected function buildHeaders($requestHeaders)
     {
-        $requestHeaders = $requestHeaders + $this->requestHeaders + $this->getVirgilHeader();
+        $requestHeaders = $requestHeaders + $this->requestHeaders;
         $resultHeaders = [];
 
         foreach ($requestHeaders as $headerName => $headerValue) {
@@ -178,14 +178,5 @@ class CurlClient extends AbstractHttpClient
         }
 
         return $requestUrl;
-    }
-
-    /**
-     * @return array
-     */
-    private function getVirgilHeader() {
-        return [
-            HttpVirgilAgent::NAME => HttpVirgilAgent::getFormatString(),
-        ];
     }
 }

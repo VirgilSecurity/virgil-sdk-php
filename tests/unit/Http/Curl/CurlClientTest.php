@@ -37,7 +37,6 @@
 
 namespace Tests\Unit\Virgil\Http\Curl;
 
-
 use Virgil\Http\Constants\RequestMethods;
 
 use Virgil\Http\Curl\CurlClient;
@@ -69,12 +68,11 @@ class CurlClientTest extends TestCase
 
         $httpClientMock = $this->getMockBuilder(CurlClient::class)
                                ->setConstructorArgs(
-                                   [$curlFactory, ['Authorization' => 'VIRGIL { YOUR_APPLICATION_TOKEN }']]
+                                   [$curlFactory, ['Authorization' => 'VIRGIL { YOUR_APPLICATION_TOKEN }', 'virgil-agent' => '{ PRODUCT };{ FAMILY };{ OS };{ VERSION }']]
                                )
                                ->setMethods(['doRequest'])
                                ->getMock()
         ;
-
 
         $httpClientMock->expects($this->once())
                        ->method('doRequest')
@@ -104,6 +102,7 @@ class CurlClientTest extends TestCase
                         'Accept-Charset: iso-8859-5,unicode-1-1;q=0.8',
                         'Content-Length: 123',
                         'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
+                        'Virgil-agent: { PRODUCT };{ FAMILY };{ OS };{ VERSION }'
                     ],
                     CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_GET,
                     CURLOPT_HTTPGET        => true,
@@ -129,6 +128,7 @@ class CurlClientTest extends TestCase
                         'Content-Type: application/json',
                         'Content-Length: ' . strlen('{"alice":"bob"}'),
                         'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
+                        'Virgil-agent: { PRODUCT };{ FAMILY };{ OS };{ VERSION }'
                     ],
                     CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_POST,
                     CURLOPT_POST           => true,
@@ -154,7 +154,8 @@ class CurlClientTest extends TestCase
                     CURLOPT_HTTPHEADER     => [
                         'Content-Type: application/json',
                         'Content-Length: ' . strlen('{"alice":"bob"}'),
-                        'Authorization: VIRGIL { MY_TOKEN }',
+                        'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
+                        'Virgil-agent: { PRODUCT };{ FAMILY };{ OS };{ VERSION }'
                     ],
                     CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_DELETE,
                     CURLOPT_POST           => true,
@@ -168,7 +169,7 @@ class CurlClientTest extends TestCase
                         [
                             'Content-Type'   => ['application/json'],
                             'Content-Length' => strlen('{"alice":"bob"}'),
-                            'Authorization'  => 'VIRGIL { MY_TOKEN }',
+                            'Authorization'  => 'VIRGIL { YOUR_APPLICATION_TOKEN }',
                         ]
                     );
                 },

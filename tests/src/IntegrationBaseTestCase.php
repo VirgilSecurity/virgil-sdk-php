@@ -43,6 +43,7 @@ use Virgil\CryptoApi\CardCrypto;
 use Virgil\CryptoImpl\VirgilAccessTokenSigner;
 use Virgil\CryptoImpl\VirgilCardCrypto;
 use Virgil\CryptoImpl\VirgilCrypto;
+use Virgil\Http\VirgilAgent\HttpVirgilAgent;
 use Virgil\Sdk\CardManager;
 use Virgil\Sdk\Verification\CardVerifier;
 use Virgil\Sdk\Verification\VirgilCardVerifier;
@@ -90,6 +91,10 @@ class IntegrationBaseTestCase extends TestCase
      */
     protected $accessTokenProvider;
     /**
+     * @var HttpVirgilAgent
+     */
+    protected $httpVirgilAgent;
+    /**
      * @var CardVerifier
      */
     protected $cardVerifier;
@@ -136,13 +141,17 @@ class IntegrationBaseTestCase extends TestCase
         );
         $this->cardVerifier = new VirgilCardVerifier($this->cardCrypto, true, true, [], $this->serviceKey);
         $this->cardClient = new CardClient($this->serviceAddress);
+
+        $this->httpVirgilAgent = new HttpVirgilAgent();
     }
 
 
     protected function getCardManager()
     {
         return new CardManager(
-            $this->cardCrypto, $this->accessTokenProvider, $this->cardVerifier, $this->cardClient, $this->signCallback
+            $this->cardCrypto, $this->accessTokenProvider, $this->httpVirgilAgent, $this->cardVerifier,
+            $this->cardClient,
+        $this->signCallback
         );
     }
 
