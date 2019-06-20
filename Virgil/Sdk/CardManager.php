@@ -98,13 +98,15 @@ class CardManager
     public function __construct(
         CardCrypto $cardCrypto,
         AccessTokenProvider $accessTokenProvider,
-        HttpVirgilAgent $httpVirgilAgent,
         CardVerifier $cardVerifier = null,
         CardClient $cardClient = null,
         callable $signCallback = null
     ) {
+        $this->httpVirgilAgent = new HttpVirgilAgent();
+
         if ($cardClient == null) {
             $cardClient = new CardClient();
+            $cardClient->setHttpVirgilAgent($this->httpVirgilAgent);
         }
 
         if ($cardVerifier == null) {
@@ -113,7 +115,6 @@ class CardManager
 
         $this->cardCrypto = $cardCrypto;
         $this->accessTokenProvider = $accessTokenProvider;
-        $this->httpVirgilAgent = $httpVirgilAgent;
         $this->cardClient = $cardClient;
         $this->signCallback = $signCallback;
         $this->modelSigner = new ModelSigner($cardCrypto);
@@ -220,7 +221,7 @@ class CardManager
         $tokenContext = new TokenContext("", 'get');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
-        $responseModel = $this->cardClient->getCard($cardID, (string)$token, $this->httpVirgilAgent);
+        $responseModel = $this->cardClient->getCard($cardID, (string)$token);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
                 "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
@@ -250,7 +251,7 @@ class CardManager
         $tokenContext = new TokenContext($identity, 'search');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
-        $responseModel = $this->cardClient->searchCards($identity, (string)$token, $this->httpVirgilAgent);
+        $responseModel = $this->cardClient->searchCards($identity, (string)$token);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
                 "error response from card service", $responseModel->getCode(), $responseModel->getMessage()

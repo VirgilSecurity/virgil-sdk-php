@@ -91,10 +91,6 @@ class IntegrationBaseTestCase extends TestCase
      */
     protected $accessTokenProvider;
     /**
-     * @var HttpVirgilAgent
-     */
-    protected $httpVirgilAgent;
-    /**
      * @var CardVerifier
      */
     protected $cardVerifier;
@@ -116,9 +112,9 @@ class IntegrationBaseTestCase extends TestCase
     {
         parent::setUp();
 
-        (new Dotenv(__DIR__."/../.."))->load();
+        (new Dotenv(__DIR__ . "/../.."))->load();
 
-        defined('VIRGIL_FIXTURE_PATH') or define('VIRGIL_FIXTURE_PATH', __DIR__.'/../fixtures/');
+        defined('VIRGIL_FIXTURE_PATH') or define('VIRGIL_FIXTURE_PATH', __DIR__ . '/../fixtures/');
 
         $this->serviceAddress = $_ENV['SERVICE_ADDRESS'];
         $this->serviceKey = $_ENV['SERVICE_KEY'];
@@ -137,21 +133,20 @@ class IntegrationBaseTestCase extends TestCase
         $virgilAccessTokenSigner = new VirgilAccessTokenSigner();
         $this->accessTokenProvider = new GeneratorJwtProvider(
             new JwtGenerator($apiKey, $this->testApiKeyId, $virgilAccessTokenSigner, $this->testAppId, $_ENV['TTL']),
-            'default-identity'.date('Y-m-d-H-i-s')
+            'default-identity' . date('Y-m-d-H-i-s')
         );
         $this->cardVerifier = new VirgilCardVerifier($this->cardCrypto, true, true, [], $this->serviceKey);
-        $this->cardClient = new CardClient($this->serviceAddress);
-
-        $this->httpVirgilAgent = new HttpVirgilAgent();
+        $this->cardClient = new CardClient();
+        $this->cardClient->setHttpVirgilAgent(new HttpVirgilAgent());
     }
 
 
     protected function getCardManager()
     {
         return new CardManager(
-            $this->cardCrypto, $this->accessTokenProvider, $this->httpVirgilAgent, $this->cardVerifier,
+            $this->cardCrypto, $this->accessTokenProvider, $this->cardVerifier,
             $this->cardClient,
-        $this->signCallback
+            $this->signCallback
         );
     }
 

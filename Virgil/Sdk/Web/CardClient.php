@@ -70,12 +70,10 @@ class CardClient
      */
     private $httpVirgilAgent;
 
-
     /**
      * CardClient constructor.
-     *
-     * @param string              $serviceUrl
-     * @param HttpClientInterface $httpClient
+     * @param string $serviceUrl
+     * @param HttpClientInterface|null $httpClient
      */
     public function __construct($serviceUrl = self::API_SERVICE_URL, HttpClientInterface $httpClient = null)
     {
@@ -91,16 +89,22 @@ class CardClient
         }
         $this->httpClient = $httpClient;
         $this->serviceUrl = rtrim($serviceUrl, "/");
-        $this->httpVirgilAgent = new HttpVirgilAgent();
+    }
+
+    /**
+     * @param HttpVirgilAgent $httpVirgilAgent
+     */
+    public function setHttpVirgilAgent(HttpVirgilAgent $httpVirgilAgent)
+    {
+        $this->httpVirgilAgent = $httpVirgilAgent;
     }
 
     /**
      * @param RawSignedModel $model
      * @param $token
-     * @param HttpVirgilAgent $httpVirgilAgent
      * @return ErrorResponseModel|RawSignedModel
      */
-    public function publishCard(RawSignedModel $model, $token, HttpVirgilAgent $httpVirgilAgent)
+    public function publishCard(RawSignedModel $model, $token)
     {
         $httpResponse = $this->httpClient->send(
             new PostHttpRequest(
@@ -108,7 +112,7 @@ class CardClient
                 json_encode($model, JSON_UNESCAPED_SLASHES),
                 [
                     "Authorization" => sprintf("Virgil %s", $token),
-                    $httpVirgilAgent->getName() => $httpVirgilAgent->getFormatString(),
+                    $this->httpVirgilAgent->getName() => $this->httpVirgilAgent->getFormatString(),
                 ]
             )
         );
@@ -124,10 +128,9 @@ class CardClient
     /**
      * @param $cardID
      * @param $token
-     * @param HttpVirgilAgent $httpVirgilAgent
      * @return ErrorResponseModel|ResponseModel
      */
-    public function getCard($cardID, $token, HttpVirgilAgent $httpVirgilAgent)
+    public function getCard($cardID, $token)
     {
         $httpResponse = $this->httpClient->send(
             new GetHttpRequest(
@@ -135,7 +138,7 @@ class CardClient
                 null,
                 [
                     "Authorization" => sprintf("Virgil %s", $token),
-                    $httpVirgilAgent->getName() => $httpVirgilAgent->getFormatString(),
+                    $this->httpVirgilAgent->getName() => $this->httpVirgilAgent->getFormatString(),
                 ]
             )
         );
@@ -153,10 +156,9 @@ class CardClient
     /**
      * @param $identity
      * @param $token
-     * @param HttpVirgilAgent $httpVirgilAgent
      * @return array|ErrorResponseModel
      */
-    public function searchCards($identity, $token, HttpVirgilAgent $httpVirgilAgent)
+    public function searchCards($identity, $token)
     {
         $httpResponse = $this->httpClient->send(
             new PostHttpRequest(
@@ -164,7 +166,7 @@ class CardClient
                 json_encode(["identity" => $identity], JSON_UNESCAPED_SLASHES),
                 [
                     "Authorization" => sprintf("Virgil %s", $token),
-                    $httpVirgilAgent->getName() => $httpVirgilAgent->getFormatString(),
+                    $this->httpVirgilAgent->getName() => $this->httpVirgilAgent->getFormatString(),
                 ]
             )
         );
