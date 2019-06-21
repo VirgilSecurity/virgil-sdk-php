@@ -37,7 +37,6 @@
 
 namespace Tests\Unit\Virgil\Sdk;
 
-
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use Virgil\CryptoApi\CardCrypto;
@@ -48,6 +47,7 @@ use Virgil\Http\Requests\GetHttpRequest;
 use Virgil\Http\Requests\PostHttpRequest;
 use Virgil\Http\Responses\HttpResponse;
 use Virgil\Http\Responses\HttpStatusCode;
+use Virgil\Http\VirgilAgent\HttpVirgilAgent;
 use Virgil\Sdk\Card;
 use Virgil\Sdk\CardClientException;
 use Virgil\Sdk\CardManager;
@@ -86,6 +86,11 @@ class CardManagerTest extends TestCase
     protected $httpClientMock;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $httpVirgilAgentMock;
+
+    /**
      * @var callable|null
      */
     protected $signCallback = null;
@@ -99,8 +104,10 @@ class CardManagerTest extends TestCase
         $this->accessTokenProviderMock = $this->createMock(AccessTokenProvider::class);
         $this->cardVerifierMock = $this->createMock(CardVerifier::class);
         $this->httpClientMock = $this->createMock(HttpClientInterface::class);
+        $this->httpVirgilAgentMock = $this->createMock(HttpVirgilAgent::class);
+        $this->httpVirgilAgentMock->method("getFormatString")->willReturn("virgil_agent_string");
+        $this->httpVirgilAgentMock->method("getName")->willReturn("Virgil-agent");
     }
-
 
     /**
      * @test
@@ -273,7 +280,10 @@ class CardManagerTest extends TestCase
                                  new PostHttpRequest(
                                      "http://service.url/card/v5",
                                      '{"content_snapshot":"eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==","signatures":[{"signature":"MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA=","signer":"self"},{"signature":"c2lnbg==","signer":"callback"}]}',
-                                     ["Authorization" => "Virgil access_token_string"]
+                                     [
+                                         "Authorization" => "Virgil access_token_string",
+                                         "Virgil-agent" => "virgil_agent_string",
+                                     ]
                                  )
                              )
                              ->willReturn(
@@ -380,7 +390,10 @@ class CardManagerTest extends TestCase
                                  new GetHttpRequest(
                                      "http://service.url/card/v5/01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f",
                                      null,
-                                     ["Authorization" => "Virgil access_token_string"]
+                                     [
+                                         "Authorization" => "Virgil access_token_string",
+                                         "Virgil-agent" => "virgil_agent_string",
+                                     ]
                                  )
                              )
                              ->willReturn(
@@ -476,7 +489,10 @@ class CardManagerTest extends TestCase
                                  new PostHttpRequest(
                                      "http://service.url/card/v5/actions/search",
                                      '{"identity":"Alice"}',
-                                     ["Authorization" => "Virgil access_token_string"]
+                                     [
+                                         "Authorization" => "Virgil access_token_string",
+                                         "Virgil-agent" => "virgil_agent_string",
+                                     ]
                                  )
                              )
                              ->willReturn(
@@ -529,9 +545,10 @@ class CardManagerTest extends TestCase
         ;
 
         $accessTokenMock = $this->createMock(AccessToken::class);
-        $accessTokenMock->method("__toString")
-                        ->willReturn("access_token_string")
-        ;
+        $accessTokenMock->method("__toString")->willReturn("access_token_string");
+
+        $virgilAgentMock = $this->createMock(HttpVirgilAgent::class);
+        $virgilAgentMock->method("getFormatString")->willReturn("virgil_agent_string");
 
         $this->accessTokenProviderMock->expects($this->once())
                                       ->method('getToken')
@@ -539,11 +556,9 @@ class CardManagerTest extends TestCase
                                       ->willReturn($accessTokenMock)
         ;
 
-
         $cards = $this->getCardManager()
                       ->searchCards("Alice")
         ;
-
 
         $this->assertCount(2, $cards);
 
@@ -669,6 +684,7 @@ class CardManagerTest extends TestCase
     protected function getCardManager()
     {
         $cardClient = new CardClient("http://service.url", $this->httpClientMock);
+        $cardClient->setHttpVirgilAgent($this->httpVirgilAgentMock);
 
         return new CardManager(
             $this->cardCryptoMock,

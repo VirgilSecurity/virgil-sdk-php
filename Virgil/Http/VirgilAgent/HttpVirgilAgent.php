@@ -1,6 +1,6 @@
 <?php
 /**
-  * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2019 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -35,25 +35,73 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-/**
- * @return string
- */
-function extension_helper()
-{
-    $params = [
-        // php -v
-        'PHP Version' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
-        // php-config --extension-dir
-        'PHP Extension Dir' => PHP_EXTENSION_DIR,
-        // php -i | grep System
-        'OS Version' => PHP_OS,
-    ];
+namespace Virgil\Http\VirgilAgent;
 
-    foreach ($params as $key => $value) {
-        echo $key . ": " . $value . "\n";
+/**
+ * Class HttpVirgilAgent
+ * @package Virgil\Http\Curl
+ */
+class HttpVirgilAgent
+{
+    /**
+     * @var string
+     */
+    private $name = 'Virgil-agent';
+    /**
+     * @var string
+     */
+    private $product = 'sdk';
+    /**
+     * @var string
+     */
+    private $family = 'php';
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
-    return true;
-}
+    /**
+     * @return string
+     */
+    public function getFormatString()
+    {
+        $os = strtolower(php_uname('s'));
+        return $this->product . ";" . $this->family . ";" . $os . ";" . $this->getVersion();
+    }
 
-extension_helper();
+    /**
+     * @return string
+     */
+    private function getVersion()
+    {
+        $composerLock = 'composer.lock';
+        $packageName = 'virgil/crypto';
+        $version = 'unknown';
+
+        $path = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR;
+
+        if(!is_dir($path) || !in_array($composerLock, scandir($path)))
+            return $version;
+
+        $composerLockFile = file_get_contents($path.$composerLock);
+        $composerLockFileToArray = json_decode($composerLockFile);
+
+        $packages = $composerLockFileToArray->packages;
+
+        foreach ($packages as $package) {
+            if($packageName == $package->name) {
+                $version = $package->version;
+                if('v'==$version[0]) {
+                    $version = ltrim($version, 'v');
+                }
+                break;
+            }
+        }
+
+        return $version;
+    }
+}

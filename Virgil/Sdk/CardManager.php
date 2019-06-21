@@ -42,6 +42,7 @@ use DateTime;
 
 use Virgil\CryptoApi\CardCrypto;
 
+use Virgil\Http\VirgilAgent\HttpVirgilAgent;
 use Virgil\Sdk\Signer\ModelSigner;
 
 use Virgil\Sdk\Verification\CardVerifier;
@@ -89,6 +90,10 @@ class CardManager
      */
     private $cardClient;
 
+    /**
+     * @var HttpVirgilAgent
+     */
+    private $httpVirgilAgent;
 
     public function __construct(
         CardCrypto $cardCrypto,
@@ -97,8 +102,11 @@ class CardManager
         CardClient $cardClient = null,
         callable $signCallback = null
     ) {
+        $this->httpVirgilAgent = new HttpVirgilAgent();
+
         if ($cardClient == null) {
             $cardClient = new CardClient();
+            $cardClient->setHttpVirgilAgent($this->httpVirgilAgent);
         }
 
         if ($cardVerifier == null) {
@@ -368,7 +376,7 @@ class CardManager
             $model = $signCallback($model);
         }
 
-        $responseModel = $this->cardClient->publishCard($model, (string)$token);
+        $responseModel = $this->cardClient->publishCard($model, (string)$token, $this->httpVirgilAgent);
 
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
