@@ -100,13 +100,13 @@ $dataToEncrypt = 'Hello, Bob!';
 $alicePrivateKeyEntry = $privateKeyStorage->load('Alice');
 
 // using cardManager search for Bob's cards on Cards Service
-$cads = $cardManager->searchCards('Bob');
+$cards = $cardManager->searchCards('Bob');
 
 $bobRelevantCardsPublicKeys = array_map(
     function (Sdk\Card $card) {
         return $card->getPublicKey();
     },
-    $cads
+    $cards
 );
 
 
@@ -136,7 +136,7 @@ $aliceRelevantCardsPublicKeys = array_map(
     function (Sdk\Card $card) {
         return $card->getPublicKey();
     },
-    $cads
+    $cards
 );
 
 // decrypt with a private key and verify using one of Alice's public keys
