@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/virgil/sdk.svg?style=flat-square)](https://packagist.org/packages/virgil/sdk.svg)
 [![GitHub license](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE)
 
-[Introduction](#introduction) | [SDK Features](#sdk-features) | [Crypto Library Purposes](#crypto-library-purposes) | [Installation](#installation) | [Configure SDK](#configure-sdk) | [Usage Examples](#usage-examples) | [Docs](#docs) | [Support](#support)
+[Introduction](#introduction) | [SDK Features](#sdk-features) | [Installation](#installation) | [Configure SDK](#configure-sdk) | [Usage Examples](#usage-examples) | [Docs](#docs) | [Support](#support)
 
 ## Introduction
 
@@ -22,13 +22,6 @@ In case you need additional security functionality for multi-device support, gro
 - Use [Virgil Crypto Library](https://github.com/VirgilSecurity/virgil-crypto-php)
 - Use your own crypto library
 
-## Crypto Library Purposes
-* Asymmetric Key Generation
-* Encryption/Decryption of data and streams
-* Generation/Verification of digital signatures
-* PFS (Perfect Forward Secrecy)
-* **Post quantum algorithms support**. [Round5](https://round5.org/) (ecnryption) and [Falcon](https://falcon-sign.info/) (signature) 
-
 ## Installation
 
 The Virgil Core SDK is provided as a package named [*virgil/sdk*](https://packagist.org/packages/virgil/sdk). The package is distributed via [Composer package](https://getcomposer.org/doc/) management system.
@@ -43,25 +36,19 @@ composer require virgil/sdk
 
 ### Crypto library notice
 
-In order to support cipher operations upon your data there is must be installed crypto library also. We supply Virgil  SDK with own implementation of cypto intefaces that can be easyly used by everyone. Just require it as a package:
+In order to support crypto operations, you'll also need to install a crypto library. We supply Virgil Core SDK with our own implementation of cypto intefaces that can be easily used by everyone. Just require it as a package:
 
 ```bash
 composer require virgil/crypto
 ```
 
-Be aware this package requires installed php virgil crypto extension *ext-virgil_crypto_php*.
-
-Also there is avaliable [setup your own Crypto library][_own_crypto] inside of the SDK
+Be aware that this package requires installed php virgil crypto extension *ext-virgil_crypto_php*.
 
 ### Using external crypto library (c++)
 
-If you decide to use *virgil/crypto* package there is needs to install php virgil crypto extension
-*ext-virgil_crypto_php* as one of dependency otherwise you will get the requested PHP extension virgil_crypto_php
-is missing from your system error during composer install.
-Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/)
-like **virgil-crypto-2.3.0-php-5.6-linux-x86_64.tgz** (highly recommended using latest version)
-and install. Unfortunately PHP extensions installation is out of this topic but you can find a lot of public information about it.
+If you decide to use *virgil/crypto* package, there is needs to install php virgil crypto extension *ext-virgil_crypto_php* as one of the dependencies, otherwise you will get the "requested PHP extension virgil_crypto_php is missing from your system" error during composer install.
 
+Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/) like **virgil-crypto-2.3.0-php-5.6-linux-x86_64.tgz** (highly recommended using latest version), and install it.
 
 ## Configure SDK
 
