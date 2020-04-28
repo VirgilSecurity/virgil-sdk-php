@@ -20,7 +20,6 @@ In case you need additional security functionality for multi-device support, gro
 - Encrypt, sign, decrypt and verify data
 - Store private keys in secure local storage
 - Use [Virgil Crypto Library](https://github.com/VirgilSecurity/virgil-crypto-php)
-- Use your own crypto library
 
 ## Installation
 
@@ -183,39 +182,6 @@ $virgilCardVerifier = new VirgilCardVerifier($cardCrypto, true, true);
 // initialize cardManager and specify accessTokenProvider, cardVerifier
 $cardManager = new CardManager($cardCrypto, $virgilAccessTokenProvider, $virgilCardVerifier);
 ```
-
-### Set up Key Storage for private keys
-
-This subsection shows how to set up a `VSSKeyStorage` using Virgil SDK in order to save private keys after their generation.
-
-Here is an example of how to set up the `VSSKeyStorage` class:
-
-```php
-use Virgil\CryptoImpl\VirgilCrypto;
-use Virgil\CryptoImpl\VirgilPrivateKeyExporter;
-
-use Virgil\Sdk\Storage\PrivateKeyStorage;
-
-// initialize Crypto library
-$crypto = new VirgilCrypto();
-// Generate some private key
-$keypair = $crypto->generateKeys();
-$privateKey = $keypair->getPrivateKey();
-
-// Setup PrivateKeyStorage
-$exporter = new VirgilPrivateKeyExporter("passw0rd");
-$privateKeyStorage = new PrivateKeyStorage($exporter, "~/keys/");
-
-// Store a private key with a name, for example Alice
-$privateKeyStorage->store($privateKey, "Alice");
-
-// To load Alice private key use the following code lines:
-$keyEntry = $privateKeyStorage->load("Alice");
-
-// Delete a private key
-$privateKeyStorage->delete("Alice");
-```
-
 
 ## Usage Examples
 
