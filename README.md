@@ -237,7 +237,7 @@ $bobRelevantCardsPublicKeys = array_map(
     function (Virgil\Sdk\Card $cards) {
         return $cards->getPublicKey();
     },
-    $cads
+    $cards
 );
 
 
@@ -267,7 +267,7 @@ $aliceRelevantCardsPublicKeys = array_map(
     function (Virgil\Sdk\Card $cards) {
         return $cards->getPublicKey();
     },
-    $cads
+    $cards
 );
 
 // decrypt with a private key and verify using one of Alice's public keys
