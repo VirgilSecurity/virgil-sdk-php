@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -38,15 +38,11 @@
 namespace Tests\Integration\Virgil\Sdk\Web;
 
 use DateTime;
-
-use Virgil\CryptoImpl\VirgilPublicKey;
-
+use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
 use Virgil\Sdk\Card;
 use Virgil\Sdk\CardParams;
 use Virgil\Sdk\CardSignature;
-
 use Virgil\Sdk\Verification\NullCardVerifier;
-
 use Virgil\Tests\IntegrationBaseTestCase;
 
 class CardManagerTest extends IntegrationBaseTestCase
@@ -157,7 +153,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     /**
      * @test
      */
-    public function STC17()
+    public function testSTC17()
     {
         $cardManager = $this->getCardManager();
         $identity = $this->baseIdentityGenerator('Alice')();
@@ -202,7 +198,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     /**
      * @test
      */
-    public function STC18()
+    public function testSTC18()
     {
         $cardManager = $this->getCardManager();
         $identity = $this->baseIdentityGenerator('Alice')();
@@ -251,7 +247,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     /**
      * @test
      */
-    public function STC19()
+    public function testSTC19()
     {
         $cardManager = $this->getCardManager();
         $identity = $this->baseIdentityGenerator('Alice')();
@@ -298,7 +294,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     /**
      * @test
      */
-    public function STC20()
+    public function testSTC20()
     {
         $cardManager = $this->getCardManager();
         $identity = $this->baseIdentityGenerator('Alice')();
@@ -372,9 +368,9 @@ class CardManagerTest extends IntegrationBaseTestCase
 
     /**
      * @test
-     * @expectedException \Virgil\Sdk\CardClientException
+     * @expectedException \Virgil\Sdk\Exceptions\CardClientException
      */
-    public function STC34()
+    public function testSTC34()
     {
         $this->cardVerifier =  new NullCardVerifier();
 

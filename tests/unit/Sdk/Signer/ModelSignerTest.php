@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -37,11 +37,9 @@
 
 namespace Tests\Unit\Virgil\Sdk;
 
-
 use PHPUnit\Framework\TestCase;
-
-use Virgil\CryptoApi\CardCrypto;
-use Virgil\CryptoApi\PrivateKey;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Signer\ModelSigner;
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
@@ -53,8 +51,8 @@ class ModelSignerTest extends TestCase
      */
     public function sign_appendsToSignedModel_generatedRawSignature()
     {
-        $cardCryptoMock = $this->createMock(CardCrypto::class);
-        $pk = $this->createMock(PrivateKey::class);
+        $cardCryptoMock = $this->createMock(VirgilCrypto::class);
+        $pk = $this->createMock(VirgilPrivateKey::class);
         $cardCryptoMock->expects($this->once())
                        ->method('generateSignature')
                        ->with('{"identity":"Alice"}', $pk)
@@ -121,8 +119,8 @@ class ModelSignerTest extends TestCase
      */
     public function sign_withExistsSigner_throwsVirgilException()
     {
-        $cardCryptoMock = $this->createMock(CardCrypto::class);
-        $pk = $this->createMock(PrivateKey::class);
+        $cardCryptoMock = $this->createMock(VirgilCrypto::class);
+        $pk = $this->createMock(VirgilPrivateKey::class);
 
         $modelSigner = new ModelSigner($cardCryptoMock);
 

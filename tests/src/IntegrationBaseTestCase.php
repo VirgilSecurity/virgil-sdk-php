@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -39,11 +39,8 @@ namespace Virgil\Tests;
 
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
-use Virgil\CryptoApi\CardCrypto;
-use Virgil\CryptoImpl\VirgilAccessTokenSigner;
-use Virgil\CryptoImpl\VirgilCardCrypto;
-use Virgil\CryptoImpl\VirgilCrypto;
-use Virgil\Http\VirgilAgent\HttpVirgilAgent;
+use Virgil\Crypto\VirgilCrypto;
+use Virgil\Sdk\Http\VirgilAgent\HttpVirgilAgent;
 use Virgil\Sdk\CardManager;
 use Virgil\Sdk\Verification\CardVerifier;
 use Virgil\Sdk\Verification\VirgilCardVerifier;
@@ -108,7 +105,7 @@ class IntegrationBaseTestCase extends TestCase
     protected $virgilCrypto;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

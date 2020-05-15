@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -37,12 +37,10 @@
 
 namespace Tests\Unit\Virgil\Http;
 
-
-use Virgil\Http\AbstractHttpClient;
-
-use Virgil\Http\Requests\DeleteHttpRequest;
-use Virgil\Http\Requests\GetHttpRequest;
-use Virgil\Http\Requests\PostHttpRequest;
+use Virgil\Sdk\Http\AbstractHttpClient;
+use Virgil\Sdk\Http\Requests\DeleteHttpRequest;
+use Virgil\Sdk\Http\Requests\GetHttpRequest;
+use Virgil\Sdk\Http\Requests\PostHttpRequest;
 
 use PHPUnit\Framework\TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -36,7 +36,6 @@
  */
 
 namespace Tests\Unit\Virgil\Sdk\Web;
-
 
 use PHPUnit\Framework\TestCase;
 use Virgil\Sdk\Web\RawSignature;

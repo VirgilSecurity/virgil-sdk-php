@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -39,17 +39,14 @@ namespace Tests\Unit\Virgil\Sdk;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use Virgil\CryptoApi\CardCrypto;
-use Virgil\CryptoApi\PrivateKey;
-use Virgil\CryptoApi\PublicKey;
-use Virgil\Http\HttpClientInterface;
-use Virgil\Http\Requests\GetHttpRequest;
-use Virgil\Http\Requests\PostHttpRequest;
-use Virgil\Http\Responses\HttpResponse;
-use Virgil\Http\Responses\HttpStatusCode;
-use Virgil\Http\VirgilAgent\HttpVirgilAgent;
+use Virgil\Sdk\Http\HttpClientInterface;
+use Virgil\Sdk\Http\Requests\GetHttpRequest;
+use Virgil\Sdk\Http\Requests\PostHttpRequest;
+use Virgil\Sdk\Http\Responses\HttpResponse;
+use Virgil\Sdk\Http\Responses\HttpStatusCode;
+use Virgil\Sdk\Http\VirgilAgent\HttpVirgilAgent;
 use Virgil\Sdk\Card;
-use Virgil\Sdk\CardClientException;
+use Virgil\Sdk\Exceptions\CardClientException;
 use Virgil\Sdk\CardManager;
 use Virgil\Sdk\CardParams;
 use Virgil\Sdk\CardSignature;

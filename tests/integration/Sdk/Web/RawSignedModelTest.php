@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -37,10 +37,8 @@
 
 namespace Tests\Integration\Virgil\Sdk\Web;
 
-
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
-
 use Virgil\Tests\IntegrationBaseTestCase;
 
 class RawSignedModelTest extends IntegrationBaseTestCase
@@ -49,7 +47,7 @@ class RawSignedModelTest extends IntegrationBaseTestCase
     /**
      * @test
      */
-    public function STC1()
+    public function testSTC1()
     {
         $stc1AsString = $this->fixtures->STC1__As_String();
         $rawSignedModelFromString = RawSignedModel::RawSignedModelFromBase64String($stc1AsString);
@@ -75,11 +73,10 @@ class RawSignedModelTest extends IntegrationBaseTestCase
         }
     }
 
-
     /**
      * @test
      */
-    public function STC2()
+    public function testSTC2()
     {
         $stc2AsString = $this->fixtures->STC2__As_String();
         $rawSignedModelFromString = RawSignedModel::RawSignedModelFromBase64String($stc2AsString);

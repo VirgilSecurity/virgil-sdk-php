@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -37,14 +37,11 @@
 
 namespace Tests\Unit\Virgil\Http\Curl;
 
-use Virgil\Http\Constants\RequestMethods;
-
-use Virgil\Http\Curl\CurlClient;
-use Virgil\Http\Curl\CurlRequest;
-use Virgil\Http\Curl\CurlRequestFactory;
-
-use Virgil\Http\HttpClientInterface;
-
+use Virgil\Sdk\Http\Constants\RequestMethods;
+use Virgil\Sdk\Http\Curl\CurlClient;
+use Virgil\Sdk\Http\Curl\CurlRequest;
+use Virgil\Sdk\Http\Curl\CurlRequestFactory;
+use Virgil\Sdk\Http\HttpClientInterface;
 use PHPUnit\Framework\TestCase;
 
 class CurlClientTest extends TestCase

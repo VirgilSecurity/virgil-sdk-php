@@ -1,6 +1,4 @@
 .idea
 vendor
 .env
-composer_dev.json
-composer_dev.lock
 _dev

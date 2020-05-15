@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -37,8 +37,7 @@
 
 namespace Tests\Unit\Virgil\Http\Curl;
 
-
-use Virgil\Http\Curl\CurlRequestFactory;
+use Virgil\Sdk\Http\Curl\CurlRequestFactory;
 use PHPUnit\Framework\TestCase;
 
 class CurlRequestFactoryTest extends TestCase
