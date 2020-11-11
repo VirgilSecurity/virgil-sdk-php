@@ -35,7 +35,7 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Tests\Unit\Virgil\Http;
+namespace Tests\Unit\Http;
 
 use Virgil\Sdk\Http\AbstractHttpClient;
 use Virgil\Sdk\Http\Requests\DeleteHttpRequest;

@@ -38,8 +38,9 @@
 namespace Virgil\Sdk\Signer;
 
 
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
 use Virgil\Crypto\VirgilCrypto;
-use Virgil\CryptoWrapper\Foundation\PrivateKey;
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
 use Virgil\Sdk\Exceptions\VirgilException;
@@ -52,7 +53,7 @@ use Virgil\Sdk\Exceptions\VirgilException;
 class ModelSigner
 {
     /**
-     * @var CardCrypto
+     * @var VirgilCrypto
      */
     private $crypto;
 
@@ -65,12 +66,12 @@ class ModelSigner
     /**
      * @param RawSignedModel $model
      * @param $signer
-     * @param PrivateKey $privateKey
+     * @param VirgilPrivateKey $privateKey
      * @param array|null $extraFields
      * @throws VirgilException
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
-    public function sign(RawSignedModel &$model, $signer, PrivateKey $privateKey, array $extraFields = null)
+    public function sign(RawSignedModel &$model, $signer, VirgilPrivateKey $privateKey, array $extraFields = null)
     {
         $signatures = $model->getSignatures();
 
@@ -98,12 +99,12 @@ class ModelSigner
 
     /**
      * @param RawSignedModel $model
-     * @param PrivateKey $privateKey
+     * @param VirgilPrivateKey $privateKey
      * @param array|null $extraFields
      * @throws VirgilException
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
-    public function selfSign(RawSignedModel &$model, PrivateKey $privateKey, array $extraFields = null)
+    public function selfSign(RawSignedModel &$model, VirgilPrivateKey $privateKey, array $extraFields = null)
     {
         $this->sign($model, 'self', $privateKey, $extraFields);
     }

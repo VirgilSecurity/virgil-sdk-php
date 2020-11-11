@@ -35,10 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Tests\Unit\Virgil\Sdk;
+namespace Tests\Unit\Sdk;
+
 
 use DateTime;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Http\HttpClientInterface;
 use Virgil\Sdk\Http\Requests\GetHttpRequest;
 use Virgil\Sdk\Http\Requests\PostHttpRequest;
@@ -66,24 +71,24 @@ class CardManagerTest extends TestCase
      */
     protected $cardManager;
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     protected $cardCryptoMock;
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     protected $accessTokenProviderMock;
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     protected $cardVerifierMock;
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     protected $httpClientMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     protected $httpVirgilAgentMock;
 
@@ -93,11 +98,11 @@ class CardManagerTest extends TestCase
     protected $signCallback = null;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->cardCryptoMock = $this->createMock(CardCrypto::class);
+        $this->cardCryptoMock = $this->createMock(VirgilCrypto::class);
         $this->accessTokenProviderMock = $this->createMock(AccessTokenProvider::class);
         $this->cardVerifierMock = $this->createMock(CardVerifier::class);
         $this->httpClientMock = $this->createMock(HttpClientInterface::class);
@@ -121,8 +126,8 @@ class CardManagerTest extends TestCase
                                ->generateRawCard(
                                    CardParams::create(
                                        [
-                                           CardParams::PublicKey      => $this->createMock(PublicKey::class),
-                                           CardParams::PrivateKey     => $this->createMock(PrivateKey::class),
+                                           CardParams::PublicKey      => $this->createMock(VirgilPublicKey::class),
+                                           CardParams::PrivateKey     => $this->createMock(VirgilPrivateKey::class),
                                            CardParams::Identity       => 'Alice',
                                            CardParams::PreviousCardID => '23f23f',
                                        ]
@@ -154,8 +159,8 @@ class CardManagerTest extends TestCase
                                ->generateRawCard(
                                    CardParams::create(
                                        [
-                                           CardParams::PublicKey   => $this->createMock(PublicKey::class),
-                                           CardParams::PrivateKey  => $this->createMock(PrivateKey::class),
+                                           CardParams::PublicKey   => $this->createMock(VirgilPublicKey::class),
+                                           CardParams::PrivateKey  => $this->createMock(VirgilPrivateKey::class),
                                            CardParams::Identity    => 'Alice',
                                            CardParams::ExtraFields => [
                                                'extra_a' => 'val_1',
@@ -201,11 +206,11 @@ class CardManagerTest extends TestCase
      * @test
      *
      * @dataProvider  cardManager_withHttpClientErrorResponse_throwsCardClientException_dataProvider
-     *
-     * @expectedException \Virgil\Sdk\CardClientException
      */
     public function cardManager_withHttpClientErrorResponse_throwsCardClientException($testFunc)
     {
+        $this->expectException('\Virgil\Sdk\Exceptions\CardClientException');
+
         $this->accessTokenProviderMock->expects($this->once())
                                       ->method('getToken')
                                       ->with($this->anything())
@@ -268,7 +273,7 @@ class CardManagerTest extends TestCase
         $this->cardCryptoMock->expects($this->once())
                              ->method("importPublicKey")
                              ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
-                             ->willReturn($this->createMock(PublicKey::class))
+                             ->willReturn($this->createMock(VirgilPublicKey::class))
         ;
 
         $this->httpClientMock->expects($this->once())
@@ -378,7 +383,7 @@ class CardManagerTest extends TestCase
         $this->cardCryptoMock->expects($this->once())
                              ->method("importPublicKey")
                              ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
-                             ->willReturn($this->createMock(PublicKey::class))
+                             ->willReturn($this->createMock(VirgilPublicKey::class))
         ;
 
         $this->httpClientMock->expects($this->once())
@@ -477,7 +482,7 @@ class CardManagerTest extends TestCase
         $this->cardCryptoMock->expects($this->exactly(3))
                              ->method("importPublicKey")
                              ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
-                             ->willReturn($this->createMock(PublicKey::class))
+                             ->willReturn($this->createMock(VirgilPublicKey::class))
         ;
 
         $this->httpClientMock->expects($this->once())
@@ -589,7 +594,7 @@ class CardManagerTest extends TestCase
         $this->cardCryptoMock->expects($this->once())
                              ->method("importPublicKey")
                              ->with(base64_decode("MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0="))
-                             ->willReturn($this->createMock(PublicKey::class))
+                             ->willReturn($this->createMock(VirgilPublicKey::class))
         ;
 
         $this->cardCryptoMock->expects($this->once())
@@ -610,7 +615,7 @@ class CardManagerTest extends TestCase
 
 
         $this->assertEquals("01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f", $card->getID());
-        $this->assertEquals($this->createMock(PublicKey::class), $card->getPublicKey());
+        $this->assertEquals($this->createMock(VirgilPublicKey::class), $card->getPublicKey());
         $this->assertEquals('Alice-6cadaa68f091d3d3626a', $card->getIdentity());
         $this->assertEquals('5.0', $card->getVersion());
         $this->assertEquals(new DateTime("2018-04-15 21:31:28"), $card->getCreatedAt());
@@ -652,7 +657,7 @@ class CardManagerTest extends TestCase
         $card = new Card(
             '01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f',
             'Alice-6cadaa68f091d3d3626a',
-            $this->createMock(PublicKey::class),
+            $this->createMock(VirgilPublicKey::class),
             '5.0',
             new DateTime("2018-04-15 21:31:28"),
             false,

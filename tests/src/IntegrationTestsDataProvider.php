@@ -35,7 +35,7 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Tests;
+namespace Virgil\SdkTests;
 
 /**
  * Class IntegrationTestsDataProvider

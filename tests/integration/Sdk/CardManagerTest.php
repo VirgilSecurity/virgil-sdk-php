@@ -43,7 +43,7 @@ use Virgil\Sdk\Card;
 use Virgil\Sdk\CardParams;
 use Virgil\Sdk\CardSignature;
 use Virgil\Sdk\Verification\NullCardVerifier;
-use Virgil\Tests\IntegrationBaseTestCase;
+use Virgil\SdkTests\IntegrationBaseTestCase;
 
 class CardManagerTest extends IntegrationBaseTestCase
 {

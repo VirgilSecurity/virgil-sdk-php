@@ -35,7 +35,7 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Tests\Unit\Virgil\Http\Curl;
+namespace Tests\Unit\Http\Curl;
 
 use Virgil\Sdk\Http\Curl\CurlRequestFactory;
 use PHPUnit\Framework\TestCase;

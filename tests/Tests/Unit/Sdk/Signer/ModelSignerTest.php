@@ -35,7 +35,7 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Tests\Unit\Virgil\Sdk;
+namespace Tests\Unit\Sdk\Signer;
 
 use PHPUnit\Framework\TestCase;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
@@ -115,7 +115,7 @@ class ModelSignerTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Virgil\Sdk\VirgilException
+     * @expectedException \Virgil\Sdk\Exceptions\VirgilException
      */
     public function sign_withExistsSigner_throwsVirgilException()
     {

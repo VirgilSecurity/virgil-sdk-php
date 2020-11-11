@@ -55,7 +55,7 @@ class Card
      */
     private $identity;
     /**
-     * @var PublicKey
+     * @var VirgilPublicKey
      */
     private $publicKey;
     /**
@@ -93,7 +93,7 @@ class Card
      *
      * @param string          $ID
      * @param string          $identity
-     * @param PublicKey       $publicKey
+     * @param VirgilPublicKey $publicKey
      * @param string          $version
      * @param DateTime        $createdAt
      * @param bool            $isOutdated

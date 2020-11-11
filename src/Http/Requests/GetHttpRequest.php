@@ -3,7 +3,7 @@
 namespace Virgil\Sdk\Http\Requests;
 
 
-use Virgil\Http\Constants\RequestMethods;
+use Virgil\Sdk\Http\Constants\RequestMethods;
 
 /**
  * Class GetHttpRequest

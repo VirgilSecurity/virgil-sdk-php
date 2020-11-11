@@ -49,7 +49,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Virgil\\SdkTests\\": "tests/"
+      "Virgil\\SdkTests\\": "tests/src"
     }
   }
 }
