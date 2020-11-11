@@ -37,9 +37,9 @@
 
 namespace Virgil\Sdk\Storage;
 
-use Virgil\CryptoWrapper\Foundation\PrivateKey;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Exceptions\VirgilException;
-use Virgil\CryptoApi\PrivateKeyExporter;
 
 /**
  * Class PrivateKeyStorage
@@ -52,36 +52,36 @@ class PrivateKeyStorage
      */
     protected $keyStorage;
     /**
-     * @var PrivateKeyExporter
+     * @var VirgilCrypto
      */
-    private $privateKeyExporter;
+    private $virgilCrypto;
 
 
     /**
      * PrivateKeyStorage constructor.
      *
-     * @param PrivateKeyExporter $privateKeyExporter
-     * @param string             $storagePath
+     * @param VirgilCrypto $virgilCrypto
+     * @param string $storagePath
      *
      * @throws VirgilException
      */
-    public function __construct(PrivateKeyExporter $privateKeyExporter, $storagePath)
+    public function __construct(VirgilCrypto $virgilCrypto, $storagePath)
     {
         $this->keyStorage = new KeyStorage($storagePath);
-        $this->privateKeyExporter = $privateKeyExporter;
+        $this->virgilCrypto = $virgilCrypto;
     }
 
 
     /**
-     * @param PrivateKey $privateKey
-     * @param string     $name
-     * @param array      $meta
+     * @param VirgilPrivateKey $privateKey
+     * @param string $name
+     * @param array $meta
      *
      * @throws VirgilException
      */
-    public function store(PrivateKey $privateKey, $name, array $meta = null)
+    public function store(VirgilPrivateKey $privateKey, $name, array $meta = null)
     {
-        $exportedData = $this->privateKeyExporter->exportPrivateKey($privateKey);
+        $exportedData = $this->virgilCrypto->exportPrivateKey($privateKey);
 
         $this->keyStorage->store(new KeyEntry($name, $exportedData, $meta));
     }
@@ -96,9 +96,9 @@ class PrivateKeyStorage
     public function load($name)
     {
         $keyEntry = $this->keyStorage->load($name);
-        $privateKey = $this->privateKeyExporter->importPrivateKey($keyEntry->getValue());
+        $privateKey = $this->virgilCrypto->importPrivateKey($keyEntry->getValue());
 
-        return new PrivateKeyEntry($privateKey, $keyEntry->getMeta());
+        return new PrivateKeyEntry($privateKey->getPrivateKey(), $keyEntry->getMeta());
     }
 
 

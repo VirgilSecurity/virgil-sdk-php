@@ -37,7 +37,7 @@
 
 namespace Virgil\Sdk\Storage;
 
-use Virgil\CryptoWrapper\Foundation\PrivateKey;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
 
 /**
  * Class PrivateKeyEntry
@@ -46,7 +46,7 @@ use Virgil\CryptoWrapper\Foundation\PrivateKey;
 class PrivateKeyEntry
 {
     /**
-     * @var PrivateKey
+     * @var VirgilPrivateKey
      */
     private $privateKey;
     /**
@@ -55,7 +55,7 @@ class PrivateKeyEntry
     private $meta;
 
 
-    public function __construct(PrivateKey $privateKey, array $meta = null)
+    public function __construct(VirgilPrivateKey $privateKey, array $meta = null)
     {
         $this->privateKey = $privateKey;
         $this->meta = $meta;
@@ -63,7 +63,7 @@ class PrivateKeyEntry
 
 
     /**
-     * @return PrivateKey
+     * @return VirgilPrivateKey
      */
     public function getPrivateKey()
     {

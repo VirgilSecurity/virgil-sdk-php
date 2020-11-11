@@ -50,9 +50,9 @@ class VirgilCardVerifier implements CardVerifier
     const VirgilPublicKey = "MCowBQYDK2VwAyEAljOYGANYiVq1WbvVvoYIKtvZi2ji9bAhxyu6iV/LF8M=";
 
     /**
-     * @var CardCrypto
+     * @var VirgilCrypto
      */
-    private $cardCrypto;
+    private $virgilCrypto;
     /**
      * @var bool
      */
@@ -73,7 +73,7 @@ class VirgilCardVerifier implements CardVerifier
 
     /**
      * VirgilCardVerifier constructor.
-     * @param VirgilCrypto $cardCrypto
+     * @param VirgilCrypto $virgilCrypto
      * @param bool $verifySelfSignature
      * @param bool $verifyVirgilSignature
      * @param array $whiteLists
@@ -81,19 +81,19 @@ class VirgilCardVerifier implements CardVerifier
      * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
      */
     public function __construct(
-        VirgilCrypto $cardCrypto,
+        VirgilCrypto $virgilCrypto,
         $verifySelfSignature = true,
         $verifyVirgilSignature = true,
         array $whiteLists = [],
         $virgilPublicKey = self::VirgilPublicKey
     ) {
-        $this->cardCrypto = $cardCrypto;
+        $this->virgilCrypto = $virgilCrypto;
         $this->verifySelfSignature = $verifySelfSignature;
         $this->verifyVirgilSignature = $verifyVirgilSignature;
         $this->whiteLists = $whiteLists;
 
         if ($verifyVirgilSignature) {
-            $this->virgilPublicKey = $cardCrypto->importPublicKey(base64_decode($virgilPublicKey));
+            $this->virgilPublicKey = $virgilCrypto->importPublicKey(base64_decode($virgilPublicKey));
         }
     }
 
@@ -149,7 +149,7 @@ class VirgilCardVerifier implements CardVerifier
                     $snapshot .= $cardSignature->getSnapshot();
                 }
 
-                return $this->cardCrypto->verifySignature($cardSignature->getSignature(), $snapshot, $publicKey);
+                return $this->virgilCrypto->verifySignature($cardSignature->getSignature(), $snapshot, $publicKey);
             }
         }
 

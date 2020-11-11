@@ -46,7 +46,7 @@ use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
 class JwtGenerator
 {
     /**
-     * @var PrivateKey
+     * @var VirgilPrivateKey
      */
     private $apiKey;
     /**

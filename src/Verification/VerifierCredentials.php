@@ -37,7 +37,7 @@
 
 namespace Virgil\Sdk\Verification;
 
-use Virgil\CryptoWrapper\Foundation\PublicKey;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
 
 /**
  * Class VerifierCredentials
@@ -51,7 +51,7 @@ class VerifierCredentials
     private $signer;
 
     /**
-     * @var PublicKey
+     * @var VirgilPublicKey
      */
     private $publicKey;
 
@@ -59,10 +59,10 @@ class VerifierCredentials
     /**
      * VerifierCredentials constructor.
      *
-     * @param string    $signer
-     * @param PublicKey $publicKey
+     * @param string $signer
+     * @param VirgilPublicKey $publicKey
      */
-    public function __construct($signer, PublicKey $publicKey)
+    public function __construct($signer, VirgilPublicKey $publicKey)
     {
         $this->signer = $signer;
         $this->publicKey = $publicKey;
@@ -70,7 +70,7 @@ class VerifierCredentials
 
 
     /**
-     * @return PublicKey
+     * @return VirgilPublicKey
      */
     public function getPublicKey()
     {
