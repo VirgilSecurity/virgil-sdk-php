@@ -38,6 +38,7 @@
 namespace Virgil\Sdk;
 
 use DateTime;
+use Virgil\Crypto\Core\Enum\HashAlgorithms;
 use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Exceptions\CardClientException;
 use Virgil\Sdk\Exceptions\CardVerificationException;
@@ -73,7 +74,7 @@ class CardManager
     /**
      * @var VirgilCrypto
      */
-    private $cardCrypto;
+    private $virgilCrypto;
     /**
      * @var AccessTokenProvider
      */
@@ -93,7 +94,7 @@ class CardManager
     private $httpVirgilAgent;
 
     public function __construct(
-        VirgilCrypto $cardCrypto,
+        VirgilCrypto $virgilCrypto,
         AccessTokenProvider $accessTokenProvider,
         CardVerifier $cardVerifier = null,
         CardClient $cardClient = null,
@@ -110,11 +111,11 @@ class CardManager
             $cardVerifier = new NullCardVerifier();
         }
 
-        $this->cardCrypto = $cardCrypto;
+        $this->virgilCrypto = $virgilCrypto;
         $this->accessTokenProvider = $accessTokenProvider;
         $this->cardClient = $cardClient;
         $this->signCallback = $signCallback;
-        $this->modelSigner = new ModelSigner($cardCrypto);
+        $this->modelSigner = new ModelSigner($virgilCrypto);
         $this->cardVerifier = $cardVerifier;
     }
 
@@ -126,7 +127,7 @@ class CardManager
     public function generateRawCard(CardParams $cardParams)
     {
         $now = new DateTime();
-        $publicKeyString = $this->cardCrypto->exportPublicKey($cardParams->getPublicKey());
+        $publicKeyString = $this->virgilCrypto->exportPublicKey($cardParams->getPublicKey());
 
         $rawCardContent = new RawCardContent(
             $cardParams->getIdentity(), base64_encode($publicKeyString), '5.0', $now->getTimestamp(), $cardParams->getPreviousCardID()
@@ -376,7 +377,7 @@ class CardManager
      */
     private function generateCardID(VirgilCrypto $cardCrypto, $snapshot)
     {
-        return bin2hex(substr($cardCrypto->generateSHA512($snapshot), 0, 32));
+        return bin2hex(substr($cardCrypto->computeHash($snapshot, HashAlgorithms::SHA512()), 0, 32));
     }
 
     /**
@@ -401,7 +402,7 @@ class CardManager
             );
         }
 
-        $publicKey = $this->cardCrypto->importPublicKey(base64_decode($contentSnapshotArray['public_key']));
+        $publicKey = $this->virgilCrypto->importPublicKey(base64_decode($contentSnapshotArray['public_key']));
 
         $previousCardID = null;
         if (array_key_exists('previous_card_id', $contentSnapshotArray)) {
@@ -409,7 +410,7 @@ class CardManager
         }
 
         return new Card(
-            $this->generateCardID($this->cardCrypto, $rawSignedModel->getContentSnapshot()),
+            $this->generateCardID($this->virgilCrypto, $rawSignedModel->getContentSnapshot()),
             $contentSnapshotArray['identity'],
             $publicKey,
             $contentSnapshotArray['version'],
@@ -432,8 +433,11 @@ class CardManager
         /** @var Card[] $linkedCards */
         $linkedCards = [];
         foreach ($cards as $card) {
+            if ($card->getID() === '') {
+                continue;
+            }
             foreach ($cards as $previousCard) {
-                if ($card->getPreviousCardId() == $previousCard->getID()) {
+                if ($card->getPreviousCardId() === $previousCard->getID()) {
                     $linkedCards[] = new Card(
                         $card->getID(),
                         $card->getIdentity(),
@@ -455,6 +459,8 @@ class CardManager
                             $previousCard->getContentSnapshot()
                         )
                     );
+
+                    break;
                 }
             }
         }
@@ -462,13 +468,17 @@ class CardManager
         foreach ($cards as $card) {
             $isCardAdded = false;
             foreach ($linkedCards as $linkedCard) {
-                if ($linkedCard->getID() == $card->getID()) {
-                    $isCardAdded = true;
+                if ($card->getID() === '') {
+                    break;
                 }
 
-                $previousCard = $linkedCard->getPreviousCard();
-                if ($previousCard != null && $previousCard->getID() == $card->getID()) {
+                if ($linkedCard->getID() === $card->getID()) {
                     $isCardAdded = true;
+                } else {
+                    $previousCard = $linkedCard->getPreviousCard();
+                    if (null !== $previousCard && $previousCard->getID() === $card->getID()) {
+                        $isCardAdded = true;
+                    }
                 }
             }
             if (!$isCardAdded) {
