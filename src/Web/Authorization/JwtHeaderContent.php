@@ -66,16 +66,17 @@ class JwtHeaderContent implements JsonSerializable
     /**
      * JwtHeaderContent constructor.
      *
-     * @param string $algorithm
      * @param string $apiPublicKeyIdentifier
+     * @param string $algorithm
+     * @param string $contentType
+     * @param string $type
      */
-    public function __construct($algorithm, $apiPublicKeyIdentifier)
+    public function __construct($apiPublicKeyIdentifier, $algorithm, $contentType, $type)
     {
-        $this->algorithm = $algorithm;
         $this->apiPublicKeyIdentifier = $apiPublicKeyIdentifier;
-        $this->contentType = Jwt::VirgilJwtContentType;
-        $this->type = Jwt::VirgilJwtType;
-
+        $this->algorithm = $algorithm;
+        $this->contentType = $contentType;
+        $this->type = $type;
     }
 
 

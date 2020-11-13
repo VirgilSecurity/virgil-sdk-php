@@ -73,13 +73,14 @@ class JwtParser
      */
     public function parseJwtHeaderContent($jwtHeaderString)
     {
-
         $tokenJsonHeader = json_decode($jwtHeaderString, true);
 
-        $alg = $tokenJsonHeader['alg'];
-        $kid = $tokenJsonHeader['kid'];
-
-        return new JwtHeaderContent($alg, $kid);
+        return new JwtHeaderContent(
+            $tokenJsonHeader['kid'],
+            $tokenJsonHeader['alg'],
+            $tokenJsonHeader['cty'],
+            $tokenJsonHeader['typ']
+        );
     }
 
 

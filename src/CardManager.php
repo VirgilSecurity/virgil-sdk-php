@@ -371,13 +371,13 @@ class CardManager
     }
 
     /**
-     * @param VirgilCrypto $cardCrypto
+     * @param VirgilCrypto $virgilCrypto
      * @param $snapshot
      * @return string
      */
-    private function generateCardID(VirgilCrypto $cardCrypto, $snapshot)
+    private function generateCardID(VirgilCrypto $virgilCrypto, $snapshot)
     {
-        return bin2hex(substr($cardCrypto->computeHash($snapshot, HashAlgorithms::SHA512()), 0, 32));
+        return bin2hex(substr($virgilCrypto->computeHash($snapshot, HashAlgorithms::SHA512()), 0, 32));
     }
 
     /**

@@ -49,6 +49,7 @@ class Jwt implements AccessToken
 
     const VirgilJwtType = 'JWT';
     const VirgilJwtContentType = 'virgil-jwt;v=1';
+    const VirgilJwtAlgorithm = 'VEDS512';
 
     /**
      * @var JwtParser

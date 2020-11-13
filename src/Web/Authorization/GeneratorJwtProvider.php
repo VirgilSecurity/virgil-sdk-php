@@ -37,6 +37,8 @@
 
 namespace Virgil\Sdk\Web\Authorization;
 
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
+
 /**
  * Class GeneratorJwtProvider
  * @package Virgil\Sdk\Web\Authorization
@@ -86,6 +88,7 @@ class GeneratorJwtProvider implements AccessTokenProvider
      * @param TokenContext $context
      *
      * @return AccessToken
+     * @throws VirgilCryptoException
      */
     public function getToken(TokenContext $context)
     {
