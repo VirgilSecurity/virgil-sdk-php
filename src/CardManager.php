@@ -88,11 +88,6 @@ class CardManager
      */
     private $cardClient;
 
-    /**
-     * @var HttpVirgilAgent
-     */
-    private $httpVirgilAgent;
-
     public function __construct(
         VirgilCrypto $virgilCrypto,
         AccessTokenProvider $accessTokenProvider,
@@ -100,11 +95,8 @@ class CardManager
         CardClient $cardClient = null,
         callable $signCallback = null
     ) {
-        $this->httpVirgilAgent = new HttpVirgilAgent();
-
         if ($cardClient == null) {
-            $cardClient = new CardClient();
-            $cardClient->setHttpVirgilAgent($this->httpVirgilAgent);
+            $cardClient = new CardClient(new HttpVirgilAgent());
         }
 
         if ($cardVerifier == null) {
@@ -359,8 +351,7 @@ class CardManager
             $model = $signCallback($model);
         }
 
-        $responseModel = $this->cardClient->publishCard($model, (string)$token, $this->httpVirgilAgent);
-
+        $responseModel = $this->cardClient->publishCard($model, (string)$token);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
                 "error response from card service", $responseModel->getCode(), $responseModel->getMessage()

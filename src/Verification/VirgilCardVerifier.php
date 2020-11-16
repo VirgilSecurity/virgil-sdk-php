@@ -135,7 +135,7 @@ class VirgilCardVerifier implements CardVerifier
 
     /**
      * @param Card $card
-     * @param $signer
+     * @param string $signer
      * @param VirgilPublicKey $publicKey
      * @return bool
      * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException

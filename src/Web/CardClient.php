@@ -69,31 +69,28 @@ class CardClient
 
     /**
      * CardClient constructor.
+     * @param HttpVirgilAgent $httpVirgilAgent
      * @param string $serviceUrl
      * @param HttpClientInterface|null $httpClient
      */
-    public function __construct($serviceUrl = self::API_SERVICE_URL, HttpClientInterface $httpClient = null)
-    {
+    public function __construct(
+        HttpVirgilAgent $httpVirgilAgent,
+        $serviceUrl = self::API_SERVICE_URL,
+        HttpClientInterface $httpClient = null
+    ) {
+        $this->httpVirgilAgent = $httpVirgilAgent;
         if ($httpClient == null) {
             $httpClient = new CurlClient(
                 new CurlRequestFactory(
                     [
                         CURLOPT_RETURNTRANSFER => 1,
-                        CURLOPT_HEADER         => true,
+                        CURLOPT_HEADER => true,
                     ]
                 )
             );
         }
         $this->httpClient = $httpClient;
         $this->serviceUrl = rtrim($serviceUrl, "/");
-    }
-
-    /**
-     * @param HttpVirgilAgent $httpVirgilAgent
-     */
-    public function setHttpVirgilAgent(HttpVirgilAgent $httpVirgilAgent)
-    {
-        $this->httpVirgilAgent = $httpVirgilAgent;
     }
 
     /**

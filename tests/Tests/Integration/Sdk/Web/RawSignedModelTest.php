@@ -35,11 +35,11 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Tests\Integration\Virgil\Sdk\Web;
+namespace Tests\Integration\Sdk\Web;
 
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
-use Virgil\Tests\IntegrationBaseTestCase;
+use Virgil\SdkTests\IntegrationBaseTestCase;
 
 class RawSignedModelTest extends IntegrationBaseTestCase
 {

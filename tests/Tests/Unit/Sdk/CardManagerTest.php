@@ -658,8 +658,7 @@ class CardManagerTest extends TestCase
      */
     protected function getCardManager()
     {
-        $cardClient = new CardClient("http://service.url", $this->httpClientMock);
-        $cardClient->setHttpVirgilAgent($this->httpVirgilAgentMock);
+        $cardClient = new CardClient($this->httpVirgilAgentMock,"http://service.url", $this->httpClientMock);
 
         return new CardManager(
             $this->virgilCrypto,

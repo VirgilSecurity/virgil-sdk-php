@@ -6,7 +6,6 @@ use Virgil\Sdk\Http\AbstractHttpClient;
 use Virgil\Sdk\Http\Constants\RequestMethods;
 use Virgil\Sdk\Http\Responses\HttpResponse;
 use Virgil\Sdk\Http\Responses\HttpStatusCode;
-use Virgil\Sdk\Http\VirgilAgent\HttpVirgilAgent;
 
 /**
  * Class CurlClient
