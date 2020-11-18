@@ -180,6 +180,32 @@ class CardClient
         return $rawModels;
     }
 
+    /**
+     * @param $cardID
+     * @param $token
+     * @return ErrorResponseModel|null
+     */
+    public function revokeCard($cardID, $token)
+    {
+        $httpResponse = $this->httpClient->send(
+            new PostHttpRequest(
+                sprintf("%s/card/v5/actions/revoke/%s", $this->serviceUrl, $cardID),
+                null,
+                [
+                    "Authorization" => sprintf("Virgil %s", $token),
+                    $this->httpVirgilAgent->getName() => $this->httpVirgilAgent->getFormatString(),
+                ]
+            )
+        );
+
+        if (!$httpResponse->getHttpStatusCode()
+            ->isSuccess()) {
+            return $this->parseErrorResponse($httpResponse->getBody());
+        }
+
+        return null;
+    }
+
 
     /**
      * @param string $errorBody

@@ -116,7 +116,7 @@ class KeyStorage
 
         $keyValueData = json_decode($keyValue, true);
 
-        return new KeyEntry($keyName, $keyValueData['value'], $keyValueData['meta']);
+        return new KeyEntry($keyName, base64_decode($keyValueData['value']), $keyValueData['meta']);
     }
 
 

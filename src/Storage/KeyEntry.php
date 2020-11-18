@@ -111,7 +111,7 @@ class KeyEntry implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'value' => $this->value,
+            'value' => base64_encode($this->value),
             'meta'  => $this->meta,
         ];
     }

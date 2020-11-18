@@ -118,10 +118,16 @@ class IntegrationBaseTestCase extends TestCase
         $this->fixtures = new IntegrationTestsDataProvider(VIRGIL_FIXTURE_PATH . DIRECTORY_SEPARATOR . "data.json");
 
         $this->virgilCrypto = new VirgilCrypto();
-        $apiKey = $this->virgilCrypto->importPrivateKey(base64_decode($this->testApiKey), '');
+        $apiKey = $this->virgilCrypto->importPrivateKey(base64_decode($this->testApiKey));
 
         $this->accessTokenProvider = new GeneratorJwtProvider(
-            new JwtGenerator($apiKey->getPrivateKey(), $this->testApiKeyId, $this->virgilCrypto, $this->testAppId, $_ENV['TTL']),
+            new JwtGenerator(
+                $apiKey->getPrivateKey(),
+                $this->testApiKeyId,
+                $this->virgilCrypto,
+                $this->testAppId,
+                $_ENV['TTL']
+            ),
             'default-identity' . date('Y-m-d-H-i-s')
         );
         $this->cardVerifier = new VirgilCardVerifier($this->virgilCrypto, true, true, [], $this->serviceKey);

@@ -250,6 +250,22 @@ class CardManager
         return $this->linkCards($cards);
     }
 
+    /**
+     * @param string $cardID
+     * @throws CardClientException
+     */
+    public function revokeCard($cardID){
+        $tokenContext = new TokenContext("", 'revoke');
+        $token = $this->accessTokenProvider->getToken($tokenContext);
+
+        $responseModel = $this->cardClient->revokeCard($cardID, (string)$token);
+        if ($responseModel instanceof ErrorResponseModel) {
+            throw new CardClientException(
+                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+            );
+        }
+    }
+
 
     /**
      * @param string $stringCard
