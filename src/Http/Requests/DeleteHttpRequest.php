@@ -11,9 +11,11 @@ use Virgil\Sdk\Http\Constants\RequestMethods;
  */
 class DeleteHttpRequest extends AbstractHttpRequest
 {
-    /**
-     * @inheritdoc
-     */
+    public function __construct(string $url, string $body, array $headers = [])
+    {
+        parent::__construct($url, $body, $headers);
+    }
+
     public function getMethod()
     {
         return RequestMethods::HTTP_DELETE;

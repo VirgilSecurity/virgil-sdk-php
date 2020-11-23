@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Http\Constants;
 
 
 /**
  * Class keeps list of available HTTP request methods constants.
- * @package Virgil\Http\Curl
  */
 class RequestMethods
 {

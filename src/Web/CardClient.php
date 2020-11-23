@@ -35,6 +35,8 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web;
 
 use Virgil\Sdk\Http\HttpClientInterface;
@@ -206,13 +208,7 @@ class CardClient
         return null;
     }
 
-
-    /**
-     * @param string $errorBody
-     *
-     * @return ErrorResponseModel
-     */
-    private function parseErrorResponse($errorBody)
+    private function parseErrorResponse(string $errorBody): ErrorResponseModel
     {
         $code = 20000;
         $message = "error during request serving";
@@ -227,7 +223,7 @@ class CardClient
             }
         }
 
-        return new ErrorResponseModel($code, $message);
+        return new ErrorResponseModel((int)$code, (string)$message);
     }
 
 }
