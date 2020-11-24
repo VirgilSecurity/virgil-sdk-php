@@ -35,50 +35,84 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Storage;
+
+use JsonSerializable;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class KeyEntry
+ * @package Virgil\Sdk\Storage
  */
-class IntegrationTestsDataProvider
+class KeyEntry implements JsonSerializable
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var string
+     */
+    private $name;
+    /**
+     * @var string
+     */
+    private $value;
+    /**
+     * @var array|null
+     */
+    private $meta;
 
 
     /**
      * Class constructor.
      *
-     * @param $pathToJsonData
+     * @param string     $name
+     * @param string     $value
+     * @param array|null $meta
      */
-    public function __construct($pathToJsonData)
+    function __construct($name, $value, array $meta = null)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $this->name = $name;
+        $this->value = $value;
+        $this->meta = $meta;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @return string
+     */
+    public function getName()
     {
+        return $this->name;
+    }
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
 
-        return $this->jsonData[$key];
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+
+    /**
+     * @return array|null
+     */
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'value' => base64_encode($this->value),
+            'meta'  => $this->meta,
+        ];
     }
 }

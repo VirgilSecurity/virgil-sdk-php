@@ -2,10 +2,7 @@
 
 require '../vendor/autoload.php';
 
-use Virgil\CryptoImpl\VirgilAccessTokenSigner;
-use Virgil\CryptoImpl\VirgilCardCrypto;
-use Virgil\CryptoImpl\VirgilCrypto;
-use Virgil\CryptoImpl\VirgilPrivateKeyExporter;
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Card;
 use Virgil\Sdk\CardManager;
 use Virgil\Sdk\CardParams;
@@ -45,11 +42,6 @@ class VirgilCryptoSample
      */
     private $storagePath = "./keys/";
 
-    /**
-     * VirgilCryptoService constructor.
-     * @throws \Virgil\CryptoImpl\VirgilCryptoException
-     * @throws \Virgil\Sdk\VirgilException
-     */
     public function __construct()
     {
         $this->auth = [
@@ -77,10 +69,6 @@ class VirgilCryptoSample
 
     /**
      * @return Card
-     * @throws \Virgil\CryptoImpl\VirgilCryptoException
-     * @throws \Virgil\Sdk\CardClientException
-     * @throws \Virgil\Sdk\CardVerificationException
-     * @throws \Virgil\Sdk\VirgilException
      */
     public function storePrivateKeyAndCreateCard()
     {
@@ -91,11 +79,7 @@ class VirgilCryptoSample
     /**
      * @param $recipientIdentity
      * @param $dataToEncrypt
-     * @return string
-     * @throws \Virgil\CryptoImpl\VirgilCryptoException
-     * @throws \Virgil\Sdk\CardClientException
-     * @throws \Virgil\Sdk\CardVerificationException
-     * @throws \Virgil\Sdk\VirgilException
+     * @return mixed
      */
     public function signThenEncryptData($recipientIdentity, $dataToEncrypt)
     {
@@ -120,12 +104,7 @@ class VirgilCryptoSample
     /**
      * @param $senderIdentity
      * @param $dataToDecrypt
-     * @return string
-     * @throws \Virgil\CryptoImpl\SignatureIsNotValidException
-     * @throws \Virgil\CryptoImpl\VirgilCryptoException
-     * @throws \Virgil\Sdk\CardClientException
-     * @throws \Virgil\Sdk\CardVerificationException
-     * @throws \Virgil\Sdk\VirgilException
+     * @return mixed
      */
     public function decryptDataThenVerifySignature($senderIdentity, $dataToDecrypt)
     {
@@ -149,7 +128,7 @@ class VirgilCryptoSample
 
     /**
      * @param $identity
-     * @throws \Virgil\Sdk\VirgilException
+     * @throws \Virgil\Sdk\Exceptions\VirgilException
      */
     public function storePrivateKey($identity)
     {
@@ -159,7 +138,7 @@ class VirgilCryptoSample
     /**
      * @param $identity
      * @return \Virgil\Sdk\Storage\PrivateKeyEntry
-     * @throws \Virgil\Sdk\VirgilException
+     * @throws \Virgil\Sdk\Exceptions\VirgilException
      */
     public function loadPrivateKey($identity)
     {
@@ -168,7 +147,7 @@ class VirgilCryptoSample
 
     /**
      * @param $identity
-     * @throws \Virgil\Sdk\VirgilException
+     * @throws \Virgil\Sdk\Exceptions\VirgilException
      */
     public function deletePrivateKey($identity)
     {
@@ -178,9 +157,8 @@ class VirgilCryptoSample
     /**
      * @param $identity
      * @return Card[]
-     * @throws \Virgil\CryptoImpl\VirgilCryptoException
-     * @throws \Virgil\Sdk\CardClientException
-     * @throws \Virgil\Sdk\CardVerificationException
+     * @throws \Virgil\Sdk\Exceptions\CardClientException
+     * @throws \Virgil\Sdk\Exceptions\CardVerificationException
      */
     public function getUserCardsByIdentity($identity)
     {
@@ -190,9 +168,8 @@ class VirgilCryptoSample
     /**
      * @param $id
      * @return Card
-     * @throws \Virgil\CryptoImpl\VirgilCryptoException
-     * @throws \Virgil\Sdk\CardClientException
-     * @throws \Virgil\Sdk\CardVerificationException
+     * @throws \Virgil\Sdk\Exceptions\CardClientException
+     * @throws \Virgil\Sdk\Exceptions\CardVerificationException
      */
     public function getUserCardById($id)
     {
@@ -203,6 +180,7 @@ class VirgilCryptoSample
 
     /**
      * @return VirgilCrypto
+     * @throws Exception
      */
     private function getCrypto()
     {

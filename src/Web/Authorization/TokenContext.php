@@ -35,50 +35,67 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Web\Authorization;
+
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class TokenContext
+ * @package Virgil\Sdk\Web\Authorization
  */
-class IntegrationTestsDataProvider
+class TokenContext
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var string
+     */
+    private $identity;
+    /**
+     * @var string
+     */
+    private $operation;
+    /**
+     * @var bool
+     */
+    private $forceReload;
 
 
     /**
-     * Class constructor.
+     * TokenContext constructor.
      *
-     * @param $pathToJsonData
+     * @param string $identity
+     * @param string $operation
+     * @param bool   $forceReload
      */
-    public function __construct($pathToJsonData)
+    public function __construct($identity, $operation, $forceReload = false)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $this->identity = $identity;
+        $this->operation = $operation;
+        $this->forceReload = $forceReload;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @return string
+     */
+    public function getIdentity()
     {
+        return $this->identity;
+    }
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
 
-        return $this->jsonData[$key];
+    /**
+     * @return string
+     */
+    public function getOperation()
+    {
+        return $this->operation;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isForceReload()
+    {
+        return $this->forceReload;
     }
 }

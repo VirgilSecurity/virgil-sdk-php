@@ -35,50 +35,80 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Storage;
+
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\VirgilCrypto;
+use Virgil\Sdk\Exceptions\VirgilException;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class PrivateKeyStorage
+ * @package Virgil\Sdk\Storage
  */
-class IntegrationTestsDataProvider
+class PrivateKeyStorage
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var KeyStorage
+     */
+    protected $keyStorage;
+    /**
+     * @var VirgilCrypto
+     */
+    private $virgilCrypto;
 
 
     /**
-     * Class constructor.
+     * PrivateKeyStorage constructor.
      *
-     * @param $pathToJsonData
+     * @param VirgilCrypto $virgilCrypto
+     * @param string $storagePath
+     *
+     * @throws VirgilException
      */
-    public function __construct($pathToJsonData)
+    public function __construct(VirgilCrypto $virgilCrypto, $storagePath)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $this->keyStorage = new KeyStorage($storagePath);
+        $this->virgilCrypto = $virgilCrypto;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @param VirgilPrivateKey $privateKey
+     * @param string $name
+     * @param array $meta
+     *
+     * @throws VirgilException
+     */
+    public function store(VirgilPrivateKey $privateKey, $name, array $meta = null)
     {
+        $exportedData = $this->virgilCrypto->exportPrivateKey($privateKey);
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
+        $this->keyStorage->store(new KeyEntry($name, $exportedData, $meta));
+    }
 
-        return $this->jsonData[$key];
+
+    /**
+     * @param string $name
+     *
+     * @return PrivateKeyEntry
+     * @throws VirgilException
+     */
+    public function load($name)
+    {
+        $keyEntry = $this->keyStorage->load($name);
+        $privateKey = $this->virgilCrypto->importPrivateKey($keyEntry->getValue());
+
+        return new PrivateKeyEntry($privateKey->getPrivateKey(), $keyEntry->getMeta());
+    }
+
+
+    /**
+     * @param string $name
+     *
+     * @throws VirgilException
+     */
+    public function delete($name)
+    {
+        $this->keyStorage->delete($name);
     }
 }

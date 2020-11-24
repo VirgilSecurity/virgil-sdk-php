@@ -35,50 +35,80 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Web;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class ResponseModel
+ * @package Virgil\Sdk\Web
  */
-class IntegrationTestsDataProvider
+class ResponseModel
 {
+    const SupersededCardIDHTTPHeader = 'X-Virgil-Is-Superseeded';
 
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var array
+     */
+    private $headers;
+    /**
+     * @var RawSignedModel
+     */
+    private $rawSignedModel;
 
 
     /**
-     * Class constructor.
+     * ResponseModel constructor.
      *
-     * @param $pathToJsonData
+     * @param string         $stringHeaders
+     * @param RawSignedModel $rawSignedModel
      */
-    public function __construct($pathToJsonData)
+    public function __construct($stringHeaders, RawSignedModel $rawSignedModel)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $headers = [];
+
+        $headersLines = explode("\r\n", $stringHeaders);
+        foreach ($headersLines as $headerString) {
+            $details = explode(':', trim($headerString), 2);
+
+            if (count($details) == 2) {
+                $key = trim($details[0]);
+                $value = trim($details[1]);
+
+                $headers[$key] = $value;
+            }
+        }
+
+        $this->headers = $headers;
+        $this->rawSignedModel = $rawSignedModel;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @return array
+     */
+    public function getHeaders()
     {
+        return $this->headers;
+    }
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
 
-        return $this->jsonData[$key];
+    /**
+     * @return RawSignedModel
+     */
+    public function getRawSignedModel()
+    {
+        return $this->rawSignedModel;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isOutdated()
+    {
+        if (array_key_exists(self::SupersededCardIDHTTPHeader, $this->headers)) {
+            return $this->headers[self::SupersededCardIDHTTPHeader] == "true";
+        }
+
+        return false;
     }
 }

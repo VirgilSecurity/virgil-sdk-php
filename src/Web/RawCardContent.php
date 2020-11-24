@@ -35,50 +35,77 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Web;
+
+use JsonSerializable;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class RawCardContent
+ * @package Virgil\Sdk\Web
  */
-class IntegrationTestsDataProvider
+class RawCardContent implements JsonSerializable
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var string
+     */
+    private $identity;
+    /**
+     * @var string
+     */
+    private $publicKey;
+    /**
+     * @var string
+     */
+    private $version;
+    /**
+     * @var int
+     */
+    private $createdAt;
+    /**
+     * @var null|string
+     */
+    private $previousCardId;
 
 
     /**
-     * Class constructor.
+     * RawCardContent constructor.
      *
-     * @param $pathToJsonData
+     * @param string      $identity
+     * @param string      $publicKey
+     * @param string      $version
+     * @param int         $createdAt
+     * @param null|string $previousCardId
      */
-    public function __construct($pathToJsonData)
+    public function __construct($identity, $publicKey, $version, $createdAt, $previousCardId = null)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $this->identity = $identity;
+        $this->publicKey = $publicKey;
+        $this->version = $version;
+        $this->createdAt = $createdAt;
+        $this->previousCardId = $previousCardId;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
     {
+        $jsonData = [
+            'identity'   => $this->identity,
+            'public_key' => $this->publicKey,
+            'version'    => $this->version,
+            'created_at' => $this->createdAt,
+        ];
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
+        if ($this->previousCardId != null) {
+            $jsonData['previous_card_id'] = $this->previousCardId;
+        }
 
-        return $this->jsonData[$key];
+        return $jsonData;
     }
 }

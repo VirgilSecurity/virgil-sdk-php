@@ -35,50 +35,64 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Web\Authorization;
+
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class GeneratorJwtProvider
+ * @package Virgil\Sdk\Web\Authorization
  */
-class IntegrationTestsDataProvider
+class GeneratorJwtProvider implements AccessTokenProvider
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
-
+    /**
+     * @var JwtGenerator
+     */
+    private $jwtGenerator;
+    /**
+     * @var array|null
+     */
+    private $additionalData;
+    /**
+     * @var string
+     */
+    private $defaultIdentity;
 
     /**
-     * Class constructor.
-     *
-     * @param $pathToJsonData
+     * GeneratorJwtProvider constructor.
+     * @param JwtGenerator $jwtGenerator
+     * @param $defaultIdentity
+     * @param array|null $additionalData
+     * @throws GeneratorJWTProviderException
      */
-    public function __construct($pathToJsonData)
+    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity, array $additionalData = null)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        if(empty($defaultIdentity))
+            throw new GeneratorJWTProviderException('Default identity is required');
+
+        $this->jwtGenerator = $jwtGenerator;
+        $this->additionalData = $additionalData;
+        $this->defaultIdentity = $defaultIdentity;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDefaultIdentity()
+    {
+        return $this->defaultIdentity;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @param TokenContext $context
+     *
+     * @return AccessToken
+     * @throws VirgilCryptoException
+     */
+    public function getToken(TokenContext $context)
     {
-
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
-
-        return $this->jsonData[$key];
+        $identity = empty($context->getIdentity()) ? $this->getDefaultIdentity() : $context->getIdentity();
+        return $this->jwtGenerator->generateToken($identity, $this->additionalData);
     }
 }

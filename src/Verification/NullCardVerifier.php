@@ -35,50 +35,24 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Verification;
+
+use Virgil\Sdk\Card;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class NullCardVerifier
+ * @package Virgil\Sdk\Verification
  */
-class IntegrationTestsDataProvider
+class NullCardVerifier implements CardVerifier
 {
 
-    /** @var array $jsonData */
-    private $jsonData;
-
-
     /**
-     * Class constructor.
+     * @param Card $card
      *
-     * @param $pathToJsonData
+     * @return bool
      */
-    public function __construct($pathToJsonData)
+    public function verifyCard(Card $card)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
-    }
-
-
-    public function __call($name, $a)
-    {
-
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
-
-        return $this->jsonData[$key];
+        return true;
     }
 }

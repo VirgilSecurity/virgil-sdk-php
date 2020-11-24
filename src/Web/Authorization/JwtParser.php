@@ -35,50 +35,75 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Web\Authorization;
+
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class JwtParser
+ * @package Virgil\Sdk\Web\Authorization
  */
-class IntegrationTestsDataProvider
+class JwtParser
 {
+    /**
+     * @param string $jwtBodyString
+     *
+     * @return JwtBodyContent
+     */
+    public function parseJwtBodyContent($jwtBodyString)
+    {
+        $tokenJsonBody = json_decode($jwtBodyString, true);
 
-    /** @var array $jsonData */
-    private $jsonData;
+        $iss = str_replace('virgil-', '', $tokenJsonBody['iss']);
+        $sub = str_replace('identity-', '', $tokenJsonBody['sub']);
+        $iat = $tokenJsonBody['iat'];
+        $exp = $tokenJsonBody['exp'];
+
+        if (array_key_exists('ada', $tokenJsonBody)) {
+            return new JwtBodyContent($iss, $sub, $iat, $exp, $tokenJsonBody['ada']);
+        }
+
+        return new JwtBodyContent($iss, $sub, $iat, $exp);
+    }
 
 
     /**
-     * Class constructor.
+     * @param string $jwtHeaderString
      *
-     * @param $pathToJsonData
+     * @return JwtHeaderContent
      */
-    public function __construct($pathToJsonData)
+    public function parseJwtHeaderContent($jwtHeaderString)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $tokenJsonHeader = json_decode($jwtHeaderString, true);
+
+        return new JwtHeaderContent(
+            $tokenJsonHeader['kid'],
+            $tokenJsonHeader['alg'],
+            $tokenJsonHeader['cty'],
+            $tokenJsonHeader['typ']
+        );
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @param JwtBodyContent $jwtBodyContent
+     *
+     * @return string
+     */
+    public function buildJwtBody(JwtBodyContent $jwtBodyContent)
     {
-
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
-
-        return $this->jsonData[$key];
+        return json_encode($jwtBodyContent);
     }
+
+
+    /**
+     * @param JwtHeaderContent $jwtHeaderContent
+     *
+     * @return string
+     */
+    public function buildJwtHeader(JwtHeaderContent $jwtHeaderContent)
+    {
+        return json_encode($jwtHeaderContent);
+    }
+
+
 }

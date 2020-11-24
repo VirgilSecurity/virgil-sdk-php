@@ -25,7 +25,7 @@ In case you need additional security functionality for multi-device support, gro
 
 The Virgil Core SDK is provided as a package named [*virgil/sdk*](https://packagist.org/packages/virgil/sdk). The package is distributed via [Composer package](https://getcomposer.org/doc/) management system.
 
-The package is available for PHP version 5.6 and newer.
+The package is available for PHP version 7.2 and newer.
 
 Installing the package using Package Manager Console:
 
@@ -33,21 +33,30 @@ Installing the package using Package Manager Console:
 composer require virgil/sdk
 ```
 
-### Crypto library notice
+### Crypto Extensions notice
 
-In order to support crypto operations, you'll also need to install a crypto library. We supply Virgil Core SDK with our own implementation of cypto intefaces that can be easily used by everyone. Just require it as a package:
+In order to support crypto operations, you'll also need to install a Virgil crypto extensions. We supply Virgil Core SDK with our own extensions that can be easily used by everyone. To install automatically extensions in your current system just run this command:
 
 ```bash
-composer require virgil/crypto
+./vendor/virgil/crypto-wrapper/_extensions/setup.sh -all -vendor
 ```
 
-Be aware that this package requires installed php virgil crypto extension *ext-virgil_crypto_php*.
+Be aware that crypto-wrapper package appears in your vendors after virgil/sdk have been installed by composer.
+To check Virgil crypto extensions is proper installed run:
 
-### Using external crypto library (c++)
+```bash
+php -m 
+```
 
-If you decide to use *virgil/crypto* package, there is needs to install php virgil crypto extension *ext-virgil_crypto_php* as one of the dependencies, otherwise you will get the "requested PHP extension virgil_crypto_php is missing from your system" error during composer install.
+There are should be available following extensions: `vsce_phe_php`, `vscf_foundation_php`, `vscp_pythia_php`
 
-Download proper extension package for your platform from [cdn](https://cdn.virgilsecurity.com/virgil-crypto/php/) like **virgil-crypto-2.3.0-php-5.6-linux-x86_64.tgz** (highly recommended using latest version), and install it.
+NOTE: If following warning is occurred export environment variable `LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/php7/modules` (/usr/lib/php7/modules - your php extensions path can be other):
+```
+PHP Warning:  PHP Startup: Unable to load dynamic library 'vsce_phe_php' (tried: /usr/lib/php7/modules/vsce_phe_php (Error loading shared library /usr/lib/php7/modules/vsce_phe_php: No such file or directory), /usr/lib/php7/modules/vsce_phe_php.so (Error loading shared library vscf_foundation_php.so: No such file or directory (needed by /usr/lib/php7/modules/vsce_phe_php.so))) in Unknown on line 0
+```
+`LD_LIBRARY_PATH` is environment variable which keeps all path that contains users dynamic shared libraries.
+
+Now Virgil Core SDK is ready to be used, lets configure it and run some samples.
 
 ## Configure SDK
 
@@ -91,21 +100,16 @@ Next, you'll need to set up the `JwtGenerator` and generate a JWT using the Virg
 Here is an example of how to generate a JWT:
 
 ```php
-use Virgil\CryptoImpl\VirgilAccessTokenSigner;
-use Virgil\CryptoImpl\VirgilCrypto;
-
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Web\Authorization\JwtGenerator;
 
 // App Key (you got this Key at Virgil Dashboard)
-$privateKeyStr = "MIGhMF0GCSqGSIb3DQEFDTBQMC8GCSqGSIb3DQEFDDAiBBC7Sg/DbNzhJ/uakTva";
+$privateKeyStr = "MC4CAQAwBQYDK2VwBCIEIH2RKUdXkK/3tfVWO2AJahOhCYG2hCEHg4mPJEAuvmj7";
 $appKeyData = base64_decode($privateKeyStr);
 
-// Crypto library imports a private key into a necessary format
+// VirgilCrypto imports a private key into a necessary format
 $crypto = new VirgilCrypto();
 $privateKey = $crypto->importPrivateKey($appKeyData);
-
-// initialize accessTokenSigner that signs users JWTs
-$accessTokenSigner = new VirgilAccessTokenSigner();
 
 // use your App Credentials you got at Virgil Dashboard:
 $appId = "be00e10e4e1f4bf58f9b4dc85d79c77a"; // App ID
@@ -113,7 +117,7 @@ $appKeyId = "70b447e321f3a0fd";              // App Key ID
 $ttl = 3600; // 1 hour (JWT's lifetime)
 
 // setup JWT generator with necessary parameters:
-$jwtGenerator = new JwtGenerator($privateKey, $appKeyId, $accessTokenSigner, $appId, $ttl);
+$jwtGenerator = new JwtGenerator($privateKey->getPrivateKey(), $appKeyId, $crypto, $appId, $ttl);
 
 // generate JWT for a user
 // remember that you must provide each user with his unique JWT
@@ -142,16 +146,13 @@ By default, `VirgilCardVerifier` verifies only two signatures - those of a Card 
 Set up `VirgilCardVerifier` with the following lines of code:
 
 ```php
-use Virgil\CryptoImpl\VirgilCardCrypto;
-use Virgil\CryptoImpl\VirgilCrypto;
-
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Verification\VerifierCredentials;
 use Virgil\Sdk\Verification\VirgilCardVerifier;
 use Virgil\Sdk\Verification\Whitelist;
 
 // initialize Crypto library
 $crypto = new VirgilCrypto();
-$cardCrypto = new VirgilCardCrypto();
 
 $publicKey = $crypto->importPublicKey("EXPORTED_PUBLIC_KEY");
 
@@ -159,8 +160,7 @@ $yourBackendVerifierCredentials = new VerifierCredentials("YOUR_BACKEND", $publi
 
 $yourBackendWhitelist = new Whitelist([$yourBackendVerifierCredentials]);
 
-$cardVerifier = new VirgilCardVerifier($cardCrypto, true, true, $yourBackendWhitelist);
-
+$cardVerifier = new VirgilCardVerifier($crypto, true, true, [$yourBackendWhitelist]);
 ```
 
 ### Set up Card Manager
@@ -177,10 +177,10 @@ Use the following lines of code to set up the Card Manager:
 use Virgil\Sdk\CardManager;
 use Virgil\Sdk\Verification\VirgilCardVerifier;
 
-$virgilCardVerifier = new VirgilCardVerifier($cardCrypto, true, true);
+$cardVerifier = new VirgilCardVerifier($virgilCrypto, true, true);
 
 // initialize cardManager and specify accessTokenProvider, cardVerifier
-$cardManager = new CardManager($cardCrypto, $virgilAccessTokenProvider, $virgilCardVerifier);
+$cardManager = new CardManager($virgilCrypto, $accessTokenProvider, $cardVerifier);
 ```
 
 ## Usage Examples
@@ -192,13 +192,13 @@ Before you start practicing with the usage examples, make sure that the SDK is c
 Use the following lines of code to create a user's Card with a public key inside and publish it at Virgil Cards Service:
 
 ```php
-use Virgil\CryptoImpl\VirgilCrypto;
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\CardParams;
 
 $crypto = new VirgilCrypto();
 
 // generate a key pair
-$keyPair = $crypto->generateKeys();
+$keyPair = $crypto->generateKeyPair();
 
 // save Alice private key into key storage
 $privateKeyStorage->store($keyPair->getPrivateKey(), "Alice");
@@ -221,8 +221,7 @@ Virgil Core SDK allows you to use a user's private key and their Virgil Cards to
 In the following example, we load a private key from a customized key storage and get recipient's Card from the Virgil Cards Service. Recipient's Card contains a public key which we will use to encrypt the data and verify a signature.
 
 ```php
-use Virgil\CryptoImpl;
-use Virgil\Sdk;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKeyCollection;
 
 // prepare a message
 $dataToEncrypt = 'Hello, Bob!';
@@ -240,12 +239,13 @@ $bobRelevantCardsPublicKeys = array_map(
     $cards
 );
 
+$bobRelevantCardsPublicKeysCollection = new VirgilPublicKeyCollection($bobRelevantCardsPublicKeys);
 
 // sign a message with a private key then encrypt using Bob's public keys
-$encryptedData = $crypto->signThenEncrypt(
+$encryptedData = $crypto->signAndEncrypt(
     $dataToEncrypt,
     $alicePrivateKeyEntry->getPrivateKey(),
-    $bobRelevantCardsPublicKeys
+    $bobRelevantCardsPublicKeysCollection
 );
 ```
 
@@ -254,8 +254,7 @@ $encryptedData = $crypto->signThenEncrypt(
 Once the user receives the signed and encrypted message, they can decrypt it with their own private key and verify the signature with the sender's Card:
 
 ```php
-use Virgil\CryptoImpl;
-use Virgil\Sdk;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKeyCollection;
 
 // load a private key from a device storage
 $bobPrivateKeyEntry = $privateKeyStorage->load('Bob');
@@ -270,11 +269,13 @@ $aliceRelevantCardsPublicKeys = array_map(
     $cards
 );
 
+$aliceRelevantCardsPublicKeysCollection = new VirgilPublicKeyCollection($aliceRelevantCardsPublicKeys);
+
 // decrypt with a private key and verify using one of Alice's public keys
-$decryptedData = $crypto->decryptThenVerify(
+$decryptedData = $crypto->decryptAndVerify(
     $encryptedData,
     $bobPrivateKeyEntry->getPrivateKey(),
-    $aliceRelevantCardsPublicKeys
+    $aliceRelevantCardsPublicKeysCollection
 );
 ```
 
@@ -294,6 +295,43 @@ For a single user, use the following lines of code to get a user's Card by a use
 ```php
 // using cardManager search for user's cards on Cards Service
 $cards = $cardManager->searchCards("Bob");
+```
+
+### Revoke Card
+
+You can revoke user's Card in case they don't need it anymore. Revoked Card can still be obtained using its identifier, but this card won't appear during search query.
+
+```php
+// using cardManager revoke user's card on Cards Service by card id
+$cardManager->revokeCard("f4bf9f7fcbedaba0392f108c59d8f4a38b3838efb64877380171b54475c2ade8");
+```
+
+### Generate key pair using VirgilCrypto
+
+You can generate a key pair and save it in a secure key storage with the following code:
+
+```php
+use \Virgil\Crypto\VirgilCrypto;
+
+$crypto = new VirgilCrypto();
+
+$keyPair = $crypto->generateKeyPair();
+```
+
+### Save and retrieve key from filesystem key storage
+
+```php
+use Virgil\Sdk\Storage\PrivateKeyStorage;
+use Virgil\Crypto\VirgilCrypto;
+
+$crypto = new VirgilCrypto();
+
+$keyPair = $crypto->generateKeyPair();
+$storage = new PrivateKeyStorage($crypto, '/var/www/storage');
+
+$storage->store($keyPair->getPrivateKey(), 'alicePk');
+
+$alicePk = $storage->load('alicePk');
 ```
 
 ## Docs

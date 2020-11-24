@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2019 Virgil Security Inc.
+ * Copyright (C) 2015-2020 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -35,15 +35,12 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Tests;
+namespace Virgil\SdkTests;
 
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
-use Virgil\CryptoApi\CardCrypto;
-use Virgil\CryptoImpl\VirgilAccessTokenSigner;
-use Virgil\CryptoImpl\VirgilCardCrypto;
-use Virgil\CryptoImpl\VirgilCrypto;
-use Virgil\Http\VirgilAgent\HttpVirgilAgent;
+use Virgil\Crypto\VirgilCrypto;
+use Virgil\Sdk\Http\VirgilAgent\HttpVirgilAgent;
 use Virgil\Sdk\CardManager;
 use Virgil\Sdk\Verification\CardVerifier;
 use Virgil\Sdk\Verification\VirgilCardVerifier;
@@ -83,10 +80,6 @@ class IntegrationBaseTestCase extends TestCase
      */
     protected $testAppId;
     /**
-     * @var CardCrypto
-     */
-    protected $cardCrypto;
-    /**
      * @var AccessTokenProvider
      */
     protected $accessTokenProvider;
@@ -108,7 +101,7 @@ class IntegrationBaseTestCase extends TestCase
     protected $virgilCrypto;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -125,26 +118,29 @@ class IntegrationBaseTestCase extends TestCase
         $this->fixtures = new IntegrationTestsDataProvider(VIRGIL_FIXTURE_PATH . DIRECTORY_SEPARATOR . "data.json");
 
         $this->virgilCrypto = new VirgilCrypto();
+        $apiKey = $this->virgilCrypto->importPrivateKey(base64_decode($this->testApiKey));
 
-        $apiKey = $this->virgilCrypto->importPrivateKey(base64_decode($this->testApiKey), '');
-
-        $this->cardCrypto = new VirgilCardCrypto();
-
-        $virgilAccessTokenSigner = new VirgilAccessTokenSigner();
         $this->accessTokenProvider = new GeneratorJwtProvider(
-            new JwtGenerator($apiKey, $this->testApiKeyId, $virgilAccessTokenSigner, $this->testAppId, $_ENV['TTL']),
+            new JwtGenerator(
+                $apiKey->getPrivateKey(),
+                $this->testApiKeyId,
+                $this->virgilCrypto,
+                $this->testAppId,
+                $_ENV['TTL']
+            ),
             'default-identity' . date('Y-m-d-H-i-s')
         );
-        $this->cardVerifier = new VirgilCardVerifier($this->cardCrypto, true, true, [], $this->serviceKey);
-        $this->cardClient = new CardClient();
-        $this->cardClient->setHttpVirgilAgent(new HttpVirgilAgent());
+        $this->cardVerifier = new VirgilCardVerifier($this->virgilCrypto, true, true, [], $this->serviceKey);
+        $this->cardClient = new CardClient(new HttpVirgilAgent(), $this->serviceAddress);
     }
 
 
     protected function getCardManager()
     {
         return new CardManager(
-            $this->cardCrypto, $this->accessTokenProvider, $this->cardVerifier,
+            $this->virgilCrypto,
+            $this->accessTokenProvider,
+            $this->cardVerifier,
             $this->cardClient,
             $this->signCallback
         );

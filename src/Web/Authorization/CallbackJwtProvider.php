@@ -35,50 +35,42 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Web\Authorization;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class CallbackJwtProvider
+ * @package Virgil\Sdk\Web\Authorization
  */
-class IntegrationTestsDataProvider
+class CallbackJwtProvider implements AccessTokenProvider
 {
 
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var (TokenContext) -> string callable
+     */
+    private $callbackFunc;
 
 
     /**
-     * Class constructor.
+     * CallbackJwtProvider constructor.
      *
-     * @param $pathToJsonData
+     * @param callable $callbackFunc
      */
-    public function __construct($pathToJsonData)
+    public function __construct(callable $callbackFunc)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $this->callbackFunc = $callbackFunc;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @param TokenContext $context
+     *
+     * @return AccessToken
+     */
+    public function getToken(TokenContext $context)
     {
+        $getTokenCallback = $this->callbackFunc;
+        $jwtString = $getTokenCallback($context);
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
-
-        return $this->jsonData[$key];
+        return Jwt::fromString($jwtString);
     }
 }

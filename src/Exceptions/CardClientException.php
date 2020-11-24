@@ -35,50 +35,53 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Exceptions;
+
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class CardClientException
+ * @package Virgil\Sdk
  */
-class IntegrationTestsDataProvider
+class CardClientException extends VirgilException
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var int
+     */
+    private $errorCode;
+    /**
+     * @var string
+     */
+    private $errorMessage;
 
 
     /**
-     * Class constructor.
+     * CardClientException constructor.
      *
-     * @param $pathToJsonData
+     * @param string $message
+     * @param int    $errorCode
+     * @param string $errorMessage
      */
-    public function __construct($pathToJsonData)
+    public function __construct($message = "", $errorCode, $errorMessage)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        parent::__construct(sprintf("%s: code: %s: message: %s", $message, $errorCode, $errorMessage), 0);
+
+        $this->errorCode = $errorCode;
+        $this->errorMessage = $errorMessage;
     }
 
-
-    public function __call($name, $a)
+    /**
+     * @return int
+     */
+    public function getErrorCode()
     {
+        return $this->errorCode;
+    }
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
-
-        return $this->jsonData[$key];
+    /**
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
     }
 }

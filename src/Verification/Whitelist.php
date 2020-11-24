@@ -35,50 +35,36 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Verification;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class Whitelist
+ * @package Virgil\Sdk\Verification
  */
-class IntegrationTestsDataProvider
+class Whitelist
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var VerifierCredentials[]
+     */
+    private $credentials;
 
 
     /**
-     * Class constructor.
+     * Whitelist constructor.
      *
-     * @param $pathToJsonData
+     * @param VerifierCredentials[] $credentials
      */
-    public function __construct($pathToJsonData)
+    public function __construct(array $credentials)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $this->credentials = $credentials;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * @return VerifierCredentials[]
+     */
+    public function getCredentials()
     {
-
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
-
-        return $this->jsonData[$key];
+        return $this->credentials;
     }
 }

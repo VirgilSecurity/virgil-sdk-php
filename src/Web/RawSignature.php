@@ -35,50 +35,90 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Virgil\Sdk\Web;
+
+use JsonSerializable;
 
 /**
- * Class IntegrationTestsDataProvider
- * @package Virgil\Tests
- * @method STC4__Signature_Extra_Base64
- * @method STC4__Signature_Virgil_Base64
- * @method STC4__Signature_Self_Base64
- * @method STC4__Public_Key_Base64
- * @method STC4__Card_Id
- * @method STC4__As_Json
- * @method STC4__As_String
- * @method STC3__As_Json
- * @method STC3__As_String
- * @method STC3__Card_Id
- * @method STC3__Public_Key_Base64
- * @method STC2__As_Json
- * @method STC2__As_String
- * @method STC1__As_Json
- * @method STC1__As_String
+ * Class RawSignature
+ * @package Virgil\Sdk\Web
  */
-class IntegrationTestsDataProvider
+class RawSignature implements JsonSerializable
 {
-
-    /** @var array $jsonData */
-    private $jsonData;
+    /**
+     * @var string
+     */
+    private $signer;
+    /**
+     * @var string|null
+     */
+    private $snapshot;
+    /**
+     * @var string
+     */
+    private $signature;
 
 
     /**
-     * Class constructor.
+     * RawSignature constructor.
      *
-     * @param $pathToJsonData
+     * @param string      $signer
+     * @param string      $signature
+     * @param string|null $snapshot
      */
-    public function __construct($pathToJsonData)
+    public function __construct($signer, $signature, $snapshot = null)
     {
-        $this->jsonData = json_decode(file_get_contents($pathToJsonData), true);
+        $this->signer = $signer;
+        $this->signature = $signature;
+        $this->snapshot = $snapshot;
     }
 
 
-    public function __call($name, $a)
+    /**
+     * Specify data which should be serialized to JSON
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
     {
+        $jsonData = [
+            'signature' => base64_encode($this->signature),
+            'signer'    => $this->signer,
+        ];
 
-        $key = substr($name, 0, 3) . '-' . strtolower(str_replace('__', '.', substr($name, 3)));
+        if ($this->snapshot != null) {
+            $jsonData['snapshot'] = base64_encode($this->snapshot);
+        }
 
-        return $this->jsonData[$key];
+        return $jsonData;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getSigner()
+    {
+        return $this->signer;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getSnapshot()
+    {
+        return $this->snapshot;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getSignature()
+    {
+        return $this->signature;
     }
 }
