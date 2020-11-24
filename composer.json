@@ -36,7 +36,7 @@
     "php": ">=7.2",
     "ext-curl": "*",
     "vlucas/phpdotenv": "^2.5",
-    "virgil/crypto": "dev-dev",
+    "virgil/crypto": "^6.1",
     "ext-json": "*"
   },
   "require-dev": {
