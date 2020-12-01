@@ -35,12 +35,12 @@
   "require": {
     "php": ">=7.2",
     "ext-curl": "*",
-    "vlucas/phpdotenv": "^2.5",
     "virgil/crypto": "^6.1",
     "ext-json": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8"
+    "phpunit/phpunit": "^8",
+    "vlucas/phpdotenv": "^2.5"
   },
   "autoload": {
     "psr-4": {
