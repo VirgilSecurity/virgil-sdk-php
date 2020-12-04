@@ -41,7 +41,7 @@ class VirgilCryptoSample
             'apiKey' => $_ENV["SAMPLE_API_KEY"],
             'apiKeyId' => $_ENV["SAMPLE_API_KEY_ID"],
             'appId' => $_ENV["SAMPLE_APP_ID"],
-            'ttl' => $_ENV["SAMPLE_JWT_TTL"]
+            'ttl' => (int)$_ENV["SAMPLE_JWT_TTL"]
         ];
 
         $this->keyPair = $this->generateKeys();
@@ -135,7 +135,7 @@ class VirgilCryptoSample
      * @throws \Virgil\Sdk\Exceptions\CardClientException
      * @throws \Virgil\Sdk\Exceptions\CardVerificationException
      */
-    public function getUserCardById(int $id): Card
+    public function getUserCardById(string $id): Card
     {
         return $this->getCardManager()->getCard($id);
     }

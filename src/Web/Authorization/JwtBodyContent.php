@@ -108,7 +108,7 @@ class JwtBodyContent implements JsonSerializable
     }
 
 
-    public function getAdditionalData(): array
+    public function getAdditionalData(): ?array
     {
         return $this->additionalData;
     }

@@ -46,7 +46,7 @@ interface HttpResponseInterface
     /**
      * Get raw response body.
      */
-    public function getBody(): string;
+    public function getBody(): ?string;
 
 
     /**

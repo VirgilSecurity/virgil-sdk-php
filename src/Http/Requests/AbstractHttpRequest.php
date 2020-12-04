@@ -48,14 +48,14 @@ abstract class AbstractHttpRequest implements HttpRequestInterface
     /** @var string */
     private $url;
 
-    /** @var mixed|null */
+    /** @var string|null */
     private $body;
 
     /** @var array */
     private $headers;
 
 
-    public function __construct(string $url, $body = null, array $headers = [])
+    public function __construct(string $url, ?string $body = null, array $headers = [])
     {
         $this->url = $url;
         $this->body = $body;
@@ -69,10 +69,7 @@ abstract class AbstractHttpRequest implements HttpRequestInterface
     }
 
 
-    /**
-     * @return mixed
-     */
-    public function getBody()
+    public function getBody(): ?string
     {
         return $this->body;
     }

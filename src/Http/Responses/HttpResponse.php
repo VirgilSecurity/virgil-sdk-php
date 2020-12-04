@@ -46,7 +46,7 @@ namespace Virgil\Sdk\Http\Responses;
 class HttpResponse implements HttpResponseInterface
 {
 
-    /** @var string $body */
+    /** @var string|null $body */
     private $body;
 
     /** @var string $headers */
@@ -64,7 +64,7 @@ class HttpResponse implements HttpResponseInterface
     }
 
 
-    public function getBody(): string
+    public function getBody(): ?string
     {
         return $this->body;
     }

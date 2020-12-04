@@ -47,10 +47,7 @@ interface HttpRequestInterface
     public function getUrl(): string;
 
 
-    /**
-     * @return mixed
-     */
-    public function getBody();
+    public function getBody(): ?string;
 
 
     public function getMethod(): string;
