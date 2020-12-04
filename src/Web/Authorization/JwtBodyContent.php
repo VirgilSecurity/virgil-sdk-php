@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 use JsonSerializable;
 
+
 /**
  * Class JwtBodyContent
- * @package Virgil\Sdk\Web\Authorization
  */
 class JwtBodyContent implements JsonSerializable
 {
@@ -67,17 +69,13 @@ class JwtBodyContent implements JsonSerializable
     private $additionalData;
 
 
-    /**
-     * JwtBodyContent constructor.
-     *
-     * @param string     $appID
-     * @param string     $identity
-     * @param int        $issuedAt
-     * @param int        $expiresAt
-     * @param array|null $additionalData
-     */
-    public function __construct($appID, $identity, $issuedAt, $expiresAt, array $additionalData = null)
-    {
+    public function __construct(
+        string $appID,
+        string $identity,
+        int $issuedAt,
+        int $expiresAt,
+        ?array $additionalData = null
+    ) {
         $this->appID = $appID;
         $this->identity = $identity;
         $this->issuedAt = $issuedAt;
@@ -86,46 +84,31 @@ class JwtBodyContent implements JsonSerializable
     }
 
 
-    /**
-     * @return string
-     */
-    public function getIdentity()
+    public function getIdentity(): string
     {
         return $this->identity;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getAppID()
+    public function getAppID(): string
     {
         return $this->appID;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getIssuedAt()
+    public function getIssuedAt(): int
     {
         return $this->issuedAt;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getExpiresAt()
+    public function getExpiresAt(): int
     {
         return $this->expiresAt;
     }
 
 
-    /**
-     * @return array
-     */
-    public function getAdditionalData()
+    public function getAdditionalData(): array
     {
         return $this->additionalData;
     }
@@ -147,7 +130,7 @@ class JwtBodyContent implements JsonSerializable
             'exp' => $this->expiresAt,
         ];
 
-        if ($this->additionalData != null) {
+        if ($this->additionalData !== null) {
             $json['ada'] = $this->additionalData;
         }
 

@@ -35,11 +35,13 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk;
+
 
 /**
  * Class CardSignature
- * @package Virgil\Sdk
  */
 class CardSignature
 {
@@ -52,7 +54,7 @@ class CardSignature
      */
     private $signature;
     /**
-     * @var string
+     * @var string|null
      */
     private $snapshot;
     /**
@@ -61,15 +63,7 @@ class CardSignature
     private $extraFields;
 
 
-    /**
-     * Class constructor.
-     *
-     * @param string     $signer
-     * @param string     $signature
-     * @param string     $snapshot
-     * @param array|null $extraFields
-     */
-    function __construct($signer, $signature, $snapshot = null, array $extraFields = null)
+    function __construct(string $signer, string $signature, ?string $snapshot = null, ?array $extraFields = null)
     {
         $this->signer = $signer;
         $this->signature = $signature;
@@ -78,37 +72,25 @@ class CardSignature
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSigner()
+    public function getSigner(): string
     {
         return $this->signer;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSignature()
+    public function getSignature(): string
     {
         return $this->signature;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSnapshot()
+    public function getSnapshot(): ?string
     {
         return $this->snapshot;
     }
 
 
-    /**
-     * @return array|null
-     */
-    public function getExtraFields()
+    public function getExtraFields(): ?array
     {
         return $this->extraFields;
     }

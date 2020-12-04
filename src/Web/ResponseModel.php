@@ -35,11 +35,13 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web;
+
 
 /**
  * Class ResponseModel
- * @package Virgil\Sdk\Web
  */
 class ResponseModel
 {
@@ -55,13 +57,7 @@ class ResponseModel
     private $rawSignedModel;
 
 
-    /**
-     * ResponseModel constructor.
-     *
-     * @param string         $stringHeaders
-     * @param RawSignedModel $rawSignedModel
-     */
-    public function __construct($stringHeaders, RawSignedModel $rawSignedModel)
+    public function __construct(string $stringHeaders, RawSignedModel $rawSignedModel)
     {
         $headers = [];
 
@@ -69,7 +65,7 @@ class ResponseModel
         foreach ($headersLines as $headerString) {
             $details = explode(':', trim($headerString), 2);
 
-            if (count($details) == 2) {
+            if (count($details) === 2) {
                 $key = trim($details[0]);
                 $value = trim($details[1]);
 
@@ -82,31 +78,22 @@ class ResponseModel
     }
 
 
-    /**
-     * @return array
-     */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
 
-    /**
-     * @return RawSignedModel
-     */
-    public function getRawSignedModel()
+    public function getRawSignedModel(): RawSignedModel
     {
         return $this->rawSignedModel;
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isOutdated()
+    public function isOutdated(): bool
     {
         if (array_key_exists(self::SupersededCardIDHTTPHeader, $this->headers)) {
-            return $this->headers[self::SupersededCardIDHTTPHeader] == "true";
+            return $this->headers[self::SupersededCardIDHTTPHeader] === "true";
         }
 
         return false;

@@ -1,4 +1,41 @@
 <?php
+/**
+ * Copyright (C) 2015-2020 Virgil Security Inc.
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3) Neither the name of the copyright holder nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ */
+
+declare(strict_types=1);
 
 namespace Virgil\Sdk\Http\Curl;
 
@@ -6,7 +43,6 @@ namespace Virgil\Sdk\Http\Curl;
 /**
  * Class aims initialize cURL session and provides necessary methods to perform configuration, execution and closing
  * the session.
- * @package Virgil\Http\Curl
  */
 class CurlRequest implements RequestInterface
 {
@@ -16,13 +52,7 @@ class CurlRequest implements RequestInterface
     /** @var $options */
     private $options;
 
-
-    /**
-     * Class constructor.
-     *
-     * @param string $url
-     */
-    public function __construct($url = null)
+    public function __construct(?string $url = null)
     {
         $this->handle = $url !== null ? curl_init($url) : curl_init();
     }
@@ -42,7 +72,7 @@ class CurlRequest implements RequestInterface
     /**
      * @inheritdoc
      */
-    public function getInfo($option = null)
+    public function getInfo(?int $option = null)
     {
         return $option !== null ? curl_getinfo($this->handle, $option) : curl_getinfo($this->handle);
     }
@@ -51,9 +81,9 @@ class CurlRequest implements RequestInterface
     /**
      * @inheritdoc
      */
-    public function setOption($option, $value)
+    public function setOption(string $name, $option): RequestInterface
     {
-        $this->options[$option] = $value;
+        $this->options[$name] = $option;
 
         return $this;
     }
@@ -62,7 +92,7 @@ class CurlRequest implements RequestInterface
     /**
      * @inheritdoc
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): RequestInterface
     {
         $this->options = $options;
 
@@ -73,7 +103,7 @@ class CurlRequest implements RequestInterface
     /**
      * @inheritdoc
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -82,7 +112,7 @@ class CurlRequest implements RequestInterface
     /**
      * @inheritdoc
      */
-    public function close()
+    public function close(): RequestInterface
     {
         curl_close($this->handle);
 

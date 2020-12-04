@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web;
 
 use JsonSerializable;
 
+
 /**
  * Class RawCardContent
- * @package Virgil\Sdk\Web
  */
 class RawCardContent implements JsonSerializable
 {
@@ -67,17 +69,13 @@ class RawCardContent implements JsonSerializable
     private $previousCardId;
 
 
-    /**
-     * RawCardContent constructor.
-     *
-     * @param string      $identity
-     * @param string      $publicKey
-     * @param string      $version
-     * @param int         $createdAt
-     * @param null|string $previousCardId
-     */
-    public function __construct($identity, $publicKey, $version, $createdAt, $previousCardId = null)
-    {
+    public function __construct(
+        string $identity,
+        string $publicKey,
+        string $version,
+        int $createdAt,
+        ?string $previousCardId = null
+    ) {
         $this->identity = $identity;
         $this->publicKey = $publicKey;
         $this->version = $version;
@@ -96,13 +94,13 @@ class RawCardContent implements JsonSerializable
     public function jsonSerialize()
     {
         $jsonData = [
-            'identity'   => $this->identity,
+            'identity' => $this->identity,
             'public_key' => $this->publicKey,
-            'version'    => $this->version,
+            'version' => $this->version,
             'created_at' => $this->createdAt,
         ];
 
-        if ($this->previousCardId != null) {
+        if ($this->previousCardId !== null) {
             $jsonData['previous_card_id'] = $this->previousCardId;
         }
 

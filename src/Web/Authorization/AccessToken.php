@@ -37,20 +37,14 @@
 
 namespace Virgil\Sdk\Web\Authorization;
 
+
 /**
  * Interface AccessToken
- * @package Virgil\Sdk\Web\Authorization
  */
 interface AccessToken
 {
-    /**
-     * @return string
-     */
-    public function identity();
+    public function identity(): string;
 
 
-    /**
-     * @return string
-     */
-    public function __toString();
+    public function __toString(): string;
 }

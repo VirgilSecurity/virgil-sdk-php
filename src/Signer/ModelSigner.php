@@ -35,8 +35,9 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\Sdk\Signer;
+declare(strict_types=1);
 
+namespace Virgil\Sdk\Signer;
 
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
 use Virgil\Crypto\Exceptions\VirgilCryptoException;
@@ -48,7 +49,6 @@ use Virgil\Sdk\Exceptions\VirgilException;
 
 /**
  * Class ModelSigner
- * @package Virgil\Sdk\Signer
  */
 class ModelSigner
 {
@@ -64,24 +64,24 @@ class ModelSigner
     }
 
     /**
-     * @param RawSignedModel $model
-     * @param $signer
-     * @param VirgilPrivateKey $privateKey
-     * @param array|null $extraFields
      * @throws VirgilException
      * @throws VirgilCryptoException
      */
-    public function sign(RawSignedModel &$model, $signer, VirgilPrivateKey $privateKey, array $extraFields = null)
-    {
+    public function sign(
+        RawSignedModel &$model,
+        string $signer,
+        VirgilPrivateKey $privateKey,
+        ?array $extraFields = null
+    ) {
         $signatures = $model->getSignatures();
 
         foreach ($signatures as $signature) {
-            if ($signature->getSigner() == $signer) {
+            if ($signature->getSigner() === $signer) {
                 throw new VirgilException('The model already has this signature.');
             }
         }
 
-        if ($extraFields != null) {
+        if ($extraFields !== null) {
             $extraFieldsSnapshot = json_encode($extraFields, JSON_UNESCAPED_SLASHES);
 
             $resultSnapshot = $model->getContentSnapshot();
@@ -97,14 +97,12 @@ class ModelSigner
         $model = new RawSignedModel($model->getContentSnapshot(), $signatures);
     }
 
+
     /**
-     * @param RawSignedModel $model
-     * @param VirgilPrivateKey $privateKey
-     * @param array|null $extraFields
      * @throws VirgilException
      * @throws VirgilCryptoException
      */
-    public function selfSign(RawSignedModel &$model, VirgilPrivateKey $privateKey, array $extraFields = null)
+    public function selfSign(RawSignedModel &$model, VirgilPrivateKey $privateKey, ?array $extraFields = null)
     {
         $this->sign($model, 'self', $privateKey, $extraFields);
     }

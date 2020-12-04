@@ -35,15 +35,17 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
 use Virgil\Crypto\Exceptions\VirgilCryptoException;
 use Virgil\Crypto\VirgilCrypto;
 
+
 /**
  * Class JwtGenerator
- * @package Virgil\Sdk\Web\Authorization
  */
 class JwtGenerator
 {
@@ -68,20 +70,13 @@ class JwtGenerator
      */
     private $ttl;
 
-    /**
-     * JwtGenerator constructor.
-     * @param VirgilPrivateKey $apiKey
-     * @param $apiPublicKeyIdentifier
-     * @param VirgilCrypto $virgilCrypto
-     * @param $appID
-     * @param $ttl
-     */
+
     public function __construct(
         VirgilPrivateKey $apiKey,
-        $apiPublicKeyIdentifier,
+        string $apiPublicKeyIdentifier,
         VirgilCrypto $virgilCrypto,
-        $appID,
-        $ttl
+        string $appID,
+        int $ttl
     ) {
         $this->apiKey = $apiKey;
         $this->apiPublicKeyIdentifier = $apiPublicKeyIdentifier;
@@ -92,13 +87,9 @@ class JwtGenerator
 
 
     /**
-     * @param string $identity
-     * @param array|null $additionalData
-     *
-     * @return Jwt
      * @throws VirgilCryptoException
      */
-    public function generateToken($identity, array $additionalData = null)
+    public function generateToken(string $identity, ?array $additionalData = null): Jwt
     {
         $issuedAt = time();
         $expiresAt = $issuedAt + $this->ttl;

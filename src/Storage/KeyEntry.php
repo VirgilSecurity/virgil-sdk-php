@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Storage;
 
 use JsonSerializable;
 
+
 /**
  * Class KeyEntry
- * @package Virgil\Sdk\Storage
  */
 class KeyEntry implements JsonSerializable
 {
@@ -59,14 +61,7 @@ class KeyEntry implements JsonSerializable
     private $meta;
 
 
-    /**
-     * Class constructor.
-     *
-     * @param string     $name
-     * @param string     $value
-     * @param array|null $meta
-     */
-    function __construct($name, $value, array $meta = null)
+    function __construct(string $name, string $value, ?array $meta = null)
     {
         $this->name = $name;
         $this->value = $value;
@@ -74,28 +69,19 @@ class KeyEntry implements JsonSerializable
     }
 
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
 
-    /**
-     * @return array|null
-     */
-    public function getMeta()
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+
+    public function getMeta(): ?array
     {
         return $this->meta;
     }
@@ -112,7 +98,7 @@ class KeyEntry implements JsonSerializable
     {
         return [
             'value' => base64_encode($this->value),
-            'meta'  => $this->meta,
+            'meta' => $this->meta,
         ];
     }
 }

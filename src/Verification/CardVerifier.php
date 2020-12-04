@@ -39,16 +39,11 @@ namespace Virgil\Sdk\Verification;
 
 use Virgil\Sdk\Card;
 
+
 /**
  * Class CardVerifier
- * @package Virgil\Sdk\Verification
  */
 interface CardVerifier
 {
-    /**
-     * @param Card $card
-     *
-     * @return bool
-     */
-    public function verifyCard(Card $card);
+    public function verifyCard(Card $card): bool;
 }

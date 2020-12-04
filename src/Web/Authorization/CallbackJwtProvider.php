@@ -35,11 +35,13 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
+
 
 /**
  * Class CallbackJwtProvider
- * @package Virgil\Sdk\Web\Authorization
  */
 class CallbackJwtProvider implements AccessTokenProvider
 {
@@ -50,23 +52,13 @@ class CallbackJwtProvider implements AccessTokenProvider
     private $callbackFunc;
 
 
-    /**
-     * CallbackJwtProvider constructor.
-     *
-     * @param callable $callbackFunc
-     */
     public function __construct(callable $callbackFunc)
     {
         $this->callbackFunc = $callbackFunc;
     }
 
 
-    /**
-     * @param TokenContext $context
-     *
-     * @return AccessToken
-     */
-    public function getToken(TokenContext $context)
+    public function getToken(TokenContext $context): AccessToken
     {
         $getTokenCallback = $this->callbackFunc;
         $jwtString = $getTokenCallback($context);

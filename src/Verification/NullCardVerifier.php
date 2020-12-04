@@ -35,23 +35,20 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Verification;
 
 use Virgil\Sdk\Card;
 
+
 /**
  * Class NullCardVerifier
- * @package Virgil\Sdk\Verification
  */
 class NullCardVerifier implements CardVerifier
 {
 
-    /**
-     * @param Card $card
-     *
-     * @return bool
-     */
-    public function verifyCard(Card $card)
+    public function verifyCard(Card $card): bool
     {
         return true;
     }

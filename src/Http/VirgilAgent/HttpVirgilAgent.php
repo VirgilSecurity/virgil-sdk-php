@@ -35,11 +35,13 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Http\VirgilAgent;
+
 
 /**
  * Class HttpVirgilAgent
- * @package Virgil\Http\Curl
  */
 class HttpVirgilAgent
 {
@@ -56,46 +58,41 @@ class HttpVirgilAgent
      */
     private $family = 'php';
 
-    /**
-     * @return string
-     */
-    public function getName()
+
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getFormatString()
+
+    public function getFormatString(): string
     {
         $os = strtolower(php_uname('s'));
         return $this->product . ";" . $this->family . ";" . $os . ";" . $this->getVersion();
     }
 
-    /**
-     * @return string
-     */
-    private function getVersion()
+
+    private function getVersion(): string
     {
         $composerLock = 'composer.lock';
         $packageName = 'virgil/crypto';
         $version = 'unknown';
 
-        $path = __DIR__ . DIRECTORY_SEPARATOR .DIRECTORY_SEPARATOR;
+        $path = __DIR__ . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
 
-        if(!is_dir($path) || !in_array($composerLock, scandir($path)))
+        if (!is_dir($path) || !in_array($composerLock, scandir($path))) {
             return $version;
+        }
 
-        $composerLockFile = file_get_contents($path.$composerLock);
+        $composerLockFile = file_get_contents($path . $composerLock);
         $composerLockFileToArray = json_decode($composerLockFile);
 
         $packages = $composerLockFileToArray->packages;
 
         foreach ($packages as $package) {
-            if($packageName == $package->name) {
+            if ($packageName === $package->name) {
                 $version = $package->version;
-                if('v'==$version[0]) {
+                if ('v' === $version[0]) {
                     $version = ltrim($version, 'v');
                 }
                 break;

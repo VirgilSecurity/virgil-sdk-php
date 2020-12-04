@@ -45,6 +45,7 @@ use Virgil\Crypto\Core\Enum\HashAlgorithms;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
 use Virgil\Crypto\VirgilCrypto;
+use Virgil\Sdk\Http\Curl\CurlClient;
 use Virgil\Sdk\Http\HttpClientInterface;
 use Virgil\Sdk\Http\Requests\GetHttpRequest;
 use Virgil\Sdk\Http\Requests\PostHttpRequest;
@@ -182,7 +183,7 @@ class CardManagerTest extends TestCase
         return [
             [
                 function (CardManager $cardManager) {
-                    $cardManager->publishRawSignedModel(new RawSignedModel('', []));
+                    $cardManager->publishRawSignedModel(new RawSignedModel('{"identity":"alice"}', []));
                 },
             ],
             [
@@ -329,7 +330,7 @@ class CardManagerTest extends TestCase
     {
         return [
             [
-                null,
+                '',
                 false,
             ],
             [

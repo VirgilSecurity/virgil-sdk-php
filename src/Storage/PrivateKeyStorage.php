@@ -35,15 +35,18 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Storage;
 
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
 use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Exceptions\VirgilException;
 
+
 /**
  * Class PrivateKeyStorage
- * @package Virgil\Sdk\Storage
  */
 class PrivateKeyStorage
 {
@@ -58,14 +61,9 @@ class PrivateKeyStorage
 
 
     /**
-     * PrivateKeyStorage constructor.
-     *
-     * @param VirgilCrypto $virgilCrypto
-     * @param string $storagePath
-     *
      * @throws VirgilException
      */
-    public function __construct(VirgilCrypto $virgilCrypto, $storagePath)
+    public function __construct(VirgilCrypto $virgilCrypto, string $storagePath)
     {
         $this->keyStorage = new KeyStorage($storagePath);
         $this->virgilCrypto = $virgilCrypto;
@@ -73,13 +71,10 @@ class PrivateKeyStorage
 
 
     /**
-     * @param VirgilPrivateKey $privateKey
-     * @param string $name
-     * @param array $meta
-     *
      * @throws VirgilException
+     * @throws VirgilCryptoException
      */
-    public function store(VirgilPrivateKey $privateKey, $name, array $meta = null)
+    public function store(VirgilPrivateKey $privateKey, string $name, ?array $meta = null)
     {
         $exportedData = $this->virgilCrypto->exportPrivateKey($privateKey);
 
@@ -88,12 +83,10 @@ class PrivateKeyStorage
 
 
     /**
-     * @param string $name
-     *
-     * @return PrivateKeyEntry
      * @throws VirgilException
+     * @throws VirgilCryptoException
      */
-    public function load($name)
+    public function load(string $name): PrivateKeyEntry
     {
         $keyEntry = $this->keyStorage->load($name);
         $privateKey = $this->virgilCrypto->importPrivateKey($keyEntry->getValue());
@@ -103,11 +96,9 @@ class PrivateKeyStorage
 
 
     /**
-     * @param string $name
-     *
      * @throws VirgilException
      */
-    public function delete($name)
+    public function delete(string $name): void
     {
         $this->keyStorage->delete($name);
     }
