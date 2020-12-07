@@ -37,16 +37,11 @@
 
 namespace Virgil\Sdk\Web\Authorization;
 
+
 /**
  * Class AccessTokenProvider
- * @package Virgil\Sdk\Web\Authorization
  */
 interface AccessTokenProvider
 {
-    /**
-     * @param TokenContext $context
-     *
-     * @return AccessToken
-     */
-    public function getToken(TokenContext $context);
+    public function getToken(TokenContext $context): AccessToken;
 }

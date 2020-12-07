@@ -35,45 +35,29 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web;
 
-/**
- * Class ErrorResponseModel
- * @package Virgil\Sdk\Web
- */
+
 class ErrorResponseModel
 {
-
     private $code;
+
     private $message;
 
-
-    /**
-     * ErrorResponseModel constructor.
-     *
-     * @param int    $code
-     * @param string $message
-     */
-    public function __construct($code, $message)
+    public function __construct(int $code, string $message)
     {
         $this->code = $code;
         $this->message = $message;
     }
 
-
-    /**
-     * @return int
-     */
-    public function getCode()
+    public function getCode(): int
     {
         return $this->code;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }

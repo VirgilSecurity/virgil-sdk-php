@@ -35,6 +35,8 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk;
 
 use DateTime;
@@ -55,11 +57,11 @@ use Virgil\Sdk\Web\RawSignedModel;
 use Virgil\Sdk\Web\Authorization\AccessToken;
 use Virgil\Sdk\Web\Authorization\AccessTokenProvider;
 use Virgil\Sdk\Web\Authorization\TokenContext;
+use \Virgil\Crypto\Exceptions\VirgilCryptoException;
 
 
 /**
  * Class CardManager
- * @package Virgil\Sdk
  */
 class CardManager
 {
@@ -95,34 +97,37 @@ class CardManager
         CardClient $cardClient = null,
         callable $signCallback = null
     ) {
-        if ($cardClient == null) {
+        if ($cardClient === null) {
             $cardClient = new CardClient(new HttpVirgilAgent());
         }
 
-        if ($cardVerifier == null) {
+        if ($cardVerifier === null) {
             $cardVerifier = new NullCardVerifier();
         }
 
+        $this->modelSigner = new ModelSigner($virgilCrypto);
         $this->virgilCrypto = $virgilCrypto;
         $this->accessTokenProvider = $accessTokenProvider;
         $this->cardClient = $cardClient;
         $this->signCallback = $signCallback;
-        $this->modelSigner = new ModelSigner($virgilCrypto);
         $this->cardVerifier = $cardVerifier;
     }
 
+
     /**
-     * @param CardParams $cardParams
-     * @return RawSignedModel
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
-    public function generateRawCard(CardParams $cardParams)
+    public function generateRawCard(CardParams $cardParams): RawSignedModel
     {
         $now = new DateTime();
         $publicKeyString = $this->virgilCrypto->exportPublicKey($cardParams->getPublicKey());
 
         $rawCardContent = new RawCardContent(
-            $cardParams->getIdentity(), base64_encode($publicKeyString), '5.0', $now->getTimestamp(), $cardParams->getPreviousCardID()
+            $cardParams->getIdentity(),
+            base64_encode($publicKeyString),
+            '5.0',
+            $now->getTimestamp(),
+            $cardParams->getPreviousCardID()
         );
         $rawCardContentSnapshot = json_encode($rawCardContent, JSON_UNESCAPED_SLASHES);
 
@@ -137,12 +142,13 @@ class CardManager
         return $rawSignedModel;
     }
 
+
     /**
-     * @param RawSignedModel $rawSignedModel
-     * @return Card
+     * @throws CardClientException
      * @throws CardVerificationException
+     * @throws VirgilCryptoException
      */
-    public function publishRawSignedModel(RawSignedModel $rawSignedModel)
+    public function publishRawSignedModel(RawSignedModel $rawSignedModel): Card
     {
         $contentSnapshot = json_decode($rawSignedModel->getContentSnapshot(), true);
 
@@ -157,13 +163,13 @@ class CardManager
         return $card;
     }
 
+
     /**
-     * @param CardParams $cardParams
-     * @return Card
+     * @throws CardClientException
      * @throws CardVerificationException
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
-    public function publishCard(CardParams $cardParams)
+    public function publishCard(CardParams $cardParams): Card
     {
         $tokenContext = new TokenContext($cardParams->getIdentity(), 'publish');
         $token = $this->accessTokenProvider->getToken($tokenContext);
@@ -171,10 +177,10 @@ class CardManager
         $rawSignedModel = $this->generateRawCard(
             CardParams::create(
                 [
-                    CardParams::Identity       => $token->identity(),
-                    CardParams::PrivateKey     => $cardParams->getPrivateKey(),
-                    CardParams::PublicKey      => $cardParams->getPublicKey(),
-                    CardParams::ExtraFields    => $cardParams->getExtraFields(),
+                    CardParams::Identity => $token->identity(),
+                    CardParams::PrivateKey => $cardParams->getPrivateKey(),
+                    CardParams::PublicKey => $cardParams->getPublicKey(),
+                    CardParams::ExtraFields => $cardParams->getExtraFields(),
                     CardParams::PreviousCardID => $cardParams->getPreviousCardID(),
                 ]
             )
@@ -189,13 +195,13 @@ class CardManager
         return $card;
     }
 
+
     /**
-     * @param $cardID
-     * @return Card
      * @throws CardClientException
      * @throws CardVerificationException
+     * @throws VirgilCryptoException
      */
-    public function getCard($cardID)
+    public function getCard(string $cardID): Card
     {
         $tokenContext = new TokenContext("", 'get');
         $token = $this->accessTokenProvider->getToken($tokenContext);
@@ -218,14 +224,12 @@ class CardManager
 
 
     /**
-     * @param string $identity
-     *
      * @return Card[]
-     *
      * @throws CardClientException
      * @throws CardVerificationException
+     * @throws VirgilCryptoException
      */
-    public function searchCards($identity)
+    public function searchCards(string $identity): array
     {
         $tokenContext = new TokenContext($identity, 'search');
         $token = $this->accessTokenProvider->getToken($tokenContext);
@@ -250,11 +254,12 @@ class CardManager
         return $this->linkCards($cards);
     }
 
+
     /**
-     * @param string $cardID
      * @throws CardClientException
      */
-    public function revokeCard($cardID){
+    public function revokeCard(string $cardID): void
+    {
         $tokenContext = new TokenContext("", 'revoke');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
@@ -268,26 +273,20 @@ class CardManager
 
 
     /**
-     * @param string $stringCard
-     *
-     * @return Card
-     *
      * @throws CardVerificationException
+     * @throws VirgilCryptoException
      */
-    public function importCardFromString($stringCard)
+    public function importCardFromString(string $stringCard): Card
     {
         return $this->importCard(RawSignedModel::RawSignedModelFromBase64String($stringCard));
     }
 
 
     /**
-     * @param RawSignedModel $rawSignedModel
-     *
-     * @return Card
-     *
      * @throws CardVerificationException
+     * @throws VirgilCryptoException
      */
-    public function importCard(RawSignedModel $rawSignedModel)
+    public function importCard(RawSignedModel $rawSignedModel): Card
     {
         $card = $this->parseRawCard($rawSignedModel);
 
@@ -300,46 +299,28 @@ class CardManager
 
 
     /**
-     * @param string $json
-     *
-     * @return Card
-     *
      * @throws CardVerificationException
+     * @throws VirgilCryptoException
      */
-    public function importCardFromJson($json)
+    public function importCardFromJson(string $json): Card
     {
         return $this->importCard(RawSignedModel::RawSignedModelFromJson($json));
     }
 
 
-    /**
-     * @param Card $card
-     *
-     * @return string
-     */
-    public function exportCardAsString(Card $card)
+    public function exportCardAsString(Card $card): string
     {
         return $this->exportCardAsRawCard($card)->exportAsBase64String();
     }
 
 
-    /**
-     * @param Card $card
-     *
-     * @return string
-     */
-    public function exportCardAsJson(Card $card)
+    public function exportCardAsJson(Card $card): string
     {
         return $this->exportCardAsRawCard($card)->exportAsJson();
     }
 
 
-    /**
-     * @param Card $card
-     *
-     * @return RawSignedModel
-     */
-    public function exportCardAsRawCard(Card $card)
+    public function exportCardAsRawCard(Card $card): RawSignedModel
     {
         $modelSignatures = [];
         foreach ($card->getSignatures() as $cardSignature) {
@@ -353,14 +334,10 @@ class CardManager
 
 
     /**
-     * @param RawSignedModel $model
-     * @param AccessToken    $token
-     *
-     * @return Card
-     *
      * @throws CardClientException
+     * @throws VirgilCryptoException
      */
-    private function publishRawSignedModelWithToken(RawSignedModel $model, AccessToken $token)
+    private function publishRawSignedModelWithToken(RawSignedModel $model, AccessToken $token): Card
     {
         if (is_callable($this->signCallback)) {
             $signCallback = $this->signCallback;
@@ -377,30 +354,24 @@ class CardManager
         return $this->parseRawCard($responseModel);
     }
 
-    /**
-     * @param VirgilCrypto $virgilCrypto
-     * @param $snapshot
-     * @return string
-     */
-    private function generateCardID(VirgilCrypto $virgilCrypto, $snapshot)
+
+    private function generateCardID(VirgilCrypto $virgilCrypto, string $snapshot): string
     {
         return bin2hex(substr($virgilCrypto->computeHash($snapshot, HashAlgorithms::SHA512()), 0, 32));
     }
 
+
     /**
-     * @param RawSignedModel $rawSignedModel
-     * @param bool $isOutdated
-     * @return Card
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
-    private function parseRawCard(RawSignedModel $rawSignedModel, $isOutdated = false)
+    private function parseRawCard(RawSignedModel $rawSignedModel, bool $isOutdated = false): Card
     {
         $contentSnapshotArray = json_decode($rawSignedModel->getContentSnapshot(), true);
 
         $cardSignatures = [];
         foreach ($rawSignedModel->getSignatures() as $signature) {
             $extraFields = null;
-            if ($signature->getSnapshot() != "") {
+            if ($signature->getSnapshot() !== null) {
                 $extraFields = json_decode($signature->getSnapshot(), true);
             }
 
@@ -432,10 +403,9 @@ class CardManager
 
     /**
      * @param Card[] $cards
-     *
      * @return Card[]
      */
-    private function linkCards(array $cards)
+    private function linkCards(array $cards): array
     {
         /** @var Card[] $linkedCards */
         $linkedCards = [];

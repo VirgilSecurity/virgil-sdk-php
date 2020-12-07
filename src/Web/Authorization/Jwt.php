@@ -35,6 +35,8 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 use InvalidArgumentException;
@@ -42,7 +44,6 @@ use InvalidArgumentException;
 
 /**
  * Class Jwt
- * @package Virgil\Sdk\Web\Authorization
  */
 class Jwt implements AccessToken
 {
@@ -69,14 +70,7 @@ class Jwt implements AccessToken
     private $signatureContent;
 
 
-    /**
-     * Jwt constructor.
-     *
-     * @param JwtHeaderContent $headerContent
-     * @param JwtBodyContent   $bodyContent
-     * @param string           $signature
-     */
-    public function __construct(JwtHeaderContent $headerContent, JwtBodyContent $bodyContent, $signature)
+    public function __construct(JwtHeaderContent $headerContent, JwtBodyContent $bodyContent, string $signature)
     {
         $this->headerContent = $headerContent;
         $this->bodyContent = $bodyContent;
@@ -85,16 +79,11 @@ class Jwt implements AccessToken
     }
 
 
-    /**
-     * @param string $token
-     *
-     * @return Jwt
-     */
-    public static function fromString($token)
+    public static function fromString(string $token): Jwt
     {
         $jwtParser = new JwtParser();
         $tokenParts = explode('.', $token);
-        if (count($tokenParts) != 3) {
+        if (count($tokenParts) !== 3) {
             throw new InvalidArgumentException("JWT parse failed: " . $token);
         }
         $tokenBase64Header = $tokenParts[0];
@@ -117,30 +106,21 @@ class Jwt implements AccessToken
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isExpired()
+    public function isExpired(): bool
     {
         return $this->bodyContent->getExpiresAt() < time();
     }
 
 
-    /**
-     * @return string
-     */
-    public function identity()
+    public function identity(): string
     {
         return $this->bodyContent->getIdentity();
     }
 
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
-        if ($this->signatureContent != '') {
+        if ($this->signatureContent !== '') {
             $jwtBase64Signature = $this->urlSafeBase64Encode($this->signatureContent);
 
             return $this->getUnsigned() . "." . $jwtBase64Signature;
@@ -150,19 +130,13 @@ class Jwt implements AccessToken
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSignatureContent()
+    public function getSignatureContent(): string
     {
         return $this->signatureContent;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getUnsigned()
+    public function getUnsigned(): string
     {
         $jwtBase64Body = $this->urlSafeBase64Encode($this->jwtParser->buildJwtBody($this->bodyContent));
         $jwtBase64Header = $this->urlSafeBase64Encode($this->jwtParser->buildJwtHeader($this->headerContent));
@@ -171,25 +145,19 @@ class Jwt implements AccessToken
     }
 
 
-    /**
-     * @return JwtBodyContent
-     */
-    public function getBodyContent()
+    public function getBodyContent(): JwtBodyContent
     {
         return $this->bodyContent;
     }
 
 
-    /**
-     * @return JwtHeaderContent
-     */
-    public function getHeaderContent()
+    public function getHeaderContent(): JwtHeaderContent
     {
         return $this->headerContent;
     }
 
 
-    private function urlSafeBase64Encode($data)
+    private function urlSafeBase64Encode($data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }

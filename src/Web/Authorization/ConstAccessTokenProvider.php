@@ -35,11 +35,13 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
+
 
 /**
  * Class ConstAccessTokenProvider
- * @package Virgil\Sdk\Web\Authorization
  */
 class ConstAccessTokenProvider implements AccessTokenProvider
 {
@@ -49,23 +51,13 @@ class ConstAccessTokenProvider implements AccessTokenProvider
     private $accessToken;
 
 
-    /**
-     * ConstAccessTokenProvider constructor.
-     *
-     * @param AccessToken $accessToken
-     */
     public function __construct(AccessToken $accessToken)
     {
         $this->accessToken = $accessToken;
     }
 
 
-    /**
-     * @param TokenContext $context
-     *
-     * @return AccessToken
-     */
-    public function getToken(TokenContext $context)
+    public function getToken(TokenContext $context): AccessToken
     {
         return $this->accessToken;
     }

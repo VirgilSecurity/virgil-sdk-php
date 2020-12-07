@@ -35,6 +35,8 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk;
 
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
@@ -42,7 +44,6 @@ use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
 
 /**
  * Class CardParams
- * @package Virgil\Sdk
  */
 class CardParams
 {
@@ -74,21 +75,12 @@ class CardParams
     private $extraFields;
 
 
-    /**
-     * Class constructor.
-     *
-     * @param VirgilPublicKey  $publicKey
-     * @param VirgilPrivateKey $privateKey
-     * @param string     $identity
-     * @param string     $previousCardID
-     * @param array      $extraFields
-     */
     public function __construct(
         VirgilPublicKey $publicKey,
         VirgilPrivateKey $privateKey,
-        $identity = null,
-        $previousCardID = null,
-        array $extraFields = null
+        ?string $identity = null,
+        ?string $previousCardID = null,
+        ?array $extraFields = null
     ) {
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
@@ -98,12 +90,7 @@ class CardParams
     }
 
 
-    /**
-     * @param array $params
-     *
-     * @return CardParams
-     */
-    public static function create(array $params)
+    public static function create(array $params): CardParams
     {
         $publicKey = $params[self::PublicKey];
         $privateKey = $params[self::PrivateKey];
@@ -124,46 +111,31 @@ class CardParams
     }
 
 
-    /**
-     * @return VirgilPublicKey
-     */
-    public function getPublicKey()
+    public function getPublicKey(): VirgilPublicKey
     {
         return $this->publicKey;
     }
 
 
-    /**
-     * @return VirgilPrivateKey
-     */
-    public function getPrivateKey()
+    public function getPrivateKey(): VirgilPrivateKey
     {
         return $this->privateKey;
     }
 
 
-    /**
-     * @return null|string
-     */
-    public function getIdentity()
+    public function getIdentity(): ?string
     {
         return $this->identity;
     }
 
 
-    /**
-     * @return null|string
-     */
-    public function getPreviousCardID()
+    public function getPreviousCardID(): ?string
     {
         return $this->previousCardID;
     }
 
 
-    /**
-     * @return array|null
-     */
-    public function getExtraFields()
+    public function getExtraFields(): ?array
     {
         return $this->extraFields;
     }

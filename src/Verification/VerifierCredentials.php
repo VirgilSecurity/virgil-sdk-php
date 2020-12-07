@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Verification;
 
 use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
 
+
 /**
  * Class VerifierCredentials
- * @package Virgil\Sdk\Verification
  */
 class VerifierCredentials
 {
@@ -56,32 +58,20 @@ class VerifierCredentials
     private $publicKey;
 
 
-    /**
-     * VerifierCredentials constructor.
-     *
-     * @param string $signer
-     * @param VirgilPublicKey $publicKey
-     */
-    public function __construct($signer, VirgilPublicKey $publicKey)
+    public function __construct(string $signer, VirgilPublicKey $publicKey)
     {
         $this->signer = $signer;
         $this->publicKey = $publicKey;
     }
 
 
-    /**
-     * @return VirgilPublicKey
-     */
-    public function getPublicKey()
+    public function getPublicKey(): VirgilPublicKey
     {
         return $this->publicKey;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getSigner()
+    public function getSigner(): string
     {
         return $this->signer;
     }

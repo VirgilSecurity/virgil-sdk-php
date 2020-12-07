@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web;
 
 use JsonSerializable;
 
+
 /**
  * Class RawSignedModel
- * @package Virgil\Sdk\Web
  */
 class RawSignedModel implements JsonSerializable
 {
@@ -56,24 +58,17 @@ class RawSignedModel implements JsonSerializable
 
 
     /**
-     * RawSignedModel constructor.
-     *
-     * @param string         $contentSnapshot
+     * @param string $contentSnapshot
      * @param RawSignature[] $signatures
      */
-    function __construct($contentSnapshot, array $signatures)
+    function __construct(string $contentSnapshot, array $signatures)
     {
         $this->contentSnapshot = $contentSnapshot;
         $this->signatures = $signatures;
     }
 
 
-    /**
-     * @param $json
-     *
-     * @return RawSignedModel
-     */
-    public static function RawSignedModelFromJson($json)
+    public static function RawSignedModelFromJson(string $json): RawSignedModel
     {
         $body = json_decode($json, true);
         $signatures = $body['signatures'];
@@ -82,11 +77,13 @@ class RawSignedModel implements JsonSerializable
         foreach ($signatures as $signature) {
             $signatureSnapshot = null;
             if (array_key_exists('snapshot', $signature)) {
-                $signatureSnapshot = $signature['snapshot'];
+                $signatureSnapshot = base64_decode($signature['snapshot']);
             }
 
             $rawSignatures[] = new RawSignature(
-                $signature['signer'], base64_decode($signature['signature']), base64_decode($signatureSnapshot)
+                $signature['signer'],
+                base64_decode($signature['signature']),
+                $signatureSnapshot
             );
         }
 
@@ -95,12 +92,7 @@ class RawSignedModel implements JsonSerializable
     }
 
 
-    /**
-     * @param $base64String
-     *
-     * @return RawSignedModel
-     */
-    public static function RawSignedModelFromBase64String($base64String)
+    public static function RawSignedModelFromBase64String(string $base64String): RawSignedModel
     {
         return self::RawSignedModelFromJson(base64_decode($base64String));
     }
@@ -117,15 +109,12 @@ class RawSignedModel implements JsonSerializable
     {
         return [
             'content_snapshot' => base64_encode($this->contentSnapshot),
-            'signatures'       => $this->signatures,
+            'signatures' => $this->signatures,
         ];
     }
 
 
-    /**
-     * @return string
-     */
-    public function getContentSnapshot()
+    public function getContentSnapshot(): string
     {
         return $this->contentSnapshot;
     }
@@ -134,25 +123,19 @@ class RawSignedModel implements JsonSerializable
     /**
      * @return RawSignature[]
      */
-    public function getSignatures()
+    public function getSignatures(): array
     {
         return $this->signatures;
     }
 
 
-    /**
-     * @return string
-     */
-    public function exportAsJson()
+    public function exportAsJson(): string
     {
         return json_encode($this, JSON_UNESCAPED_SLASHES);
     }
 
 
-    /**
-     * @return string
-     */
-    public function exportAsBase64String()
+    public function exportAsBase64String(): string
     {
         return base64_encode($this->exportAsJson());
     }

@@ -35,14 +35,16 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk;
 
 use DateTime;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
 
+
 /**
  * Class Card
- * @package Virgil\Sdk
  */
 class Card
 {
@@ -88,31 +90,17 @@ class Card
     private $previousCard;
 
 
-    /**
-     * Class constructor.
-     *
-     * @param string          $ID
-     * @param string          $identity
-     * @param VirgilPublicKey $publicKey
-     * @param string          $version
-     * @param DateTime        $createdAt
-     * @param bool            $isOutdated
-     * @param CardSignature[] $signatures
-     * @param string          $contentSnapshot
-     * @param string|null     $previousCardId
-     * @param Card|null       $previousCard
-     */
     function __construct(
-        $ID,
-        $identity,
+        string $ID,
+        string $identity,
         VirgilPublicKey $publicKey,
-        $version,
+        string $version,
         DateTime $createdAt,
-        $isOutdated,
-        $signatures,
-        $contentSnapshot,
-        $previousCardId = null,
-        Card $previousCard = null
+        bool $isOutdated,
+        array $signatures,
+        string $contentSnapshot,
+        ?string $previousCardId = null,
+        ?Card $previousCard = null
     ) {
         $this->ID = $ID;
         $this->identity = $identity;
@@ -127,55 +115,37 @@ class Card
     }
 
 
-    /**
-     * @return VirgilPublicKey
-     */
-    public function getPublicKey()
+    public function getPublicKey(): VirgilPublicKey
     {
         return $this->publicKey;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getID()
+    public function getID(): string
     {
         return $this->ID;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getIdentity()
+    public function getIdentity(): string
     {
         return $this->identity;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isOutdated()
+    public function isOutdated(): bool
     {
         return $this->isOutdated;
     }
@@ -184,34 +154,25 @@ class Card
     /**
      * @return CardSignature[]
      */
-    public function getSignatures()
+    public function getSignatures(): array
     {
         return $this->signatures;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getContentSnapshot()
+    public function getContentSnapshot(): string
     {
         return $this->contentSnapshot;
     }
 
 
-    /**
-     * @return null|string
-     */
-    public function getPreviousCardId()
+    public function getPreviousCardId(): ?string
     {
         return $this->previousCardId;
     }
 
 
-    /**
-     * @return null|Card
-     */
-    public function getPreviousCard()
+    public function getPreviousCard(): ?Card
     {
         return $this->previousCard;
     }

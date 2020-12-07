@@ -73,8 +73,6 @@ try {
             "isEquals" => $message==$messageDecryptedForBob
         ]
     );
-    die;
-} catch (Exception $e) {
+} catch (\Exception $e) {
     var_dump($e->getMessage(), $e->getCode());
-    die;
 }

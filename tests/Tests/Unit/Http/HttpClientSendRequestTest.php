@@ -38,6 +38,8 @@
 namespace Tests\Unit\Http;
 
 use Virgil\Sdk\Http\AbstractHttpClient;
+use Virgil\Sdk\Http\Curl\CurlClient;
+use Virgil\Sdk\Http\Curl\RequestFactoryInterface;
 use Virgil\Sdk\Http\Requests\DeleteHttpRequest;
 use Virgil\Sdk\Http\Requests\GetHttpRequest;
 use Virgil\Sdk\Http\Requests\PostHttpRequest;
@@ -54,13 +56,12 @@ class HttpClientSendRequestTest extends TestCase
     public function send__httpGetRequest__callsGetHandler($requestUrl, $requestBody, $requestHeaders)
     {
         $httpClientMock = $this->getHttpClient();
-        $getHttpRequest = $this->createGetHttpRequest($requestUrl, $requestBody, $requestHeaders);
+        $getHttpRequest = $this->createGetHttpRequest($requestUrl, $requestHeaders);
 
 
         $httpClientMock->expects($this->once())
-                       ->method('get')
-                       ->with($requestUrl, [], $requestHeaders)
-        ;
+            ->method('get')
+            ->with($requestUrl, [], $requestHeaders);
 
 
         $httpClientMock->send($getHttpRequest);
@@ -79,9 +80,8 @@ class HttpClientSendRequestTest extends TestCase
 
 
         $httpClientMock->expects($this->once())
-                       ->method('post')
-                       ->with($requestUrl, $requestBody, $requestHeaders)
-        ;
+            ->method('post')
+            ->with($requestUrl, $requestBody, $requestHeaders);
 
 
         $httpClientMock->send($postHttpRequest);
@@ -100,9 +100,8 @@ class HttpClientSendRequestTest extends TestCase
 
 
         $httpClientMock->expects($this->once())
-                       ->method('delete')
-                       ->with($requestUrl, $requestBody, $requestHeaders)
-        ;
+            ->method('delete')
+            ->with($requestUrl, $requestBody, $requestHeaders);
 
 
         $httpClientMock->send($deleteHttpRequest);
@@ -121,15 +120,18 @@ class HttpClientSendRequestTest extends TestCase
     }
 
 
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject|CurlClient
+     */
     protected function getHttpClient()
     {
-        return $this->getMockForAbstractClass(AbstractHttpClient::class);
+        return $this->createPartialMock(CurlClient::class, ['get', 'post', 'delete']);
     }
 
 
-    protected function createGetHttpRequest($requestUrl, $requestBody, $requestHeaders)
+    protected function createGetHttpRequest($requestUrl, $requestHeaders)
     {
-        return new GetHttpRequest($requestUrl, $requestBody, $requestHeaders);
+        return new GetHttpRequest($requestUrl, null, $requestHeaders);
     }
 
 

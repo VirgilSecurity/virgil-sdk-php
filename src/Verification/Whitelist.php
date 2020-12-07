@@ -35,11 +35,13 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Verification;
+
 
 /**
  * Class Whitelist
- * @package Virgil\Sdk\Verification
  */
 class Whitelist
 {
@@ -63,7 +65,7 @@ class Whitelist
     /**
      * @return VerifierCredentials[]
      */
-    public function getCredentials()
+    public function getCredentials(): array
     {
         return $this->credentials;
     }

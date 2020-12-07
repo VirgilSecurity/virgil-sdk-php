@@ -35,33 +35,21 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Exceptions;
 
 
 /**
  * Class CardClientException
- * @package Virgil\Sdk
  */
 class CardClientException extends VirgilException
 {
-    /**
-     * @var int
-     */
     private $errorCode;
-    /**
-     * @var string
-     */
+
     private $errorMessage;
 
-
-    /**
-     * CardClientException constructor.
-     *
-     * @param string $message
-     * @param int    $errorCode
-     * @param string $errorMessage
-     */
-    public function __construct($message = "", $errorCode, $errorMessage)
+    public function __construct(string $message, int $errorCode, string $errorMessage)
     {
         parent::__construct(sprintf("%s: code: %s: message: %s", $message, $errorCode, $errorMessage), 0);
 
@@ -69,18 +57,12 @@ class CardClientException extends VirgilException
         $this->errorMessage = $errorMessage;
     }
 
-    /**
-     * @return int
-     */
-    public function getErrorCode()
+    public function getErrorCode(): int
     {
         return $this->errorCode;
     }
 
-    /**
-     * @return string
-     */
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
         return $this->errorMessage;
     }

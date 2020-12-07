@@ -35,15 +35,18 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Verification;
 
 use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
 use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Card;
 
+
 /**
  * Class VirgilCardVerifier
- * @package Virgil\Sdk\Verification
  */
 class VirgilCardVerifier implements CardVerifier
 {
@@ -72,20 +75,14 @@ class VirgilCardVerifier implements CardVerifier
     private $virgilPublicKey;
 
     /**
-     * VirgilCardVerifier constructor.
-     * @param VirgilCrypto $virgilCrypto
-     * @param bool $verifySelfSignature
-     * @param bool $verifyVirgilSignature
-     * @param array $whiteLists
-     * @param string $virgilPublicKey
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
     public function __construct(
         VirgilCrypto $virgilCrypto,
-        $verifySelfSignature = true,
-        $verifyVirgilSignature = true,
+        bool $verifySelfSignature = true,
+        bool $verifyVirgilSignature = true,
         array $whiteLists = [],
-        $virgilPublicKey = self::VirgilPublicKey
+        string $virgilPublicKey = self::VirgilPublicKey
     ) {
         $this->virgilCrypto = $virgilCrypto;
         $this->verifySelfSignature = $verifySelfSignature;
@@ -97,12 +94,11 @@ class VirgilCardVerifier implements CardVerifier
         }
     }
 
+
     /**
-     * @param Card $card
-     * @return bool
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
-    public function verifyCard(Card $card)
+    public function verifyCard(Card $card): bool
     {
         if ($this->verifySelfSignature) {
             if (!$this->validateSignerSignature($card, 'self', $card->getPublicKey())) {
@@ -133,19 +129,16 @@ class VirgilCardVerifier implements CardVerifier
         return true;
     }
 
+
     /**
-     * @param Card $card
-     * @param string $signer
-     * @param VirgilPublicKey $publicKey
-     * @return bool
-     * @throws \Virgil\Crypto\Exceptions\VirgilCryptoException
+     * @throws VirgilCryptoException
      */
-    private function validateSignerSignature(Card $card, $signer, VirgilPublicKey $publicKey)
+    private function validateSignerSignature(Card $card, string $signer, VirgilPublicKey $publicKey): bool
     {
         foreach ($card->getSignatures() as $cardSignature) {
-            if ($cardSignature->getSigner() == $signer) {
+            if ($cardSignature->getSigner() === $signer) {
                 $snapshot = $card->getContentSnapshot();
-                if ($cardSignature->getSnapshot() != "") {
+                if ($cardSignature->getSnapshot() !== "") {
                     $snapshot .= $cardSignature->getSnapshot();
                 }
 
