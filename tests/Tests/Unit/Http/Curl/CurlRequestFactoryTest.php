@@ -56,8 +56,6 @@ class CurlRequestFactoryTest extends TestCase
 
 
         $this->assertNotSame($request, $newRequest);
-        //same options but different curl handlers
-        $this->assertNotEquals($request, $newRequest);
     }
 
 
