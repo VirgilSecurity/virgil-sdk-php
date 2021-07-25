@@ -35,7 +35,7 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Tests\Unit\Virgil\Sdk\Web;
+namespace Tests\Unit\Sdk\Web;
 
 use PHPUnit\Framework\TestCase;
 use Virgil\Sdk\Web\RawSignature;

@@ -35,12 +35,13 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 
 /**
  * Class TokenContext
- * @package Virgil\Sdk\Web\Authorization
  */
 class TokenContext
 {
@@ -58,14 +59,7 @@ class TokenContext
     private $forceReload;
 
 
-    /**
-     * TokenContext constructor.
-     *
-     * @param string $identity
-     * @param string $operation
-     * @param bool   $forceReload
-     */
-    public function __construct($identity, $operation, $forceReload = false)
+    public function __construct(string $identity, string $operation, bool $forceReload = false)
     {
         $this->identity = $identity;
         $this->operation = $operation;
@@ -73,28 +67,19 @@ class TokenContext
     }
 
 
-    /**
-     * @return string
-     */
-    public function getIdentity()
+    public function getIdentity(): string
     {
         return $this->identity;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getOperation()
+    public function getOperation(): string
     {
         return $this->operation;
     }
 
 
-    /**
-     * @return bool
-     */
-    public function isForceReload()
+    public function isForceReload(): bool
     {
         return $this->forceReload;
     }

@@ -35,18 +35,22 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
+use Virgil\Crypto\VirgilCrypto;
+
 
 /**
  * Class JwtGenerator
- * @package Virgil\Sdk\Web\Authorization
  */
 class JwtGenerator
 {
     /**
-     * @var PrivateKey
+     * @var VirgilPrivateKey
      */
     private $apiKey;
     /**
@@ -54,9 +58,9 @@ class JwtGenerator
      */
     private $apiPublicKeyIdentifier;
     /**
-     * @var AccessTokenSigner
+     * @var VirgilCrypto
      */
-    private $accessTokenSigner;
+    private $virgilCrypto;
     /**
      * @var string
      */
@@ -66,45 +70,42 @@ class JwtGenerator
      */
     private $ttl;
 
-    /**
-     * JwtGenerator constructor.
-     * @param VirgilPrivateKey $apiKey
-     * @param $apiPublicKeyIdentifier
-     * @param AccessTokenSigner $accessTokenSigner
-     * @param $appID
-     * @param $ttl
-     */
+
     public function __construct(
         VirgilPrivateKey $apiKey,
-        $apiPublicKeyIdentifier,
-        AccessTokenSigner $accessTokenSigner,
-        $appID,
-        $ttl
+        string $apiPublicKeyIdentifier,
+        VirgilCrypto $virgilCrypto,
+        string $appID,
+        int $ttl
     ) {
         $this->apiKey = $apiKey;
         $this->apiPublicKeyIdentifier = $apiPublicKeyIdentifier;
-        $this->accessTokenSigner = $accessTokenSigner;
+        $this->virgilCrypto = $virgilCrypto;
         $this->appID = $appID;
         $this->ttl = $ttl;
     }
 
 
     /**
-     * @param string $identity
-     * @param array  $additionalData
-     *
-     * @return Jwt
+     * @throws VirgilCryptoException
      */
-    public function generateToken($identity, array $additionalData = null)
+    public function generateToken(string $identity, ?array $additionalData = null): Jwt
     {
         $issuedAt = time();
         $expiresAt = $issuedAt + $this->ttl;
+
+        $jwtHeader = new JwtHeaderContent(
+            $this->apiPublicKeyIdentifier,
+            Jwt::VirgilJwtAlgorithm,
+            Jwt::VirgilJwtContentType,
+            Jwt::VirgilJwtType
+        );
+
         $jwtBody = new JwtBodyContent($this->appID, $identity, $issuedAt, $expiresAt, $additionalData);
-        $jwtHeader = new JwtHeaderContent($this->accessTokenSigner->getAlgorithm(), $this->apiPublicKeyIdentifier);
 
         $unsignedJwt = new Jwt($jwtHeader, $jwtBody, '');
 
-        $jwtSignature = $this->accessTokenSigner->generateTokenSignature($unsignedJwt->getUnsigned(), $this->apiKey);
+        $jwtSignature = $this->virgilCrypto->generateSignature($unsignedJwt->getUnsigned(), $this->apiKey);
 
         return new Jwt($jwtHeader, $jwtBody, $jwtSignature);
     }

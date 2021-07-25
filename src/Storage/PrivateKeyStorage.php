@@ -35,15 +35,18 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Storage;
 
-use Virgil\CryptoWrapper\Foundation\PrivateKey;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
+use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Exceptions\VirgilException;
-use Virgil\CryptoApi\PrivateKeyExporter;
+
 
 /**
  * Class PrivateKeyStorage
- * @package Virgil\Sdk\Storage
  */
 class PrivateKeyStorage
 {
@@ -52,62 +55,50 @@ class PrivateKeyStorage
      */
     protected $keyStorage;
     /**
-     * @var PrivateKeyExporter
+     * @var VirgilCrypto
      */
-    private $privateKeyExporter;
+    private $virgilCrypto;
 
 
     /**
-     * PrivateKeyStorage constructor.
-     *
-     * @param PrivateKeyExporter $privateKeyExporter
-     * @param string             $storagePath
-     *
      * @throws VirgilException
      */
-    public function __construct(PrivateKeyExporter $privateKeyExporter, $storagePath)
+    public function __construct(VirgilCrypto $virgilCrypto, string $storagePath)
     {
         $this->keyStorage = new KeyStorage($storagePath);
-        $this->privateKeyExporter = $privateKeyExporter;
+        $this->virgilCrypto = $virgilCrypto;
     }
 
 
     /**
-     * @param PrivateKey $privateKey
-     * @param string     $name
-     * @param array      $meta
-     *
      * @throws VirgilException
+     * @throws VirgilCryptoException
      */
-    public function store(PrivateKey $privateKey, $name, array $meta = null)
+    public function store(VirgilPrivateKey $privateKey, string $name, ?array $meta = null)
     {
-        $exportedData = $this->privateKeyExporter->exportPrivateKey($privateKey);
+        $exportedData = $this->virgilCrypto->exportPrivateKey($privateKey);
 
         $this->keyStorage->store(new KeyEntry($name, $exportedData, $meta));
     }
 
 
     /**
-     * @param string $name
-     *
-     * @return PrivateKeyEntry
      * @throws VirgilException
+     * @throws VirgilCryptoException
      */
-    public function load($name)
+    public function load(string $name): PrivateKeyEntry
     {
         $keyEntry = $this->keyStorage->load($name);
-        $privateKey = $this->privateKeyExporter->importPrivateKey($keyEntry->getValue());
+        $privateKey = $this->virgilCrypto->importPrivateKey($keyEntry->getValue());
 
-        return new PrivateKeyEntry($privateKey, $keyEntry->getMeta());
+        return new PrivateKeyEntry($privateKey->getPrivateKey(), $keyEntry->getMeta());
     }
 
 
     /**
-     * @param string $name
-     *
      * @throws VirgilException
      */
-    public function delete($name)
+    public function delete(string $name): void
     {
         $this->keyStorage->delete($name);
     }

@@ -35,11 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
+
+use Virgil\Crypto\Exceptions\VirgilCryptoException;
+
 
 /**
  * Class GeneratorJwtProvider
- * @package Virgil\Sdk\Web\Authorization
  */
 class GeneratorJwtProvider implements AccessTokenProvider
 {
@@ -57,37 +61,30 @@ class GeneratorJwtProvider implements AccessTokenProvider
     private $defaultIdentity;
 
     /**
-     * GeneratorJwtProvider constructor.
-     * @param JwtGenerator $jwtGenerator
-     * @param $defaultIdentity
-     * @param array|null $additionalData
      * @throws GeneratorJWTProviderException
      */
-    public function __construct(JwtGenerator $jwtGenerator, $defaultIdentity, array $additionalData = null)
+    public function __construct(JwtGenerator $jwtGenerator, string $defaultIdentity, ?array $additionalData = null)
     {
-        if(empty($defaultIdentity))
+        if (empty($defaultIdentity)) {
             throw new GeneratorJWTProviderException('Default identity is required');
+        }
 
         $this->jwtGenerator = $jwtGenerator;
         $this->additionalData = $additionalData;
         $this->defaultIdentity = $defaultIdentity;
     }
 
-    /**
-     * @return string
-     */
-    private function getDefaultIdentity()
+
+    private function getDefaultIdentity(): string
     {
         return $this->defaultIdentity;
     }
 
 
     /**
-     * @param TokenContext $context
-     *
-     * @return AccessToken
+     * @throws VirgilCryptoException
      */
-    public function getToken(TokenContext $context)
+    public function getToken(TokenContext $context): AccessToken
     {
         $identity = empty($context->getIdentity()) ? $this->getDefaultIdentity() : $context->getIdentity();
         return $this->jwtGenerator->generateToken($identity, $this->additionalData);

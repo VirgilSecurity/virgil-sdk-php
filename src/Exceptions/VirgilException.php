@@ -35,13 +35,14 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Exceptions;
+
 
 /**
  * Class VirgilException
- * @package Virgil\Sdk
  */
 class VirgilException extends \Exception
 {
-
 }

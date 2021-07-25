@@ -35,46 +35,42 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Storage;
 
-use Virgil\CryptoWrapper\Foundation\PrivateKey;
+use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
+
 
 /**
  * Class PrivateKeyEntry
- * @package Virgil\Sdk\Storage
  */
 class PrivateKeyEntry
 {
     /**
-     * @var PrivateKey
+     * @var VirgilPrivateKey
      */
     private $privateKey;
     /**
-     * @var array
+     * @var array|null
      */
     private $meta;
 
 
-    public function __construct(PrivateKey $privateKey, array $meta = null)
+    public function __construct(VirgilPrivateKey $privateKey, ?array $meta = null)
     {
         $this->privateKey = $privateKey;
         $this->meta = $meta;
     }
 
 
-    /**
-     * @return PrivateKey
-     */
-    public function getPrivateKey()
+    public function getPrivateKey(): VirgilPrivateKey
     {
         return $this->privateKey;
     }
 
 
-    /**
-     * @return array
-     */
-    public function getMeta()
+    public function getMeta(): ?array
     {
         return $this->meta;
     }

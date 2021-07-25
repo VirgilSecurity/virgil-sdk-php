@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Storage;
 
 use Virgil\Sdk\Exceptions\VirgilException;
 
+
 /**
  * Class KeyStorage
- * @package Virgil\Sdk\Storage
  */
 class KeyStorage
 {
@@ -50,13 +52,9 @@ class KeyStorage
 
 
     /**
-     * Class constructor.
-     *
-     * @param $keysPath
-     *
      * @throws VirgilException
      */
-    public function __construct($keysPath)
+    public function __construct(string $keysPath)
     {
         if (!file_exists($keysPath)) {
             mkdir($keysPath, 0755, true);
@@ -79,12 +77,9 @@ class KeyStorage
 
 
     /**
-     * @param KeyEntry $keyEntry
-     *
-     * @return $this
      * @throws VirgilException
      */
-    public function store(KeyEntry $keyEntry)
+    public function store(KeyEntry $keyEntry): KeyStorage
     {
         $file = $this->buildFilePath($keyEntry->getName());
 
@@ -99,12 +94,9 @@ class KeyStorage
 
 
     /**
-     * @param string $keyName
-     *
-     * @return KeyEntry
      * @throws VirgilException
      */
-    public function load($keyName)
+    public function load(string $keyName): KeyEntry
     {
         $file = $this->buildFilePath($keyName);
 
@@ -116,16 +108,11 @@ class KeyStorage
 
         $keyValueData = json_decode($keyValue, true);
 
-        return new KeyEntry($keyName, $keyValueData['value'], $keyValueData['meta']);
+        return new KeyEntry($keyName, base64_decode($keyValueData['value']), $keyValueData['meta']);
     }
 
 
-    /**
-     * @param string $keyName
-     *
-     * @return bool
-     */
-    public function exists($keyName)
+    public function exists(string $keyName): bool
     {
         $file = $this->buildFilePath($keyName);
 
@@ -134,12 +121,9 @@ class KeyStorage
 
 
     /**
-     * @param string $keyName
-     *
-     * @return $this
      * @throws VirgilException
      */
-    public function delete($keyName)
+    public function delete(string $keyName): KeyStorage
     {
         $file = $this->buildFilePath($keyName);
 
@@ -155,12 +139,8 @@ class KeyStorage
 
     /**
      * Builds file path to virgil key by name.
-     *
-     * @param $keyName
-     *
-     * @return string
      */
-    protected function buildFilePath($keyName)
+    protected function buildFilePath(string $keyName): string
     {
         return rtrim($this->keysPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . md5($keyName);
     }

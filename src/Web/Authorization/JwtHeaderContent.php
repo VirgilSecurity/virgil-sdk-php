@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 use JsonSerializable;
 
+
 /**
  * Class JwtHeaderContent
- * @package Virgil\Sdk\Web\Authorization
  */
 class JwtHeaderContent implements JsonSerializable
 {
@@ -63,35 +65,22 @@ class JwtHeaderContent implements JsonSerializable
     private $apiPublicKeyIdentifier;
 
 
-    /**
-     * JwtHeaderContent constructor.
-     *
-     * @param string $algorithm
-     * @param string $apiPublicKeyIdentifier
-     */
-    public function __construct($algorithm, $apiPublicKeyIdentifier)
+    public function __construct(string $apiPublicKeyIdentifier, string $algorithm, string $contentType, string $type)
     {
-        $this->algorithm = $algorithm;
         $this->apiPublicKeyIdentifier = $apiPublicKeyIdentifier;
-        $this->contentType = Jwt::VirgilJwtContentType;
-        $this->type = Jwt::VirgilJwtType;
-
+        $this->algorithm = $algorithm;
+        $this->contentType = $contentType;
+        $this->type = $type;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getAlgorithm()
+    public function getAlgorithm(): string
     {
         return $this->algorithm;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getApiPublicKeyIdentifier()
+    public function getApiPublicKeyIdentifier(): string
     {
         return $this->apiPublicKeyIdentifier;
     }
@@ -115,19 +104,13 @@ class JwtHeaderContent implements JsonSerializable
     }
 
 
-    /**
-     * @return string
-     */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->contentType;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }

@@ -35,21 +35,17 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 
 /**
  * Class JwtParser
- * @package Virgil\Sdk\Web\Authorization
  */
 class JwtParser
 {
-    /**
-     * @param string $jwtBodyString
-     *
-     * @return JwtBodyContent
-     */
-    public function parseJwtBodyContent($jwtBodyString)
+    public function parseJwtBodyContent(string $jwtBodyString): JwtBodyContent
     {
         $tokenJsonBody = json_decode($jwtBodyString, true);
 
@@ -66,40 +62,26 @@ class JwtParser
     }
 
 
-    /**
-     * @param string $jwtHeaderString
-     *
-     * @return JwtHeaderContent
-     */
-    public function parseJwtHeaderContent($jwtHeaderString)
+    public function parseJwtHeaderContent(string $jwtHeaderString): JwtHeaderContent
     {
-
         $tokenJsonHeader = json_decode($jwtHeaderString, true);
 
-        $alg = $tokenJsonHeader['alg'];
-        $kid = $tokenJsonHeader['kid'];
-
-        return new JwtHeaderContent($alg, $kid);
+        return new JwtHeaderContent(
+            $tokenJsonHeader['kid'],
+            $tokenJsonHeader['alg'],
+            $tokenJsonHeader['cty'],
+            $tokenJsonHeader['typ']
+        );
     }
 
 
-    /**
-     * @param JwtBodyContent $jwtBodyContent
-     *
-     * @return string
-     */
-    public function buildJwtBody(JwtBodyContent $jwtBodyContent)
+    public function buildJwtBody(JwtBodyContent $jwtBodyContent): string
     {
         return json_encode($jwtBodyContent);
     }
 
 
-    /**
-     * @param JwtHeaderContent $jwtHeaderContent
-     *
-     * @return string
-     */
-    public function buildJwtHeader(JwtHeaderContent $jwtHeaderContent)
+    public function buildJwtHeader(JwtHeaderContent $jwtHeaderContent): string
     {
         return json_encode($jwtHeaderContent);
     }

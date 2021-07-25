@@ -4,8 +4,11 @@
          verbose="true"
          stopOnFailure="true">
     <testsuites>
-        <testsuite name="tests">
-            <directory suffix=".php">./tests/</directory>
+        <testsuite name="UnitTests">
+            <directory suffix=".php">./tests/Tests/Unit</directory>
+        </testsuite>
+        <testsuite name="IntegrationTests">
+            <directory suffix=".php">./tests/Tests/Integration</directory>
         </testsuite>
     </testsuites>
     <groups>

@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web;
 
 use JsonSerializable;
 
+
 /**
  * Class RawSignature
- * @package Virgil\Sdk\Web
  */
 class RawSignature implements JsonSerializable
 {
@@ -59,14 +61,7 @@ class RawSignature implements JsonSerializable
     private $signature;
 
 
-    /**
-     * RawSignature constructor.
-     *
-     * @param string      $signer
-     * @param string      $signature
-     * @param string|null $snapshot
-     */
-    public function __construct($signer, $signature, $snapshot = null)
+    public function __construct(string $signer, string $signature, ?string $snapshot = null)
     {
         $this->signer = $signer;
         $this->signature = $signature;
@@ -85,10 +80,10 @@ class RawSignature implements JsonSerializable
     {
         $jsonData = [
             'signature' => base64_encode($this->signature),
-            'signer'    => $this->signer,
+            'signer' => $this->signer,
         ];
 
-        if ($this->snapshot != null) {
+        if ($this->snapshot !== null) {
             $jsonData['snapshot'] = base64_encode($this->snapshot);
         }
 
@@ -99,7 +94,7 @@ class RawSignature implements JsonSerializable
     /**
      * @return string
      */
-    public function getSigner()
+    public function getSigner(): string
     {
         return $this->signer;
     }
@@ -108,7 +103,7 @@ class RawSignature implements JsonSerializable
     /**
      * @return string|null
      */
-    public function getSnapshot()
+    public function getSnapshot(): ?string
     {
         return $this->snapshot;
     }
@@ -117,7 +112,7 @@ class RawSignature implements JsonSerializable
     /**
      * @return string
      */
-    public function getSignature()
+    public function getSignature(): string
     {
         return $this->signature;
     }

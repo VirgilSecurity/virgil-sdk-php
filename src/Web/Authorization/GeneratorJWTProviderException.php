@@ -35,13 +35,15 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
+declare(strict_types=1);
+
 namespace Virgil\Sdk\Web\Authorization;
 
 use Virgil\Sdk\Exceptions\VirgilException;
 
+
 /**
  * Class GeneratorJWTProviderException
- * @package Virgil\Sdk\Web\Authorization
  */
 class GeneratorJWTProviderException extends VirgilException
 {

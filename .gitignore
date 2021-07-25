@@ -2,3 +2,4 @@
 vendor
 .env
 _dev
+.phpunit.result.cache

@@ -35,7 +35,7 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Tests\Integration\Virgil\Sdk\Web;
+namespace Tests\Integration\Sdk;
 
 use DateTime;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
@@ -43,7 +43,7 @@ use Virgil\Sdk\Card;
 use Virgil\Sdk\CardParams;
 use Virgil\Sdk\CardSignature;
 use Virgil\Sdk\Verification\NullCardVerifier;
-use Virgil\Tests\IntegrationBaseTestCase;
+use Virgil\SdkTests\IntegrationBaseTestCase;
 
 class CardManagerTest extends IntegrationBaseTestCase
 {
@@ -70,7 +70,7 @@ class CardManagerTest extends IntegrationBaseTestCase
             $this->assertEquals('test', $card->getIdentity());
             $this->assertEquals(
                 $this->fixtures->STC3__Public_Key_Base64(),
-                base64_encode($publicKey->getValue())
+                base64_encode($this->virgilCrypto->exportPublicKey($publicKey))
             );
             $this->assertEquals('5.0', $card->getVersion());
             $this->assertEquals(new DateTime('2018-01-11T15:57:25'), $card->getCreatedAt());
@@ -107,7 +107,7 @@ class CardManagerTest extends IntegrationBaseTestCase
             $this->assertEquals('test', $card->getIdentity());
             $this->assertEquals(
                 $this->fixtures->STC4__Public_Key_Base64(),
-                base64_encode($publicKey->getValue())
+                base64_encode($this->virgilCrypto->exportPublicKey($publicKey))
             );
             $this->assertEquals('5.0', $card->getVersion());
             $this->assertEquals(new DateTime('2018-01-11T15:57:25'), $card->getCreatedAt());
@@ -161,7 +161,7 @@ class CardManagerTest extends IntegrationBaseTestCase
         $this->cardVerifier = null;
         $cardManagerNoVerify = $this->getCardManager();
 
-        $keys = $this->virgilCrypto->generateKeys();
+        $keys = $this->virgilCrypto->generateKeyPair();
         $cardParams = CardParams::create(
             [
                 CardParams::Identity   => $identity,
@@ -178,20 +178,23 @@ class CardManagerTest extends IntegrationBaseTestCase
 
         $getCard = $cardManager->getCard($card->getID());
 
-        $this->assertEquals($card, $getCard);
+        foreach ([$card, $getCard] as $card) {
+            $this->assertEquals($expectedCard->getID(), $card->getID());
+            $this->assertEquals(
+                $this->virgilCrypto->exportPublicKey($expectedCard->getPublicKey()),
+                $this->virgilCrypto->exportPublicKey($card->getPublicKey())
+            );
+            $this->assertEquals($expectedCard->getIdentity(), $card->getIdentity());
+            $this->assertEquals($expectedCard->getVersion(), $card->getVersion());
+            $this->assertEquals($expectedCard->getCreatedAt(), $card->getCreatedAt());
+            $this->assertEquals($expectedCard->isOutdated(), $card->isOutdated());
+            $this->assertEquals($expectedCard->getContentSnapshot(), $card->getContentSnapshot());
+            $this->assertEquals($expectedCard->getPreviousCardId(), $card->getPreviousCardId());
+            $this->assertEquals($expectedCard->getPreviousCard(), $card->getPreviousCard());
 
-        $this->assertEquals($expectedCard->getID(), $card->getID());
-        $this->assertEquals($expectedCard->getPublicKey(), $card->getPublicKey());
-        $this->assertEquals($expectedCard->getIdentity(), $card->getIdentity());
-        $this->assertEquals($expectedCard->getVersion(), $card->getVersion());
-        $this->assertEquals($expectedCard->getCreatedAt(), $card->getCreatedAt());
-        $this->assertEquals($expectedCard->isOutdated(), $card->isOutdated());
-        $this->assertEquals($expectedCard->getContentSnapshot(), $card->getContentSnapshot());
-        $this->assertEquals($expectedCard->getPreviousCardId(), $card->getPreviousCardId());
-        $this->assertEquals($expectedCard->getPreviousCard(), $card->getPreviousCard());
-
-        $this->assertCount(2, $card->getSignatures());
-        $this->assertCount(1, $expectedCard->getSignatures());
+            $this->assertCount(2, $card->getSignatures());
+            $this->assertCount(1, $expectedCard->getSignatures());
+        }
     }
 
 
@@ -206,7 +209,7 @@ class CardManagerTest extends IntegrationBaseTestCase
         $this->cardVerifier = null;
         $cardManagerNoVerify = $this->getCardManager();
 
-        $keys = $this->virgilCrypto->generateKeys();
+        $keys = $this->virgilCrypto->generateKeyPair();
         $cardParams = CardParams::create(
             [
                 CardParams::Identity    => $identity,
@@ -227,20 +230,23 @@ class CardManagerTest extends IntegrationBaseTestCase
 
         $getCard = $cardManager->getCard($card->getID());
 
-        $this->assertEquals($card, $getCard);
+        foreach ([$card, $getCard] as $card) {
+            $this->assertEquals($expectedCard->getID(), $card->getID());
+            $this->assertEquals(
+                $this->virgilCrypto->exportPublicKey($expectedCard->getPublicKey()),
+                $this->virgilCrypto->exportPublicKey($card->getPublicKey())
+            );
+            $this->assertEquals($expectedCard->getIdentity(), $card->getIdentity());
+            $this->assertEquals($expectedCard->getVersion(), $card->getVersion());
+            $this->assertEquals($expectedCard->getCreatedAt(), $card->getCreatedAt());
+            $this->assertEquals($expectedCard->isOutdated(), $card->isOutdated());
+            $this->assertEquals($expectedCard->getContentSnapshot(), $card->getContentSnapshot());
+            $this->assertEquals($expectedCard->getPreviousCardId(), $card->getPreviousCardId());
+            $this->assertEquals($expectedCard->getPreviousCard(), $card->getPreviousCard());
 
-        $this->assertEquals($expectedCard->getID(), $card->getID());
-        $this->assertEquals($expectedCard->getPublicKey(), $card->getPublicKey());
-        $this->assertEquals($expectedCard->getIdentity(), $card->getIdentity());
-        $this->assertEquals($expectedCard->getVersion(), $card->getVersion());
-        $this->assertEquals($expectedCard->getCreatedAt(), $card->getCreatedAt());
-        $this->assertEquals($expectedCard->isOutdated(), $card->isOutdated());
-        $this->assertEquals($expectedCard->getContentSnapshot(), $card->getContentSnapshot());
-        $this->assertEquals($expectedCard->getPreviousCardId(), $card->getPreviousCardId());
-        $this->assertEquals($expectedCard->getPreviousCard(), $card->getPreviousCard());
-
-        $this->assertCount(2, $card->getSignatures());
-        $this->assertCount(1, $expectedCard->getSignatures());
+            $this->assertCount(2, $card->getSignatures());
+            $this->assertCount(1, $expectedCard->getSignatures());
+        }
     }
 
 
@@ -252,7 +258,7 @@ class CardManagerTest extends IntegrationBaseTestCase
         $cardManager = $this->getCardManager();
         $identity = $this->baseIdentityGenerator('Alice')();
 
-        $keys1 = $this->virgilCrypto->generateKeys();
+        $keys1 = $this->virgilCrypto->generateKeyPair();
         $card1 = $cardManager->publishCard(
             CardParams::create(
                 [
@@ -268,7 +274,7 @@ class CardManagerTest extends IntegrationBaseTestCase
         );
 
 
-        $keys2 = $this->virgilCrypto->generateKeys();
+        $keys2 = $this->virgilCrypto->generateKeyPair();
         $card2 = $cardManager->publishCard(
             CardParams::create(
                 [
@@ -299,7 +305,7 @@ class CardManagerTest extends IntegrationBaseTestCase
         $cardManager = $this->getCardManager();
         $identity = $this->baseIdentityGenerator('Alice')();
 
-        $keys1 = $this->virgilCrypto->generateKeys();
+        $keys1 = $this->virgilCrypto->generateKeyPair();
         $card1 = $cardManager->publishCard(
             CardParams::create(
                 [
@@ -315,7 +321,7 @@ class CardManagerTest extends IntegrationBaseTestCase
         );
 
 
-        $keys2 = $this->virgilCrypto->generateKeys();
+        $keys2 = $this->virgilCrypto->generateKeyPair();
         $card2 = $cardManager->publishCard(
             CardParams::create(
                 [
@@ -327,7 +333,7 @@ class CardManagerTest extends IntegrationBaseTestCase
             )
         );
 
-        $keys3 = $this->virgilCrypto->generateKeys();
+        $keys3 = $this->virgilCrypto->generateKeyPair();
         $card3 = $cardManager->publishCard(
             CardParams::create(
                 [
@@ -357,8 +363,23 @@ class CardManagerTest extends IntegrationBaseTestCase
 
         $this->assertEquals($card2Search->getID(), $card2->getID());
         $this->assertEquals($card2Search->getPreviousCardId(), $card1->getID());
-        $this->assertEquals($card2Search->getPreviousCard(), $card1);
         $this->assertFalse($card2Search->isOutdated());
+
+        $card1Search = $card2Search->getPreviousCard();
+        $this->assertEquals($card1Search->getID(), $card1->getID());
+        $this->assertEquals(
+            $this->virgilCrypto->exportPublicKey($card1Search->getPublicKey()),
+            $this->virgilCrypto->exportPublicKey($card1->getPublicKey())
+        );
+        $this->assertEquals($card1Search->getIdentity(), $card1->getIdentity());
+        $this->assertEquals($card1Search->getVersion(), $card1->getVersion());
+        $this->assertEquals($card1Search->getCreatedAt(), $card1->getCreatedAt());
+        $this->assertEquals($card1Search->isOutdated(), $card1->isOutdated());
+        $this->assertEquals($card1Search->getContentSnapshot(), $card1->getContentSnapshot());
+        $this->assertEquals($card1Search->getPreviousCardId(), $card1->getPreviousCardId());
+        $this->assertEquals($card1Search->getPreviousCard(), $card1->getPreviousCard());
+        $this->assertCount(2, $card1->getSignatures());
+        $this->assertCount(2, $card1Search->getSignatures());
 
         $this->assertEquals($card3Search->getID(), $card3->getID());
         $this->assertEquals($card3Search->getPreviousCardId(), "");
@@ -368,10 +389,11 @@ class CardManagerTest extends IntegrationBaseTestCase
 
     /**
      * @test
-     * @expectedException \Virgil\Sdk\Exceptions\CardClientException
      */
     public function testSTC34()
     {
+        $this->expectException('\Virgil\Sdk\Exceptions\CardClientException');
+
         $this->cardVerifier =  new NullCardVerifier();
 
         $cardManager = $this->getCardManager();

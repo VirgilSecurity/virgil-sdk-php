@@ -1,50 +1,78 @@
 <?php
+/**
+ * Copyright (C) 2015-2020 Virgil Security Inc.
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *     (1) Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *     (2) Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *     (3) Neither the name of the copyright holder nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
+ */
+
+declare(strict_types=1);
 
 namespace Virgil\Sdk\Http\Curl;
 
 use Virgil\Sdk\Http\AbstractHttpClient;
 use Virgil\Sdk\Http\Constants\RequestMethods;
+use Virgil\Sdk\Http\HttpClientInterface;
 use Virgil\Sdk\Http\Responses\HttpResponse;
+use Virgil\Sdk\Http\Responses\HttpResponseInterface;
 use Virgil\Sdk\Http\Responses\HttpStatusCode;
-use Virgil\Sdk\Http\VirgilAgent\HttpVirgilAgent;
+
 
 /**
  * Class CurlClient
- * @package Virgil\Http\Curl
  */
-class CurlClient extends AbstractHttpClient
+class CurlClient extends AbstractHttpClient implements HttpClientInterface
 {
-    /** @var RequestFactoryInterface $curlRequestFactory */
     private $curlRequestFactory;
 
-    /** @var array $requestHeaders */
     private $requestHeaders;
 
-
-    /**
-     * Class constructor.
-     *
-     * @param RequestFactoryInterface $curlRequestFactory Curl request factory
-     * @param array                   $requestHeaders     Default headers for all outbound requests
-     */
     public function __construct(RequestFactoryInterface $curlRequestFactory, array $requestHeaders = [])
     {
         $this->curlRequestFactory = $curlRequestFactory;
         $this->requestHeaders = $requestHeaders;
     }
 
-
     /**
-     * @inheritdoc
+     * Make and execute a HTTP POST request.
      */
-    public function post($requestUrl, $requestBody, array $requestHeaders = [])
+    public function post(string $requestUrl, string $requestBody, array $requestHeaders = []): HttpResponseInterface
     {
         $curlOptions = [
-            CURLOPT_URL           => $this->buildUrl($requestUrl),
-            CURLOPT_HTTPHEADER    => $this->buildHeaders($requestHeaders),
+            CURLOPT_URL => $this->buildUrl($requestUrl),
+            CURLOPT_HTTPHEADER => $this->buildHeaders($requestHeaders),
             CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_POST,
-            CURLOPT_POSTFIELDS    => $requestBody,
-            CURLOPT_POST          => true,
+            CURLOPT_POSTFIELDS => $requestBody,
+            CURLOPT_POST => true,
         ];
 
         $curlRequest = $this->curlRequestFactory->create($curlOptions);
@@ -52,100 +80,87 @@ class CurlClient extends AbstractHttpClient
         return $this->doRequest($curlRequest);
     }
 
-
     /**
-     * @inheritdoc
+     * Make and execute a HTTP DELETE request.
      */
-    public function delete($requestUrl, $requestBody, array $requestHeaders = [])
+    public function delete(string $requestUrl, string $requestBody, array $requestHeaders = []): HttpResponseInterface
     {
         $curlRequest = $this->curlRequestFactory->create(
             [
-                CURLOPT_URL           => $this->buildUrl($requestUrl),
-                CURLOPT_HTTPHEADER    => $this->buildHeaders($requestHeaders),
+                CURLOPT_URL => $this->buildUrl($requestUrl),
+                CURLOPT_HTTPHEADER => $this->buildHeaders($requestHeaders),
                 CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_DELETE,
-                CURLOPT_POSTFIELDS    => $requestBody,
-                CURLOPT_POST          => true,
+                CURLOPT_POSTFIELDS => $requestBody,
+                CURLOPT_POST => true,
             ]
         );
 
         return $this->doRequest($curlRequest);
     }
 
-
     /**
-     * @inheritdoc
+     * Make and execute a HTTP GET request.
      */
-    public function get($requestUrl, array $requestParams = [], array $requestHeaders = [])
-    {
-
+    public function get(
+        string $requestUrl,
+        array $requestParams = [],
+        array $requestHeaders = []
+    ): HttpResponseInterface {
         $curlRequest = $this->curlRequestFactory->create(
             [
-                CURLOPT_URL           => $this->buildUrl($requestUrl, $requestParams),
-                CURLOPT_HTTPHEADER    => $this->buildHeaders($requestHeaders),
+                CURLOPT_URL => $this->buildUrl($requestUrl, $requestParams),
+                CURLOPT_HTTPHEADER => $this->buildHeaders($requestHeaders),
                 CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_GET,
-                CURLOPT_HTTPGET       => true,
+                CURLOPT_HTTPGET => true,
             ]
         );
 
         return $this->doRequest($curlRequest);
     }
 
-
     /**
-     * @inheritdoc
+     * Get default headers for all requests.
      */
-    public function getRequestHeaders()
+    public function getRequestHeaders(): array
     {
         return $this->requestHeaders;
     }
 
-
     /**
-     * @inheritdoc
+     * Set default headers for all requests.
      */
-    public function setRequestHeaders($requestHeaders)
+    public function setRequestHeaders(array $requestHeaders): void
     {
         $this->requestHeaders = $requestHeaders;
     }
 
-
     /**
-     * @inheritdoc
-     *
-     * @return HttpResponse
+     * Do a http request
      */
-    protected function doRequest(RequestInterface $httpRequest)
+    protected function doRequest(RequestInterface $httpRequest): HttpResponse
     {
         $httpRawResponse = $httpRequest->execute();
         $httpStatusCode = $httpRequest->getInfo(CURLINFO_HTTP_CODE);
         $httpRequest->close();
 
-        return $this->buildResponse($httpStatusCode, $httpRawResponse);
+        return $this->buildResponse((string)$httpStatusCode, (string)$httpRawResponse);
     }
-
 
     /**
      * Builds response from raw HTTP response body and HTTP status code.
-     *
-     * @param string $httpStatusCode HTTP status code
-     * @param string $httpResponse   Raw HTTP response body
-     *
-     * @return HttpResponse
      */
-    protected function buildResponse($httpStatusCode, $httpResponse)
+    protected function buildResponse(string $httpStatusCode, string $httpResponse): HttpResponse
     {
-        return new HttpResponse(new HttpStatusCode($httpStatusCode), ...explode("\r\n\r\n", $httpResponse, 2));
+        return new HttpResponse(
+            new HttpStatusCode($httpStatusCode),
+            ...explode("\r\n\r\n", $httpResponse, 2)
+        );
     }
-
 
     /**
      * Returns HTTP compatible request headers.
-     *
-     * @param $requestHeaders
-     *
-     * @return array
      */
-    protected function buildHeaders($requestHeaders)
+    protected function buildHeaders(array $requestHeaders): array
     {
         $requestHeaders = $requestHeaders + $this->requestHeaders;
         $resultHeaders = [];
@@ -162,16 +177,10 @@ class CurlClient extends AbstractHttpClient
         return $resultHeaders;
     }
 
-
     /**
      * Returns HTTP compatible request URL with params if specified.
-     *
-     * @param       $requestUrl
-     * @param array $requestParams
-     *
-     * @return string
      */
-    protected function buildUrl($requestUrl, $requestParams = [])
+    protected function buildUrl(string $requestUrl, array $requestParams = []): string
     {
         if (!empty($requestParams)) {
             $requestUrl = $requestUrl . '?' . http_build_query($requestParams);
