@@ -33,9 +33,9 @@
     }
   ],
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.3",
     "ext-curl": "*",
-    "virgil/crypto": "^6.1",
+    "virgil/crypto": "^6.2",
     "ext-json": "*"
   },
   "require-dev": {
