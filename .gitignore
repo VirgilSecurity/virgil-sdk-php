@@ -3,3 +3,4 @@ vendor
 .env
 _dev
 .phpunit.result.cache
+.phpunit.cache
