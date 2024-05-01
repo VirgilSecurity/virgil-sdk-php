@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -59,11 +59,11 @@ abstract class AbstractHttpClient implements HttpClientInterface
             case RequestMethods::HTTP_GET:
                 return $this->get($httpRequest->getUrl(), [], $httpRequest->getHeaders());
             case RequestMethods::HTTP_POST:
-                return $this->post($httpRequest->getUrl(), (string)$httpRequest->getBody(), $httpRequest->getHeaders());
-            case  RequestMethods::HTTP_DELETE:
+                return $this->post($httpRequest->getUrl(), (string) $httpRequest->getBody(), $httpRequest->getHeaders());
+            case RequestMethods::HTTP_DELETE:
                 return $this->delete(
                     $httpRequest->getUrl(),
-                    (string)$httpRequest->getBody(),
+                    (string) $httpRequest->getBody(),
                     $httpRequest->getHeaders()
                 );
         }

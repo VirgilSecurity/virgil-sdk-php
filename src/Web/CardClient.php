@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -106,8 +106,10 @@ class CardClient
             )
         );
 
-        if (!$httpResponse->getHttpStatusCode()
-            ->isSuccess()) {
+        if (
+            !$httpResponse->getHttpStatusCode()
+                ->isSuccess()
+        ) {
             return $this->parseErrorResponse($httpResponse->getBody());
         }
 
@@ -131,8 +133,10 @@ class CardClient
             )
         );
 
-        if (!$httpResponse->getHttpStatusCode()
-            ->isSuccess()) {
+        if (
+            !$httpResponse->getHttpStatusCode()
+                ->isSuccess()
+        ) {
             return $this->parseErrorResponse($httpResponse->getBody());
         }
 
@@ -158,8 +162,10 @@ class CardClient
             )
         );
 
-        if (!$httpResponse->getHttpStatusCode()
-            ->isSuccess()) {
+        if (
+            !$httpResponse->getHttpStatusCode()
+                ->isSuccess()
+        ) {
             return $this->parseErrorResponse($httpResponse->getBody());
         }
 
@@ -187,8 +193,10 @@ class CardClient
             )
         );
 
-        if (!$httpResponse->getHttpStatusCode()
-            ->isSuccess()) {
+        if (
+            !$httpResponse->getHttpStatusCode()
+                ->isSuccess()
+        ) {
             return $this->parseErrorResponse($httpResponse->getBody());
         }
 
@@ -211,6 +219,6 @@ class CardClient
             }
         }
 
-        return new ErrorResponseModel((int)$code, (string)$message);
+        return new ErrorResponseModel((int) $code, (string) $message);
     }
 }

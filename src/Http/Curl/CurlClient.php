@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -143,7 +143,7 @@ class CurlClient extends AbstractHttpClient implements HttpClientInterface
         $httpStatusCode = $httpRequest->getInfo(CURLINFO_HTTP_CODE);
         $httpRequest->close();
 
-        return $this->buildResponse((string)$httpStatusCode, (string)$httpRawResponse);
+        return $this->buildResponse((string) $httpStatusCode, (string) $httpRawResponse);
     }
 
     /**

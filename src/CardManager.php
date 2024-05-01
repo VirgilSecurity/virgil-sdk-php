@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -206,10 +206,12 @@ class CardManager
         $tokenContext = new TokenContext("", 'get');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
-        $responseModel = $this->cardClient->getCard($cardID, (string)$token);
+        $responseModel = $this->cardClient->getCard($cardID, (string) $token);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
-                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+                "error response from card service",
+                $responseModel->getCode(),
+                $responseModel->getMessage()
             );
         }
 
@@ -234,10 +236,12 @@ class CardManager
         $tokenContext = new TokenContext($identity, 'search');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
-        $responseModel = $this->cardClient->searchCards($identity, (string)$token);
+        $responseModel = $this->cardClient->searchCards($identity, (string) $token);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
-                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+                "error response from card service",
+                $responseModel->getCode(),
+                $responseModel->getMessage()
             );
         }
 
@@ -263,10 +267,12 @@ class CardManager
         $tokenContext = new TokenContext("", 'revoke');
         $token = $this->accessTokenProvider->getToken($tokenContext);
 
-        $responseModel = $this->cardClient->revokeCard($cardID, (string)$token);
+        $responseModel = $this->cardClient->revokeCard($cardID, (string) $token);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
-                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+                "error response from card service",
+                $responseModel->getCode(),
+                $responseModel->getMessage()
             );
         }
     }
@@ -325,7 +331,9 @@ class CardManager
         $modelSignatures = [];
         foreach ($card->getSignatures() as $cardSignature) {
             $modelSignatures[] = new RawSignature(
-                $cardSignature->getSigner(), $cardSignature->getSignature(), $cardSignature->getSnapshot()
+                $cardSignature->getSigner(),
+                $cardSignature->getSignature(),
+                $cardSignature->getSnapshot()
             );
         }
 
@@ -344,10 +352,12 @@ class CardManager
             $model = $signCallback($model);
         }
 
-        $responseModel = $this->cardClient->publishCard($model, (string)$token);
+        $responseModel = $this->cardClient->publishCard($model, (string) $token);
         if ($responseModel instanceof ErrorResponseModel) {
             throw new CardClientException(
-                "error response from card service", $responseModel->getCode(), $responseModel->getMessage()
+                "error response from card service",
+                $responseModel->getCode(),
+                $responseModel->getMessage()
             );
         }
 
@@ -376,7 +386,10 @@ class CardManager
             }
 
             $cardSignatures[] = new CardSignature(
-                $signature->getSigner(), $signature->getSignature(), $signature->getSnapshot(), $extraFields
+                $signature->getSigner(),
+                $signature->getSignature(),
+                $signature->getSnapshot(),
+                $extraFields
             );
         }
 
