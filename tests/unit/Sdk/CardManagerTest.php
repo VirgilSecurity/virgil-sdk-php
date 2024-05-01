@@ -39,13 +39,10 @@ namespace Tests\Unit\Sdk;
 
 
 use DateTime;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Virgil\Crypto\Core\Enum\HashAlgorithms;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPublicKey;
 use Virgil\Crypto\VirgilCrypto;
-use Virgil\Sdk\Http\Curl\CurlClient;
 use Virgil\Sdk\Http\HttpClientInterface;
 use Virgil\Sdk\Http\Requests\GetHttpRequest;
 use Virgil\Sdk\Http\Requests\PostHttpRequest;
@@ -64,6 +61,11 @@ use Virgil\Sdk\Web\Authorization\TokenContext;
 use Virgil\Sdk\Web\CardClient;
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
+
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class CardManagerTest extends TestCase
 {
@@ -113,9 +115,7 @@ class CardManagerTest extends TestCase
         $this->httpVirgilAgentMock->method("getName")->willReturn("Virgil-agent");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateRawCard_withCardParams_returnsSelfSignedRawSignedModel()
     {
         $this->virgilCrypto->expects($this->once())
@@ -144,9 +144,7 @@ class CardManagerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateRawCard_withCardParamsExtraFields_returnsSelfSignedRawSignedModel()
     {
         $this->virgilCrypto->expects($this->once())
@@ -178,7 +176,7 @@ class CardManagerTest extends TestCase
     }
 
 
-    public function cardManager_withHttpClientErrorResponse_throwsCardClientException_dataProvider()
+    public static function cardManager_withHttpClientErrorResponse_throwsCardClientException_dataProvider()
     {
         return [
             [
@@ -200,11 +198,8 @@ class CardManagerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     *
-     * @dataProvider  cardManager_withHttpClientErrorResponse_throwsCardClientException_dataProvider
-     */
+    #[Test]
+    #[DataProvider("cardManager_withHttpClientErrorResponse_throwsCardClientException_dataProvider")]
     public function cardManager_withHttpClientErrorResponse_throwsCardClientException($testFunc)
     {
         $this->expectException('\Virgil\Sdk\Exceptions\CardClientException');
@@ -236,9 +231,7 @@ class CardManagerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function publishRawSignedModel_withAccessToken_returnsCardWithID()
     {
         $this->signCallback = function (RawSignedModel $model) {
@@ -284,7 +277,9 @@ class CardManagerTest extends TestCase
             )
             ->willReturn(
                 new HttpResponse(
-                    new HttpStatusCode(201), '', '
+                    new HttpStatusCode(201),
+                    '',
+                    '
                                             {
                                               "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==",
                                               "signatures": [
@@ -313,7 +308,8 @@ class CardManagerTest extends TestCase
         $contentSnapshot = '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}';
         $signatures = [
             new RawSignature(
-                "self", base64_decode(
+                "self",
+                base64_decode(
                     "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
                 )
             ),
@@ -326,7 +322,7 @@ class CardManagerTest extends TestCase
     }
 
 
-    public function getCardByID_withAccessToken_returnsCard_dataProvider()
+    public static function getCardByID_withAccessToken_returnsCard_dataProvider()
     {
         return [
             [
@@ -345,11 +341,8 @@ class CardManagerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     *
-     * @dataProvider  getCardByID_withAccessToken_returnsCard_dataProvider
-     */
+    #[Test]
+    #[DataProvider("getCardByID_withAccessToken_returnsCard_dataProvider")]
     public function getCardByID_withAccessToken_returnsCard($headers, $isOutdated)
     {
         $this->cardVerifierMock->expects($this->once())
@@ -388,7 +381,9 @@ class CardManagerTest extends TestCase
             )
             ->willReturn(
                 new HttpResponse(
-                    new HttpStatusCode(200), $headers, '
+                    new HttpStatusCode(200),
+                    $headers,
+                    '
                                             {
                                               "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==",
                                               "signatures": [
@@ -423,9 +418,7 @@ class CardManagerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchCardByIdentity_withAccessToken_returnsCards()
     {
         $this->cardVerifierMock->expects($this->exactly(3))
@@ -435,30 +428,16 @@ class CardManagerTest extends TestCase
 
         $this->virgilCrypto->expects($this->exactly(3))
             ->method("computeHash")
-            ->withConsecutive(
-                [
-                    $this->equalTo('{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}'),
-                    HashAlgorithms::SHA512()
-                ],
-                [
-                    $this->equalTo('{"identity":"Alice-a86060c7007b007c070f","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888, "previous_card_id":"01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f"}'),
-                    HashAlgorithms::SHA512()
-                ],
-                [
-                    $this->equalTo('{"identity":"Alice-6f5dd654af58ff84110c","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}'),
-                    HashAlgorithms::SHA512()
-                ]
-            )
-            ->willReturnOnConsecutiveCalls(
-                base64_decode(
-                    "AQVcYCMpp3HfyLx6X/HC7lcdFpw2s8UoFwnl1PeRNV9OOmt6onnlFg9LXqLzihLKcrjcb1zMNqhg8BMcGQfQgQ=="
-                ),
-                base64_decode(
-                    "cAcONe9y5LM/qv0Wtz4HPL3/et2eShDTwBoovlf/4eJgGACC8M45kwj10+jI07R+L3VwYlSPshKLgfJAkkclCg=="
-                ),
-                base64_decode(
-                    "vC3MNikrfwU/f4Oaqy3Lag5xVti0nHbbiSQwzjvQbiLu0IO0qWKRTfN8GoPz3PfoewAdUFnI6OCIvwqjWmcwCQ=="
-                )
+            ->willReturnCallback(
+                fn($snapshot, $hashAlg) =>
+                match ($snapshot) {
+                    '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}'
+                    => base64_decode("AQVcYCMpp3HfyLx6X/HC7lcdFpw2s8UoFwnl1PeRNV9OOmt6onnlFg9LXqLzihLKcrjcb1zMNqhg8BMcGQfQgQ=="),
+                    '{"identity":"Alice-a86060c7007b007c070f","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888, "previous_card_id":"01055c602329a771dfc8bc7a5ff1c2ee571d169c36b3c5281709e5d4f791355f"}'
+                    => base64_decode("cAcONe9y5LM/qv0Wtz4HPL3/et2eShDTwBoovlf/4eJgGACC8M45kwj10+jI07R+L3VwYlSPshKLgfJAkkclCg=="),
+                    '{"identity":"Alice-6f5dd654af58ff84110c","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}'
+                    => base64_decode("vC3MNikrfwU/f4Oaqy3Lag5xVti0nHbbiSQwzjvQbiLu0IO0qWKRTfN8GoPz3PfoewAdUFnI6OCIvwqjWmcwCQ==")
+                }
             );
 
         $this->virgilCrypto->expects($this->exactly(3))
@@ -480,7 +459,9 @@ class CardManagerTest extends TestCase
             )
             ->willReturn(
                 new HttpResponse(
-                    new HttpStatusCode(200), '', '
+                    new HttpStatusCode(200),
+                    '',
+                    '
                                             [
                                               {
                                                 "content_snapshot": "eyJpZGVudGl0eSI6IkFsaWNlLTZjYWRhYTY4ZjA5MWQzZDM2MjZhIiwicHVibGljX2tleSI6Ik1Db3dCUVlESzJWd0F5RUFEN0JOZVZEYnVaOUZQT0p1Q2Z2UUJWZWxyYWpzcGZUb212UnBOMURZVm4wPSIsInZlcnNpb24iOiI1LjAiLCJjcmVhdGVkX2F0IjoxNTIzODI3ODg4fQ==",
@@ -547,15 +528,14 @@ class CardManagerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importCard_fromRawSignedModel_returnsCard()
     {
         $contentSnapshot = '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}';
         $signatures = [
             new RawSignature(
-                "self", base64_decode(
+                "self",
+                base64_decode(
                     "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
                 )
             ),
@@ -602,7 +582,8 @@ class CardManagerTest extends TestCase
         $this->assertEquals(
             [
                 new CardSignature(
-                    "self", base64_decode(
+                    "self",
+                    base64_decode(
                         "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
                     )
                 ),
@@ -615,15 +596,14 @@ class CardManagerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportCard_asRawSignedModel_returnsRawSignedModel()
     {
         $expectedContentSnapshot = '{"identity":"Alice-6cadaa68f091d3d3626a","public_key":"MCowBQYDK2VwAyEAD7BNeVDbuZ9FPOJuCfvQBVelrajspfTomvRpN1DYVn0=","version":"5.0","created_at":1523827888}';
         $expectedSignatures = [
             new RawSignature(
-                "self", base64_decode(
+                "self",
+                base64_decode(
                     "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
                 )
             ),
@@ -638,7 +618,8 @@ class CardManagerTest extends TestCase
             false,
             [
                 new CardSignature(
-                    "self", base64_decode(
+                    "self",
+                    base64_decode(
                         "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
                     )
                 ),
@@ -659,7 +640,7 @@ class CardManagerTest extends TestCase
      */
     protected function getCardManager()
     {
-        $cardClient = new CardClient($this->httpVirgilAgentMock,"http://service.url", $this->httpClientMock);
+        $cardClient = new CardClient($this->httpVirgilAgentMock, "http://service.url", $this->httpClientMock);
 
         return new CardManager(
             $this->virgilCrypto,

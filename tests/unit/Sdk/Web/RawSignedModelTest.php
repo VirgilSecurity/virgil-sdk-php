@@ -37,14 +37,17 @@
 
 namespace Tests\Unit\Sdk\Web;
 
-use PHPUnit\Framework\TestCase;
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class RawSignedModelTest extends TestCase
 {
 
-    public function dataProvider()
+    public static function dataProvider()
     {
 
         return [
@@ -60,11 +63,8 @@ class RawSignedModelTest extends TestCase
     }
 
 
-    /**
-     * @test
-     *
-     * @dataProvider  dataProvider
-     */
+    #[Test]
+    #[DataProvider("dataProvider")]
     public function RawSignedModel_FromString_returnsValidModel($json, $fromFunc)
     {
         $model = call_user_func($fromFunc, $json);
@@ -76,14 +76,16 @@ class RawSignedModelTest extends TestCase
         $this->assertEquals(
             [
                 new RawSignature(
-                    "self", base64_decode(
-                              "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
-                          )
+                    "self",
+                    base64_decode(
+                        "MFEwDQYJYIZIAWUDBAIDBQAEQDBbYZkTu7vt5AKTcCPJ685nMuQCivQZeMR+6jmmJY21/k5B4xEs5A7HF293fbYV/6ZlqdTAsPjjQuMXPNU6pwA="
+                    )
                 ),
                 new RawSignature(
-                    "virgil", base64_decode(
-                                "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="
-                            )
+                    "virgil",
+                    base64_decode(
+                        "MFEwDQYJYIZIAWUDBAIDBQAEQAOiE0Y29s/rPAtxjV0HZsGf3ETQnjCFSndvac2KPNP4rXUOJ2NOj7VgRAkc3izKQpDs+Bd1YNy0hZeh36GcJQc="
+                    )
                 ),
             ],
             $model->getSignatures()

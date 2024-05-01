@@ -45,14 +45,13 @@ use Virgil\Sdk\Http\Requests\GetHttpRequest;
 use Virgil\Sdk\Http\Requests\PostHttpRequest;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class HttpClientSendRequestTest extends TestCase
 {
-    /**
-     * @dataProvider getHttpRequestArguments
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider("getHttpRequestArguments")]
     public function send__httpGetRequest__callsGetHandler($requestUrl, $requestBody, $requestHeaders)
     {
         $httpClientMock = $this->getHttpClient();
@@ -68,11 +67,8 @@ class HttpClientSendRequestTest extends TestCase
     }
 
 
-    /**
-     * @dataProvider getHttpRequestArguments
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider("getHttpRequestArguments")]
     public function send__httpPostRequest__callsPostHandler($requestUrl, $requestBody, $requestHeaders)
     {
         $httpClientMock = $this->getHttpClient();
@@ -87,12 +83,8 @@ class HttpClientSendRequestTest extends TestCase
         $httpClientMock->send($postHttpRequest);
     }
 
-
-    /**
-     * @dataProvider getHttpRequestArguments
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider("getHttpRequestArguments")]
     public function send__httpDeleteRequest__callsDeleteHandler($requestUrl, $requestBody, $requestHeaders)
     {
         $httpClientMock = $this->getHttpClient();
@@ -108,7 +100,7 @@ class HttpClientSendRequestTest extends TestCase
     }
 
 
-    public function getHttpRequestArguments()
+    public static function getHttpRequestArguments()
     {
         return [
             [
