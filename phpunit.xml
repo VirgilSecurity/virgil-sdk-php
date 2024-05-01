@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php"
-         colors="true"
-         verbose="true"
-         stopOnFailure="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php"
+    colors="true" stopOnFailure="true"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
+    displayDetailsOnTestsThatTriggerWarnings="true"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
+    cacheDirectory=".phpunit.cache">
     <testsuites>
         <testsuite name="UnitTests">
-            <directory suffix=".php">./tests/Tests/Unit</directory>
+            <directory suffix="Test.php">./tests/unit</directory>
         </testsuite>
         <testsuite name="IntegrationTests">
-            <directory suffix=".php">./tests/Tests/Integration</directory>
+            <directory suffix="Test.php">./tests/integration</directory>
         </testsuite>
     </testsuites>
     <groups>

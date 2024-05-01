@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -92,8 +92,10 @@ class ResponseModel
 
     public function isOutdated(): bool
     {
-        if (array_key_exists(self::SupersededCardIDHTTPHeader, $this->headers)) {
-            return $this->headers[self::SupersededCardIDHTTPHeader] === "true";
+        foreach ($this->headers as $key => $value) {
+            if (strcasecmp($key, self::SupersededCardIDHTTPHeader) == 0) {
+                return strcasecmp($value, "true") == 0;
+            }
         }
 
         return false;

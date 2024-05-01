@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -43,13 +43,13 @@ use Virgil\Sdk\Card;
 use Virgil\Sdk\CardParams;
 use Virgil\Sdk\CardSignature;
 use Virgil\Sdk\Verification\NullCardVerifier;
-use Virgil\SdkTests\IntegrationBaseTestCase;
+use Tests\Integration\IntegrationBaseTestCase;
+
+use PHPUnit\Framework\Attributes\Test;
 
 class CardManagerTest extends IntegrationBaseTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function STC3()
     {
         $this->cardVerifier = null;
@@ -84,9 +84,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function STC4()
     {
         $this->cardVerifier = null;
@@ -119,27 +117,30 @@ class CardManagerTest extends IntegrationBaseTestCase
 
             $this->assertEquals(
                 new CardSignature(
-                    'self', base64_decode(
-                              $this->fixtures->STC4__Signature_Self_Base64()
-                          )
+                    'self',
+                    base64_decode(
+                        $this->fixtures->STC4__Signature_Self_Base64()
+                    )
                 ),
                 $signatures[0]
             );
 
             $this->assertEquals(
                 new CardSignature(
-                    'virgil', base64_decode(
-                                $this->fixtures->STC4__Signature_Virgil_Base64()
-                            )
+                    'virgil',
+                    base64_decode(
+                        $this->fixtures->STC4__Signature_Virgil_Base64()
+                    )
                 ),
                 $signatures[1]
             );
 
             $this->assertEquals(
                 new CardSignature(
-                    'extra', base64_decode(
-                               $this->fixtures->STC4__Signature_Extra_Base64()
-                           )
+                    'extra',
+                    base64_decode(
+                        $this->fixtures->STC4__Signature_Extra_Base64()
+                    )
                 ),
                 $signatures[2]
             );
@@ -150,9 +151,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSTC17()
     {
         $cardManager = $this->getCardManager();
@@ -164,8 +163,8 @@ class CardManagerTest extends IntegrationBaseTestCase
         $keys = $this->virgilCrypto->generateKeyPair();
         $cardParams = CardParams::create(
             [
-                CardParams::Identity   => $identity,
-                CardParams::PublicKey  => $keys->getPublicKey(),
+                CardParams::Identity => $identity,
+                CardParams::PublicKey => $keys->getPublicKey(),
                 CardParams::PrivateKey => $keys->getPrivateKey(),
             ]
         );
@@ -198,9 +197,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSTC18()
     {
         $cardManager = $this->getCardManager();
@@ -212,9 +209,9 @@ class CardManagerTest extends IntegrationBaseTestCase
         $keys = $this->virgilCrypto->generateKeyPair();
         $cardParams = CardParams::create(
             [
-                CardParams::Identity    => $identity,
-                CardParams::PublicKey   => $keys->getPublicKey(),
-                CardParams::PrivateKey  => $keys->getPrivateKey(),
+                CardParams::Identity => $identity,
+                CardParams::PublicKey => $keys->getPublicKey(),
+                CardParams::PrivateKey => $keys->getPrivateKey(),
                 CardParams::ExtraFields => [
                     'john' => 'doe',
                     'fire' => 'fox',
@@ -250,9 +247,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSTC19()
     {
         $cardManager = $this->getCardManager();
@@ -262,9 +257,9 @@ class CardManagerTest extends IntegrationBaseTestCase
         $card1 = $cardManager->publishCard(
             CardParams::create(
                 [
-                    CardParams::Identity    => $identity,
-                    CardParams::PublicKey   => $keys1->getPublicKey(),
-                    CardParams::PrivateKey  => $keys1->getPrivateKey(),
+                    CardParams::Identity => $identity,
+                    CardParams::PublicKey => $keys1->getPublicKey(),
+                    CardParams::PrivateKey => $keys1->getPrivateKey(),
                     CardParams::ExtraFields => [
                         'john' => 'doe',
                         'fire' => 'fox',
@@ -273,14 +268,13 @@ class CardManagerTest extends IntegrationBaseTestCase
             )
         );
 
-
         $keys2 = $this->virgilCrypto->generateKeyPair();
         $card2 = $cardManager->publishCard(
             CardParams::create(
                 [
-                    CardParams::Identity       => $identity,
-                    CardParams::PublicKey      => $keys2->getPublicKey(),
-                    CardParams::PrivateKey     => $keys2->getPrivateKey(),
+                    CardParams::Identity => $identity,
+                    CardParams::PublicKey => $keys2->getPublicKey(),
+                    CardParams::PrivateKey => $keys2->getPrivateKey(),
                     CardParams::PreviousCardID => $card1->getID(),
                 ]
             )
@@ -297,9 +291,7 @@ class CardManagerTest extends IntegrationBaseTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSTC20()
     {
         $cardManager = $this->getCardManager();
@@ -309,9 +301,9 @@ class CardManagerTest extends IntegrationBaseTestCase
         $card1 = $cardManager->publishCard(
             CardParams::create(
                 [
-                    CardParams::Identity    => $identity,
-                    CardParams::PublicKey   => $keys1->getPublicKey(),
-                    CardParams::PrivateKey  => $keys1->getPrivateKey(),
+                    CardParams::Identity => $identity,
+                    CardParams::PublicKey => $keys1->getPublicKey(),
+                    CardParams::PrivateKey => $keys1->getPrivateKey(),
                     CardParams::ExtraFields => [
                         'john' => 'doe',
                         'fire' => 'fox',
@@ -325,9 +317,9 @@ class CardManagerTest extends IntegrationBaseTestCase
         $card2 = $cardManager->publishCard(
             CardParams::create(
                 [
-                    CardParams::Identity       => $identity,
-                    CardParams::PublicKey      => $keys2->getPublicKey(),
-                    CardParams::PrivateKey     => $keys2->getPrivateKey(),
+                    CardParams::Identity => $identity,
+                    CardParams::PublicKey => $keys2->getPublicKey(),
+                    CardParams::PrivateKey => $keys2->getPrivateKey(),
                     CardParams::PreviousCardID => $card1->getID(),
                 ]
             )
@@ -337,8 +329,8 @@ class CardManagerTest extends IntegrationBaseTestCase
         $card3 = $cardManager->publishCard(
             CardParams::create(
                 [
-                    CardParams::Identity   => $identity,
-                    CardParams::PublicKey  => $keys3->getPublicKey(),
+                    CardParams::Identity => $identity,
+                    CardParams::PublicKey => $keys3->getPublicKey(),
                     CardParams::PrivateKey => $keys3->getPrivateKey(),
                 ]
             )
@@ -387,14 +379,12 @@ class CardManagerTest extends IntegrationBaseTestCase
         $this->assertFalse($card3Search->isOutdated());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSTC34()
     {
         $this->expectException('\Virgil\Sdk\Exceptions\CardClientException');
 
-        $this->cardVerifier =  new NullCardVerifier();
+        $this->cardVerifier = new NullCardVerifier();
 
         $cardManager = $this->getCardManager();
 

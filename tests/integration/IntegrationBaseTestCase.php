@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -35,7 +35,7 @@
  * Lead Maintainer: Virgil Security Inc. <support@virgilsecurity.com>
  */
 
-namespace Virgil\SdkTests;
+namespace Tests\Integration;
 
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
@@ -105,7 +105,7 @@ class IntegrationBaseTestCase extends TestCase
     {
         parent::setUp();
 
-        (new Dotenv(__DIR__ . "/../.."))->load();
+        Dotenv::createImmutable(__DIR__ . "/../..")->load();
 
         defined('VIRGIL_FIXTURE_PATH') or define('VIRGIL_FIXTURE_PATH', __DIR__ . '/../fixtures/');
 

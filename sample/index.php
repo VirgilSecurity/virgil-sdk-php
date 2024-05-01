@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -67,10 +67,12 @@ try {
 
     // Result:
     var_dump(
-        $cAlice, $cBob, $messageEncryptedForBob,
+        $cAlice,
+        $cBob,
+        $messageEncryptedForBob,
         [
             $message => $messageDecryptedForBob,
-            "isEquals" => $message==$messageDecryptedForBob
+            "isEquals" => $message == $messageDecryptedForBob
         ]
     );
 } catch (\Exception $e) {

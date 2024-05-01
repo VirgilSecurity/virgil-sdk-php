@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -37,7 +37,6 @@
 
 namespace Tests\Unit\Sdk\Signer;
 
-use PHPUnit\Framework\TestCase;
 use Virgil\Crypto\Core\VirgilKeys\VirgilPrivateKey;
 use Virgil\Crypto\VirgilCrypto;
 use Virgil\Sdk\Exceptions\VirgilException;
@@ -45,27 +44,29 @@ use Virgil\Sdk\Signer\ModelSigner;
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
+
 class ModelSignerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function sign_appendsToSignedModel_generatedRawSignature()
     {
         $cardCryptoMock = $this->createMock(VirgilCrypto::class);
         $pk = $this->createMock(VirgilPrivateKey::class);
         $cardCryptoMock->expects($this->once())
-                       ->method('generateSignature')
-                       ->with('{"identity":"Alice"}', $pk)
-                       ->willReturn('expected_signature')
+            ->method('generateSignature')
+            ->with('{"identity":"Alice"}', $pk)
+            ->willReturn('expected_signature')
         ;
 
         $modelSigner = new ModelSigner($cardCryptoMock);
 
         $rawSignedModel = new RawSignedModel(
-            '{"identity":"Alice"}', [
-                                      new RawSignature('Bob', 'bobs_signature', 'snaps'),
-                                  ]
+            '{"identity":"Alice"}',
+            [
+                new RawSignature('Bob', 'bobs_signature', 'snaps'),
+            ]
         );
         try {
             $modelSigner->sign($rawSignedModel, 'Alice', $pk);
@@ -81,23 +82,22 @@ class ModelSignerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function signWithExtraFields_appendsToSignedModel_generatedRawSignature()
     {
         $cardCryptoMock = $this->createMock(VirgilCrypto::class);
         $pk = $this->createMock(VirgilPrivateKey::class);
         $cardCryptoMock->expects($this->once())
-                       ->method('generateSignature')
-                       ->with('{"identity":"Alice"}{"extra_name":"value"}', $pk)
-                       ->willReturn('expected_signature')
+            ->method('generateSignature')
+            ->with('{"identity":"Alice"}{"extra_name":"value"}', $pk)
+            ->willReturn('expected_signature')
         ;
 
         $modelSigner = new ModelSigner($cardCryptoMock);
 
         $rawSignedModel = new RawSignedModel(
-            '{"identity":"Alice"}', []
+            '{"identity":"Alice"}',
+            []
         );
         try {
             $modelSigner->sign($rawSignedModel, 'Alice', $pk, ['extra_name' => 'value']);
@@ -113,9 +113,7 @@ class ModelSignerTest extends TestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sign_withExistsSigner_throwsVirgilException()
     {
         $this->expectException('\Virgil\Sdk\Exceptions\VirgilException');
@@ -126,9 +124,10 @@ class ModelSignerTest extends TestCase
         $modelSigner = new ModelSigner($cardCryptoMock);
 
         $rawSignedModel = new RawSignedModel(
-            '{"identity":"Alice"}', [
-                                      new RawSignature('Alice', 'bobs_signature', 'snaps'),
-                                  ]
+            '{"identity":"Alice"}',
+            [
+                new RawSignature('Alice', 'bobs_signature', 'snaps'),
+            ]
         );
 
         $modelSigner->sign($rawSignedModel, 'Alice', $pk);

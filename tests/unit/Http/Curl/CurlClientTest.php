@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -43,18 +43,13 @@ use Virgil\Sdk\Http\Curl\CurlRequest;
 use Virgil\Sdk\Http\Curl\CurlRequestFactory;
 use Virgil\Sdk\Http\HttpClientInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 class CurlClientTest extends TestCase
 {
-    /**
-     * @dataProvider requestOptionsDataProvider
-     *
-     * @param $factoryDefaultOptions
-     * @param $requestExpectedOptions
-     * @param $request
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider("requestOptionsDataProvider")]
     public function doRequest__whenCallAvailableRequestMethods__receivesCurlRequestWithValidOptions(
         $factoryDefaultOptions,
         $requestExpectedOptions,
@@ -64,22 +59,22 @@ class CurlClientTest extends TestCase
         $curlFactory->setDefaultOptions($factoryDefaultOptions);
 
         $httpClientMock = $this->getMockBuilder(CurlClient::class)
-                               ->setConstructorArgs(
-                                   [$curlFactory, ['Authorization' => 'VIRGIL { YOUR_APPLICATION_TOKEN }', 'virgil-agent' => '{ PRODUCT };{ FAMILY };{ OS };{ VERSION }']]
-                               )
-                               ->setMethods(['doRequest'])
-                               ->getMock()
+            ->setConstructorArgs(
+                [$curlFactory, ['Authorization' => 'VIRGIL { YOUR_APPLICATION_TOKEN }', 'virgil-agent' => '{ PRODUCT };{ FAMILY };{ OS };{ VERSION }']]
+            )
+            ->onlyMethods(['doRequest'])
+            ->getMock()
         ;
 
         $httpClientMock->expects($this->once())
-                       ->method('doRequest')
-                       ->with(
-                           $this->callback(
-                               function (CurlRequest $actualRequest) use ($requestExpectedOptions) {
-                                   return $requestExpectedOptions == $actualRequest->getOptions();
-                               }
-                           )
-                       )
+            ->method('doRequest')
+            ->with(
+                $this->callback(
+                    function (CurlRequest $actualRequest) use ($requestExpectedOptions) {
+                        return $requestExpectedOptions == $actualRequest->getOptions();
+                    }
+                )
+            )
         ;
 
 
@@ -87,22 +82,22 @@ class CurlClientTest extends TestCase
     }
 
 
-    public function requestOptionsDataProvider()
+    public static function requestOptionsDataProvider()
     {
         return [
             [
                 [CURLOPT_RETURNTRANSFER => 1],
                 [
-                    CURLOPT_URL            => '/test/cards?id=card_id_1',
-                    CURLOPT_HTTPHEADER     => [
+                    CURLOPT_URL => '/test/cards?id=card_id_1',
+                    CURLOPT_HTTPHEADER => [
                         'Accept: text/plain; q=0.5,text/html,text/x-c',
                         'Accept-Charset: iso-8859-5,unicode-1-1;q=0.8',
                         'Content-Length: 123',
                         'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
                         'Virgil-agent: { PRODUCT };{ FAMILY };{ OS };{ VERSION }'
                     ],
-                    CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_GET,
-                    CURLOPT_HTTPGET        => true,
+                    CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_GET,
+                    CURLOPT_HTTPGET => true,
                     CURLOPT_RETURNTRANSFER => 1,
                 ],
                 function (HttpClientInterface $httpClientMock) {
@@ -110,7 +105,7 @@ class CurlClientTest extends TestCase
                         '/test/cards',
                         ['id' => 'card_id_1'],
                         [
-                            'Accept'         => ['text/plain; q=0.5', 'text/html', 'text/x-c'],
+                            'Accept' => ['text/plain; q=0.5', 'text/html', 'text/x-c'],
                             'Accept-Charset' => ['iso-8859-5', 'unicode-1-1;q=0.8'],
                             'Content-Length' => '123',
                         ]
@@ -120,25 +115,25 @@ class CurlClientTest extends TestCase
             [
                 [CURLOPT_RETURNTRANSFER => 1, CURLOPT_SAFE_UPLOAD => false],
                 [
-                    CURLOPT_URL            => '/test/card',
-                    CURLOPT_HTTPHEADER     => [
+                    CURLOPT_URL => '/test/card',
+                    CURLOPT_HTTPHEADER => [
                         'Content-Type: application/json',
                         'Content-Length: ' . strlen('{"alice":"bob"}'),
                         'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
                         'Virgil-agent: { PRODUCT };{ FAMILY };{ OS };{ VERSION }'
                     ],
-                    CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_POST,
-                    CURLOPT_POST           => true,
-                    CURLOPT_POSTFIELDS     => '{"alice":"bob"}',
+                    CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_POST,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => '{"alice":"bob"}',
                     CURLOPT_RETURNTRANSFER => 1,
-                    CURLOPT_SAFE_UPLOAD    => false,
+                    CURLOPT_SAFE_UPLOAD => false,
                 ],
                 function (HttpClientInterface $httpClientMock) {
                     $httpClientMock->post(
                         '/test/card',
                         '{"alice":"bob"}',
                         [
-                            'Content-Type'   => ['application/json'],
+                            'Content-Type' => ['application/json'],
                             'Content-Length' => strlen('{"alice":"bob"}'),
                         ]
                     );
@@ -147,16 +142,16 @@ class CurlClientTest extends TestCase
             [
                 [CURLOPT_RETURNTRANSFER => 1],
                 [
-                    CURLOPT_URL            => '/test/card',
-                    CURLOPT_HTTPHEADER     => [
+                    CURLOPT_URL => '/test/card',
+                    CURLOPT_HTTPHEADER => [
                         'Content-Type: application/json',
                         'Content-Length: ' . strlen('{"alice":"bob"}'),
                         'Authorization: VIRGIL { YOUR_APPLICATION_TOKEN }',
                         'Virgil-agent: { PRODUCT };{ FAMILY };{ OS };{ VERSION }'
                     ],
-                    CURLOPT_CUSTOMREQUEST  => RequestMethods::HTTP_DELETE,
-                    CURLOPT_POST           => true,
-                    CURLOPT_POSTFIELDS     => '{"alice":"bob"}',
+                    CURLOPT_CUSTOMREQUEST => RequestMethods::HTTP_DELETE,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => '{"alice":"bob"}',
                     CURLOPT_RETURNTRANSFER => 1,
                 ],
                 function (HttpClientInterface $httpClientMock) {
@@ -164,9 +159,9 @@ class CurlClientTest extends TestCase
                         '/test/card',
                         '{"alice":"bob"}',
                         [
-                            'Content-Type'   => ['application/json'],
+                            'Content-Type' => ['application/json'],
                             'Content-Length' => strlen('{"alice":"bob"}'),
-                            'Authorization'  => 'VIRGIL { YOUR_APPLICATION_TOKEN }',
+                            'Authorization' => 'VIRGIL { YOUR_APPLICATION_TOKEN }',
                         ]
                     );
                 },

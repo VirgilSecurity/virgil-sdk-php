@@ -1,5 +1,6 @@
 # Virgil Core SDK PHP
-[![Build Status](https://travis-ci.com/VirgilSecurity/virgil-sdk-php.png?branch=master)](https://travis-ci.com/VirgilSecurity/virgil-sdk-php)
+
+[![Build Status](https://github.com/VirgilSecurity/virgil-sdk-php/actions/workflows/build.yml/badge.svg?branch=master)](https://travis-ci.com/VirgilSecurity/virgil-sdk-php)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/virgil/sdk.svg?style=flat-square)](https://packagist.org/packages/virgil/sdk)
 [![Total Downloads](https://img.shields.io/packagist/dt/virgil/sdk.svg?style=flat-square)](https://packagist.org/packages/virgil/sdk.svg)
 [![GitHub license](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/VirgilSecurity/virgil/blob/master/LICENSE)
@@ -15,6 +16,7 @@ The Virgil Core SDK is a low-level library that allows developers to get up and 
 In case you need additional security functionality for multi-device support, group chats and more, try our high-level [Virgil E3Kit framework](https://github.com/VirgilSecurity/awesome-virgil#E3Kit).
 
 ## SDK Features
+
 - Communicate with [Virgil Cards Service](https://developer.virgilsecurity.com/docs/platform/api-reference/cards-service/)
 - Manage users' public keys
 - Encrypt, sign, decrypt and verify data
@@ -23,9 +25,9 @@ In case you need additional security functionality for multi-device support, gro
 
 ## Installation
 
-The Virgil Core SDK is provided as a package named [*virgil/sdk*](https://packagist.org/packages/virgil/sdk). The package is distributed via [Composer package](https://getcomposer.org/doc/) management system.
+The Virgil Core SDK is provided as a package named [_virgil/sdk_](https://packagist.org/packages/virgil/sdk). The package is distributed via [Composer package](https://getcomposer.org/doc/) management system.
 
-The package is available for PHP version 7.2 and newer.
+The package is available for PHP version 8.2 and newer.
 
 Installing the package using Package Manager Console:
 
@@ -45,15 +47,17 @@ Be aware that crypto-wrapper package appears in your vendors after virgil/sdk ha
 To check Virgil crypto extensions is proper installed run:
 
 ```bash
-php -m 
+php -m
 ```
 
 There are should be available following extensions: `vsce_phe_php`, `vscf_foundation_php`, `vscp_pythia_php`
 
 NOTE: If following warning is occurred export environment variable `LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/php7/modules` (/usr/lib/php7/modules - your php extensions path can be other):
+
 ```
 PHP Warning:  PHP Startup: Unable to load dynamic library 'vsce_phe_php' (tried: /usr/lib/php7/modules/vsce_phe_php (Error loading shared library /usr/lib/php7/modules/vsce_phe_php: No such file or directory), /usr/lib/php7/modules/vsce_phe_php.so (Error loading shared library vscf_foundation_php.so: No such file or directory (needed by /usr/lib/php7/modules/vsce_phe_php.so))) in Unknown on line 0
 ```
+
 `LD_LIBRARY_PATH` is environment variable which keeps all path that contains users dynamic shared libraries.
 
 Now Virgil Core SDK is ready to be used, lets configure it and run some samples.
@@ -70,11 +74,11 @@ In order to make calls to Virgil Services (for example, to publish user's Card o
 
 Credentials that you'll need:
 
-|Parameter|Description|
-|--- |--- |
-|App ID|ID of your Application at [Virgil Dashboard](https://dashboard.virgilsecurity.com)|
-|App Key ID|A unique string value that identifies your account at the Virgil developer portal|
-|App Key|A Private Key that is used to sign API calls to Virgil Services. For security, you will only be shown the App Key when the key is created. Don't forget to save it in a secure location for the next step|
+| Parameter  | Description                                                                                                                                                                                               |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| App ID     | ID of your Application at [Virgil Dashboard](https://dashboard.virgilsecurity.com)                                                                                                                        |
+| App Key ID | A unique string value that identifies your account at the Virgil developer portal                                                                                                                         |
+| App Key    | A Private Key that is used to sign API calls to Virgil Services. For security, you will only be shown the App Key when the key is created. Don't forget to save it in a secure location for the next step |
 
 #### Set up JWT provider on Client side
 
@@ -135,8 +139,8 @@ $token->__toString();
 For this subsection we've created a sample backend that demonstrates how you can set up your backend to generate the JWTs. To set up and run the sample backend locally, head over to your GitHub repo of choice:
 
 [Node.js](https://github.com/VirgilSecurity/sample-backend-nodejs) | [Golang](https://github.com/VirgilSecurity/sample-backend-go) | [PHP](https://github.com/VirgilSecurity/sample-backend-php) | [Java](https://github.com/VirgilSecurity/sample-backend-java) | [Python](https://github.com/VirgilSecurity/virgil-sdk-python/tree/master#sample-backend-for-jwt-generation)
- and follow the instructions in README.
- 
+and follow the instructions in README.
+
 ### Set up Card Verifier
 
 Virgil Card Verifier helps you automatically verify signatures of a user's Card, for example when you get a Card from Virgil Cards Service.
@@ -168,6 +172,7 @@ $cardVerifier = new VirgilCardVerifier($crypto, true, true, [$yourBackendWhiteli
 This subsection shows how to set up a Card Manager module to help you manage users' public keys.
 
 With Card Manager you can:
+
 - specify an access Token (JWT) Provider.
 - specify a Card Verifier used to verify signatures of your users, your App Server, Virgil Services (optional).
 

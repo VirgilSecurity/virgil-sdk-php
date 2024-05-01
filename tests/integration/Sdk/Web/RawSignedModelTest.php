@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2015-2020 Virgil Security Inc.
+ * Copyright (c) 2015-2024 Virgil Security Inc.
  *
  * All rights reserved.
  *
@@ -39,14 +39,14 @@ namespace Tests\Integration\Sdk\Web;
 
 use Virgil\Sdk\Web\RawSignature;
 use Virgil\Sdk\Web\RawSignedModel;
-use Virgil\SdkTests\IntegrationBaseTestCase;
+use Tests\Integration\IntegrationBaseTestCase;
+
+use PHPUnit\Framework\Attributes\Test;
 
 class RawSignedModelTest extends IntegrationBaseTestCase
 {
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSTC1()
     {
         $stc1AsString = $this->fixtures->STC1__As_String();
@@ -73,9 +73,7 @@ class RawSignedModelTest extends IntegrationBaseTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function testSTC2()
     {
         $stc2AsString = $this->fixtures->STC2__As_String();
@@ -108,27 +106,30 @@ class RawSignedModelTest extends IntegrationBaseTestCase
 
             $this->assertEquals(
                 new RawSignature(
-                    'self', base64_decode(
-                              'MFEwDQYJYIZIAWUDBAIDBQAEQNXguibY1cDCfnuJhTK+jX/Qv6v5i5TzqQs3e1fWlbisdUWYh+s10gsLkhf83wOqrm8ZXUCpjgkJn83TDaKYZQ8='
-                          )
+                    'self',
+                    base64_decode(
+                        'MFEwDQYJYIZIAWUDBAIDBQAEQNXguibY1cDCfnuJhTK+jX/Qv6v5i5TzqQs3e1fWlbisdUWYh+s10gsLkhf83wOqrm8ZXUCpjgkJn83TDaKYZQ8='
+                    )
                 ),
                 $signatures[0]
             );
 
             $this->assertEquals(
                 new RawSignature(
-                    'virgil', base64_decode(
-                                'MFEwDQYJYIZIAWUDBAIDBQAEQNXguibY1cDCfnuJhTK+jX/Qv6v5i5TzqQs3e1fWlbisdUWYh+s10gsLkhf83wOqrm8ZXUCpjgkJn83TDaKYZQ8='
-                            )
+                    'virgil',
+                    base64_decode(
+                        'MFEwDQYJYIZIAWUDBAIDBQAEQNXguibY1cDCfnuJhTK+jX/Qv6v5i5TzqQs3e1fWlbisdUWYh+s10gsLkhf83wOqrm8ZXUCpjgkJn83TDaKYZQ8='
+                    )
                 ),
                 $signatures[1]
             );
 
             $this->assertEquals(
                 new RawSignature(
-                    'extra', base64_decode(
-                               'MFEwDQYJYIZIAWUDBAIDBQAEQCA3O35Rk+doRPHkHhJJKJyFxz2APDZOSBZi6QhmI7BP3yTb65gRYwu0HtNNYdMRsEqVj9IEKhtDelf4SKpbJwo='
-                           )
+                    'extra',
+                    base64_decode(
+                        'MFEwDQYJYIZIAWUDBAIDBQAEQCA3O35Rk+doRPHkHhJJKJyFxz2APDZOSBZi6QhmI7BP3yTb65gRYwu0HtNNYdMRsEqVj9IEKhtDelf4SKpbJwo='
+                    )
                 ),
                 $signatures[2]
             );
